@@ -25,13 +25,15 @@ class PlayersController < ApplicationController
   # POST /players
   # POST /players.json
   def create
-    @player = Player.new(player_params)
+    json = player_params
+    @player = Player.new(json)
 
     if @player.save
-      render json: @player, status: :created, location: @player
+      json = render json: @player, status: :created, location: @player
     else
-      render json: @player.errors, status: :unprocessable_entity
+      json = render json: @player.errors, status: :unprocessable_entity
     end
+    json
   end
 
   # PATCH/PUT /players/1
@@ -44,11 +46,11 @@ class PlayersController < ApplicationController
   end
 
   # DELETE /players/1
-    def destroy
-      @player.destroy
+  def destroy
+    @player.destroy
 
-      head :no_content
-    end
+    head :no_content
+  end
 
   private
 
@@ -57,11 +59,16 @@ class PlayersController < ApplicationController
   end
 
   def player_params
-    params.require(:player).permit(:name, :team_id)
+    params[:player].permit :name
   end
 
   # Handle record not found exception
   def when_record_not_found
-    render json: 'Not found', status: :not_found
+    render json: { error: 'Not found' }, status: :not_found
   end
+
+  # TODO: Make sure that exception does not cause html response
+  # def when_other_error
+  #   render json: { error: 'Something went wrong' }, status: :internal_server_error
+  # end
 end
