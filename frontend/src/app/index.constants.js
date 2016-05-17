@@ -4,7 +4,9 @@
 
   angular
     .module('frontend')
+    .constant("baseURL","/api/")
     .constant('malarkey', malarkey)
-    .constant('moment', moment);
+    .constant('moment', moment)
+  ;
 
 })();

@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -10,10 +10,34 @@
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'app/main/main.html',
-        controller: 'MainController',
-        controllerAs: 'main'
-      });
+        views: {
+          'header': {
+            templateUrl: 'app/header/header.html'
+          }
+          ,
+          'content': {
+            templateUrl: 'app/main/main.html'
+          }
+        }
+      })
+      .state('players', {
+
+        url: '/',
+        views: {
+          'header': {
+            templateUrl: 'app/header/header.html'
+          }
+          ,
+          'content': {
+            templateUrl: 'app/players/players.html',
+            controller: 'PlayerController',
+            controllerAs: 'main'
+          }
+        }
+      })
+
+
+    ;
 
     $urlRouterProvider.otherwise('/');
   }

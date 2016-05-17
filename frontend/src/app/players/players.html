@@ -1,0 +1,73 @@
+<div class="container">
+
+  <div class="col-xs-12" ng-if="main.loading">
+    {{main.loadingMessage}}
+  </div>
+
+  <div class="col-xs-12" ng-if="main.loadingFailed">
+    {{main.loadingFailedMessage}}
+  </div>
+
+  <div ng-if="!main.loading && !main.loadingFailed">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" ng-click="main.showNewPlayerForm()">
+        <span class="glyphicon glyphicon-plus"></span> Player
+      </button>
+    </div>
+
+    <div class="col-xs-12">
+      <ol class="list-group">
+        <li class="list-group-item" ng-show="main.showingNewPlayerForm">
+
+          <!--Add player form-->
+          <!--newPlayerForm is member of controller-->
+          <form class="xform-inline" name="main.newPlayerForm"
+                ng-submit="main.submitNewPlayerForm()" novalidate>
+            <div class="form-group"
+                 ng-class="{ 'has-error' : (main.playerCreateErrors || main.newPlayerForm.name.$error.required) && !main.newPlayerForm.name.$pristine }">
+              <label for="name" class="sr-only control-label">Player Name</label>
+              <div>
+                <!--angular directive focusOnShow watches ng-show -->
+                <input type="text" ng-show="main.showingNewPlayerForm" class="form-control" id="name" name="name"
+                       fe-focus-on-show
+                       placeholder="Player Name"
+                       ng-model="main.newPlayer.name" required>
+            <span ng-show="main.newPlayerForm.name.$error.required && !main.newPlayerForm.name.$pristine"
+                  class="help-block">Player name is required.</span>
+
+                <div ng-show="main.playerCreateErrors.name" ng-repeat="error in main.playerCreateErrors.name">
+                  <span class="help-block">Name {{error}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div>
+                <button type="submit" class="btn btn-primary" ng-disabled="main.newPlayerForm.$invalid">Add</button>
+                <button type="Button" class="btn btn-info" ng-click="main.hideNewPlayerForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </li>
+
+        <!--Player details-->
+        <li class="list-group-item clearfix" ng-repeat="player in main.players">
+          <div class="h4 col-xs-10">
+            {{ player.name}}
+          </div>
+
+          <div class="col-xs-2">
+            <!--Delete player button-->
+            <div class="pull-right">
+              <button class="btn btn-link" ng-click="main.destroyPlayer(player)">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </div>
+          </div>
+
+        </li>
+
+      </ol>
+
+    </div>
+  </div>
+</div>

@@ -10,12 +10,14 @@
     // Enable log
     $logProvider.debugEnabled(true);
 
-    // Set options third-party lib
+    // toasts are closed by the user
     toastrConfig.allowHtml = true;
-    toastrConfig.timeOut = 3000;
+    toastrConfig.timeOut = 0;
+    toastrConfig.extendedTimeOut = 0;
+    toastrConfig.closeButton = true;
     toastrConfig.positionClass = 'toast-top-right';
-    toastrConfig.preventDuplicates = true;
-    toastrConfig.progressBar = true;
+    toastrConfig.preventDuplicates = false;
+    toastrConfig.progressBar = false;
   }
 
 })();
