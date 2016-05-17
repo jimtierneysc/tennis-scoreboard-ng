@@ -1,0 +1,27 @@
+
+<nav class="navbar navbar-default" ng-controller="HeaderController as vm">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed"
+              aria-expanded="false"  ng-click="vm.isCollapsed = !vm.isCollapsed" ng-init="vm.isCollapsed = true">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Tennis Scoreboard</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse"  ng-class="!vm.isCollapsed && 'in'" >
+      <!--uib-collapse="vm.isCollapsed">-->
+      <ul class="nav navbar-nav">
+        <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
+        <li ui-sref-active="active"><a ui-sref="players">Players</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
