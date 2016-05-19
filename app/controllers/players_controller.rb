@@ -47,9 +47,11 @@ class PlayersController < ApplicationController
 
   # DELETE /players/1
   def destroy
-    @player.destroy
-
-    head :no_content
+    if @player.destroy
+      head :no_content
+    else
+      render json: @player.errors, status: :unprocessable_entity
+    end
   end
 
   private
