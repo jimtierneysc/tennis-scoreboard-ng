@@ -72,7 +72,7 @@ class PlayersControllerTest < ActionController::TestCase
              id: matches('m_one_eight_game_singles').first_singles_player
     end
 
-    assert_response 204
+    assert_response 422
   end
 
   test 'should not destroy doubles player in match' do
@@ -81,7 +81,7 @@ class PlayersControllerTest < ActionController::TestCase
              id: matches('m_one_eight_game_doubles').first_team.first_player
     end
 
-    assert_response 204
+    assert_response 422
   end
 
   test 'should not destroy player on team' do
@@ -89,7 +89,7 @@ class PlayersControllerTest < ActionController::TestCase
       delete :destroy, id: teams('orphan').first_player
     end
 
-    assert_response 204
+    assert_response 422
   end
 end
 
