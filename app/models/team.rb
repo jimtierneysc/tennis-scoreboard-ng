@@ -14,6 +14,7 @@ class Team < ActiveRecord::Base
   before_validation { self.name = nil if self.name.blank? }
   validates :first_player_id, presence: true
   validates_uniqueness_of :name, allow_nil: true
+  validate :that_is_valid_first_player
   validate :that_is_valid_second_player
   validate :that_is_unique_player_pair
   before_destroy :that_can_destroy_team
@@ -54,10 +55,24 @@ class Team < ActiveRecord::Base
     Match.where('first_team_id=? OR second_team_id=?', id, id).exists?
   end
 
+  def that_is_valid_first_player
+      if first_player.nil?
+        errors.add(:first_player, if first_player_id.blank?
+                                     'must be specified'
+                                   else
+                                     'not found'
+                                   end)
+    end
+  end
+
   def that_is_valid_second_player
     if doubles
       if second_player.nil?
-        errors.add(:second_player, 'must be specified')
+        errors.add(:second_player, if second_player_id.blank?
+                                     'must be specified'
+                                   else
+                                     'not found'
+                                   end)
       else
         errors.add(:second_player, 'must not be the same as first player') if second_player == first_player
       end
