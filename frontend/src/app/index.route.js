@@ -35,6 +35,21 @@
           }
         }
       })
+      .state('teams', {
+
+        url: '/',
+        views: {
+          'header': {
+            templateUrl: 'app/header/header.html'
+          }
+          ,
+          'content': {
+            templateUrl: 'app/teams/teams.html',
+            controller: 'TeamController',
+            controllerAs: 'main'
+          }
+        }
+      })
 
 
     ;

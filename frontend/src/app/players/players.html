@@ -41,10 +41,12 @@
               </div>
             </div>
             <div class="form-group">
-              <div>
                 <button type="submit" class="btn btn-primary" ng-disabled="main.newPlayerForm.$invalid">Add</button>
                 <button type="Button" class="btn btn-info" ng-click="main.hideNewPlayerForm()">Cancel</button>
-              </div>
+            </div>
+            <!--Other problems-->
+            <div ng-show="main.playerCreateErrors.other" ng-repeat="error in main.playerCreateErrors.other">
+              <span class="help-block">{{error}}</span>
             </div>
           </form>
         </li>
