@@ -28,12 +28,12 @@
     }));
 
 
-    describe('loading', function() {
+    describe('loading', function () {
 
       it('should load', function () {
         var vm;
         $httpBackend.when('GET', resourceService.path).respond(
-          function() {
+          function () {
             return [200, sampleTeams]
           });
         vm = $controller('TeamController', {
@@ -74,51 +74,59 @@
         });
 
         it('should get', function () {
-          expect(vm.teams).toEqual(jasmine.any(Array));
-          //expect(angular.isArray(vm.teams)).toBeTruthy();
-          expect(vm.teams.length).toBe(sampleTeams.length);
-          expect(angular.equals(vm.teams[0], sampleTeams[0])).toBeTruthy;
+          expect(vm.entitys).toEqual(jasmine.any(Array));
+          //expect(angular.isArray(vm.entitys)).toBeTruthy();
+          expect(vm.entitys.length).toBe(sampleTeams.length);
+          // expect(angular.equals(vm.entitys[0], sampleTeams[0])).toBeTruthy;
         });
 
         it('should add 1', function () {
           $httpBackend.when('POST', resourceService.path).respond(201, {mergeKey: "mergeValue"});
-          vm.newTeam = {name: "newname"};
-          vm.submitNewTeamForm();
+          vm.newEntity = {name: "newname"};
+          vm.submitNewEntityForm();
           $httpBackend.flush();
 
-          expect(angular.isArray(vm.teams)).toBeTruthy();
-          expect(vm.teams.length).toBe(sampleTeams.length + 1);
-          expect(vm.teams[0].mergeKey).toBe("mergeValue");
-          expect(vm.teams[0].name).toBe("newname");
+          expect(angular.isArray(vm.entitys)).toBeTruthy();
+          expect(vm.entitys.length).toBe(sampleTeams.length + 1);
+          expect(vm.entitys[0].mergeKey).toBe("mergeValue");
+          expect(vm.entitys[0].name).toBe("newname");
         });
 
         it('should delete 1', function () {
-          var toRemove = vm.teams[0];
+          var toRemove = vm.entitys[0];
           $httpBackend.when('DELETE', resourceService.path + '/' + toRemove.id).respond(200, {});
-          vm.destroyTeam(toRemove, false);  // do not confirm: false
+          vm.trashEntity(toRemove, false);  // do not confirm: false
           $httpBackend.flush();
-          expect(angular.isArray(vm.teams)).toBeTruthy();
-          expect(vm.teams.length).toBe(sampleTeams.length - 1);
+          expect(angular.isArray(vm.entitys)).toBeTruthy();
+          expect(vm.entitys.length).toBe(sampleTeams.length - 1);
         });
 
+        it('should format body', function () {
+          $httpBackend.expect('POST', resourceService.path, {'team': sampleTeams[0]}).respond(200, {});
+          vm.newEntity = sampleTeams[0];
+          vm.submitNewEntityForm();
+          $httpBackend.flush();
+        });
+
+
         it('should capture create error', function () {
-          $httpBackend.when('POST', resourceService.path).respond(422, {"name":["has already been taken"]});
-          vm.newTeam = sampleTeams[0];
-          vm.submitNewTeamForm();
+          $httpBackend.when('POST', resourceService.path).respond(422, {"name": ["has already been taken"]});
+          vm.newEntity = sampleTeams[0];
+          vm.submitNewEntityForm();
           $httpBackend.flush();
 
-          expect(vm.teams.length).toBe(sampleTeams.length);
-          expect(vm.teamCreateErrors).toEqual(jasmine.any(Object));
-          expect(vm.teamCreateErrors.name).toEqual(jasmine.any(Array));
-          expect(vm.teamCreateErrors.name.length).toBe(1);
-          expect(vm.teamCreateErrors.name[0]).toEqual(jasmine.stringMatching('has already been taken'));
+          expect(vm.entitys.length).toBe(sampleTeams.length);
+          expect(vm.entityCreateErrors).toEqual(jasmine.any(Object));
+          expect(vm.entityCreateErrors.name).toEqual(jasmine.any(Array));
+          expect(vm.entityCreateErrors.name.length).toBe(1);
+          expect(vm.entityCreateErrors.name[0]).toEqual(jasmine.stringMatching('has already been taken'));
         });
 
         it('should capture delete error', function () {
           $httpBackend.when('DELETE', resourceService.path + '/999').respond(404, {"error": "not found"});
-          vm.destroyTeam({id: 999}, false);  // do not confirm: false
+          vm.trashEntity({id: 999}, false);  // do not confirm: false
           $httpBackend.flush();
-          expect(vm.teams.length).toBe(sampleTeams.length);
+          expect(vm.entitys.length).toBe(sampleTeams.length);
           expect(vm.lastToast).toEqual(jasmine.any(Object));
           expect(vm.lastToast.iconClass).toEqual('toast-error')
         });

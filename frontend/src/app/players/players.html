@@ -8,63 +8,141 @@
     {{main.loadingFailedMessage}}
   </div>
 
-  <div ng-if="!main.loading && !main.loadingFailed">
+  <div ng-show="!main.loading && !main.loadingFailed">
     <div class="col-xs-12">
-      <button class="btn btn-primary" ng-click="main.showNewPlayerForm()">
+      <button class="btn btn-primary" ng-click="main.showNewEntityForm()">
         <span class="glyphicon glyphicon-plus"></span> Player
       </button>
     </div>
 
     <div class="col-xs-12">
       <ol class="list-group">
-        <li class="list-group-item" ng-show="main.showingNewPlayerForm">
 
-          <!--Add player form-->
-          <!--newPlayerForm is member of controller-->
-          <form class="xform-inline" name="main.newPlayerForm"
-                ng-submit="main.submitNewPlayerForm()" novalidate>
-            <div class="form-group"
-                 ng-class="{ 'has-error' : (main.playerCreateErrors || main.newPlayerForm.name.$error.required) && !main.newPlayerForm.name.$pristine }">
-              <label for="name" class="sr-only control-label">Player Name</label>
-              <div>
-                <!--angular directive focusOnShow watches ng-show -->
-                <input type="text" ng-show="main.showingNewPlayerForm" class="form-control" id="name" name="name"
-                       fe-focus-on-show
-                       placeholder="Player Name"
-                       ng-model="main.newPlayer.name" required>
-            <span ng-show="main.newPlayerForm.name.$error.required && !main.newPlayerForm.name.$pristine"
-                  class="help-block">Player name is required.</span>
-
-                <div ng-show="main.playerCreateErrors.name" ng-repeat="error in main.playerCreateErrors.name">
-                  <span class="help-block">Name {{error}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" ng-disabled="main.newPlayerForm.$invalid">Add</button>
-                <button type="Button" class="btn btn-info" ng-click="main.hideNewPlayerForm()">Cancel</button>
-            </div>
-            <!--Other problems-->
-            <div ng-show="main.playerCreateErrors.other" ng-repeat="error in main.playerCreateErrors.other">
-              <span class="help-block">{{error}}</span>
-            </div>
-          </form>
+        <li class="list-group-item" ng-if="main.showingNewEntityForm">
+          <fe-players-form
+            form="main.newEntityForm"
+            errors="main.entityCreateErrors"
+            cancel="main.hideNewEntityForm()"
+            submit="main.submitNewEntityForm()"
+            ok="Add"
+            entity="main.newEntity"
+          >
+          </fe-players-form>
         </li>
 
-        <!--Player details-->
-        <li class="list-group-item clearfix" ng-repeat="player in main.players">
-          <div class="h4 col-xs-10">
-            {{ player.name}}
-          </div>
+        <!--<li class="list-group-item" ng-if="main.showingNewEntityForm">-->
 
-          <div class="col-xs-2">
-            <!--Delete player button-->
-            <div class="pull-right">
-              <button class="btn btn-link" ng-click="main.destroyPlayer(player)">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
+          <!--&lt;!&ndash;Add player form&ndash;&gt;-->
+          <!--&lt;!&ndash;newEntityForm is member of controller&ndash;&gt;-->
+          <!--<form name="main.newEntityForm"-->
+                <!--ng-submit="main.submitNewEntityForm()" novalidate>-->
+            <!--<div>entityErrors: {{main.entityCreateErrors.toString()}}</div>-->
+            <!--<div>entityForm: {{main.newEntityForm.toString()}}</div>-->
+            <!--<div class="form-group"-->
+                 <!--ng-class="{ 'has-error' : (main.entityCreateErrors || main.newEntityForm.name.$error.required) && !main.newEntityForm.name.$pristine }">-->
+              <!--<label for="name" class="sr-only control-label">Entity Name</label>-->
+              <!--<div>-->
+                <!--&lt;!&ndash;angular directive focusOnShow watches ng-show &ndash;&gt;-->
+                <!--<input type="text" ng-show="main.showingNewEntityForm" class="form-control" id="name" name="name"-->
+                       <!--fe-focus-on-show-->
+                       <!--placeholder="Player Name"-->
+                       <!--ng-model="main.newEntity.name" required>-->
+            <!--<span ng-show="main.newEntityForm.name.$error.required && !main.newEntityForm.name.$pristine"-->
+                  <!--class="help-block">Player name is required.</span>-->
+
+                <!--<div ng-show="main.entityCreateErrors.name" ng-repeat="error in main.entityCreateErrors.name">-->
+                  <!--<span class="help-block">Name {{error}}</span>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+              <!--<button type="submit" class="btn btn-primary" ng-disabled="main.newEntityForm.$invalid">Add</button>-->
+              <!--<button type="Button" class="btn btn-info" ng-click="main.hideNewEntityForm()">Cancel</button>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;Other problems&ndash;&gt;-->
+            <!--<div ng-show="main.entityCreateErrors.other" ng-repeat="error in main.entityCreateErrors.other">-->
+              <!--<span class="help-block">{{error}}</span>-->
+            <!--</div>-->
+          <!--</form>-->
+
+
+        <!--</li>-->
+
+        <!--Player details-->
+        <li class="list-group-item clearfix" ng-repeat="entity in main.entitys">
+          <div ng-hide="main.showingEditEntityForm(entity)">
+            <div class="col-xs-10">
+              <div class="h4">
+                {{ entity.name}}
+              </div>
+            </div>
+
+            <div class="col-xs-2">
+              <!--Delete player button-->
+              <div class="pull-right">
+                <button class="btn btn-link" ng-click="main.trashEntity(entity)">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <br>
+                <button class="btn btn-link" ng-click="main.showEditEntityForm(entity)">
+                  <span class="glyphicon glyphicon-edit"></span>
+                </button>
+              </div>
             </div>
           </div>
+
+
+          <!--Use ng-if so there won't be bunch of forms in the DOM-->
+          <div ng-if="main.showingEditEntityForm(entity)">
+
+            <div>
+            <fe-players-form
+              form="main.editEntityForm"
+              errors="main.entityUpdateErrors"
+              cancel="main.hideEditEntityForm()"
+              submit="main.submitEditEntityForm()"
+              entity="main.editEntity"
+              ok="Save"
+            >
+            </fe-players-form>
+              </div>
+
+
+            <!--&lt;!&ndash;Edit player form&ndash;&gt;-->
+            <!--&lt;!&ndash;newEntityForm is member of controller&ndash;&gt;-->
+            <!--<form name="main.editEntityForm"-->
+                  <!--ng-submit="main.submitEditEntityForm()" novalidate>-->
+              <!--<div class="form-group"-->
+                   <!--ng-class="{ 'has-error' : (main.entityUpdateErrors || main.editEntityForm.name.$error.required) && !main.editEntityForm.name.$pristine }">-->
+                <!--<label for="name" class="sr-only control-label">Entity Name</label>-->
+                <!--<div>-->
+                  <!--&lt;!&ndash;angular directive focusOnShow watches ng-show &ndash;&gt;-->
+                  <!--<input type="text" ng-show="main.showingEditEntityForm(entity)" class="form-control" id="name"-->
+                         <!--name="name"-->
+                         <!--fe-focus-on-show-->
+                         <!--placeholder="Player Name"-->
+                         <!--ng-model="main.editEntity.name" required>-->
+
+            <!--<span ng-show="main.editEntityForm.name.$error.required && !main.editEntityForm.name.$pristine"-->
+                  <!--class="help-block">Player name is required.</span>-->
+
+                  <!--<div ng-show="main.entityUpdateErrors.name" ng-repeat="error in main.entityUpdateErrors.name">-->
+                    <!--<span class="help-block">Name {{error}}</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--<button type="submit" class="btn btn-primary" ng-disabled="main.editEntityForm.$invalid">Save</button>-->
+                <!--<button type="Button" class="btn btn-info" ng-click="main.hideEditEntityForm()">Cancel</button>-->
+              <!--</div>-->
+              <!--&lt;!&ndash;Other problems&ndash;&gt;-->
+              <!--<div ng-show="main.entityUpdateErrors.other" ng-repeat="error in main.entityUpdateErrors.other">-->
+                <!--<span class="help-block">{{error}}</span>-->
+              <!--</div>-->
+            <!--</form>-->
+
+          </div>
+
 
         </li>
 

@@ -10,97 +10,142 @@
 
   <div ng-if="!main.loading && !main.loadingFailed">
     <div class="col-xs-12">
-      <button class="btn btn-primary" ng-click="main.showNewTeamForm()">
+      <button class="btn btn-primary" ng-click="main.showNewEntityForm()">
         <span class="glyphicon glyphicon-plus"></span> Team
       </button>
     </div>
 
     <div class="col-xs-12">
       <ol class="list-group">
-        <li class="list-group-item" ng-show="main.showingNewTeamForm">
-
-          <!--Add team form-->
-          <!--newTeamForm is member of controller-->
-          <form class="xform-inline" name="main.newTeamForm"
-                ng-submit="main.submitNewTeamForm()" novalidate>
-            <div class="form-group" ng-class="{ 'has-error': main.teamCreateErrors.name }">
-
-              <!--Team Name-->
-              <label for="name" class="sr-only control-label">Team Name</label>
-              <div>
-                <!--angular directive focusOnShow watches ng-show -->
-                <input type="text" ng-show="main.showingNewTeamForm" class="form-control" id="name" name="name"
-                       fe-focus-on-show
-                       placeholder="Team Name (optional)"
-                       ng-model="main.newTeam.name">
-
-                <!--Problems with name-->
-                <div ng-show="main.teamCreateErrors.name" ng-repeat="error in main.teamCreateErrors.name">
-                  <span class="help-block">Name {{error}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error': main.teamCreateErrors.first_player }">
-
-              <label for="first_player" class="control-label sr-only" >First Player</label>
-
-                  <ui-select ng-model="main.newTeam.first_player" theme="bootstrap" id="first_player" name="first_player" ng-required="true">
-                    <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
-                    <ui-select-choices repeat="item in main.playerOptionsList | filter: $select.search">
-                      <div ng-bind-html="item.name | highlight: $select.search"></div>
-                      <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-                    </ui-select-choices>
-                  </ui-select>
-              <!--Problems with first player-->
-              <div ng-show="main.teamCreateErrors.first_player" ng-repeat="error in main.teamCreateErrors.first_player">
-                <span class="help-block">Player {{error}}</span>
-              </div>
+        <li class="list-group-item" ng-if="main.showingNewEntityForm">
+<h1>new</h1>
+          <fe-teams-form
+            form="main.newEntityForm"
+            errors="main.entityCreateErrors"
+            cancel="main.hideNewEntityForm()"
+            submit="main.submitNewEntityForm()"
+            entity="main.newEntity"
+            ok="Add" 
+            playerslist="main.playerOptionsList"
+          >
+          </fe-teams-form>
 
 
-            </div>
-            <div class="form-group" ng-class="{ 'has-error': main.teamCreateErrors.second_player }">
-              <!--Second player-->
-              <label for="second_player" class="control-label sr-only" >Second Player</label>
-              <ui-select ng-model="main.newTeam.second_player" theme="bootstrap" id="second_player" name="second_player" ng-required="true">
-                <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
-                <ui-select-choices repeat="item in main.playerOptionsList | filter: $select.search">
-                  <div ng-bind-html="item.name | highlight: $select.search"></div>
-                  <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-                </ui-select-choices>
-              </ui-select>
+          <!--&lt;!&ndash;Add team form&ndash;&gt;-->
+          <!--&lt;!&ndash;newEntityForm is member of controller&ndash;&gt;-->
+          <!--<form class="xform-inline" name="main.newEntityForm"-->
+                <!--ng-submit="main.submitNewEntityForm()" novalidate>-->
+            <!--<div class="form-group" ng-class="{ 'has-error': main.entityCreateErrors.name }">-->
+
+              <!--&lt;!&ndash;Team Name&ndash;&gt;-->
+              <!--<label for="name" class="sr-only control-label">Team Name</label>-->
+              <!--<div>-->
+                <!--&lt;!&ndash;angular directive focusOnShow watches ng-show &ndash;&gt;-->
+                <!--<input type="text" ng-show="main.showingNewEntityForm" class="form-control" id="name" name="name"-->
+                       <!--fe-focus-on-show-->
+                       <!--placeholder="Team Name (optional)"-->
+                       <!--ng-model="main.newEntity.name">-->
+
+                <!--&lt;!&ndash;Problems with name&ndash;&gt;-->
+                <!--<div ng-show="main.entityCreateErrors.name" ng-repeat="error in main.entityCreateErrors.name">-->
+                  <!--<span class="help-block">Name {{error}}</span>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group" ng-class="{ 'has-error': main.entityCreateErrors.first_player }">-->
+
+              <!--<label for="first_player" class="control-label sr-only">First Player</label>-->
+
+              <!--<ui-select ng-model="main.newEntity.first_player" theme="bootstrap" id="first_player" name="first_player"-->
+                         <!--ng-required="true">-->
+                <!--<ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>-->
+                <!--<ui-select-choices repeat="item in main.playerOptionsList | filter: $select.search">-->
+                  <!--<div ng-bind-html="item.name | highlight: $select.search"></div>-->
+                  <!--&lt;!&ndash;<small ng-bind-html="item.id | highlight: $select.search"></small>&ndash;&gt;-->
+                <!--</ui-select-choices>-->
+              <!--</ui-select>-->
+              <!--&lt;!&ndash;Problems with first player&ndash;&gt;-->
+              <!--<div ng-show="main.entityCreateErrors.first_player"-->
+                   <!--ng-repeat="error in main.entityCreateErrors.first_player">-->
+                <!--<span class="help-block">Player {{error}}</span>-->
+              <!--</div>-->
 
 
-              <!--Problems with second player-->
-              <div ng-show="main.teamCreateErrors.second_player" ng-repeat="error in main.teamCreateErrors.second_player">
-                <span class="help-block">Player {{error}}</span>
-              </div>
+            <!--</div>-->
+            <!--<div class="form-group" ng-class="{ 'has-error': main.entityCreateErrors.second_player }">-->
+              <!--&lt;!&ndash;Second player&ndash;&gt;-->
+              <!--<label for="second_player" class="control-label sr-only">Second Player</label>-->
+              <!--<ui-select ng-model="main.newEntity.second_player" theme="bootstrap" id="second_player"-->
+                         <!--name="second_player" ng-required="true">-->
+                <!--<ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>-->
+                <!--<ui-select-choices repeat="item in main.playerOptionsList | filter: $select.search">-->
+                  <!--<div ng-bind-html="item.name | highlight: $select.search"></div>-->
+                  <!--&lt;!&ndash;<small ng-bind-html="item.id | highlight: $select.search"></small>&ndash;&gt;-->
+                <!--</ui-select-choices>-->
+              <!--</ui-select>-->
 
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" ng-disabled="main.newTeamForm.$invalid">Add</button>
-                <button type="Button" class="btn btn-info" ng-click="main.hideNewTeamForm()">Cancel</button>
-            </div>
-            <!--Other problems-->
-            <div ng-show="main.teamCreateErrors.other" ng-repeat="error in main.teamCreateErrors.other">
-              <span class="help-block">{{error}}</span>
-            </div>
-          </form>
+
+              <!--&lt;!&ndash;Problems with second player&ndash;&gt;-->
+              <!--<div ng-show="main.entityCreateErrors.second_player"-->
+                   <!--ng-repeat="error in main.entityCreateErrors.second_player">-->
+                <!--<span class="help-block">Player {{error}}</span>-->
+              <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="form-group">-->
+              <!--<button type="submit" class="btn btn-primary" ng-disabled="main.newEntityForm.$invalid">Add</button>-->
+              <!--<button type="Button" class="btn btn-info" ng-click="main.hideNewEntityForm()">Cancel</button>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;Other problems&ndash;&gt;-->
+            <!--<div ng-show="main.entityCreateErrors.other" ng-repeat="error in main.entityCreateErrors.other">-->
+              <!--<span class="help-block">{{error}}</span>-->
+            <!--</div>-->
+          <!--</form>-->
         </li>
 
         <!--Team details-->
-        <li class="list-group-item clearfix" ng-repeat="team in main.teams">
-          <div class="h4 col-xs-10">
-            {{ team.name}}
-          </div>
+        <li class="list-group-item clearfix" ng-repeat="entity in main.entitys">
 
-          <div class="col-xs-2">
-            <!--Delete team button-->
-            <div class="pull-right">
-              <button class="btn btn-link" ng-click="main.destroyTeam(team)">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
+
+          <div ng-hide="main.showingEditEntityForm(entity)">
+            <div class="col-xs-10">
+              <div class="h4">
+                {{ entity.name}}
+              </div>
+            </div>
+
+            <div class="col-xs-2">
+              <!--Delete button-->
+              <div class="pull-right">
+                <button class="btn btn-link" ng-click="main.trashEntity(entity)">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <br>
+                <button class="btn btn-link" ng-click="main.showEditEntityForm(entity)">
+                  <span class="glyphicon glyphicon-edit"></span>
+                </button>
+              </div>
             </div>
           </div>
+
+
+          <!--Use ng-if so there won't be bunch of forms in the DOM-->
+          <div ng-if="main.showingEditEntityForm(entity)">
+<h1>edit</h1>
+            <div>
+              <fe-teams-form
+                form="main.editEntityForm"
+                errors="main.entityUpdateErrors"
+                cancel="main.hideEditEntityForm()"
+                submit="main.submitEditEntityForm()"
+                entity="main.editEntity"
+                ok="Save"
+                playerslist="main.playerOptionsList"
+              >
+              </fe-teams-form>
+            </div>
+          </div>
+
 
         </li>
 

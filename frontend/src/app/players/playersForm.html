@@ -1,0 +1,28 @@
+<form name="form"
+      ng-submit="submit()" novalidate>
+  <div class="form-group"
+       ng-class="{ 'has-error' : (errors || form.name.$error.required) && !form.name.$pristine }">
+    <label for="name" class="sr-only control-label">Entity Name</label>
+    <div>
+      <!--angular directive focusOnShow watches ng-show -->
+      <input type="text" ng-show="true" class="form-control" id="name" name="name"
+             fe-focus-on-show
+             placeholder="Player Name"
+             ng-model="entity.name" required>
+            <span ng-show="form.name.$error.required && !form.name.$pristine"
+                  class="help-block">Player name is required.</span>
+
+      <div ng-show="errors.name" ng-repeat="error in errors.name">
+        <span class="help-block">Name {{error}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" ng-disabled="form.$pristine || form.$invalid">{{ok}}</button>
+    <button type="Button" class="btn btn-info" ng-click="cancel()">Cancel</button>
+  </div>
+  <!--Other problems-->
+  <div ng-show="errors.other" ng-repeat="error in errors.other">
+    <span class="help-block">{{error}}</span>
+  </div>
+</form>
