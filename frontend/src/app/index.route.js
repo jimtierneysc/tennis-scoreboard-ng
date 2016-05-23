@@ -50,6 +50,21 @@
           }
         }
       })
+      .state('matches', {
+
+        url: '/',
+        views: {
+          'header': {
+            templateUrl: 'app/header/header.html'
+          }
+          ,
+          'content': {
+            templateUrl: 'app/matches/matches.html',
+            controller: 'MatchController',
+            controllerAs: 'main'
+          }
+        }
+      })
 
 
     ;

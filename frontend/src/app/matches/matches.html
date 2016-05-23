@@ -1,0 +1,97 @@
+<div class="container">
+
+  <div class="col-xs-12" ng-if="main.loading">
+    {{main.loadingMessage}}
+  </div>
+
+  <div class="col-xs-12" ng-if="main.loadingFailed">
+    {{main.loadingFailedMessage}}
+  </div>
+
+  <div ng-if="!main.loading && !main.loadingFailed">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" ng-click="main.showNewEntityForm()">
+        <span class="glyphicon glyphicon-plus"></span>Match
+      </button>
+    </div>
+
+    <div class="col-xs-12">
+      <ol class="list-group">
+        <li class="list-group-item" ng-if="main.showingNewEntityForm">
+<h1>new</h1>
+          <fe-matches-form
+            form="main.newEntityForm"
+            errors="main.entityCreateErrors"
+            cancel="main.hideNewEntityForm()"
+            submit="main.submitNewEntityForm()"
+            entity="main.newEntity"
+            ok="Add"
+            playerslist="main.playerOptionsList"
+            teamslist="main.teamOptionsList"
+          >
+          </fe-matches-form>
+
+
+        </li>
+
+        <!--Team details-->
+        <li class="list-group-item clearfix" ng-repeat="entity in main.entitys">
+
+
+          <div ng-hide="main.showingEditEntityForm(entity)">
+            <div class="col-xs-10">
+              <div class="h4">
+                {{ entity.title}}
+              </div>
+              <div class="h4">
+                Opponents: {{ entity.opponents }}
+              </div>
+              <div class="h4">
+                Scoring: {{ entity.scoring }}
+              </div>
+              <div class="h4">
+                Status: {{ entity.status }}
+              </div>
+            </div>
+
+            <div class="col-xs-2">
+              <!--Delete button-->
+              <div class="pull-right">
+                <button class="btn btn-link" ng-click="main.trashEntity(entity)">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <br>
+                <button class="btn btn-link" ng-click="main.showEditEntityForm(entity)">
+                  <span class="glyphicon glyphicon-edit"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <!--Use ng-if so there won't be bunch of forms in the DOM-->
+          <div ng-if="main.showingEditEntityForm(entity)">
+<h1>edit</h1>
+            <div>
+              <fe-matches-form
+                form="main.editEntityForm"
+                errors="main.entityUpdateErrors"
+                cancel="main.hideEditEntityForm()"
+                submit="main.submitEditEntityForm()"
+                entity="main.editEntity"
+                ok="Save"
+                playerslist="main.playerOptionsList"
+                teamslist="main.teamOptionsList"
+              >
+              </fe-matches-form>
+            </div>
+          </div>
+
+
+        </li>
+
+      </ol>
+
+    </div>
+  </div>
+</div>
