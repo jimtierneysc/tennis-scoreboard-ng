@@ -30,17 +30,16 @@ class TeamsController < ApplicationController
     @team = Team.new(json)
 
     if @team.save
-      json = render json: @team, status: :created, location: @team
+      render json: @team, status: :created, location: @team
     else
-      json = render json: @team.errors, status: :unprocessable_entity
+      render json: @team.errors, status: :unprocessable_entity
     end
-    json
   end
 
   # PATCH/PUT /teams/1
   def update
     if @team.update(team_params)
-      head :no_content
+      render json: @team, status: :ok
     else
       render json: @team.errors, status: :unprocessable_entity
     end

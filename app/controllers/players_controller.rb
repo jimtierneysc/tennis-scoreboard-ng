@@ -25,21 +25,19 @@ class PlayersController < ApplicationController
   # POST /players
   # POST /players.json
   def create
-    json = player_params
-    @player = Player.new(json)
+    @player = Player.new(player_params)
 
     if @player.save
-      json = render json: @player, status: :created, location: @player
+      render json: @player, status: :created, location: @player
     else
-      json = render json: @player.errors, status: :unprocessable_entity
+      render json: @player.errors, status: :unprocessable_entity
     end
-    json
   end
 
   # PATCH/PUT /players/1
   def update
     if @player.update(player_params)
-      head :no_content
+      render json: @player, status: :ok
     else
       render json: @player.errors, status: :unprocessable_entity
     end
