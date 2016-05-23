@@ -15,8 +15,12 @@
     .factory('crudHelper', crudHelperFunc);
 
   /** @ngInject */
-  function crudHelperFunc($log, modalConfirm, toastr, feUtils, $filter) {
-    var service = { activate: activateFunc };
+  function crudHelperFunc($log, $q, modalConfirm, toastr, feUtils, $filter, playersResource, teamsResource) {
+    var service = {
+      activate: activateFunc,
+      fillPlayerOptionsList: fillPlayerOptionsList,
+      fillTeamOptionsList: fillTeamOptionsList
+    };
 
     var vm = null;
 
@@ -94,9 +98,9 @@
         confirmDelete = true;
       if (confirmDelete) {
         modalConfirm.confirm({
-            title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
-            _.escape(getEntityDisplayName(entity)) + '"?'
-          })
+          title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
+          _.escape(getEntityDisplayName(entity)) + '"?'
+        })
           .then(function () {
             $log.info('delete confirmed');
             removeEntity(entity)
@@ -246,7 +250,9 @@
     function entityUpdated(entity) {
       hideEditEntityForm();
       var id = entity.id;
-      var found = $filter('filter')(vm.entitys, function (o) {return o.id === id;});
+      var found = $filter('filter')(vm.entitys, function (o) {
+        return o.id === id;
+      });
       if (found && found.length === 1) {
         angular.copy(entity, found[0]);
       }
@@ -298,6 +304,48 @@
 
       vm.lastToast = toastr.error(message, caption);
     }
+
+
+    // Return a promise
+    function fillPlayerOptionsList() {
+      var deferredObject = $q.defer();
+      playersResource.getPlayers().query(
+        function (response) {
+          $log.info('received data');
+          var options = [];
+          angular.forEach(response, function (value) {
+            options.push({name: value.name, id: value.id});
+          }, options);
+          deferredObject.resolve(options);
+        },
+        function (response) {
+          $log.info('data error ' + response.status + " " + response.statusText);
+          deferredObject.reject();
+        }
+      );
+      return deferredObject.promise;
+    }
+
+    // Return a promise
+    function fillTeamOptionsList() {
+      var deferredObject = $q.defer();
+      teamsResource.getTeams().query(
+        function (response) {
+          $log.info('received data');
+          var options = [];
+          angular.forEach(response, function (value) {
+            options.push({name: value.displayName, id: value.id});
+          }, options);
+          deferredObject.resolve(options);
+        },
+        function (response) {
+          $log.info('data error ' + response.status + " " + response.statusText);
+          deferredObject.reject();
+        }
+      );
+      return deferredObject.promise;
+    }
+
 
   }
 })();

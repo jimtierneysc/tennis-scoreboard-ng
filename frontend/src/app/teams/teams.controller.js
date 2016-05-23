@@ -13,7 +13,7 @@
     .controller('TeamController', MainController);
 
   /** @ngInject */
-  function MainController(teamsResource, $log, $scope, playersResource, crudHelper) {
+  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper) {
     var vm = this;
     vm.playerOptionsList = {list: null};
 
@@ -38,29 +38,29 @@
     return vm;
 
 
-    function beforeSubmitNewEntity(newEntity) {
-      if (angular.isDefined(newEntity.first_player))
-        newEntity.first_player_id = newEntity.first_player.id;
-      if (angular.isDefined(newEntity.second_player))
-        newEntity.second_player_id = newEntity.second_player.id;
-
+    function beforeSubmitNewEntity(entity) {
+      fixupSubmitEntity(entity);
     }
 
-    function beforeSubmitEditEntity() {
-      // nothing to do. yet.
+    function beforeSubmitEditEntity(entity) {
+      fixupSubmitEntity(entity);
     }
 
     function beforeShowNewEntityForm() {
-      beforeShowEntityForm();
+      preparePlayerOptions();
     }
 
     function beforeShowEditEntityForm() {
-      beforeShowEntityForm();
+      preparePlayerOptions().then(
+        function () {
+          fixupEditEntityPlayers();
+        }
+      )
     }
 
     function getEntityDisplayName(entity) {
       // TODO: build team name
-      return entity.name;
+      return entity.displayName;
     }
 
     function makeEntityBody(entity) {
@@ -69,29 +69,55 @@
 
     // "Private" methods
 
-    function beforeShowEntityForm() {
+    function preparePlayerOptions() {
+      var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
-        fillPlayerOptionsList();
+        fillPlayerOptionsList().then(
+          function (list) {
+            vm.playerOptionsList.list = list;
+            deferredObject.resolve();
+          },
+          function () {
+            vm.playerOptionsList.list = [];
+            $log.error('playerOptionsList')
+            deferredObject.reject();
+          }
+        );
       }
+      else {
+        deferredObject.resolve();
+      }
+      return deferredObject.promise;
+
     }
+
 
     function fillPlayerOptionsList() {
-      playersResource.getPlayers().query(
-        function (response) {
-          $log.info('received data');
-          var options = [];
-          angular.forEach(response, function (value) {
-            options.push({name: value.name, id: value.id});
-          }, options);
-          vm.playerOptionsList.list = options;
-        },
-        function (response) {
-          $log.info('data error ' + response.status + " " + response.statusText);
-          vm.playerOptionsList.list = [];
-        }
-      )
+      return crudHelper.fillPlayerOptionsList();
     }
 
+    function fixupEditEntityPlayers() {
+      var first_player = null;
+      var second_player = null;
+      var first_id = vm.editEntity.first_player_id;
+      var second_id = vm.editEntity.second_player_id;
+      $filter('filter')(vm.playerOptionsList.list,
+        function (o) {
+          if (o.id == first_id)  first_player = o;
+          if (o.id == second_id) second_player = o;
+          return first_player && second_player;
+        });
+      vm.editEntity.first_player = first_player;
+      vm.editEntity.second_player = second_player;
+    }
+
+    function fixupSubmitEntity(entity) {
+      if (angular.isDefined(entity.first_player))
+        entity.first_player_id = entity.first_player.id;
+      if (angular.isDefined(entity.second_player))
+        entity.second_player_id = entity.second_player.id;
+
+    }
 
   }
 })();
