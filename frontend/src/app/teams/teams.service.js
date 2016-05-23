@@ -5,7 +5,7 @@
  * Service to transfer team JSON between frontend and backend
  *
  */
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -25,7 +25,21 @@
 
     function getTeams() {
       $log.info("getTeams()");
-      return $resource(path + '/:id', null, {'update': {method: 'PUT'}});
+      var Team = $resource(path + '/:id', null, {'update': {method: 'PUT'}});
+      Object.defineProperty(
+        Team.prototype,
+        "displayName",
+        {
+          get: function () {
+            if (this.name)
+              return this.name;
+            else
+              return "(unnamed)";
+          }
+        }
+      );
+      return Team;
+
     }
 
 
