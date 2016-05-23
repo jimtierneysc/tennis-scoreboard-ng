@@ -3,11 +3,13 @@ Rails.application.routes.draw do
   scope '/api', default: {format: :json} do
     resources :players, except: [:new, :edit]
     resources :teams, except: [:new, :edit]
+    resources :matches, except: [:new, :edit]
   end
 
   # TODO: Remove these when not required by controller tests.
   resources :players, except: [:new, :edit]
   resources :teams, except: [:new, :edit]
+  resources :matches, except: [:new, :edit]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

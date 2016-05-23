@@ -2,7 +2,7 @@ require 'test_helper'
 require 'play_match_helper'
 
 # Test the Match model.
-# A match keep track of the match score.
+# A match keeps track of the match score.
 # The Match model has methods to advance the score of the
 # match, such as start_game!, win_game!.  The match model
 # also has methods to determine whether the score can be advanced,
