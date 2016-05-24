@@ -18,7 +18,7 @@
     <div class="col-xs-12">
       <ol class="list-group">
         <li class="list-group-item" ng-if="main.showingNewEntityForm">
-<h1>new</h1>
+          <h1>new</h1>
           <fe-matches-form
             form="main.newEntityForm"
             errors="main.entityCreateErrors"
@@ -43,14 +43,60 @@
               <div class="h4">
                 {{ entity.title}}
               </div>
-              <div class="h4">
-                Opponents: {{ entity.opponents }}
+              <div>
+                <div>
+                  Status
+                </div>
+                <div>
+                  {{ entity.state }}
+                </div>
               </div>
-              <div class="h4">
-                Scoring: {{ entity.scoring }}
+              <div ng-if="entity.winner_player">
+                <div>
+                  Winner
+                </div>
+                <div>
+                  {{ entity.winner_player.name}}
+                </div>
               </div>
-              <div class="h4">
-                Status: {{ entity.status }}
+              <div ng-if="entity.winner_team">
+                <div>
+                  Winner
+                </div>
+                <div>
+                  {{ entity.winner_team.name}}
+                </div>
+              </div>
+              <div ng-if="entity.doubles">
+                <div>
+                  Teams
+                </div>
+                <div ng-if="entity.first_team.name">
+                  {{entity.first_team.name}}
+                </div>
+                <div>
+                  {{entity.first_team.first_player_name}}, {{entity.first_team.second_player_name}}
+                </div>
+                <div ng-if="entity.second_team.name">
+                  {{entity.second_team.name}}
+                </div>
+                <div>
+                  {{entity.second_team.first_player_name}}, {{entity.second_team.second_player_name}}
+                </div>
+              </div>
+              <div ng-if="!entity.doubles">
+                <div>
+                  <div>
+                    Players
+                  </div>
+                  <div>
+                    {{entity.first_player.name}}
+                  </div>
+                  <div>
+                    {{entity.second_player.name}}
+                  </div>
+                </div>
+
               </div>
             </div>
 
@@ -71,7 +117,7 @@
 
           <!--Use ng-if so there won't be bunch of forms in the DOM-->
           <div ng-if="main.showingEditEntityForm(entity)">
-<h1>edit</h1>
+            <h1>edit</h1>
             <div>
               <fe-matches-form
                 form="main.editEntityForm"

@@ -49,8 +49,8 @@
       var isolatedScope = compiledDirective.isolateScope();
 
       expect(isolatedScope).not.toEqual(null);
-      expect(isolatedScope.entity).not.toEqual(undefined);
-      expect(isolatedScope.entity.name).not.toEqual(undefined);
+      expect(isolatedScope.entity).toBeDefined();
+      expect(isolatedScope.entity.name).toBeDefined();
 
     });
    });

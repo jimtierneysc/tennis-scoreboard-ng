@@ -22,7 +22,7 @@
       restrict: 'EA',
       templateUrl: 'app/matches/matchesForm.html',
       scope: {
-        form: '=',
+        form: '@',
         errors: '=',
         cancel: '&',
         submit: '&',

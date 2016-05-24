@@ -26,8 +26,15 @@
     function getTeams() {
       $log.info("getTeams()");
       var Team = $resource(path + '/:id', null, {'update': {method: 'PUT'}});
+      defineProperties(Team.prototype);
+      return Team;
+
+    }
+
+
+    function defineProperties(klass) {
       Object.defineProperty(
-        Team.prototype,
+        klass,
         "displayName",
         {
           get: function () {
@@ -38,7 +45,6 @@
           }
         }
       );
-      return Team;
 
     }
 

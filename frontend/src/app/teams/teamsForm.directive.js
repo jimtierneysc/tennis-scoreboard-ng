@@ -22,7 +22,7 @@
       restrict: 'EA',
       templateUrl: 'app/teams/teamsForm.html',
       scope: {
-        form: '=',
+        form: '@',
         errors: '=',
         cancel: '&',
         submit: '&',

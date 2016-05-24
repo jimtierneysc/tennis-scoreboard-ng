@@ -38,24 +38,26 @@
     return vm;
 
 
-    function beforeSubmitNewEntity(newEntity) {
-      // Nothing to do. yet.
+    function beforeSubmitNewEntity(entity) {
+      return {name: entity.name};
     }
 
-    function beforeSubmitEditEntity(newEntity) {
-      // Nothing to do. yet.
+    function beforeSubmitEditEntity(entity) {
+      return {
+        id: entity.id, 
+        name: entity.name 
+      };
     }
 
     function beforeShowNewEntityForm() {
-      // Nothing to do. yet.
+      // Nothing to do. 
     }
 
     function beforeShowEditEntityForm() {
-      // Nothing to do. yet.
+      // Nothing to do. 
     }
 
     function getEntityDisplayName(entity) {
-      // TODO: build team name
       return entity.name;
     }
 

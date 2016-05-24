@@ -9,10 +9,14 @@
 
     var samplePlayers = [
       {
-        name: "sample name",
         id: 33,
-        created_at: "2016-05-07T05:05:42.589Z",
-        updated_at: "2016-05-07T05:05:42.589Z"
+        name: "sample name"
+      }
+    ];
+
+    var samplePost = [
+      {
+        name: "sample name"
       }
     ];
 
@@ -99,15 +103,15 @@
         });
 
         it('should format body', function () {
-          $httpBackend.expect('POST', resourceService.path, {'player': samplePlayers[0]}).respond(200, {});
-          vm.newEntity = samplePlayers[0];
+          $httpBackend.expect('POST', resourceService.path, {'player': samplePost[0]}).respond(200, {});
+          vm.newEntity = samplePost[0];
           vm.submitNewEntityForm();
           $httpBackend.flush();
         });
 
         it('should capture create error', function () {
           $httpBackend.when('POST', resourceService.path).respond(422, {"name": ["has already been taken"]});
-          vm.newEntity = samplePlayers[0];
+          vm.newEntity = samplePost[0];
           vm.submitNewEntityForm();
           $httpBackend.flush();
 

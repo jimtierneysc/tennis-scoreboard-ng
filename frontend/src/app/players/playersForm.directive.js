@@ -22,7 +22,7 @@
       restrict: 'EA',
       templateUrl: 'app/players/playersForm.html',
       scope: {
-        form: '=',
+        form: '@',
         errors: '=',
         cancel: '&',
         submit: '&',

@@ -4,7 +4,7 @@
   /**
    * @todo Complete the test
    */
-  describe('directive players form', function () {
+  describe('directive teams form', function () {
     var $log;
     var errors;
     var entity;
@@ -49,8 +49,8 @@
       var isolatedScope = compiledDirective.isolateScope();
 
       expect(isolatedScope).not.toEqual(null);
-      expect(isolatedScope.entity).not.toEqual(undefined);
-      expect(isolatedScope.entity.name).not.toEqual(undefined);
+      expect(isolatedScope.entity).toBeDefined();
+      expect(isolatedScope.entity.name).toBeDefined();
 
     });
   });

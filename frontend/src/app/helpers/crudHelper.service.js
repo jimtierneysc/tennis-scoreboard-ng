@@ -114,9 +114,8 @@
 
     function submitNewEntityForm() {
       $log.info('submitNewEntityForm');
-      var newEntity = angular.copy(vm.newEntity);
-      beforeSubmitNewEntity(newEntity);
-      createEntity(newEntity);
+      var submitEntity = beforeSubmitNewEntity(vm.newEntity);
+      createEntity(submitEntity);
     }
 
     function showNewEntityForm() {
@@ -138,9 +137,8 @@
 
     function submitEditEntityForm() {
       $log.info('submitEditEntityForm');
-      var editEntity = vm.editEntity;
-      beforeSubmitEditEntity(editEntity);
-      updateEntity(editEntity);
+      var submit = beforeSubmitEditEntity(vm.editEntity);
+      updateEntity(submit);
     }
 
     function showEditEntityForm(entity) {

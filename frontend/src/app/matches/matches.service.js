@@ -5,7 +5,7 @@
  * Service to transfer match JSON between frontend and backend
  *
  */
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -26,19 +26,58 @@
     function getMatches() {
       $log.info("getMatches()");
       var Match = $resource(path + '/:id', null, {'update': {method: 'PUT'}});
-      //Object.defineProperty(
-      //  Match.prototype,
-      //  "displayTitle",
-      //  {
-      //    get: function () {
-      //      if (this.title)
-      //        return this.title;
-      //      else
-      //        return "(untitled)";
-      //    }
-      //  }
-      //);
+      defineProperties(Match.prototype);
       return Match;
+    }
+
+    function defineProperties(klass) {
+      
+      Object.defineProperty(
+        klass,
+        "winner_player",
+        {
+          get: function () {
+            var result = null;
+            if (this.winner) {
+              if (!this.doubles) {
+                if (this.first_player.id === this.winner)
+                  result = this.first_player;
+                else if (this.second_player.id == this.winner)
+                  result = this.second_player;
+                else
+                  $log.error('player winner')
+
+              }
+            }
+            return result;
+          }
+        }
+      );
+
+
+      Object.defineProperty(
+        klass,
+        "winner_team",
+        {
+          get: function () {
+            var result = null;
+            if (this.winner) {
+              if (this.doubles) {
+                if (this.first_team.id === this.winner)
+                  result = this.first_team;
+                else if (this.second_team.id == this.winner)
+                  result = this.second_team;
+                else
+                  $log.error('team winner')
+
+              }
+            }
+            return result;
+          }
+        }
+      );
+
+
     }
 
 

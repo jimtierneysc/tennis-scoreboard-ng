@@ -30,7 +30,7 @@
       scope.acancel = jasmine.createSpy('onCancel');
 
       // TODO test directive
-      var html = ('<fe-matches-form>' +
+      var html = ('<fe-matches-form> ' +
       'form="formName" ' +
       'errors="aerrors" ' +
       'cancel="acancel" ' +
@@ -49,8 +49,8 @@
       var isolatedScope = compiledDirective.isolateScope();
 
       expect(isolatedScope).not.toEqual(null);
-      expect(isolatedScope.entity).not.toEqual(undefined);
-      expect(isolatedScope.entity.name).not.toEqual(undefined);
+      expect(isolatedScope.entity).toBeDefined();
+      expect(isolatedScope.entity.name).toBeDefined();
 
     });
   });

@@ -11,11 +11,17 @@
       {
         name: "sample name",
         id: 33,
-        first_player: 44,
-        second_player: 55,
-        doubles: true,
-        created_at: "2016-05-07T05:05:42.589Z",
-        updated_at: "2016-05-07T05:05:42.589Z"
+        first_player: {id: 44, name: 'first'},
+        second_player: {id: 55, name: 'second'}
+      }
+    ];
+
+    var samplePost = [
+      {
+        name: "sample name"
+        // TODO: test select_first_player, select_second_player
+        // first_player: {id: 44, name: 'first'},
+        // second_player: {id: 55, name: 'second'}
       }
     ];
 
@@ -102,8 +108,8 @@
         });
 
         it('should format body', function () {
-          $httpBackend.expect('POST', resourceService.path, {'team': sampleTeams[0]}).respond(200, {});
-          vm.newEntity = sampleTeams[0];
+          $httpBackend.expect('POST', resourceService.path, {'team': samplePost[0]}).respond(200, {});
+          vm.newEntity = samplePost[0];
           vm.submitNewEntityForm();
           $httpBackend.flush();
         });

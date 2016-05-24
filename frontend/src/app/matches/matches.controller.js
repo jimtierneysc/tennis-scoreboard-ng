@@ -43,30 +43,37 @@
     return vm;
 
     function beforeSubmitNewEntity(entity) {
-      beforeSubmitEntity(entity)
+      var result = {
+      };
+      beforeSubmitEntity(entity, result);
+      return result;
     }
 
     function beforeSubmitEditEntity(entity) {
-      beforeSubmitEntity(entity);
+      var result = {
+          id: entity.id,
+      };
+       beforeSubmitEntity(entity, result);
+       return result;
     }
 
     function beforeShowNewEntityForm() {
       // TODO: Preserve last selection when add multiple matches
       vm.newEntity.doubles = false;
       vm.newEntity.scoring = 'two_six_game_ten_point';
-      prepareTeamOptions();
-      preparePlayerOptions();
+      prepareToShowTeamOptions();
+      prepareToShowPlayerOptions();
     }
 
     function beforeShowEditEntityForm() {
-      prepareTeamOptions().then(
+      prepareToShowTeamOptions().then(
         function() {
-          fixupEditEntityTeams();
+          prepareToEditTeams();
         }
       );
-      preparePlayerOptions().then(
+      prepareToShowPlayerOptions().then(
         function() {
-          fixupEditEntityPlayers();
+          prepareToEditPlayers();
         }
       );
     }
@@ -80,25 +87,28 @@
     }
 
     // "Private" methods
-    function beforeSubmitEntity(entity) {
-      if (entity.doubles) {
-        beforeSubmitDoubles(entity);
+    function beforeSubmitEntity(entity, result) {
+     result.title = entity.title;
+     result.scoring = entity.scoring;
+     result.doubles = entity.doubles;
+     if (entity.doubles) {
+        beforeSubmitDoubles(entity, result);
       }
       else {
-        beforeSubmitSingles(entity);
+        beforeSubmitSingles(entity, result);
       }
     }
 
-    function beforeSubmitDoubles(entity) {
-      fixupSubmitEntityTeams(entity);
+    function beforeSubmitDoubles(entity, result) {
+      prepareToSubmitTeams(entity, result);
     }
 
-    function beforeSubmitSingles(entity) {
-      fixupSubmitEntityPlayers(entity);
+    function beforeSubmitSingles(entity, result) {
+      prepareToSubmitPlayers(entity, result);
     }
 
 
-    function prepareTeamOptions() {
+    function prepareToShowTeamOptions() {
       var deferredObject = $q.defer();
       if (vm.teamOptionsList.list == null) {
         fillTeamOptionsList().then(
@@ -119,7 +129,7 @@
       return deferredObject.promise;
     }
 
-    function preparePlayerOptions() {
+    function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
         fillPlayerOptionsList().then(
@@ -150,50 +160,57 @@
     }
 
 
-    function fixupEditEntityPlayers() {
+    function prepareToEditPlayers() {
       var first_player = null;
       var second_player = null;
-      var first_id = vm.editEntity.first_singles_player_id;
-      var second_id = vm.editEntity.second_singles_player_id;
+      var first_id = null;
+      var second_id = null;
+      if (vm.editEntity.first_player)
+        first_id = vm.editEntity.first_player.id;
+      if (vm.editEntity.second_player)
+         second_id = vm.editEntity.second_player.id;
       $filter('filter')(vm.playerOptionsList.list,
         function (o) {
           if (o.id == first_id)  first_player = o;
           if (o.id == second_id) second_player = o;
           return first_player && second_player;
         });
-      vm.editEntity.first_singles_player = first_player;
-      vm.editEntity.second_singles_player = second_player;
+      vm.editEntity.select_first_player = first_player;
+      vm.editEntity.select_second_player = second_player;
     }
 
-    function fixupSubmitEntityPlayers(entity) {
-      if (angular.isDefined(entity.first_singles_player))
-        entity.first_singles_player_id = entity.first_singles_player.id;
-      if (angular.isDefined(entity.second_singles_player))
-        entity.second_singles_player_id = entity.second_singles_player.id;
-
+    function prepareToSubmitPlayers(entity, result) {
+      if (angular.isDefined(entity.select_first_player))
+        result.first_player_id = entity.select_first_player.id;
+      if (angular.isDefined(entity.select_second_player))
+        result.second_player_id = entity.select_second_player.id;
     }
 
 
-    function fixupEditEntityTeams() {
+    function prepareToEditTeams() {
       var first_team = null;
       var second_team = null;
-      var first_id = vm.editEntity.first_team_id;
-      var second_id = vm.editEntity.second_team_id;
+      var first_id = null;
+      var second_id = null;
+      if (vm.editEntity.first_team)
+        first_id = vm.editEntity.first_team.id;
+      if (vm.editEntity.second_team)
+        second_id = vm.editEntity.second_team.id;
       $filter('filter')(vm.teamOptionsList.list,
         function (o) {
           if (o.id == first_id)  first_team = o;
           if (o.id == second_id) second_team = o;
           return first_team && second_team;
         });
-      vm.editEntity.first_team = first_team;
-      vm.editEntity.second_team = second_team;
+      vm.editEntity.select_first_team = first_team;
+      vm.editEntity.select_second_team = second_team;
     }
 
-    function fixupSubmitEntityTeams(entity) {
-      if (angular.isDefined(entity.first_team))
-        entity.first_team_id = entity.first_team.id;
-      if (angular.isDefined(entity.second_team))
-        entity.second_team_id = entity.second_team.id;
+    function prepareToSubmitTeams(entity, result) {
+      if (angular.isDefined(entity.select_first_team))
+        result.first_team_id = entity.select_first_team.id;
+      if (angular.isDefined(entity.select_second_team))
+        result.second_team_id = entity.select_second_team.id;
     }
 
 

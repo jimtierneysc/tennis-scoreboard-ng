@@ -1,14 +1,14 @@
 <!-- form is member of controller-->
 <form name="form"
       ng-submit="submit()" novalidate>
-  <div>doubles {{entity.doubles}}</div>
-  <div>scoring {{entity.scoring}}</div>
-  <div>first player {{entity.first_singles_player}}</div>
-  <div>second player {{entity.second_singles_player}}</div>
-  <div>first team {{entity.first_team}}</div>
-  <div>second team {{entity.second_team}}</div>
-  <div>errors {{errors}}</div>
-  <div>entity {{entity}}</div>
+  <!--<div>doubles {{entity.doubles}}</div>-->
+  <!--<div>scoring {{entity.scoring}}</div>-->
+  <!--<div>first player {{entity.select_first_player}}</div>-->
+  <!--<div>second player {{entity.select_second_player}}</div>-->
+  <!--<div>first team {{entity.select_first_team}}</div>-->
+  <!--<div>second team {{entity.select_second_team}}</div>-->
+  <!--<div>errors {{errors}}</div>-->
+  <!--<div>entity {{entity}}</div>-->
   <div class="form-group" ng-class="{ 'has-error': errors.doubles }">
     <!--Doubles-->
     <div class="radio">
@@ -50,9 +50,9 @@
     <!--First Player-->
     <div class="form-group" ng-class="{ 'has-error': errors.first_player}">
 
-      <label for="first_singles_player" class="control-label sr-only">First Player</label>
+      <label for="first_player" class="control-label sr-only">First Player</label>
 
-      <ui-select ng-model="entity.first_singles_player" theme="bootstrap" id="first_singles_player" name="first_singles_player"
+      <ui-select ng-model="entity.select_first_player" theme="bootstrap" id="first_player" name="first_player"
                  ng-required="true">
         <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in playerslist.list | filter: $select.search">
@@ -61,7 +61,7 @@
         </ui-select-choices>
       </ui-select>
       <!--Problems with first player-->
-      <div ng-show="errors.first_singles_player" ng-repeat="error in errors.first_singles_player">
+      <div ng-show="errors.first_player" ng-repeat="error in errors.first_player">
         <span class="help-block">Player {{error}}</span>
       </div>
 
@@ -69,8 +69,8 @@
     </div>
     <!--Second player-->
     <div class="form-group" ng-class="{ 'has-error': errors.second_player }">
-      <label for="second_singles_player" class="control-label sr-only">Second Player</label>
-      <ui-select ng-model="entity.second_singles_player" theme="bootstrap" id="second_singles_player" name="second_singles_player"
+      <label for="second_player" class="control-label sr-only">Second Player</label>
+      <ui-select ng-model="entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
                  ng-required="true">
         <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in playerslist.list | filter: $select.search">
@@ -81,7 +81,7 @@
 
 
       <!--Problems with second player-->
-      <div ng-show="errors.second_singles_player" ng-repeat="error in errors.second_singles_player">
+      <div ng-show="errors.second_player" ng-repeat="error in errors.second_player">
         <span class="help-block">Player {{error}}</span>
       </div>
 
@@ -95,7 +95,7 @@
 
       <label for="first_team" class="control-label sr-only">First Team</label>
 
-      <ui-select ng-model="entity.first_team" theme="bootstrap" id="first_team" name="first_team"
+      <ui-select ng-model="entity.select_first_team" theme="bootstrap" id="first_team" name="first_team"
                  ng-required="true">
         <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in teamslist.list | filter: $select.search">
@@ -114,7 +114,7 @@
     <!--Second player-->
     <div class="form-group" ng-class="{ 'has-error': errors.second_team }">
       <label for="second_team" class="control-label sr-only">Second Player</label>
-      <ui-select ng-model="entity.second_team" theme="bootstrap" id="second_team" name="second_team"
+      <ui-select ng-model="entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
                  ng-required="true">
         <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in teamslist.list | filter: $select.search">

@@ -39,21 +39,30 @@
 
 
     function beforeSubmitNewEntity(entity) {
-      fixupSubmitEntity(entity);
+      var result = {
+        name: entity.name
+      };
+      prepareToSubmitPlayers(entity, result);
+      return result;
     }
 
     function beforeSubmitEditEntity(entity) {
-      fixupSubmitEntity(entity);
+      var result = { 
+        id: entity.id,
+        name: entity.name
+      };
+      prepareToSubmitPlayers(entity, result);
+      return result;
     }
 
     function beforeShowNewEntityForm() {
-      preparePlayerOptions();
+      prepareToShowPlayerOptions();
     }
 
     function beforeShowEditEntityForm() {
-      preparePlayerOptions().then(
+      prepareToShowPlayerOptions().then(
         function () {
-          fixupEditEntityPlayers();
+          prepareToEditEntity();
         }
       )
     }
@@ -69,7 +78,7 @@
 
     // "Private" methods
 
-    function preparePlayerOptions() {
+    function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
         fillPlayerOptionsList().then(
@@ -96,27 +105,30 @@
       return crudHelper.fillPlayerOptionsList();
     }
 
-    function fixupEditEntityPlayers() {
+    function prepareToEditEntity() {
       var first_player = null;
       var second_player = null;
-      var first_id = vm.editEntity.first_player_id;
-      var second_id = vm.editEntity.second_player_id;
+      var first_id = null;
+      var second_id = null;  
+      if (vm.editEntity.first_player)
+        first_id = vm.editEntity.first_player.id;
+      if (vm.editEntity.second_player)
+        second_id = vm.editEntity.second_player.id;
       $filter('filter')(vm.playerOptionsList.list,
         function (o) {
           if (o.id == first_id)  first_player = o;
           if (o.id == second_id) second_player = o;
           return first_player && second_player;
         });
-      vm.editEntity.first_player = first_player;
-      vm.editEntity.second_player = second_player;
+      vm.editEntity.select_first_player = first_player;
+      vm.editEntity.select_second_player = second_player;
     }
 
-    function fixupSubmitEntity(entity) {
-      if (angular.isDefined(entity.first_player))
-        entity.first_player_id = entity.first_player.id;
-      if (angular.isDefined(entity.second_player))
-        entity.second_player_id = entity.second_player.id;
-
+    function prepareToSubmitPlayers(entity, result) {
+      if (angular.isDefined(entity.select_first_player))
+        result.first_player_id = entity.select_first_player.id;
+      if (angular.isDefined(entity.select_second_player))
+        result.second_player_id = entity.select_second_player.id;
     }
 
   }
