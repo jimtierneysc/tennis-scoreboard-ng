@@ -28,3 +28,4 @@ gem 'bcrypt', '~> 3.1.7'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+gem 'active_model_serializers'

@@ -2,6 +2,14 @@ class ApplicationController < ActionController::API
 
   helper_method :logged_in?, :current_user
   rescue_from ::Exceptions::LoginRequired, with: :forbidden
+  include ::ActionController::Serialization
+
+  def default_serializer_options
+    {
+      scope: nil,
+      root: false
+    }
+  end
 
   protected
 
