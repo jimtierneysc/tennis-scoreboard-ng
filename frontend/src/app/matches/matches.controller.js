@@ -43,18 +43,17 @@
     return vm;
 
     function beforeSubmitNewEntity(entity) {
-      var result = {
-      };
+      var result = {};
       beforeSubmitEntity(entity, result);
       return result;
     }
 
     function beforeSubmitEditEntity(entity) {
       var result = {
-          id: entity.id,
+        id: entity.id
       };
-       beforeSubmitEntity(entity, result);
-       return result;
+      beforeSubmitEntity(entity, result);
+      return result;
     }
 
     function beforeShowNewEntityForm() {
@@ -67,12 +66,12 @@
 
     function beforeShowEditEntityForm() {
       prepareToShowTeamOptions().then(
-        function() {
+        function () {
           prepareToEditTeams();
         }
       );
       prepareToShowPlayerOptions().then(
-        function() {
+        function () {
           prepareToEditPlayers();
         }
       );
@@ -88,10 +87,10 @@
 
     // "Private" methods
     function beforeSubmitEntity(entity, result) {
-     result.title = entity.title;
-     result.scoring = entity.scoring;
-     result.doubles = entity.doubles;
-     if (entity.doubles) {
+      result.title = entity.title;
+      result.scoring = entity.scoring;
+      result.doubles = entity.doubles;
+      if (entity.doubles) {
         beforeSubmitDoubles(entity, result);
       }
       else {
@@ -150,7 +149,7 @@
       return deferredObject.promise;
 
     }
-    
+
     function fillTeamOptionsList() {
       return crudHelper.fillTeamOptionsList();
     }
@@ -168,7 +167,7 @@
       if (vm.editEntity.first_player)
         first_id = vm.editEntity.first_player.id;
       if (vm.editEntity.second_player)
-         second_id = vm.editEntity.second_player.id;
+        second_id = vm.editEntity.second_player.id;
       $filter('filter')(vm.playerOptionsList.list,
         function (o) {
           if (o.id == first_id)  first_player = o;
