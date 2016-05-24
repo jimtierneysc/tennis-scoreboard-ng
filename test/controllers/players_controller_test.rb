@@ -45,7 +45,7 @@ class PlayersControllerTest < ActionController::TestCase
 
   test 'should update player' do
     patch :update, id: @player, player: { name: @player.name }
-    assert_response 204
+    assert_response 200
   end
 
   test 'should destroy player' do

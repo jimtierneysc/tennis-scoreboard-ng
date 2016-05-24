@@ -65,7 +65,7 @@ class TeamsControllerTest < ActionController::TestCase
 
   test 'should update team' do
     patch :update, id: @team, team: { first_player_id: players(:two) }
-    assert_response 204
+    assert_response 200
   end
 
   test 'should destroy team' do
