@@ -17,12 +17,7 @@
 
 
   var modalSettings = {
-    template: '<div class="modal-header"><h3 class="modal-title">{{vm.data.title}}</h3></div>' +
-    '<div class="modal-body">{{vm.data.text}}</div>' +
-    '<div class="modal-footer">' +
-    '<button class="btn btn-primary" ng-click="vm.ok()">{{vm.data.ok}}</button>' +
-    '<button class="btn btn-default" ng-click="vm.cancel()">{{vm.data.cancel}}</button>' +
-    '</div>',
+    templateUrl: 'app/components/modalConfirm/modalConfirm.html',
     controller: 'ModalConfirmController',
     controllerAs: 'vm'
   };
@@ -34,7 +29,7 @@
     ok: 'Yes',
     cancel: 'Cancel'
   };
-  
+
 
   /** @ngInject */
   function modalConfirmController($uibModalInstance, data) {
