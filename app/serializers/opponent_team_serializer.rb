@@ -3,7 +3,7 @@ class OpponentTeamSerializer < ActiveModel::Serializer
 
   def first_player_name
     object.first_player.name
-    end
+  end
 
   def second_player_name
     object.second_player.name

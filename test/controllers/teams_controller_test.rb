@@ -10,6 +10,14 @@ class TeamsControllerTest < ActionController::TestCase
     # session[:user_id] = users(:one).id
   end
 
+  test 'routing' do
+    assert_routing 'api/teams', controller: 'teams', action: 'index'
+    assert_routing 'api/teams/1', controller: 'teams', action: 'show', id: "1"
+    assert_routing({ method: 'put', path: '/api/teams/1' }, { controller: "teams", action: "update", id: "1" })
+    assert_routing({ method: 'post', path: '/api/teams' }, { controller: "teams", action: "create" })
+    assert_routing({ method: 'delete', path: '/api/teams/1' }, { controller: "teams", action: "destroy", id: "1" })
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

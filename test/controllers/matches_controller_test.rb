@@ -13,6 +13,15 @@ class MatchesControllerTest < ActionController::TestCase
   attr_reader :singles_match
   attr_reader :doubles_match
 
+  test 'routing' do
+    assert_routing 'api/matches', controller: 'matches', action: 'index'
+    assert_routing 'api/matches/1', controller: 'matches', action: 'show', id: "1"
+    assert_routing({ method: 'put', path: '/api/matches/1' }, { controller: "matches", action: "update", id: "1" })
+    assert_routing({ method: 'post', path: '/api/matches' }, { controller: "matches", action: "create" })
+    assert_routing({ method: 'delete', path: '/api/matches/1' }, { controller: "matches", action: "destroy", id: "1" })
+  end
+
+
   test 'should get index' do
     get :index
     assert_response :success

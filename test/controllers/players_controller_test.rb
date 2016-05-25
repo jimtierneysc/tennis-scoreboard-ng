@@ -10,6 +10,14 @@ class PlayersControllerTest < ActionController::TestCase
     # session[:user_id] = users(:one).id
   end
 
+  test 'routing' do
+    assert_routing 'api/players', controller: 'players', action: 'index'
+    assert_routing 'api/players/1', controller: 'players', action: 'show', id: "1"
+    assert_routing({ method: 'put', path: '/api/players/1' }, { controller: "players", action: "update", id: "1" })
+    assert_routing({ method: 'post', path: '/api/players' }, { controller: "players", action: "create" })
+    assert_routing({ method: 'delete', path: '/api/players/1' }, { controller: "players", action: "destroy", id: "1" })
+  end
+
   test 'should get index' do
     get :index
     assert_response :success
