@@ -35,8 +35,6 @@
       }
     );
 
-    return vm;
-
 
     function beforeSubmitNewEntity(entity) {
       return {name: entity.name};

@@ -40,7 +40,6 @@
       }
     );
 
-    return vm;
 
     function beforeSubmitNewEntity(entity) {
       var result = {};
