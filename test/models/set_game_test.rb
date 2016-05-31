@@ -5,9 +5,9 @@ require 'test_helper'
 # context of a match. See the match tests.
 class SetGameTest < ActiveSupport::TestCase
   def setup
-    match = matches(:m_three_six_game_doubles).start_play!
-    match.start_next_set!
-    @game = match.start_next_game!
+    match = matches(:m_three_six_game_doubles).change_score! :start_play
+    match.change_score! :start_next_set
+    @game = match.change_score! :start_next_game
   end
 
   test 'should allow required fields' do

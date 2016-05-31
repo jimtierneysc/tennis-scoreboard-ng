@@ -35,11 +35,225 @@ class Match < ActiveRecord::Base
     ValidationHelper.new(self).validate(errors)
   end
 
+  # Change score by an action, for example :start_next_game
+  # Valid actions:
+  # :start_play - Start match
+  # :restart_play - Restart match
+  # :discard_play - Discard all scoring
+  # :complete_play - Complete match
+  # :start_next_set
+  # :complete_set_play
+  # :start_next_game
+  # :start_tiebreaker - Start game tiebreaker
+  # :remove_last_change - Undo
+  # :start_match_tiebreaker
+  # :complete_match_tiebreaker
+  # :win_game
+  # :win_tiebreaker
+  # :win_match_tiebreaker
+
+  def change_score!(action, param = nil)
+    method = lookup_exec_methods(action, param)
+    if method
+      if param
+        method[:exec].call(param)
+      else
+        method[:exec].call
+      end
+    else
+      raise Exceptions::InvalidOperation, "Unknown action: #{action}"
+    end
+  end
+
+  # Can score can be changed by an action?
+  def change_score? action
+    methods = lookup_methods(action)
+    if methods
+      methods[:query].call
+    else
+      raise Exceptions::InvalidOperation, "Unknown action: #{action}"
+    end
+  end
+
+  # Hash of valid actions, for example {start_next_game: true}
+  def score_actions
+    result = {}
+    methods_table.each do |k, v|
+      if v[:query].call
+        result[k] = true
+      end
+    end
+    result
+  end
+
+  # This method may be used by a controller to start the next game.
+  # It captures errors rather than raise an exception
+  def validate_start_next_game_with_server(player)
+    if player.nil?
+      errors.add(:player_server, 'must be specified')
+    else
+      begin
+        start_next_game_with_server!(player)
+      rescue
+        errors.add(:root, 'Operation could not be completed')
+      end
+    end
+    errors.count == 0
+  end
+
+  # If the first server is already specified, set the second server
+  def apply_first_or_second_player_server(player)
+    if player
+      ActiveRecord::Base.transaction do
+        update_first_or_second_player_server! player
+      end
+    end
+  end
+
+
+  # Retrieve information about the match
+
+  def completed?
+    team_winner
+  end
+
+  # The opponents in a match are teams.  For singles matches,
+  # each team has a single player.
+  def first_singles_player
+    singles_player_of_team first_team
+  end
+
+  def first_singles_player=(player)
+    self.first_team = singles_player_team(player)
+  end
+
+  def second_singles_player
+    singles_player_of_team second_team
+  end
+
+  def second_singles_player=(player)
+    self.second_team = singles_player_team(player)
+  end
+
+  def teams
+    [first_team, second_team]
+  end
+
+  def state
+    if completed?
+      :complete
+    elsif compute_team_winner
+      :finished
+    elsif started
+      :in_progress
+    else
+      :not_started
+    end
+  end
+
+  # return the winner of the match, if any
+  def compute_team_winner
+    if first_team && second_team
+      if sets_won(first_team) == min_sets_to_play
+        first_team
+      elsif sets_won(second_team) == min_sets_to_play
+        second_team
+      end
+    end
+  end
+
+  def sets_won(team)
+    match_sets.reduce(0) do |sum, set|
+      winner = set.compute_team_winner
+      sum + (winner && (winner.id == team || winner == team) ? 1 : 0)
+    end
+  end
+
+  def match_score(team)
+    if min_sets_to_play > 1
+      sets_won(team)
+    else
+      last_set ? last_set.games_won(team) : 0
+    end
+  end
+
+  def players
+    players_var = []
+    first_team.players.each { |p| players_var << p } if first_team
+    second_team.players.each { |p| players_var << p } if second_team
+    players_var
+  end
+
+  def first_set
+    match_sets.first
+  end
+
+  def last_set
+    match_sets.last
+  end
+
+  def last_game
+    last_set.last_game if last_set
+  end
+
+  def player_serving
+    if state == :in_progress
+      last_game_var = last_game
+      last_game_var.player_server if last_game_var && !last_game_var.tiebreaker?
+    end
+  end
+
+  def min_sets_to_play
+    max = max_sets_to_play
+    raise Exceptions::ApplicationError, 'Unexpected game count' if max.even?
+    (max + 1) / 2
+  end
+
+  def max_sets_to_play
+    case scoring.to_sym
+    when :two_six_game_ten_point
+      3
+    when :one_eight_game
+      1
+    when :three_six_game
+      3
+    else
+      raise ArgumentError, "Unknown scoring: #{scoring}"
+    end
+  end
+
+  def first_servers_provided?
+    player_server_helper.first_servers_provided?
+  end
+
+  def next_game_ordinal
+    last_set ? last_set.set_games.count + 1 : 0
+  end
+
+  def players_that_may_serve_first
+    player_server_helper.players_that_may_serve_first
+  end
+
+  def next_player_server
+    player_server_helper.next_player_server
+  end
+
+  def tiebreaker_set?(ordinal)
+    scoring_of_set_ordinal(ordinal) == :ten_point
+  end
+
+  def team_of_player(player)
+    player_server_helper.team_of_player player
+  end
+
+  private
+
+
   # Operations to change the score of a match.
   #
   # Use these methods to start a match, start a set, start a game,
   # win a game, etc. The methods operate on the match at the current point.
-  # For example, win_game applies to the current game in progress.  If a method
+  # For example, win_game! applies to the current game in progress.  If a method
   # is called out of sequence, an exception is raised. Use the "?" methods
   # to determine if an operation is allowed.  For example, use win_game?
   # before calling win_game!.
@@ -83,50 +297,27 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def apply_first_or_second_player_server(player)
-    if player
-      ActiveRecord::Base.transaction do
-        update_first_or_second_player_server! player
-      end
-    end
-  end
-
   # Start a new game.  A game will be added to the current set.
   # The server will be computed and assigned to the game.
   def start_next_game?
     start_next_helper.start_next_game?
   end
 
-  def start_next_game!
+  def start_next_game! player_server = nil
     ActiveRecord::Base.transaction do
-      unless start_next_game?
-        raise Exceptions::InvalidOperation, 'can\'t start next game'
+      if player_server
+        update_first_or_second_player_server!(player_server)
       end
       update_start_next_game!
     end
   end
 
-  def start_next_game_with_server!(player)
-    ActiveRecord::Base.transaction do
-      update_first_or_second_player_server!(player)
-      update_start_next_game!
-    end
-  end
-
-  # This method may be used by a controller to start the next game.
-  # It captures errors rather than raise an exception
-  def validate_start_next_game_with_server(player)
-    if player.nil?
-      errors.add(:player_server, 'must be specified')
-    else
-      begin
-        start_next_game_with_server!(player)
-      rescue
-        errors.add(:root, 'Operation could not be completed')
-      end
-    end
-    errors.count == 0
-  end
+  # def start_next_game_with_server!(player)
+  #   ActiveRecord::Base.transaction do
+  #     update_first_or_second_player_server!(player)
+  #     update_start_next_game!
+  #   end
+  # end
 
   def win_game?
     complete_current_helper.win_game?
@@ -268,7 +459,7 @@ class Match < ActiveRecord::Base
     started
   end
 
-  def discard_play
+  def discard_play!
     if started
       ActiveRecord::Base.transaction do
         update_discard_play!
@@ -284,6 +475,10 @@ class Match < ActiveRecord::Base
     end
   end
 
+  def restart_play?
+    true
+  end
+
   # Back out one scoring operation.
   def remove_last_change!
     ActiveRecord::Base.transaction do
@@ -297,142 +492,47 @@ class Match < ActiveRecord::Base
     started
   end
 
-  # Retrieve information about the match
 
-  def completed?
-    team_winner
-  end
+  def methods_table
+    unless @methods
+      @methods = {}
+      syms = [:start_play, :restart_play,
+              :discard_play, :complete_play, :start_next_set,
+              :complete_set_play, :start_next_game, :start_tiebreaker, :remove_last_change,
+              :start_match_tiebreaker, :complete_match_tiebreaker,
+              :win_game, :win_tiebreaker, :win_match_tiebreaker]
+      syms.each do |sym|
+        @methods[sym] =
+          {
+            param: nil,
+            exec: method("#{sym}!"),
+            query: method("#{sym}?")
+          }
+      end
 
-  # The opponents in a match are teams.  For singles matches,
-  # each team has a single player.
-  def first_singles_player
-    singles_player_of_team first_team
-  end
-
-  def first_singles_player=(player)
-    self.first_team = singles_player_team(player)
-  end
-
-  def second_singles_player
-    singles_player_of_team second_team
-  end
-
-  def second_singles_player=(player)
-    self.second_team = singles_player_team(player)
-  end
-
-  def teams
-    [first_team, second_team]
-  end
-
-  def state
-    if completed?
-      :complete
-    elsif compute_team_winner
-      :finished
-    elsif started
-      :in_progress
-    else
-      :not_started
+      syms = [:win_game, :win_tiebreaker, :win_match_tiebreaker]
+      syms.each do |sym|
+        @methods[sym][:param] = :required
+      end
+      @methods[:start_next_game][:param] = :optional
     end
+    @methods
   end
 
-  # return the winner of the match, if any
-  def compute_team_winner
-    if first_team && second_team
-      if sets_won(first_team) == min_sets_to_play
-        first_team
-      elsif sets_won(second_team) == min_sets_to_play
-        second_team
+  def lookup_exec_methods(action, param)
+    result = lookup_methods action
+    if result
+      unless param.nil? == result[:param].nil? || result[:param] == :optional
+        result = nil
       end
     end
+    result
   end
 
-  def sets_won(team)
-    match_sets.reduce(0) do |sum, set|
-      winner = set.compute_team_winner
-      sum + (winner && (winner.id == team || winner == team) ? 1 : 0)
-    end
+  def lookup_methods(action)
+    action = action.to_sym
+    result = methods_table[action] if methods_table.has_key? action
   end
-
-  def match_score(team)
-    if min_sets_to_play > 1
-      sets_won(team)
-    else
-      last_set ? last_set.games_won(team) : 0
-    end
-  end
-
-  def players
-    players_var = []
-    first_team.players.each { |p| players_var << p } if first_team
-    second_team.players.each { |p| players_var << p } if second_team
-    players_var
-  end
-
-  def first_set
-    match_sets.first
-  end
-
-  def last_set
-    match_sets.last
-  end
-
-  def last_game
-    last_set.last_game if last_set
-  end
-
-  def player_serving
-    if state == :in_progress
-      last_game_var = last_game
-      last_game_var.player_server if last_game_var && !last_game_var.tiebreaker?
-    end
-  end
-
-  def min_sets_to_play
-    max = max_sets_to_play
-    raise Exceptions::ApplicationError, 'Unexpected game count' if max.even?
-    (max + 1) / 2
-  end
-
-  def max_sets_to_play
-    case scoring.to_sym
-    when :two_six_game_ten_point
-      3
-    when :one_eight_game
-      1
-    when :three_six_game
-      3
-    else
-      raise ArgumentError, "Unknown scoring: #{scoring}"
-    end
-  end
-
-  def first_servers_provided?
-    player_server_helper.first_servers_provided?
-  end
-
-  def next_game_ordinal
-    last_set ? last_set.set_games.count + 1 : 0
-  end
-
-  def players_that_may_serve_first
-    player_server_helper.players_that_may_serve_first
-  end
-
-  def next_player_server
-    player_server_helper.next_player_server
-  end
-
-  def tiebreaker_set?(ordinal)
-    scoring_of_set_ordinal(ordinal) == :ten_point
-  end
-
-  def team_of_player(player)
-    player_server_helper.team_of_player player
-  end
-
-  private
 
   def player_server_helper
     @player_servers_helper ||= PlayerServersHelper.new(self)
@@ -966,7 +1066,9 @@ class Match < ActiveRecord::Base
     end
 
     def win_tiebreaker?
-      win_game_kind? :tiebreaker
+      # last_set_var = match.last_set
+      # last_set_var && !last_set_var.tiebreaker? &&
+      win_game_kind?(:tiebreaker)
     end
 
     def complete_set?
@@ -978,12 +1080,14 @@ class Match < ActiveRecord::Base
     end
 
     def win_match_tiebreaker?
-      last_set_var = match.last_set
-      last_set_var && last_set_var.tiebreaker? &&
-        win_game_kind?(:tiebreaker)
+      # last_set_var = match.last_set
+      # last_set_var && last_set_var.tiebreaker? &&
+      win_game_kind?(:match_tiebreaker)
     end
 
     def win_tiebreaker(team)
+      # last_set_var = match.last_set
+      # last_set_var && !last_set_var.tiebreaker? &&
       win_game_kind team, :tiebreaker
     end
 
@@ -992,7 +1096,7 @@ class Match < ActiveRecord::Base
     end
 
     def win_match_tiebreaker(team)
-      win_game_kind team, :tiebreaker
+      win_game_kind team, :match_tiebreaker
     end
 
     attr_reader :match
@@ -1002,7 +1106,13 @@ class Match < ActiveRecord::Base
         last_set_var = match.last_set
         last_game = last_set_var.last_game if last_set_var
         if last_game && last_game.state == :in_progress
-          (kind == :tiebreaker) == last_game.tiebreaker?
+          if last_set_var.tiebreaker?
+            (kind == :match_tiebreaker)
+          elsif last_game.tiebreaker?
+            (kind == :tiebreaker)
+          else
+            kind == :game
+          end
         end
       end
     end
@@ -1021,9 +1131,14 @@ class Match < ActiveRecord::Base
       raise Exceptions::NotFound, 'Set not found' unless last_set_var
       game = last_set_var.last_game
       raise Exceptions::NotFound, 'Game not found' unless game
-      unless game.tiebreaker? == (kind == :tiebreaker)
-        raise Exceptions::InvalidOperation, 'Invalid kind'
-      end
+      valid_kind = if last_set_var.tiebreaker?
+                     kind == :match_tiebreaker
+                   elsif game.tiebreaker?
+                     kind == :tiebreaker
+                   else
+                     kind == :game
+                   end
+      raise Exceptions::InvalidOperation, 'Invalid kind' unless valid_kind
       game.team_winner_id = team.id
       game
     end

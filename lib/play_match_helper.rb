@@ -54,10 +54,10 @@ class PlayMatchHelper
 
   # Play a match
   def play(scores)
-    match.start_play!
+    match.change_score! :start_play
     apply_first_servers
     scores.each { |v| play_set(v) }
-    match.complete_play! if match.complete_play?
+    match.change_score! :complete_play if match.change_score?(:complete_play)
   end
 
   # Play a set
@@ -88,18 +88,18 @@ class PlayMatchHelper
   end
 
   def start_set
-    if match.start_match_tiebreaker?
-      match.start_match_tiebreaker!
+    if match.change_score? :start_match_tiebreaker
+      match.change_score! :start_match_tiebreaker
     else
-      match.start_next_set!
+      match.change_score! :start_next_set
     end
   end
 
   def complete_set
-    if match.complete_set_play?
-      match.complete_set_play!
-    elsif match.complete_match_tiebreaker?
-      match.complete_match_tiebreaker!
+    if match.change_score? :complete_set_play
+      match.change_score! :complete_set_play
+    elsif match.change_score? :complete_match_tiebreaker
+      match.change_score! :complete_match_tiebreaker
     end
   end
 
@@ -115,11 +115,11 @@ class PlayMatchHelper
   end
 
   def play_game(winner)
-    if match.start_next_game?
+    if match.change_score? :start_next_game
       play_normal_game winner
-    elsif match.win_match_tiebreaker?
-      match.win_match_tiebreaker! winner
-    elsif match.start_tiebreaker?
+    elsif match.change_score? :win_match_tiebreaker
+      match.change_score! :win_match_tiebreaker, winner
+    elsif match.change_score? :start_tiebreaker
       play_tiebreaker winner
     else
       invalid_game
@@ -127,13 +127,13 @@ class PlayMatchHelper
   end
 
   def play_tiebreaker(winner)
-    match.start_tiebreaker!
-    match.win_tiebreaker! winner
+    match.change_score! :start_tiebreaker
+    match.change_score! :win_tiebreaker, winner
   end
 
   def play_normal_game(winner)
-    match.start_next_game!
-    match.win_game! winner
+    match.change_score! :start_next_game
+    match.change_score! :win_game, winner
   end
 
   def invalid_game

@@ -1,5 +1,5 @@
 class MatchScoreBoardSerializer < MatchSerializer
-  attributes :id, :title, :scoring, :doubles, :state, :winner, :sets
+  attributes :id, :title, :scoring, :doubles, :state, :winner, :sets, :actions, :errors, :servers
 
   def sets
     ActiveModel::ArraySerializer.new(object.match_sets, each_serializer: MatchSetSerializer)
@@ -8,6 +8,11 @@ class MatchScoreBoardSerializer < MatchSerializer
   def status
     # not_started, in-progress, finished, etc.
     object.state
+  end
+
+  def actions
+    # TODO: Array rather than hash?
+    object.score_actions
   end
 
   def winner
@@ -48,6 +53,13 @@ class MatchScoreBoardSerializer < MatchSerializer
 
   def second_team
     OpponentTeamSerializer.new(object.second_team, root: false)
+  end
+
+  def servers
+    result = []
+    result.push(object.first_player_server.id) if object.first_player_server
+    result.push(object.second_player_server.id) if object.second_player_server
+    result
   end
 
 end

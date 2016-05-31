@@ -136,7 +136,7 @@ class SampleData
     m.save!
     scores = match_data[:scores]
     PlayMatchHelper.play_match(m, scores) if scores
-    m.complete_play! if m.complete_play?
+    m.change_score! :complete_play if m.change_score? :complete_play
   end
 
   def add_opponents(match, match_data)
