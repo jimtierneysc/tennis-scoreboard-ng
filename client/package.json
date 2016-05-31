@@ -1,7 +1,19 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "browser-sync": "~2.9.11",
+    "browser-sync-spa": "~1.0.3",
+    "http-proxy-middleware": "~0.9.0",
+    "karma": "~0.13.10",
+    "karma-jasmine": "~0.3.6",
+    "karma-phantomjs-launcher": "~0.2.1",
+    "phantomjs": "~1.9.18",
+    "karma-angular-filesort": "~1.0.0",
+    "karma-phantomjs-shim": "~1.2.0",
+    "karma-coverage": "~0.5.2",
+    "karma-ng-html2js-preprocessor": "~0.2.0"
+  },
   "scripts": {
     "test": "gulp test",
     "build.prod": "gulp build",
@@ -38,17 +50,6 @@
     "gulp-angular-filesort": "~1.1.1",
     "main-bower-files": "~2.9.0",
     "wiredep": "~2.2.2",
-    "karma": "~0.13.10",
-    "karma-jasmine": "~0.3.6",
-    "karma-phantomjs-launcher": "~0.2.1",
-    "phantomjs": "~1.9.18",
-    "karma-angular-filesort": "~1.0.0",
-    "karma-phantomjs-shim": "~1.2.0",
-    "karma-coverage": "~0.5.2",
-    "karma-ng-html2js-preprocessor": "~0.2.0",
-    "browser-sync": "~2.9.11",
-    "browser-sync-spa": "~1.0.3",
-    "http-proxy-middleware": "~0.9.0",
     "chalk": "~1.1.1",
     "uglify-save-license": "~0.4.1",
     "wrench": "~1.5.8"
