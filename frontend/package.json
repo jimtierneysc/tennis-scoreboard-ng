@@ -1,11 +1,13 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "dependencies": {},
+  "devDependencies": {},
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "build.prod": "gulp build",
+    "postinstall": "bower install && gulp build"
   },
-  "devDependencies": {
+  "dependencies": {
     "estraverse": "~4.1.0",
     "gulp": "~3.9.0",
     "gulp-autoprefixer": "~3.0.2",
@@ -51,6 +53,6 @@
     "wrench": "~1.5.8"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": "4.4.3"
   }
 }
