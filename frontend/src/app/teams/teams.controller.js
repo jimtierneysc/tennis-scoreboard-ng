@@ -13,7 +13,7 @@
     .controller('TeamController', MainController);
 
   /** @ngInject */
-  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper) {
+  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, playersSelectOptions) {
     var vm = this;
     vm.playerOptionsList = {list: null};
 
@@ -27,6 +27,7 @@
         getEntityDisplayName: getEntityDisplayName,
         makeEntityBody: makeEntityBody,
         scope: $scope,
+        // TODO: clean this up, rename or something
         entityFieldMap: {
           'name': null,
           'first': 'first_player',
@@ -47,7 +48,7 @@
     }
 
     function beforeSubmitEditEntity(entity) {
-      var result = { 
+      var result = {
         id: entity.id,
         name: entity.name
       };
@@ -81,7 +82,7 @@
     function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
-        fillPlayerOptionsList().then(
+        playersSelectOptions.getSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
             deferredObject.resolve();
@@ -99,17 +100,12 @@
       return deferredObject.promise;
 
     }
-
-
-    function fillPlayerOptionsList() {
-      return crudHelper.fillPlayerOptionsList();
-    }
-
+    
     function prepareToEditEntity() {
       var first_player = null;
       var second_player = null;
       var first_id = null;
-      var second_id = null;  
+      var second_id = null;
       if (vm.editEntity.first_player)
         first_id = vm.editEntity.first_player.id;
       if (vm.editEntity.second_player)

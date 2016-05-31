@@ -13,7 +13,8 @@
     .controller('MatchController', MainController);
 
   /** @ngInject */
-  function MainController(matchesResource, $filter, $q, $log, $scope, teamsResource, playersResource, crudHelper) {
+  function MainController(matchesResource, $filter, $q, $log, $scope, teamsResource, playersResource, crudHelper,
+    playersSelectOptions, teamsSelectOptions) {
     var vm = this;
     vm.teamOptionsList = {list: null};
     vm.playerOptionsList = {list: null};
@@ -109,7 +110,7 @@
     function prepareToShowTeamOptions() {
       var deferredObject = $q.defer();
       if (vm.teamOptionsList.list == null) {
-        fillTeamOptionsList().then(
+        teamsSelectOptions.getSelectOptions().then(
           function (list) {
             vm.teamOptionsList.list = list;
             deferredObject.resolve();
@@ -130,7 +131,7 @@
     function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
-        fillPlayerOptionsList().then(
+        playersSelectOptions.getSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
             deferredObject.resolve();
@@ -148,15 +149,6 @@
       return deferredObject.promise;
 
     }
-
-    function fillTeamOptionsList() {
-      return crudHelper.fillTeamOptionsList();
-    }
-
-    function fillPlayerOptionsList() {
-      return crudHelper.fillPlayerOptionsList();
-    }
-
 
     function prepareToEditPlayers() {
       var first_player = null;
