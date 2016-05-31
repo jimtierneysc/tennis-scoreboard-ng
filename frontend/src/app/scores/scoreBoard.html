@@ -1,0 +1,33 @@
+<div>
+
+  <div class="col-xs-12" ng-if="sub.loading">
+    {{sub.loadingMessage}}
+  </div>
+
+  <div class="col-xs-12" ng-if="sub.loadingFailed">
+    {{sub.loadingFailedMessage}}
+  </div>
+
+
+  <div ng-if="!sub.loading && !sub.loadingFailed">
+    <div>
+      <fe-match-play-description match="sub.scoreBoard"></fe-match-play-description>
+    </div>
+
+    <div>
+      <fe-score-table scores="sub.scoreBoard"></fe-score-table>
+    </div>
+
+    <!--<div>-->
+    <!--errors: {{sub.scoreBoard.errors}}-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--actions: {{sub.scoreBoard.actions}}-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--view: {{sub.view}}-->
+    <!--</div>-->
+
+  </div>
+</div>
+

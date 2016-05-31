@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 
   <div class="col-xs-12" ng-if="main.loading">
     {{main.loadingMessage}}
@@ -96,6 +96,12 @@
                     {{entity.second_player.name}}
                   </div>
                 </div>
+
+              </div>
+              <div>
+                <a
+                   ui-sref-active="active" ui-sref="scores.board({ id: entity.id })">Score
+                </a>
 
               </div>
             </div>

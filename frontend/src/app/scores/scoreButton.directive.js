@@ -1,0 +1,38 @@
+/**
+ * @ngdoc directive
+ * @name feScoreButton
+ * @description
+ * Button to change score
+ *
+ * @example:
+ <fe-score-button></fe-score-button>
+ */
+
+
+(function () {
+  'use strict';
+
+  angular
+    .module('frontend')
+    .directive('feScoreButton', directiveFunc);
+
+  /** @ngInject */
+  function directiveFunc($log) {
+    var directive = {
+      restrict: 'EA',
+      templateUrl: 'app/scores/scoreButton.html',
+      scope: {
+        scores: '=',
+        param: '=',
+        title: '='
+      },
+      link: function (scope, elem) {
+        $log.info('link');
+      }
+
+    };
+
+    return directive;
+  }
+
+})();

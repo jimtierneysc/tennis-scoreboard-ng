@@ -1,0 +1,51 @@
+
+<!--<h1>Match</h1>-->
+<!--{{ match }}-->
+<table class="table table-condensed play-table play-description">
+
+  <tr ng-if="match.doubles && (match.first_team.name || match.second_team.name) ">
+    <th>Opponents:</th>
+    <td class="hide-overflow">
+      TODO
+      <!--<%= render partial: 'match_opponents', locals: { match: @match } %>-->
+    </td>
+  </tr>
+
+  <tr>
+    <th>Status:</th>
+    <td>
+      {{ match.state }}
+      <!--<% [:in_progress, :complete, :finished, :not_started].each do |state| %>-->
+      <!--<span id='match_state_<%= state.to_s %>' class='<%= state == match.state ? '' : invisible %>'>-->
+      <!--<%= render partial: 'match_status', locals: { state: state } %>-->
+      </span>
+    </td>
+  </tr>
+  <!--<% teams = match.teams %>-->
+  <!--<% winner = match.compute_team_winner %>-->
+  <tr id='match-winner' ng-if="match.winner">
+  <th>Winner:</th>
+  <td class="hide-overflow">
+    <span ng-if="match.doubles">
+      TODO Doubles winner
+    </span>
+    <span ng-if="!match.doubles">
+      TODO Singles winner
+    </span>
+
+    <!--<% teams.each_with_index do |team, i| %>-->
+    <!--<span id='match-team-<%= i.to_s %>' class='<%= winner == team ? invisible : '' %>'>-->
+    <!--<%= render partial: 'team_name', locals: { team: team } %>-->
+    <!--</span>-->
+    <!--<% end %>-->
+  </td>
+  </tr>
+  <tr id='match-scoring' ng-if="!match.winner">
+  <th>Scoring:</th>
+  <td>
+    {{match.scoring}}
+    <!--<%= render partial: 'match_scoring', locals: { match: match } %>-->
+  </td>
+  </tr>
+
+</table>

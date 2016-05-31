@@ -1,0 +1,236 @@
+<div id="match_table">
+  <table class="table table-bordered table-condensed play-table">
+    <tr>
+      <th colspan="3" class="toolbar-cell">
+        <fe-score-tool-bar scores="scores"></fe-score-tool-bar>
+      </th>
+    </tr>
+
+    <tr>
+
+      <th class="score-col-1"></th>
+      <th class="score-col-2">
+        <div ng-if="scores.doubles">
+          <div class="col-xs-12 player-col-2">
+            {{scores.first_team.first_player.name}}
+          </div>
+          <div class="col-xs-12 player-col-2">
+            {{scores.first_team.second_player.name}}
+          </div>
+        </div>
+        <div ng-if="!scores.doubles">
+          {{scores.first_player.name}}
+        </div>
+
+      </th>
+      <th class="score-col-2">
+        <div ng-if="scores.doubles">
+          <div class="col-xs-12 player-col-2">
+            {{scores.second_team.first_player.name}}
+          </div>
+          <div class="col-xs-12 player-col-2">
+            {{scores.second_team.second_player.name}}
+          </div>
+        </div>
+        <div ng-if="!scores.doubles">
+          {{scores.second_player.name}}
+        </div>
+      </th>
+    </tr>
+
+
+    <tr>
+      <th class="score-col-1"><span class="hidden-xs">Match </span>Score</th>
+      <th class="score-col-2">
+        <span class="circle-text" ng-class="{'winner-text': scores.winner === scores.opponents[0] }">
+          {{scores.scores[0]}}
+        </span>
+      </th>
+      <th class="score-col-2">
+        <span class="circle-text" ng-class="{'winner-text': scores.winner === scores.opponents[1]  }">
+          {{scores.scores[1]}}
+        </span>
+      </th>
+    </tr>
+
+    <!--match button-->
+    <tr ng-if="scores.showMatchButton && scores.keepingScore()">
+      <th class="score-col-1">
+      </th>
+      <th colspan=2 class="score-col-3">
+        <!--Match button-->
+        <fe-score-button scores="scores"></fe-score-button>
+      </th>
+    </tr>
+
+    <tr ng-if="scores.newSet">
+      <th class="score-col-1">
+      </th>
+      <th colspan=2 class="score-col-3">
+        <div ng-if="scores.keepingScore()">
+          <!--New set button-->
+          <fe-score-button scores="scores" title="scores.newSet.title"></fe-score-button>
+        </div>
+        <div ng-if="!scores.keepingScore()">
+          <!--New set status-->
+          <fe-score-status scores="scores" title="scores.newSet.title"></fe-score-status>
+
+        </div>
+      </th>
+    </tr>
+
+
+    <tr ng-if="0" ng-repeat-start="set in scores.sets"></tr>
+
+    <tr>
+      <th class="score-col-1">
+        {{set.title}}<span class="hidden-xs"> Set</span>
+      </th>
+      <th class="score-col-2">
+        <span class="circle-text" ng-class="{'winner-text': set.winner === scores.opponents[0] }">
+          {{set.scores[0]}}
+        </span>
+      </th>
+      <th class="score-col-2">
+        <span class="circle-text" ng-class="{'winner-text': set.winner === scores.opponents[1] }">
+          {{set.scores[1]}}
+        </span>
+      </th>
+    </tr>
+
+    <tr ng-if="!set.winner && scores.showSetButton">
+      <th class="score-col-1">
+      </th>
+      <th colspan=2 class="score-col-3">
+        <div ng-if="!scores.keepingScore()">
+          <!--Set status-->
+          <fe-score-status scores="scores" title="set.title"></fe-score-status>
+
+        </div>
+        <div ng-if="scores.keepingScore()">
+          <!--Set button-->
+          <fe-score-button scores="scores" title="newSet.title"></fe-score-button>
+
+        </div>
+      </th>
+    </tr>
+
+    <!--New game buttons-->
+    <tr ng-if="scores.newGame && scores.newGame.set == set">
+      <th class="score-col-1">
+      </th>
+      <th colspan=2 class="score-col-3" ng-if="scores.keepingScore()">
+
+        <!--Select next server when starting 1st or 2nd game-->
+        <form ng-if="scores.startServing" name="scores.startServing.form" novalidate>
+
+          <div class="form-group text-left">
+            <!--Doubles-->
+            <label class="control-label">Select a player to serve game {{scores.newGame.title}}</label>
+            <div class="radio" ng-repeat="player in scores.startServing.players">
+              <label>
+                <input type="radio" name="player" value="{{player.id}}" ng-model="scores.startServing.playerId">
+                {{player.name}}
+              </label>
+            </div>
+          </div>
+          <fe-score-button scores="scores" title="scores.newGame.title"
+                           param="scores.startServing.playerId"></fe-score-button>
+        </form>
+
+        <div ng-if="!scores.startServing">
+          <fe-score-button scores="scores" title="scores.newGame.title"></fe-score-button>
+        </div>
+      </th>
+      <th colspan=2 class="score-col-3" ng-if="!scores.keepingScore()">
+        <!--New Game Status-->
+        <fe-score-status scores="scores" title="scores.newGame.title"></fe-score-status>
+      </th>
+
+
+    </tr>
+
+    <!-- Game button when collapsed -->
+    <tr ng-if="!set.showGames() && scores.showWinGameButton && set == scores.sets[0]"
+        ng-init="title = set.games.length">
+      <th class="score-col-1">
+        <span class="dim-text">{{title}}</span>
+      </th>
+      <th class="score-col-3" colspan="2" ng-if="!scores.keepingScore()">
+        <!--Game status-->
+        <fe-score-status scores="scores" title="title"></fe-score-status>
+      </th>
+
+      <th class="score-col-2" ng-if="scores.keepingScore()" ng-init="win1 = game.winner === scores.opponents[0]">
+        <div>
+          <!--Game Button-->
+          <fe-score-button scores="scores" param="0" title="title"></fe-score-button>
+        </div>
+
+      </th>
+      <th class="score-col-2" ng-if="scores.keepingScore()">
+
+        <div>
+          <!--Game Button-->
+          <fe-score-button scores="scores" param="1" title="title"></fe-score-button>
+        </div>
+
+      </th>
+    </tr>
+
+    <tr ng-repeat="game in set.games" ng-init="break = game.winner != game.server" ng-if="set.showGames()">
+      <th class="score-col-1">
+        <span class="dim-text">{{game.title}}</span>
+      </th>
+      <th class="score-col-3" colspan="2" ng-if="!game.winner && !scores.keepingScore()">
+        <fe-score-status scores="scores" title="game.title"></fe-score-status>
+      </th>
+      <th class="score-col-2" ng-if="game.winner || scores.keepingScore()"
+          ng-init="win1 = game.winner === scores.opponents[0]">
+        <div ng-if="game.winner">
+          <div class="col-xs-4 game-col-1">
+            <!--TODO: Display something if break-->
+          </div>
+          <div class="col-xs-4 game-col-2">
+            <span ng-if="win1" class="glyphicon glyphicon-ok"></span>
+          </div>
+          <div class="col-xs-4 game-col-3">
+          </div>
+        </div>
+
+        <div ng-if="!game.winner && scores.showGameButton">
+          <!--Game Button-->
+          <fe-score-button scores="scores" param="0" title="game.title"></fe-score-button>
+        </div>
+
+      </th>
+      <th class="score-col-2" ng-if="game.winner || scores.keepingScore()"
+          ng-init="win2 = game.winner === scores.opponents[1]">
+
+        <div ng-if="game.winner">
+          <div class="col-xs-4 game-col-1">
+            <!--TODO: Display something if break-->
+          </div>
+          <div class="col-xs-4 game-col-2">
+            <span ng-if="win2" class="glyphicon glyphicon-ok"></span>
+          </div>
+          <div class="col-xs-4 game-col-3">
+          </div>
+        </div>
+
+        <div ng-if="!game.winner && scores.showGameButton">
+          <!--Game Button-->
+          <fe-score-button scores="scores" param="1" title="game.title"></fe-score-button>
+        </div>
+
+      </th>
+    </tr>
+
+
+    <tr ng-if="0" ng-repeat-end></tr>
+
+
+  </table>
+
+</div>
+

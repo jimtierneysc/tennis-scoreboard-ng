@@ -1,0 +1,225 @@
+// Styling for score board table
+@import '../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+$border: 1px solid black;
+$table_width: 550px;
+$col_1_width: 110px;
+$col_2_width: 220px;
+$col_3_width: 440px;
+
+$table_min_width: 300px;
+$col_1_min_width: 60px;
+$col_2_min_width: 120px;
+$col_3_min_width: 240px;
+
+@mixin center-cell {
+  text-align: center;
+}
+
+.play-description {
+  th {
+    width: 100px;
+  }
+}
+
+table.play-table {
+  width: $table_width;
+  table-layout: fixed;
+  margin-bottom: 0px;
+}
+
+// Default to maximum size
+.score-col-1 {
+  width: $col_1_width;
+  @include center-cell;
+}
+
+.score-col-2 {
+  width: $col_2_width;
+  @include center-cell;
+}
+
+.score-col-3 {
+  width: $col_3_width;
+  @include center-cell;
+}
+
+// override with proportional sizing
+@media only screen and (max-width: $table_width) {
+  .table, table.play-table {
+    width: 100%;
+  }
+  .score-col-1 {
+    width: 20%;
+  }
+
+  .score-col-2 {
+    width: 40%;
+  }
+
+  .score-col-3 {
+    width: 80%;
+  }
+}
+
+// override with minumum size
+@media only screen and (max-width: $table_min_width) {
+  .table, table.play-table {
+    width: $table_min_width;
+  }
+  .score-col-1 {
+    width: $col_1_min_width;
+  }
+
+  .score-col-2 {
+    width: $col_2_min_width;
+  }
+
+  .score-col-3 {
+    width: $col_3_min_width;
+  }
+}
+
+.match-btn {
+  width: 100%;
+}
+
+.invisible-link, .invisible-text {
+  display: none;
+}
+
+@mixin hide-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+@mixin hide-overflow-padding {
+  @include hide-overflow;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.hide-overflow {
+  @include hide-overflow;
+}
+
+div.game-col-3 {
+  @include hide-overflow-padding;
+  //color: $table-border-color; // bootstrap variable
+  color: green;
+  text-align: left;
+}
+
+div.game-col-1 {
+  @include hide-overflow-padding;
+  //color: $table-border-color; // bootstrap variable
+  color: green;
+  text-align: right;
+  z-index: 1;
+}
+
+div.game-col-2 {
+  @include hide-overflow-padding;
+  color: green;
+}
+
+div.player-col-3 {
+  @include hide-overflow-padding;
+  text-align: left;
+}
+
+div.player-col-1 {
+  @include hide-overflow-padding;
+  text-align: right;
+}
+
+div.player-col-2 {
+  @include hide-overflow-padding;
+}
+
+.dim-text {
+  color: $table-border-color; // bootstrap variable
+  font-weight: normal;
+}
+
+// css to flip glyph icon
+.flip-horizontal {
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  -ms-filter: fliph; /*IE*/
+  filter: fliph; /*IE*/
+}
+
+// Draw text within green ellipse
+.winner-text {
+  display: inline-block;
+  padding: 4px;
+  line-height: 100%;
+
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+
+  background-color: green;
+  color: white;
+}
+
+// icon bar button but outside of navbar
+.dropdown-toggle {
+
+  .icon-bars-button {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .icon-bar {
+    margin-bottom: 2px;
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #cccccc;
+    border-radius: 1px;
+  }
+
+}
+
+// Disable links in bootstrap drop down menu
+.dropdown-menu > li > a.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: grey;
+}
+
+//Take up space but don't show
+.glyphicon-none:before {
+  content: "\2122";
+  color: transparent !important;
+}
+
+#match_table {
+  border: 4px;
+
+  > table {
+    border: none;
+  }
+  .toolbar-cell {
+    border: none;
+  }
+  //.no_borderx {
+  //  background-color: blue;
+  //  border: none;
+  //  box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+  //
+  //}
+}
+
+
+
+
+
+
+
