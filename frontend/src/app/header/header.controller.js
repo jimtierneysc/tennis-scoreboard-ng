@@ -16,5 +16,8 @@
   function MainController() {
     var vm = this;
     vm.isCollapsed = true;
+    // TODO: Support login/logout
+    vm.loggedIn = false;
+    vm.userName = "";
   }
 })();
