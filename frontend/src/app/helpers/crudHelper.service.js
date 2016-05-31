@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name crudHelper
  * @description
- * Common CRUD functionality shared by CRUD controller
+ * Common CRUD functionality shared by CRUD controllers
  *
  */
 (function () {
@@ -15,11 +15,9 @@
     .factory('crudHelper', crudHelperFunc);
 
   /** @ngInject */
-  function crudHelperFunc($log, $q, modalConfirm, toastr, feUtils, $filter, playersResource, teamsResource) {
+  function crudHelperFunc($log, $q, modalConfirm, toastr, feUtils, $filter, loadingHelper, toastrHelper) {
     var service = {
-      activate: activateFunc,
-      fillPlayerOptionsList: fillPlayerOptionsList,
-      fillTeamOptionsList: fillTeamOptionsList
+      activate: activateFunc
     };
 
     var vm = null;
@@ -32,20 +30,8 @@
     var getEntityDisplayName = null;
     var entityFieldMap = {};
     var makeEntityBody = null;
-    var $scope = null;
 
     return service;
-
-
-    // controllerOptions properties:
-    //   getResource: function
-    //   beforeSubmitNewEntity: function
-    //   beforeSubmitEditEntity: function
-    //   beforeShowNewEntityForm: function
-    //   beforeShowEditEntityForm: function;
-    //   makeEntityBody: function
-    //   entityFieldMap: Object
-    //   scope: Object
 
     function activateFunc(_vm_, controllerOptions) {
       getResources = controllerOptions.getResources;
@@ -56,10 +42,12 @@
       getEntityDisplayName = controllerOptions.getEntityDisplayName;
       makeEntityBody = controllerOptions.makeEntityBody;
       entityFieldMap = controllerOptions.entityFieldMap;
-      $scope = controllerOptions.scope;
+      var scope = controllerOptions.scope;
 
       // Initialize controller
       vm = _vm_;
+      loadingHelper.activate(vm);
+      toastrHelper.activate(vm, scope);
       vm.trashEntity = trashEntity;
       vm.submitNewEntityForm = submitNewEntityForm;
       vm.showNewEntityForm = showNewEntityForm;
@@ -67,27 +55,17 @@
       vm.submitEditEntityForm = submitEditEntityForm;
       vm.showEditEntityForm = showEditEntityForm;
       vm.hideEditEntityForm = hideEditEntityForm;
+      // vm.resolveView = $q.defer();
 
 
       vm.newEntity = {};
       vm.showingNewEntityForm = false;
       vm.showingEditEntityForm = showingEditEntityForm;
-      vm.loading = true;
-      vm.loadingMessage = 'Loading...';
-      vm.loadingFailed = false;
-      vm.loadingFailedMessage = null;
       vm.newEntityForm = null;
       vm.editEntityForm = null;
       vm.entitys = [];
       vm.entityCreateErrors = null;
       vm.entityUpdateErrors = null;
-      vm.lastToast = null;
-
-      $scope.$on('$destroy', function () {
-        $log.log('destroying controller');
-        // Remove current toasts when switch views
-        toastr.clear();
-      });
 
       getEntitys();
     }
@@ -154,7 +132,6 @@
       if (vm.editEntityForm) {
         vm.editEntityForm.$setPristine();
       }
-      //vm.showingEditEntityForm = false;
       vm.editEntity = null;
       vm.entityUpdateErrors = null;
 
@@ -165,7 +142,7 @@
     }
 
     //
-    // "Private" methods
+    // Internal methods
     //
 
     function getEntitys() {
@@ -173,14 +150,11 @@
         function (response) {
           $log.info('received data');
           vm.entitys = response;
-          vm.loading = false;
-          vm.loadingFailed = false;
+          vm.loadingHasCompleted();
         },
         function (response) {
-          $log.info('data error ' + response.status + " " + response.statusText);
-          vm.loading = false;
-          vm.loadingFailed = true;
-          vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').  Please check your internet connection.';
+          $log.error('data error ' + response.status + " " + response.statusText);
+          vm.loadingHasFailed(response);
         }
       );
     }
@@ -196,7 +170,7 @@
           entityCreated(newEntity);
         },
         function (response) {
-          $log.info('create error ' + response.status + " " + response.statusText);
+          $log.error('create error ' + response.status + " " + response.statusText);
           entityCreateError(entity, response)
         }
       );
@@ -215,12 +189,11 @@
           entityUpdated(updatedEntity);
         },
         function (response) {
-          $log.info('update error ' + response.status + " " + response.statusText);
+          $log.error('update error ' + response.status + " " + response.statusText);
           entityUpdateError(entity, response)
         }
       );
     }
-
 
     function removeEntity(entity) {
       var id = entity.id;
@@ -232,7 +205,7 @@
           entityRemoved(entity);
         },
         function (response) {
-          $log.info('remove entity error ' + response.status + " " + response.statusText);
+          $log.error('remove entity error ' + response.status + " " + response.statusText);
           entityRemoveError(entity, response)
         }
       );
@@ -257,10 +230,7 @@
       else {
         $log.error('id not found: ' + id);
       }
-      // vm.entitys.splice(0, 0, entity);
-      // vm.entityUpdateErrors = null;
     }
-
 
     function normalizeErrors(data) {
       var errors = feUtils.normalizeObjectNames(data, entityFieldMap);
@@ -293,57 +263,8 @@
       var message = "";
       if (angular.isDefined(errors.other))
         message = errors.other;
-      showToastrError(_.escape(message), "Delete Error");
+      vm.showToastrError(message, "Delete Error");
     }
-
-    function showToastrError(message, caption) {
-      if (angular.isUndefined(caption))
-        caption = 'Error';
-
-      vm.lastToast = toastr.error(message, caption);
-    }
-
-
-    // Return a promise
-    function fillPlayerOptionsList() {
-      var deferredObject = $q.defer();
-      playersResource.getPlayers().query(
-        function (response) {
-          $log.info('received data');
-          var options = [];
-          angular.forEach(response, function (value) {
-            options.push({name: value.name, id: value.id});
-          }, options);
-          deferredObject.resolve(options);
-        },
-        function (response) {
-          $log.info('data error ' + response.status + " " + response.statusText);
-          deferredObject.reject();
-        }
-      );
-      return deferredObject.promise;
-    }
-
-    // Return a promise
-    function fillTeamOptionsList() {
-      var deferredObject = $q.defer();
-      teamsResource.getTeams().query(
-        function (response) {
-          $log.info('received data');
-          var options = [];
-          angular.forEach(response, function (value) {
-            options.push({name: value.displayName, id: value.id});
-          }, options);
-          deferredObject.resolve(options);
-        },
-        function (response) {
-          $log.info('data error ' + response.status + " " + response.statusText);
-          deferredObject.reject();
-        }
-      );
-      return deferredObject.promise;
-    }
-
 
   }
 })();
