@@ -13,27 +13,31 @@
     .controller('PlayerController', MainController);
 
   /** @ngInject */
-  function MainController(playersResource, $log, $scope, crudHelper) {
+  function MainController(playersResource, $log, $timeout, $scope, crudHelper, response) {
 
 
     var vm = this;
-    // vm.playerOptionsList = null;
 
-    crudHelper.activate(vm,
-      {
-        getResources: playersResource.getPlayers,
-        beforeSubmitNewEntity: beforeSubmitNewEntity,
-        beforeSubmitEditEntity: beforeSubmitEditEntity,
-        beforeShowNewEntityForm: beforeShowNewEntityForm,
-        beforeShowEditEntityForm: beforeShowEditEntityForm,
-        getEntityDisplayName: getEntityDisplayName,
-        makeEntityBody: makeEntityBody,
-        scope: $scope,
-        entityFieldMap: {
-          'name': null
+    activate();
+
+    function activate() {
+      crudHelper.activate(vm,
+        {
+          response: response,
+          getResources: playersResource.getPlayers,
+          beforeSubmitNewEntity: beforeSubmitNewEntity,
+          beforeSubmitEditEntity: beforeSubmitEditEntity,
+          beforeShowNewEntityForm: beforeShowNewEntityForm,
+          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          getEntityDisplayName: getEntityDisplayName,
+          makeEntityBody: makeEntityBody,
+          scope: $scope,
+          entityFieldMap: {
+            'name': null
+          }
         }
-      }
-    );
+      );
+    }
 
 
     function beforeSubmitNewEntity(entity) {
@@ -42,17 +46,17 @@
 
     function beforeSubmitEditEntity(entity) {
       return {
-        id: entity.id, 
-        name: entity.name 
+        id: entity.id,
+        name: entity.name
       };
     }
 
     function beforeShowNewEntityForm() {
-      // Nothing to do. 
+      // Nothing to do.
     }
 
     function beforeShowEditEntityForm() {
-      // Nothing to do. 
+      // Nothing to do.
     }
 
     function getEntityDisplayName(entity) {
@@ -62,7 +66,7 @@
     function makeEntityBody(entity) {
       return {player: entity};
     }
-    
+
 
   }
 })();

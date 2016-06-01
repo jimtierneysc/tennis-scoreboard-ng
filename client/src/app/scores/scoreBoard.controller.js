@@ -15,7 +15,8 @@
     .controller('ScoreBoardController', MainController);
 
   /** @ngInject */
-  function MainController($log, $q, $scope, $stateParams, modalConfirm, $cookies, scoreBoardResource, loadingHelper, toastrHelper) {
+  function MainController($log, $q, $scope, $stateParams, modalConfirm, $cookies, scoreBoardResource, loadingHelper, toastrHelper,
+                          response) {
     var vm = this;
 
     vm.id = $stateParams.id;
@@ -35,7 +36,15 @@
       loadingHelper.activate(vm);
       toastrHelper.activate(vm, $scope);
       getCookies();
-      getScoreBoard();
+      if (angular.isDefined(response)) {
+        if (angular.isDefined(response.id)) 
+          getScoreBoardSucceeded(response);
+        else 
+          getScoreBoardFailed(response);
+      }
+      else {
+        getScoreBoard();
+      }
     }
 
     function changeViewExpand() {
@@ -92,18 +101,25 @@
     function getScoreBoard() {
       scoreBoardResource.getScoreBoard().get({id: vm.id},
         function (response) {
-          $log.info('received data');
-          vm.scoreBoard = response;
-          prepareScoreBoard(vm.scoreBoard);
-          vm.loadingHasCompleted();
+          getScoreBoardSucceeded(response);
         },
         function (response) {
-          $log.error('data error ' + response.status + " " + response.statusText);
-          vm.loadingHasFailed(response);
+          getScoreBoardFailed(response);
         }
       );
     }
-
+    
+    function getScoreBoardSucceeded(response) {
+      $log.info('received data');
+      vm.scoreBoard = response;
+      prepareScoreBoard(vm.scoreBoard);
+      vm.loadingHasCompleted();
+    }
+    
+    function getScoreBoardFailed(response) {
+      $log.error('data error ' + response.status + " " + response.statusText);
+      vm.loadingHasFailed(response);
+    }
 
     function scoreBoardResourceUpdate(action, params) {
       var key = {id: vm.id};

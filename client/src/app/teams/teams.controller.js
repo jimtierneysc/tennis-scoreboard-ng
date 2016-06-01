@@ -13,12 +13,13 @@
     .controller('TeamController', MainController);
 
   /** @ngInject */
-  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, playersSelectOptions) {
+  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, playersSelectOptions, response) {
     var vm = this;
     vm.playerOptionsList = {list: null};
 
     crudHelper.activate(vm,
       {
+        response: response,
         getResources: teamsResource.getTeams,
         beforeSubmitNewEntity: beforeSubmitNewEntity,
         beforeSubmitEditEntity: beforeSubmitEditEntity,

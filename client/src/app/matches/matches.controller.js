@@ -14,13 +14,14 @@
 
   /** @ngInject */
   function MainController(matchesResource, $filter, $q, $log, $scope, teamsResource, playersResource, crudHelper,
-    playersSelectOptions, teamsSelectOptions) {
+    playersSelectOptions, teamsSelectOptions, response) {
     var vm = this;
     vm.teamOptionsList = {list: null};
     vm.playerOptionsList = {list: null};
 
     crudHelper.activate(vm,
       {
+        response: response,
         getResources: matchesResource.getMatches,
         beforeSubmitNewEntity: beforeSubmitNewEntity,
         beforeSubmitEditEntity: beforeSubmitEditEntity,

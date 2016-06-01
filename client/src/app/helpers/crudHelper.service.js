@@ -34,6 +34,7 @@
     return service;
 
     function activateFunc(_vm_, controllerOptions) {
+      var response = controllerOptions.response;
       getResources = controllerOptions.getResources;
       beforeSubmitNewEntity = controllerOptions.beforeSubmitNewEntity;
       beforeSubmitEditEntity = controllerOptions.beforeSubmitEditEntity;
@@ -67,7 +68,16 @@
       vm.entityCreateErrors = null;
       vm.entityUpdateErrors = null;
 
-      getEntitys();
+      if (angular.isDefined(response)) {
+        if (angular.isArray(response)) 
+          entityLoaded(response);
+        else 
+          // error
+          entityLoadFailed(response);
+      }
+      else {
+        getEntitys();
+      }
     }
 
     function trashEntity(entity, confirmDelete) {
@@ -148,18 +158,25 @@
     function getEntitys() {
       getResources().query(
         function (response) {
-          $log.info('received data');
-          vm.entitys = response;
-          vm.loadingHasCompleted();
+          entityLoaded(response);
         },
         function (response) {
-          $log.error('data error ' + response.status + " " + response.statusText);
-          vm.loadingHasFailed(response);
+          entityLoadFailed(response);
         }
       );
     }
 
+    function entityLoaded(response) {
+      $log.info('received data');
+      vm.entitys = response;
+      vm.loadingHasCompleted();
+    }
 
+    function entityLoadFailed(response) {
+      $log.error('data error ' + response.status + " " + response.statusText);
+      vm.loadingHasFailed(response);
+    }
+    
     function createEntity(entity) {
       var body = makeEntityBody(entity);
       getResources().save(body,
