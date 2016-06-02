@@ -1,8 +1,8 @@
 /**
  * @ngdoc service
- * @name controllerUtils
+ * @name feUtils
  * @description
- * Service to transfer player JSON between frontend and backend
+ * Utility functions
  *
  */
 (function() {
@@ -16,19 +16,23 @@
   function utilsFunc() {
 
     var vm = this;
-    vm.normalizeObjectNames = normalizeObjectNames;
+    vm.categorizeProperties = categorizeProperties;
+    vm.escapeHtml = escapeHtml;
+    
 
 
-    // The map parameter is an object like:
-    // { first: 'first_name', last: 'last_name' }
-    // The data parameter is something like:
-    // { firstName: [...], lastName: [...], xyz: [...] }
-    // The result is this:
-    // { first_name: [...], last_name: [...], other: [...] }
-    // Because "firstName" contains "first", it is mapped to "first_name".
-    function normalizeObjectNames(data, map) {
+    // Group properties together.  The map
+    // parameter identifies the groups.  'Other' is the
+    // default group.
+    // If the map parameter is this:
+    // { first: 'first_name', last: null }
+    // If the data parameter is this:
+    // { firstName: ['f1'], first['f2'], last: ['la'], xyz: ['x'] }
+    // Then the result is this:
+    // { first_name: ['f1', 'f2'], last: ['la'], other: ['x'] }
+    function categorizeProperties(data, map) {
       var patt = "";
-
+      
       // build pattern like 'key1|key2|key3|.'
       angular.forEach(map, function (value, key) {
         patt = patt + key + "|"
@@ -56,7 +60,10 @@
       return errors;
     }
 
-
+    /* global _ */
+    function escapeHtml(text) {
+      return _.escape(text);
+    }
 
   }
 })();
