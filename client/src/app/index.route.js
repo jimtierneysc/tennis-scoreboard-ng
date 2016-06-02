@@ -111,30 +111,34 @@
 
     function resolvePlayers() {
       /** @ngInject */
-      return function (playersResource, $q, $log, waitIndicator) {
+      function resolve(playersResource, $q, $log, waitIndicator) {
         return resolveResourceQuery(playersResource.getPlayers(), $q, waitIndicator, $log);
       }
+      return resolve;
     }
 
     function resolveMatches() {
       /** @ngInject */
-      return function (matchesResource, $log, $q, waitIndicator) {
+      function resolve(matchesResource, $log, $q, waitIndicator) {
         return resolveResourceQuery(matchesResource.getMatches(), $q, waitIndicator, $log);
-      };
+      }
+      return resolve;
     }
 
     function resolveTeams() {
       /** @ngInject */
-      return function (teamsResource, $q, $log, waitIndicator) {
+      function resolve(teamsResource, $q, $log, waitIndicator) {
         return resolveResourceQuery(teamsResource.getTeams(), $q, waitIndicator, $log);
       }
+      return resolve;
     }
 
     function resolveScoreBoard() {
       /** @ngInject */
-      return function (scoreBoardResource, $stateParams, $q, waitIndicator, $log) {
+      function resolve(scoreBoardResource, $stateParams, $q, waitIndicator, $log) {
         return resolveResourceGet(scoreBoardResource.getScoreBoard(), $stateParams.id, $q, waitIndicator, $log);
       }
+      return resolve;
     }
 
     function resolveResourceQuery(resource, $q, waitIndicator, $log) {
