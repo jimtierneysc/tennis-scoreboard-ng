@@ -30,19 +30,18 @@
         getEntityDisplayName: getEntityDisplayName,
         makeEntityBody: makeEntityBody,
         scope: $scope,
-        entityFieldMap: {
+        errorCategories: {
           'title': null,
-          'first_team': 'first_team',
-          'second_team': 'second_team',
-          'first_singles_player': 'first_singles_player',
-          'second_singles_player': 'second_singles_player',
+          'first_team': null,
+          'second_team': null,
+          'first_singles_player': null,
+          'second_singles_player': null,
           'doubles': null,
           'scoring': null
         }
       }
     );
-
-
+    
     function beforeSubmitNewEntity(entity) {
       var result = {};
       beforeSubmitEntity(entity, result);
@@ -203,8 +202,6 @@
       if (angular.isDefined(entity.select_second_team))
         result.second_team_id = entity.select_second_team.id;
     }
-
-
   }
 })();
 

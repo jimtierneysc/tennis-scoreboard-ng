@@ -30,9 +30,6 @@
         ok: '@',
         teamslist: '=',
         playerslist: '='
-      },
-      link: function (scope, elem) {
-        $log.info('link');
       }
     };
 

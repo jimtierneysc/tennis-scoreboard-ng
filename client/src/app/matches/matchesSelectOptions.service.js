@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name matchesSelectOptions
  * @description
- * Provide list of matches for select list
+ * Provide a list of matches to populate a select list
  *
  */
 (function() {
