@@ -779,8 +779,6 @@ class Match < ActiveRecord::Base
       end
     end
 
-    private
-
     def remaining_servers
       remaining_servers_on_teams.compact
     end
