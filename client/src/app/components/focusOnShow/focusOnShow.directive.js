@@ -5,7 +5,7 @@
  * Set focus to element when shown by ng-show or ng-hide
  *
  * @example:
- <input type="text" ng-show="main.showInput" name="input" fe-focus-on-show>
+ * <input type="text" ng-show="main.showInput" name="input" fe-focus-on-show>
  */
 
 
