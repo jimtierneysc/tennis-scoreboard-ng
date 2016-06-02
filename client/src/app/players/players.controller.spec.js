@@ -38,7 +38,8 @@
             return [200, samplePlayers]
           });
         vm = $controller('PlayerController', {
-          $scope: $scope
+          $scope: $scope,
+          response: null
         });
         expect(vm.loading).toBe(true);
         $httpBackend.flush();
@@ -52,7 +53,8 @@
         var vm;
         $httpBackend.when('GET', resourceService.path).respond(500, {'error': 'something went wrong'});
         vm = $controller('PlayerController', {
-          $scope: $scope
+          $scope: $scope,
+          response: null
         });
         $httpBackend.flush();
 
@@ -68,7 +70,8 @@
         beforeEach(function () {
           $httpBackend.when('GET', resourceService.path).respond(200, samplePlayers);
           vm = $controller('PlayerController', {
-            $scope: $scope
+            $scope: $scope,
+            response: null
           });
           $httpBackend.flush();
 

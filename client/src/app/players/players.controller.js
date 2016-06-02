@@ -32,14 +32,13 @@
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
-          entityFieldMap: {
+          errorCategories: {
             'name': null
           }
         }
       );
     }
-
-
+    
     function beforeSubmitNewEntity(entity) {
       return {name: entity.name};
     }

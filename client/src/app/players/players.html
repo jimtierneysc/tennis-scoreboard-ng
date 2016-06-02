@@ -18,6 +18,7 @@
     <div class="col-xs-12">
       <ol class="list-group">
 
+        <!--Add player-->
         <li class="list-group-item" ng-if="main.showingNewEntityForm">
           <fe-players-form
             form="main.newEntityForm"
@@ -30,43 +31,6 @@
           </fe-players-form>
         </li>
 
-        <!--<li class="list-group-item" ng-if="main.showingNewEntityForm">-->
-
-          <!--&lt;!&ndash;Add player form&ndash;&gt;-->
-          <!--&lt;!&ndash;newEntityForm is member of controller&ndash;&gt;-->
-          <!--<form name="main.newEntityForm"-->
-                <!--ng-submit="main.submitNewEntityForm()" novalidate>-->
-            <!--<div>entityErrors: {{main.entityCreateErrors.toString()}}</div>-->
-            <!--<div>entityForm: {{main.newEntityForm.toString()}}</div>-->
-            <!--<div class="form-group"-->
-                 <!--ng-class="{ 'has-error' : (main.entityCreateErrors || main.newEntityForm.name.$error.required) && !main.newEntityForm.name.$pristine }">-->
-              <!--<label for="name" class="sr-only control-label">Entity Name</label>-->
-              <!--<div>-->
-                <!--&lt;!&ndash;angular directive focusOnShow watches ng-show &ndash;&gt;-->
-                <!--<input type="text" ng-show="main.showingNewEntityForm" class="form-control" id="name" name="name"-->
-                       <!--fe-focus-on-show-->
-                       <!--placeholder="Player Name"-->
-                       <!--ng-model="main.newEntity.name" required>-->
-            <!--<span ng-show="main.newEntityForm.name.$error.required && !main.newEntityForm.name.$pristine"-->
-                  <!--class="help-block">Player name is required.</span>-->
-
-                <!--<div ng-show="main.entityCreateErrors.name" ng-repeat="error in main.entityCreateErrors.name">-->
-                  <!--<span class="help-block">Name {{error}}</span>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-              <!--<button type="submit" class="btn btn-primary" ng-disabled="main.newEntityForm.$invalid">Add</button>-->
-              <!--<button type="Button" class="btn btn-info" ng-click="main.hideNewEntityForm()">Cancel</button>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;Other problems&ndash;&gt;-->
-            <!--<div ng-show="main.entityCreateErrors.other" ng-repeat="error in main.entityCreateErrors.other">-->
-              <!--<span class="help-block">{{error}}</span>-->
-            <!--</div>-->
-          <!--</form>-->
-
-
-        <!--</li>-->
 
         <!--Player details-->
         <li class="list-group-item clearfix" ng-repeat="entity in main.entitys">
@@ -92,62 +56,26 @@
           </div>
 
 
-          <!--Use ng-if so there won't be bunch of forms in the DOM-->
+          <!--Edit player-->
+
           <div ng-if="main.showingEditEntityForm(entity)">
 
             <div>
-            <fe-players-form
-              form="main.editEntityForm"
-              errors="main.entityUpdateErrors"
-              cancel="main.hideEditEntityForm()"
-              submit="main.submitEditEntityForm()"
-              entity="main.editEntity"
-              ok="Save"
-            >
-            </fe-players-form>
-              </div>
+              <fe-players-form
+                form="main.editEntityForm"
+                errors="main.entityUpdateErrors"
+                cancel="main.hideEditEntityForm()"
+                submit="main.submitEditEntityForm()"
+                entity="main.editEntity"
+                ok="Save"
+              >
+              </fe-players-form>
+            </div>
 
-
-            <!--&lt;!&ndash;Edit player form&ndash;&gt;-->
-            <!--&lt;!&ndash;newEntityForm is member of controller&ndash;&gt;-->
-            <!--<form name="main.editEntityForm"-->
-                  <!--ng-submit="main.submitEditEntityForm()" novalidate>-->
-              <!--<div class="form-group"-->
-                   <!--ng-class="{ 'has-error' : (main.entityUpdateErrors || main.editEntityForm.name.$error.required) && !main.editEntityForm.name.$pristine }">-->
-                <!--<label for="name" class="sr-only control-label">Entity Name</label>-->
-                <!--<div>-->
-                  <!--&lt;!&ndash;angular directive focusOnShow watches ng-show &ndash;&gt;-->
-                  <!--<input type="text" ng-show="main.showingEditEntityForm(entity)" class="form-control" id="name"-->
-                         <!--name="name"-->
-                         <!--fe-focus-on-show-->
-                         <!--placeholder="Player Name"-->
-                         <!--ng-model="main.editEntity.name" required>-->
-
-            <!--<span ng-show="main.editEntityForm.name.$error.required && !main.editEntityForm.name.$pristine"-->
-                  <!--class="help-block">Player name is required.</span>-->
-
-                  <!--<div ng-show="main.entityUpdateErrors.name" ng-repeat="error in main.entityUpdateErrors.name">-->
-                    <!--<span class="help-block">Name {{error}}</span>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class="form-group">-->
-                <!--<button type="submit" class="btn btn-primary" ng-disabled="main.editEntityForm.$invalid">Save</button>-->
-                <!--<button type="Button" class="btn btn-info" ng-click="main.hideEditEntityForm()">Cancel</button>-->
-              <!--</div>-->
-              <!--&lt;!&ndash;Other problems&ndash;&gt;-->
-              <!--<div ng-show="main.entityUpdateErrors.other" ng-repeat="error in main.entityUpdateErrors.other">-->
-                <!--<span class="help-block">{{error}}</span>-->
-              <!--</div>-->
-            <!--</form>-->
 
           </div>
-
-
         </li>
-
       </ol>
-
     </div>
   </div>
 </div>

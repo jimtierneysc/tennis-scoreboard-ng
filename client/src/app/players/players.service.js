@@ -27,7 +27,5 @@
       $log.info("getPlayers()");
       return $resource(path + '/:id', null, {'update': {method: 'PUT'}});
     }
-
-
   }
 })();
