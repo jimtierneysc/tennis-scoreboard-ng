@@ -33,10 +33,7 @@
             controller: 'PlayerController',
             controllerAs: 'main',
             resolve: {
-              /** @ngInject */
-              response: function (playersResource, $log, $q) {
-                return resolvePlayers(playersResource, $q, $log);
-              }
+              response: resolvePlayers()
             }
           }
         }
@@ -54,10 +51,7 @@
             controller: 'TeamController',
             controllerAs: 'main',
             resolve: {
-              /** @ngInject */
-              response: function (teamsResource, $log, $q) {
-                return resolveTeams(teamsResource, $q, $log);
-              }
+              response: resolveTeams()
             }
           }
         }
@@ -75,10 +69,7 @@
             controller: 'MatchController',
             controllerAs: 'main',
             resolve: {
-              /** @ngInject */
-              response: function (matchesResource, $log, $q) {
-                return resolveMatches(matchesResource, $q, $log);
-              }
+              response: resolveMatches()
             }
           }
         }
@@ -96,10 +87,8 @@
             controller: 'ScoreController',
             controllerAs: 'main',
             resolve: {
-              /** @ngInject */
-              response: function (matchesResource, $log, $q) {
-                return resolveMatches(matchesResource, $q, $log);
-              }
+              // parent view shows list of matches
+              response: resolveMatches()
             }
           }
         }
@@ -111,57 +100,73 @@
         controller: 'ScoreBoardController',
         controllerAs: 'sub',
         resolve: {
-          /** @ngInject */
-          response: function (scoreBoardResource, $stateParams, $log, $q) {
-            return resolveScoreBoard(scoreBoardResource, $stateParams, $q, $log);
-          }
+          response: resolveScoreBoard()
         }
+
 
       })
     ;
 
     $urlRouterProvider.otherwise('/');
 
-    function resolvePlayers(playersResource, $q, $log) {
-      return resolveResourceQuery(playersResource.getPlayers(), $q, $log);
+    function resolvePlayers() {
+      /** @ngInject */
+      return function (playersResource, $q, $log, waitIndicator) {
+        return resolveResourceQuery(playersResource.getPlayers(), $q, waitIndicator, $log);
+      }
     }
 
-    function resolveMatches(matchesResource, $q, $log) {
-      return resolveResourceQuery(matchesResource.getMatches(), $q, $log);
+    function resolveMatches() {
+      /** @ngInject */
+      return function (matchesResource, $log, $q, waitIndicator) {
+        return resolveResourceQuery(matchesResource.getMatches(), $q, waitIndicator, $log);
+      };
     }
 
-    function resolveTeams(teamsResource, $q, $log) {
-      return resolveResourceQuery(teamsResource.getTeams(), $q, $log);
+    function resolveTeams() {
+      /** @ngInject */
+      return function (teamsResource, $q, $log, waitIndicator) {
+        return resolveResourceQuery(teamsResource.getTeams(), $q, waitIndicator, $log);
+      }
     }
 
-    function resolveScoreBoard(scoreBoardsResource, $stateParams, $q, $log) {
-      return resolveResourceGet(scoreBoardsResource.getScoreBoard(), $stateParams.id, $q, $log);
+    function resolveScoreBoard() {
+      /** @ngInject */
+      return function (scoreBoardResource, $stateParams, $q, waitIndicator, $log) {
+        return resolveResourceGet(scoreBoardResource.getScoreBoard(), $stateParams.id, $q, waitIndicator, $log);
+      }
     }
 
-    function resolveResourceQuery(resource, $q, $log) {
+    function resolveResourceQuery(resource, $q, waitIndicator, $log) {
       var deferred = $q.defer();
+      var endWait = waitIndicator.beginWait();
       resource.query(
         function (response) {
           $log.info('received data');
+          endWait();
           deferred.resolve(response);
         },
         function (response) {
           $log.error('data error ' + response.status + " " + response.statusText);
+          endWait();
           deferred.resolve(response);
         }
       );
       return deferred.promise;
     }
 
-    function resolveResourceGet(resource, id, $q, $log) {
+    function resolveResourceGet(resource, id, $q, waitIndicator, $log) {
       var deferred = $q.defer();
+      var endWait = waitIndicator.beginWait();
       resource.get({id: id},
         function (response) {
           $log.info('received data');
+          endWait();
           deferred.resolve(response);
         },
         function (response) {
           $log.error('data error ' + response.status + " " + response.statusText);
+          endWait();
           deferred.resolve(response);
         }
       );
