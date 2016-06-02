@@ -8,15 +8,13 @@
 (function () {
   'use strict';
 
-  /* global _ */
-
   angular
     .module('frontend')
     .controller('ScoreBoardController', MainController);
 
   /** @ngInject */
-  function MainController($log, $q, $scope, $stateParams, modalConfirm, $cookies, scoreBoardResource, loadingHelper, toastrHelper,
-                          response) {
+  function MainController($log, $q, $scope, $stateParams, feUtils, modalConfirm, $cookies, scoreBoardResource, loadingHelper,
+                          waitIndicator, toastrHelper, response) {
     var vm = this;
 
     vm.id = $stateParams.id;
@@ -36,10 +34,10 @@
       loadingHelper.activate(vm);
       toastrHelper.activate(vm, $scope);
       getCookies();
-      if (angular.isDefined(response)) {
-        if (angular.isDefined(response.id)) 
+      if (response) {
+        if (angular.isDefined(response.id))
           getScoreBoardSucceeded(response);
-        else 
+        else
           getScoreBoardFailed(response);
       }
       else {
@@ -71,7 +69,7 @@
       if (confirm) {
         modalConfirm.confirm({
           title: confirmActions[action], text: 'Are you sure you want to clear scores of match "' +
-          _.escape(vm.scoreBoard.title) + '"?'
+          feUtils.escapeHtml(vm.scoreBoard.title) + '"?'
         })
           .then(function () {
             $log.info('update confirmed');
@@ -99,23 +97,26 @@
     }
 
     function getScoreBoard() {
+      var endWait = waitIndicator.beginWait();
       scoreBoardResource.getScoreBoard().get({id: vm.id},
         function (response) {
+          endWait();
           getScoreBoardSucceeded(response);
         },
         function (response) {
+          endWait();
           getScoreBoardFailed(response);
         }
       );
     }
-    
+
     function getScoreBoardSucceeded(response) {
       $log.info('received data');
       vm.scoreBoard = response;
       prepareScoreBoard(vm.scoreBoard);
       vm.loadingHasCompleted();
     }
-    
+
     function getScoreBoardFailed(response) {
       $log.error('data error ' + response.status + " " + response.statusText);
       vm.loadingHasFailed(response);
@@ -124,14 +125,17 @@
     function scoreBoardResourceUpdate(action, params) {
       var key = {id: vm.id};
       var body = makeUpdateBody(action, params);
+      var endWait = waitIndicator.beginWait();
       scoreBoardResource.getScoreBoard().update(key, body,
         function (response) {
           $log.info('update score');
           $log.info(response);
+          endWait();
           scoreUpdated(response);
         },
         function (response) {
           $log.error('update error ' + response.status + " " + response.statusText);
+          endWait();
           scoreUpdateError(body, response);
         }
       );
@@ -194,8 +198,8 @@
       // Reverse order of sets and games to
       // display most recent games at top of view.
       // Once the set is complete, do not reverse.
-      if (sb.state != 'complete')
-        reverseOrder();
+      // if (sb.state != 'complete')
+        reverseOrder();  // Always reverse
 
       function prepareUpdate() {
 
