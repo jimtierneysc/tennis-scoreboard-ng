@@ -154,7 +154,7 @@
     <tr ng-if="!set.showGames() && scores.showWinGameButton && set == scores.sets[0]"
         ng-init="title = set.games.length">
       <th class="score-col-1">
-        <span class="dim-text">{{title}}</span>
+        <span class="xdim-text">{{title}}</span>
       </th>
       <th class="score-col-3" colspan="2" ng-if="!scores.keepingScore()">
         <!--Game status-->
@@ -180,7 +180,7 @@
 
     <tr ng-repeat="game in set.games" ng-init="break = game.winner != game.server" ng-if="set.showGames()">
       <th class="score-col-1">
-        <span class="dim-text">{{game.title}}</span>
+        <span class="xdim-text">{{game.title}}</span>
       </th>
       <th class="score-col-3" colspan="2" ng-if="!game.winner && !scores.keepingScore()">
         <fe-score-status scores="scores" title="game.title"></fe-score-status>

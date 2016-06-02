@@ -23,11 +23,7 @@
       templateUrl: 'app/scores/matchPlayDescription.html',
       scope: {
         match: '='
-      },
-      link: function (scope, elem) {
-        $log.info('link');
       }
-
     };
 
     return directive;

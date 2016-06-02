@@ -16,18 +16,6 @@ $col_3_min_width: 240px;
   text-align: center;
 }
 
-.play-description {
-  th {
-    width: 100px;
-  }
-}
-
-table.play-table {
-  width: $table_width;
-  table-layout: fixed;
-  margin-bottom: 0px;
-}
-
 // Default to maximum size
 .score-col-1 {
   width: $col_1_width;
@@ -82,11 +70,15 @@ table.play-table {
 
 .match-btn {
   width: 100%;
+  // btn-sm
+  //@include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
+  // Custom
+  //@include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-base, $line-height-small, $btn-border-radius-small);
 }
 
-.invisible-link, .invisible-text {
-  display: none;
-}
+//.invisible-link, .invisible-text {
+//  display: none;
+//}
 
 @mixin hide-overflow {
   overflow: hidden;
@@ -139,10 +131,10 @@ div.player-col-2 {
   @include hide-overflow-padding;
 }
 
-.dim-text {
-  color: $table-border-color; // bootstrap variable
-  font-weight: normal;
-}
+//.dim-text {
+//  color: $table-border-color; // bootstrap variable
+//  font-weight: normal;
+//}
 
 // css to flip glyph icon
 .flip-horizontal {
@@ -168,23 +160,23 @@ div.player-col-2 {
 }
 
 // icon bar button but outside of navbar
-.dropdown-toggle {
-
-  .icon-bars-button {
-    display: inline-block;
-    vertical-align: middle;
-  }
-
-  .icon-bar {
-    margin-bottom: 2px;
-    display: block;
-    width: 22px;
-    height: 2px;
-    background-color: #cccccc;
-    border-radius: 1px;
-  }
-
-}
+//.dropdown-toggle {
+//
+//  .icon-bars-button {
+//    display: inline-block;
+//    vertical-align: middle;
+//  }
+//
+//  .icon-bar {
+//    margin-bottom: 2px;
+//    display: block;
+//    width: 22px;
+//    height: 2px;
+//    background-color: #cccccc;
+//    border-radius: 1px;
+//  }
+//
+//}
 
 // Disable links in bootstrap drop down menu
 .dropdown-menu > li > a.disabled-link {
@@ -209,13 +201,22 @@ div.player-col-2 {
   .toolbar-cell {
     border: none;
   }
-  //.no_borderx {
-  //  background-color: blue;
-  //  border: none;
-  //  box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
-  //
-  //}
 }
+
+
+.play-description {
+  th {
+    width: 100px;
+  }
+}
+
+table.play-table {
+  width: $table_width;
+  table-layout: fixed;
+  margin-bottom: 0px;
+}
+
+
 
 
 
