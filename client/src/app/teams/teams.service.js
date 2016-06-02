@@ -28,10 +28,9 @@
       var Team = $resource(path + '/:id', null, {'update': {method: 'PUT'}});
       defineProperties(Team.prototype);
       return Team;
-
     }
-
-
+    
+    // Add client-side properties
     function defineProperties(klass) {
       Object.defineProperty(
         klass,

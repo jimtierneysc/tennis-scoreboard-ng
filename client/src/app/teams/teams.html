@@ -18,6 +18,9 @@
     <div class="col-xs-12">
       <ol class="list-group">
         <li class="list-group-item" ng-if="main.showingNewEntityForm">
+
+          <!--New team-->
+
           <fe-teams-form
             form="main.newEntityForm"
             errors="main.entityCreateErrors"
@@ -58,6 +61,8 @@
             </div>
           </div>
 
+
+          <!--Edit team-->
 
           <!--Use ng-if so there won't be bunch of forms in the DOM-->
           <div ng-if="main.showingEditEntityForm(entity)">

@@ -29,9 +29,6 @@
         entity: '=',
         ok: '@',
         playerslist: '='
-      },
-      link: function (scope, elem) {
-        $log.info('link');
       }
     };
 

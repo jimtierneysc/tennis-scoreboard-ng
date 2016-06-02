@@ -28,8 +28,7 @@
         getEntityDisplayName: getEntityDisplayName,
         makeEntityBody: makeEntityBody,
         scope: $scope,
-        // TODO: clean this up, rename or something
-        entityFieldMap: {
+        errorCategories: {
           'name': null,
           'first': 'first_player',
           'second': 'second_player'
