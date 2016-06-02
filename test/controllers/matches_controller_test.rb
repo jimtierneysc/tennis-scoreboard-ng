@@ -100,15 +100,6 @@ class MatchesControllerTest < ActionController::TestCase
     assert_response 204
   end
 
-  def only_players(count)
-    Match.delete_all # must delete references to teams
-    Team.delete_all # must delete references to players
-    Player.delete_all
-    1.upto(count) do |i|
-      Player.new(name: i.to_s).save!
-    end
-  end
-
   # TODO: Implement logic in client
   # test 'cannot create singles match when zero players' do
   #   only_players(0)
@@ -127,20 +118,6 @@ class MatchesControllerTest < ActionController::TestCase
   #   get :new
   #   refute flash[:alert]
   # end
-
-  # Clear all matches and teams. Create "count" teams.
-  def only_teams(count)
-    Match.delete_all
-    Team.delete_all
-    player_id_list = []
-    [:one, :two, :three, :four].each { |sym| player_id_list << players(sym).id }
-    1.upto(count) do
-      Team.new(doubles: true,
-               first_player_id: player_id_list[0],
-               second_player_id: player_id_list[1]).save!
-      player_id_list.rotate!
-    end
-  end
 
   # TODO: Implement logic in client
   # test 'cannot create doubles match when zero teams' do

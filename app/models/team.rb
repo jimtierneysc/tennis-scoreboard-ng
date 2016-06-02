@@ -19,6 +19,10 @@ class Team < ActiveRecord::Base
   validate :that_is_unique_player_pair
   before_destroy :that_can_destroy_team
 
+  # If a name is not provided when match is created, generate
+  # one (as convenience for user)
+  before_create { self.name = next_team_name if self.name.blank? }
+
   def players
     [first_player, second_player]
   end
@@ -92,4 +96,19 @@ class Team < ActiveRecord::Base
       end
     end
   end
+
+  # Generate a unique title for a team
+  def next_team_name
+    "Team#{next_team_number}"
+  end
+
+  # Get a unique number to use when generating a team title
+  def next_team_number
+    # This returns a PGresult object
+    # [http://rubydoc.info/github/ged/ruby-pg/master/PGresult]
+    result = Team.connection.execute("SELECT nextval('team_number_seq')")
+    result[0]['nextval']
+  end
+
+
 end

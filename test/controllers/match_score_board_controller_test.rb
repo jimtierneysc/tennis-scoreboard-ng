@@ -160,25 +160,13 @@ class MatchScoreBoardControllerTest < ActionController::TestCase
     match.change_score! :start_next_set
     first_server = match.first_team.first_player
     second_server = match.second_team.first_player
-    match.apply_first_or_second_player_server first_server
     match.change_score! :start_next_game
     assert_equal 1, match.first_set.set_games.count
     assert_equal first_server, match.first_player_server
     match.change_score! :win_game, match.first_team
-    post :updatematchserver,
-         id: match,
-         match: { player_server_id: second_server }
     match.reload
-    assert_equal 2, match.first_set.set_games.count
+    assert_equal 1, match.first_set.set_games.count
     assert_equal second_server, match.second_player_server
-  end
-
-  test 'should not create empty match player server' do
-    match = matches(:m_two_six_game_ten_point_doubles).change_score! :start_play
-    match.change_score! :start_next_set
-    post :updatematchserver, id: match, match: { player_server_id: nil }
-    match.reload
-    assert_equal 0, match.first_set.set_games.count
   end
 
   test 'should win first game' do
