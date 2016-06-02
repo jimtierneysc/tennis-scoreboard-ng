@@ -13,7 +13,8 @@
     .factory('crudHelper', crudHelperFunc);
 
   /** @ngInject */
-  function crudHelperFunc($log, $q, modalConfirm, toastr, feUtils, $filter, loadingHelper, toastrHelper) {
+  function crudHelperFunc($log, $q, modalConfirm, toastr, feUtils, $filter, loadingHelper, toastrHelper,
+                          waitIndicator) {
     var service = {
       activate: activateFunc
     };
@@ -47,7 +48,7 @@
       vm = _vm_;
       loadingHelper.activate(vm);
       toastrHelper.activate(vm, scope);
-      
+
       vm.trashEntity = trashEntity;
       vm.submitNewEntityForm = submitNewEntityForm;
       vm.showNewEntityForm = showNewEntityForm;
@@ -55,7 +56,7 @@
       vm.submitEditEntityForm = submitEditEntityForm;
       vm.showEditEntityForm = showEditEntityForm;
       vm.hideEditEntityForm = hideEditEntityForm;
-      
+
       vm.newEntity = {};
       vm.showingNewEntityForm = false;
       vm.showingEditEntityForm = showingEditEntityForm;
@@ -69,7 +70,7 @@
         if (angular.isArray(response))
           entityLoaded(response);
         else
-          // error
+        // error
           entityLoadFailed(response);
       }
       else {

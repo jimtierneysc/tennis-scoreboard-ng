@@ -13,7 +13,8 @@
     .controller('ScoreController', MainController);
 
   /** @ngInject */
-  function MainController($log, $filter, $state, matchesResource, $q, loadingHelper, response) {
+  function MainController($log, $filter, $state, matchesResource, $q, loadingHelper, 
+                          waitIndicator, response) {
 
 
     var vm = this;
@@ -27,7 +28,7 @@
 
       loadingHelper.activate(vm);
 
-      if (angular.isDefined(response)) {
+      if (response) {
         if (angular.isArray(response))
           getMatchesSucceeded(response);
         else
@@ -38,11 +39,14 @@
     }
 
     function getMatches() {
+      var endWait = waitIndicator.beginWait();
       matchesResource.getMatches().query(
         function (response) {
+          endWait();
           getMatchesSucceeded(response);
         },
         function (response) {
+          endWait();
           getMatchesFailed(response);
         }
       );
@@ -61,7 +65,6 @@
     }
 
     function selectMatch() {
-      var state = $state;
       if (angular.isDefined($state.current.name)) {
         if ($state.current.name == 'scores.board') {
           var id = $state.params.id;
