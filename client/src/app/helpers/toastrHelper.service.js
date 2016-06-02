@@ -8,14 +8,12 @@
 (function () {
   'use strict';
 
-  /* global _ */
-  
   angular
     .module('frontend')
     .factory('toastrHelper', helperFunc);
 
   /** @ngInject */
-  function helperFunc($log, toastr) {
+  function helperFunc($log, toastr, feUtils) {
     var service = {
       activate: activateFunc
     };
@@ -34,13 +32,13 @@
         toastr.clear();
       });
     }
-
-
+    
     function showToastrError(message, caption) {
       if (angular.isUndefined(caption))
         caption = 'Error';
 
-      vm.lastToast = toastr.error(_.escape(message), caption);
+      toastr.clear();
+      vm.lastToast = toastr.error(feUtils.escapeHtml(message), caption);
     }
 
 
