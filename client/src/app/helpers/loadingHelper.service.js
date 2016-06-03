@@ -13,7 +13,7 @@
     .factory('loadingHelper', helperFunc);
 
   /** @ngInject */
-  function helperFunc($log) {
+  function helperFunc() {
     var service = {
       activate: activateFunc
     };

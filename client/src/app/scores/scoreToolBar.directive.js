@@ -17,7 +17,7 @@
     .directive('feScoreToolBar', directiveFunc);
 
   /** @ngInject */
-  function directiveFunc($log) {
+  function directiveFunc() {
     var directive = {
       restrict: 'EA',
       templateUrl: 'app/scores/scoreToolBar.html',

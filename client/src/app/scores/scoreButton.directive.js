@@ -17,7 +17,7 @@
     .directive('feScoreButton', directiveFunc);
 
   /** @ngInject */
-  function directiveFunc($log) {
+  function directiveFunc() {
     var directive = {
       restrict: 'EA',
       templateUrl: 'app/scores/scoreButton.html',

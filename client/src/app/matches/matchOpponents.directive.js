@@ -17,7 +17,7 @@
     .directive('feMatchOpponents', directiveFunc);
 
   /** @ngInject */
-  function directiveFunc($log) {
+  function directiveFunc() {
     var directive = {
       restrict: 'EA',
       templateUrl: 'app/matches/matchOpponents.html',
