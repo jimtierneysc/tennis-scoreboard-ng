@@ -34,14 +34,14 @@
           'title': null,
           'first_team': null,
           'second_team': null,
-          'first_singles_player': null,
-          'second_singles_player': null,
+          'first_singles_player': 'first_player',
+          'second_singles_player': 'second_player',
           'doubles': null,
           'scoring': null
         }
       }
     );
-    
+
     function beforeSubmitNewEntity(entity) {
       var result = {};
       beforeSubmitEntity(entity, result);
