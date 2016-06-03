@@ -16,7 +16,7 @@ Rails API application using conventional Angular $resource calls.
 
 The two application are built independently.    
 
-### Progress
+### Status
 
 COMPLETE
 
@@ -65,8 +65,6 @@ TODO
     * Install Postgres server
     * `rake db:create`
     * `rake db:migrate`
-* Add a user
-    * TODO when login is working
 * Sample data
     * `rake db:sample_data`
     * `rake db:clear_data` to clear
