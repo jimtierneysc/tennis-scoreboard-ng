@@ -3,7 +3,7 @@
     Match won by
     <span ng-init="winner = (match.winner == match.first_team.id) ? match.first_team : match.second_team">
       <span ng-if="winner.name">
-        <strong>{{winner.name}}</strong>
+        {{winner.name}}
       </span>
       <span ng-if="!winner.name">
         {{winner.first_player.name}} and {{winner.second_player.name}}
