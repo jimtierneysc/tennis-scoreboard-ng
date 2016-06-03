@@ -266,13 +266,22 @@
     }
 
     function entityCreateError(entity, response) {
-      var errors = categorizeErrors(response.data);
+      var errors = errorsOfResponse(response);
       vm.entityCreateErrors = errors;
     }
 
     function entityUpdateError(entity, response) {
-      var errors = categorizeErrors(response.data);
+      var errors = errorsOfResponse(response);
       vm.entityUpdateErrors = errors;
+    }
+
+    function errorsOfResponse(response) {
+      var result;
+      if (angular.isDefined(response.data) && response.data)
+        result = categorizeErrors(response.data);
+      else
+        result = categorizeErrors({'other': response.statusText});
+      return result;
     }
 
     function entityRemoved(entity) {

@@ -165,17 +165,20 @@
 
     function scoreUpdated(response) {
       angular.copy(response, vm.scoreBoard);
-      if (vm.scoreBoard.errors.other) {
-        // TODO: Extract message
-        vm.showToastrError(vm.scoreBoard.errors.other[0])
+      if (vm.scoreBoard.errors && !angular.equals({}, vm.scoreBoard.errors)) {
+        var errors = feUtils.categorizeProperties(vm.scoreBoard.errors, null);
+        var message = null;
+        if (angular.isDefined(errors.other))
+          message = errors.other[0];
+        if (!message)
+          message = 'Unable to update score';
+        vm.showToastrError(message)
       }
       prepareScoreBoard(vm.scoreBoard);
     }
 
     function scoreUpdateError(body, response) {
-      // TODO: response.data not a good message
-      vm.loadingHasFailed(response, response.data);
-
+      vm.loadingHasFailed(response, null);
     }
 
     // prepare scoreboard for viewing

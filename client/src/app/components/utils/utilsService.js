@@ -39,13 +39,13 @@
       });
       patt = patt + ".";
       var regExp = new RegExp(patt);
-      var errors = {};
+      var result = {};
       angular.forEach(data, function (value, key) {
         var match = regExp.exec(key);
         var newKey = null;
         if (match) {
           match = match[0];
-          if (angular.isDefined(map[match])) {
+          if (map && angular.isDefined(map[match])) {
             newKey = map[match];
             if (newKey == null) {
               newKey = key;  // same key name
@@ -54,10 +54,10 @@
         }
         if (!newKey)
           newKey = 'other';  // catch all key name
-        var arr = errors[newKey] || [];
-        errors[newKey] = arr.concat(value);
+        var arr = result[newKey] || [];
+        result[newKey] = arr.concat(value);
       });
-      return errors;
+      return result;
     }
 
     /* global _ */
