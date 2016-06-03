@@ -62,7 +62,7 @@ class Team < ActiveRecord::Base
   def that_is_valid_first_player
       if first_player.nil?
         errors.add(:first_player, if first_player_id.blank?
-                                     'must be specified'
+                                     'must not be blank'
                                    else
                                      'not found'
                                    end)
