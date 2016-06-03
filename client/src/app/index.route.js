@@ -21,7 +21,6 @@
         }
       })
       .state('players', {
-
         url: '/players',
         views: {
           'header': {
@@ -39,7 +38,6 @@
         }
       })
       .state('teams', {
-
         url: '/teams',
         views: {
           'header': {
@@ -57,7 +55,6 @@
         }
       })
       .state('matches', {
-
         url: '/matches',
         views: {
           'header': {
@@ -75,7 +72,6 @@
         }
       })
       .state('scores', {
-
         url: '/scores',
         views: {
           'header': {
@@ -94,7 +90,6 @@
         }
       })
       .state('scores.board', {
-
         url: '/board/:id',
         templateUrl: 'app/scores/scoreBoard.html',
         controller: 'ScoreBoardController',
@@ -102,8 +97,6 @@
         resolve: {
           response: resolveScoreBoard()
         }
-
-
       })
     ;
 
