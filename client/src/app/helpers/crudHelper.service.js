@@ -277,7 +277,7 @@
 
     function errorsOfResponse(response) {
       var result;
-      if (angular.isDefined(response.data) && response.data)
+      if (angular.isObject(response.data))
         result = categorizeErrors(response.data);
       else
         result = categorizeErrors({'other': response.statusText});
@@ -294,10 +294,13 @@
     }
 
     function entityRemoveError(entity, response) {
-      var errors = categorizeErrors(response.data);
       var message = "";
-      if (angular.isDefined(errors.other))
-        message = errors.other;
+      if (angular.isObject(response.data)) {
+        var errors = categorizeErrors(response.data);
+        if (angular.isDefined(errors.other))
+          message = errors.other;
+        }
+      }
       vm.showToastrError(message, "Delete Error");
     }
 
