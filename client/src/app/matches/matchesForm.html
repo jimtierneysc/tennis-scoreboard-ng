@@ -81,6 +81,7 @@
   </div>
 
 
+  <!--TODO: Team select lists should display player names-->
   <div ng-if="entity.doubles">
     <!--First Team-->
     <div class="form-group" ng-class="{ 'has-error': errors.first_team }">
@@ -103,7 +104,7 @@
 
     </div>
 
-    <!--Second player-->
+    <!--Second team-->
     <div class="form-group" ng-class="{ 'has-error': errors.second_team }">
       <label for="second_team" class="control-label sr-only">Second Player</label>
       <ui-select ng-model="entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
