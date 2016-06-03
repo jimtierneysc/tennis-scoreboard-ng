@@ -10,23 +10,26 @@
 
 
   <div ng-if="!sub.loading && !sub.loadingFailed">
-    <div>
-      <fe-match-play-description match="sub.scoreBoard"></fe-match-play-description>
+    <div class="play-table">
+      <div ng-if="sub.scoreBoard.doubles && sub.scoreBoard.first_team.name != null && sub.scoreBoard.second_team.name != null" class="match-detail">
+        "{{sub.scoreBoard.first_team.name}}" vs. "{{sub.scoreBoard.second_team.name}}"
+      </div>
+      <div class="match-detail">
+        <fe-match-scoring match="sub.scoreBoard"></fe-match-scoring>
+      </div>
+      <div class="match-detail">
+        <fe-match-status match="sub.scoreBoard"></fe-match-status>
+      </div>
+
+    </div>
+
+    <div class="play-table">
+      <fe-score-tool-bar scores="sub.scoreBoard"></fe-score-tool-bar>
     </div>
 
     <div>
       <fe-score-table scores="sub.scoreBoard"></fe-score-table>
     </div>
-
-    <!--<div>-->
-    <!--errors: {{sub.scoreBoard.errors}}-->
-    <!--</div>-->
-    <!--<div>-->
-    <!--actions: {{sub.scoreBoard.actions}}-->
-    <!--</div>-->
-    <!--<div>-->
-    <!--view: {{sub.view}}-->
-    <!--</div>-->
 
   </div>
 </div>

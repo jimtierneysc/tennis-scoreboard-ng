@@ -1,0 +1,41 @@
+<div ng-if="match.doubles" class="pull-left">
+  <!--Doubles-->
+  <div class="pull-left">
+    <div ng-if="match.first_team.name != null">
+      <span>"{{match.first_team.name}}"</span>
+      <br>
+    </div>
+    <span>{{match.first_team.first_player.name}}</span> and
+    <span>{{match.first_team.second_player.name}}</span>
+  </div>
+  <div class="pull-left">
+    <div
+      ng-class="{ 'match.first_team.name != null || match.second_team.name != null' : 'vert-center-two-line'}" >
+      &nbsp;vs.&nbsp;
+    </div>
+  </div>
+  <div class="pull-left">
+    <div ng-if="match.second_team.name != null">
+      <span>"{{match.second_team.name}}"</span>
+      <br>
+    </div>
+    <span>{{match.second_team.first_player.name}}</span> and
+    <span>{{match.second_team.second_player.name}}</span>
+  </div>
+</div>
+
+<div ng-if="!match.doubles" class="pull-left">
+  <!--Singles-->
+  <div class="pull-left">
+    <span>{{match.first_player.name}}</span>
+  </div>
+  <div class="pull-left">
+    <div>
+      &nbsp;vs.&nbsp;
+    </div>
+  </div>
+  <div class="pull-left">
+    <span>{{match.second_player.name}}</span>
+  </div>
+</div>
+<div class="clearfix"></div>

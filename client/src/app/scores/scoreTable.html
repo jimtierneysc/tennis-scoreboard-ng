@@ -1,11 +1,5 @@
-<div id="match_table">
+<div id="match_table" class="clearfix">
   <table class="table table-bordered table-condensed play-table">
-    <tr>
-      <th colspan="3" class="toolbar-cell">
-        <fe-score-tool-bar scores="scores"></fe-score-tool-bar>
-      </th>
-    </tr>
-
     <tr>
 
       <th class="score-col-1"></th>
@@ -154,7 +148,18 @@
     <tr ng-if="!set.showGames() && scores.showWinGameButton && set == scores.sets[0]"
         ng-init="title = set.games.length">
       <th class="score-col-1">
-        <span class="xdim-text">{{title}}</span>
+
+        <span ng-if="scores.gameTiebreakerLabel">
+          {{scores.gameTiebreakerLabel}}
+        </span>
+        <!--Display "Game" prefix sometimes-->
+        <div ng-if="!scores.gameTiebreakerLabel">
+        <span class="hidden-xs">
+          Game
+        </span>
+        <span>{{title}}
+        </span>
+        </div>
       </th>
       <th class="score-col-3" colspan="2" ng-if="!scores.keepingScore()">
         <!--Game status-->
@@ -180,7 +185,11 @@
 
     <tr ng-repeat="game in set.games" ng-init="break = game.winner != game.server" ng-if="set.showGames()">
       <th class="score-col-1">
-        <span class="xdim-text">{{game.title}}</span>
+        <!--Display "Game" prefix sometimes-->
+        <span><span class="hidden-xs"
+                    ng-if="!game.tiebreaker && game == set.games[0] && !(scores.newGame && scores.newGame.set == set)">
+          Game </span>{{game.title}}
+        </span>
       </th>
       <th class="score-col-3" colspan="2" ng-if="!game.winner && !scores.keepingScore()">
         <fe-score-status scores="scores" title="game.title"></fe-score-status>

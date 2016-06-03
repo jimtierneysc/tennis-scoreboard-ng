@@ -44,23 +44,23 @@
           <a href ng-click="scores.changeViewExpand()" ng-model="scores.view.expand" uib-btn-radio="'collapse'">
           <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.expand != 'collapse'}">
           </span>
-            Collapsed
+            Show Sets Only
           </a>
         </li>
-        <li role="menuitem">
-          <!--Expand set-->
-          <a href ng-click="scores.changeViewExpand()" ng-model="scores.view.expand" uib-btn-radio="'expand_set'">
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.expand != 'expand_set'}">
-          </span>
-            Expand Set
-          </a>
-        </li>
+        <!--<li role="menuitem">-->
+          <!--&lt;!&ndash;Expand set&ndash;&gt;-->
+          <!--<a href ng-click="scores.changeViewExpand()" ng-model="scores.view.expand" uib-btn-radio="'expand_set'">-->
+          <!--<span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.expand != 'expand_set'}">-->
+          <!--</span>-->
+            <!--Expand Set-->
+          <!--</a>-->
+        <!--</li>-->
         <li role="menuitem">
           <!--Expand all-->
           <a href ng-click="scores.changeViewExpand()" ng-model="scores.view.expand" uib-btn-radio="'expand_all'">
           <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.expand != 'expand_all'}">
           </span>
-            Expand All
+            Show Sets and Games
           </a>
         </li>
         <li class="divider"></li>

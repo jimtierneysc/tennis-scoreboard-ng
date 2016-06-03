@@ -43,67 +43,70 @@
               <div class="h4">
                 {{ entity.title}}
               </div>
-              <div>
-                <div>
-                  Status
-                </div>
-                <div>
-                  {{ entity.state }}
-                </div>
+              <div class="match-detail">
+                <fe-match-opponents match="entity"></fe-match-opponents>
               </div>
-              <div ng-if="entity.winner_player">
-                <div>
-                  Winner
-                </div>
-                <div>
-                  {{ entity.winner_player.name}}
-                </div>
+              <div class="match-detail">
+                <fe-match-scoring match="entity"></fe-match-scoring>
               </div>
-              <div ng-if="entity.winner_team">
-                <div>
-                  Winner
-                </div>
-                <div>
-                  {{ entity.winner_team.name}}
-                </div>
+              <div class="match-detail">
+                <fe-match-status match="entity"></fe-match-status>
               </div>
-              <div ng-if="entity.doubles">
-                <div>
-                  Teams
-                </div>
-                <div ng-if="entity.first_team.name">
-                  {{entity.first_team.name}}
-                </div>
-                <div>
-                  {{entity.first_team.first_player_name}}, {{entity.first_team.second_player_name}}
-                </div>
-                <div ng-if="entity.second_team.name">
-                  {{entity.second_team.name}}
-                </div>
-                <div>
-                  {{entity.second_team.first_player_name}}, {{entity.second_team.second_player_name}}
-                </div>
-              </div>
-              <div ng-if="!entity.doubles">
-                <div>
-                  <div>
-                    Players
-                  </div>
-                  <div>
-                    {{entity.first_player.name}}
-                  </div>
-                  <div>
-                    {{entity.second_player.name}}
-                  </div>
-                </div>
 
-              </div>
-              <div>
-                <a
-                   ui-sref-active="active" ui-sref="scores.board({ id: entity.id })">Score
-                </a>
+              <!--</div>-->
+              <!--<div ng-if="entity.winner_player">-->
+              <!--<div>-->
+              <!--Winner-->
+              <!--</div>-->
+              <!--<div>-->
+              <!--{{ entity.winner_player.name}}-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<div ng-if="entity.winner_team">-->
+              <!--<div>-->
+              <!--Winner-->
+              <!--</div>-->
+              <!--<div>-->
+              <!--{{ entity.winner_team.name}}-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<div ng-if="entity.doubles">-->
+              <!--<div>-->
+              <!--Teams-->
+              <!--</div>-->
+              <!--<div ng-if="entity.first_team.name">-->
+              <!--{{entity.first_team.name}}-->
+              <!--</div>-->
+              <!--<div>-->
+              <!--{{entity.first_team.first_player_name}}, {{entity.first_team.second_player_name}}-->
+              <!--</div>-->
+              <!--<div ng-if="entity.second_team.name">-->
+              <!--{{entity.second_team.name}}-->
+              <!--</div>-->
+              <!--<div>-->
+              <!--{{entity.second_team.first_player_name}}, {{entity.second_team.second_player_name}}-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<div ng-if="!entity.doubles">-->
+              <!--<div>-->
+              <!--<div>-->
+              <!--Players-->
+              <!--</div>-->
+              <!--<div>-->
+              <!--{{entity.first_player.name}}-->
+              <!--</div>-->
+              <!--<div>-->
+              <!--{{entity.second_player.name}}-->
+              <!--</div>-->
+              <!--</div>-->
 
-              </div>
+              <!--</div>-->
+              <!--<div>-->
+              <!--<a-->
+              <!--ui-sref-active="active" ui-sref="scores.board({ id: entity.id })">Score-->
+              <!--</a>-->
+
+              <!--</div>-->
             </div>
 
             <div class="col-xs-2">
@@ -116,6 +119,12 @@
                 <button class="btn btn-link" ng-click="main.showEditEntityForm(entity)">
                   <span class="glyphicon glyphicon-edit"></span>
                 </button>
+                <div>
+                  <a
+                    ui-sref-active="active" ui-sref="scores.board({ id: entity.id })">Score
+                  </a>
+
+                </div>
               </div>
             </div>
           </div>

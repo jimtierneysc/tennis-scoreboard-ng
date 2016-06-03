@@ -1,11 +1,11 @@
 /**
  * @ngdoc directive
- * @name feMatchPlayDescription
+ * @name feMatchScoring
  * @description
- * Form for new player and editing player
+ * Display how match is scored
  *
  * @example:
- <fe-players-form></fe-players-form>
+ * <fe-match-scoring></fe-match-scoring>
  */
 
 
@@ -14,13 +14,13 @@
 
   angular
     .module('frontend')
-    .directive('feMatchPlayDescription', directiveFunc);
+    .directive('feMatchScoring', directiveFunc);
 
   /** @ngInject */
   function directiveFunc($log) {
     var directive = {
       restrict: 'EA',
-      templateUrl: 'app/scores/matchPlayDescription.html',
+      templateUrl: 'app/matches/matchScoring.html',
       scope: {
         match: '='
       }

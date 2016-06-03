@@ -228,6 +228,7 @@
         sb.showGameButton = sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.start_next_game ||
           sb.actions.start_tiebreaker || sb.actions.win_match_tiebreaker;
         sb.showWinGameButton = sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.win_match_tiebreaker;
+        sb.gameTiebreakerLabel = sb.actions.win_tiebreaker || sb.actions.win_match_tiebreaker ? 'Tiebreak' : null;
 
         angular.forEach(sb.sets, function (set) {
           set.showGames = showSetGames;

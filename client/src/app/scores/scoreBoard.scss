@@ -19,6 +19,8 @@ $col_3_min_width: 240px;
 // Default to maximum size
 .score-col-1 {
   width: $col_1_width;
+  vertical-align: middle  !important;
+;
   @include center-cell;
 }
 
@@ -32,9 +34,20 @@ $col_3_min_width: 240px;
   @include center-cell;
 }
 
+table.play-table {
+  width: $table_width;
+  table-layout: fixed;
+}
+
+div.play-table {
+  //border: 1px solid black;
+  width: $table_width;
+}
+
+
 // override with proportional sizing
 @media only screen and (max-width: $table_width) {
-  .table, table.play-table {
+  table.play-table, div.play-table {
     width: 100%;
   }
   .score-col-1 {
@@ -52,7 +65,7 @@ $col_3_min_width: 240px;
 
 // override with minumum size
 @media only screen and (max-width: $table_min_width) {
-  .table, table.play-table {
+  div.play-table, table.play-table {
     width: $table_min_width;
   }
   .score-col-1 {
@@ -204,17 +217,6 @@ div.player-col-2 {
 }
 
 
-.play-description {
-  th {
-    width: 100px;
-  }
-}
-
-table.play-table {
-  width: $table_width;
-  table-layout: fixed;
-  margin-bottom: 0px;
-}
 
 
 
