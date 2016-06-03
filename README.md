@@ -16,7 +16,7 @@ Rails API application using conventional Angular $resource calls.
 
 The two application are built independently.    
 
-### Progress
+### Status
 
 COMPLETE
 
@@ -65,8 +65,6 @@ TODO
     * Install Postgres server
     * `rake db:create`
     * `rake db:migrate`
-* Add a user
-    * TODO when login is working
 * Sample data
     * `rake db:sample_data`
     * `rake db:clear_data` to clear
@@ -107,11 +105,11 @@ Login is not implemented yet, so for now anyone can create, edit or delete data.
 * Matches view
     * Click "Score" to show scoreboard for a match.
 
-#### Scoreboard
+#### Scores
 
-* Click "Scoreboard" to view and edit scores.  
-* Scoreboard view
+* Click "Scores" to view and edit scores.  
+* Scores view
     * Select a match from a list. 
-    * Use the "menu" to toggle various options
+    * Use the "menu" to toggle various display options
         * Choose the "Keep Score" option to enable scoring
 
