@@ -12,7 +12,7 @@ The root directory contains a Rails API application.  This application implement
 information associated with a tennis match.
   
 The client subdirectory contains an AngularJS/Gulp application.  This application communicates with the
-Rails API application using conventional $resource calls.
+Rails API application using conventional Angular $resource calls.
 
 The client subdirectory is located within the Rails API application for convenience.  The two application are 
 independent.  
@@ -60,10 +60,13 @@ SETUP
 * Sample data
     * `rake db:sample_data`
     * `rake db:clear_data` to clear
+* Build 
+    * `client client`
+    * `gulp build`
 * Browse
     * `rails s`
     * `cd client`
-    * `gulp serve`
+    * `gulp serve` or `gulp serve:dist` 
 * Test
     * `rake test`
     * `rake spec`
@@ -74,8 +77,7 @@ SETUP
 ### Using the app
 
 There are four different types of data in this application: players, doubles teams, matches, and scores.  
-Eventually there will are two kinds of users: logged-in or guest.  Login is not implements, so anyone can 
-dit or delete data. 
+Login is not implemented at this time, so anyone can create, edit or delete data. 
 
 ### Logging in
 
