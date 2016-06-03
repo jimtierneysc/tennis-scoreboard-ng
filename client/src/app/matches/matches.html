@@ -40,7 +40,12 @@
           <div ng-hide="main.showingEditEntityForm(entity)">
             <div class="col-xs-10">
               <div class="h4">
+                <span ng-if="entity.title">
                 {{ entity.title}}
+                  </span>
+               <span ng-if="!entity.title">
+                 (untitled)
+                  </span>
               </div>
               <div class="match-detail">
                 <fe-match-opponents match="entity"></fe-match-opponents>

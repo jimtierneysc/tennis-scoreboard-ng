@@ -185,7 +185,8 @@
           $log.info('create/save');
           $log.info(response);
           endWait();
-          var newEntity = angular.merge(response, entity);
+          var newEntity = angular.copy(entity);
+          angular.merge(newEntity, response);
           entityCreated(newEntity);
         },
         function (response) {
@@ -207,7 +208,8 @@
           $log.info('update');
           $log.info(response);
           endWait();
-          var updatedEntity = angular.merge(response, entity);
+          var updatedEntity = angular.copy(entity);
+          angular.merge(updatedEntity, response);
           entityUpdated(updatedEntity);
         },
         function (response) {

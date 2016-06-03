@@ -40,7 +40,9 @@
           <div ng-hide="main.showingEditEntityForm(entity)">
             <div class="col-xs-10">
               <div class="h4">
-                {{ entity.displayName}}
+                <span ng-if="entity.name">{{ entity.name}}</span>
+                <span ng-if="!entity.name">(unnamed)</span>
+
               </div>
               <div>
                 {{ entity.first_player.name}} and  {{ entity.second_player.name }}
