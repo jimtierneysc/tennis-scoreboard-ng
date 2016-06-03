@@ -299,7 +299,6 @@
         var errors = categorizeErrors(response.data);
         if (angular.isDefined(errors.other))
           message = errors.other;
-        }
       }
       vm.showToastrError(message, "Delete Error");
     }

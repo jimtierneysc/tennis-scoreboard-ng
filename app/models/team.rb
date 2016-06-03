@@ -12,7 +12,7 @@ class Team < ActiveRecord::Base
   belongs_to :second_player,
              class_name: 'Player', foreign_key: :second_player_id
   before_validation { self.name = nil if self.name.blank? }
-  validates :first_player_id, presence: true
+  # validates :first_player_id, presence: true # redundant
   validates_uniqueness_of :name, allow_nil: true
   validate :that_is_valid_first_player
   validate :that_is_valid_second_player

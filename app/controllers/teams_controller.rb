@@ -65,7 +65,7 @@ class TeamsController < ApplicationController
   # end
   #
   def team_params
-    params_var = params.require(:team).permit(:first_player_id,
+    params_var = params[:team].permit(:first_player_id,
                                               :second_player_id,
                                               :name)
     # team name may be nil
