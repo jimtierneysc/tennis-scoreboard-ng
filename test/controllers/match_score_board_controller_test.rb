@@ -1,7 +1,8 @@
 require 'test_helper'
 
 # Test the match_score_board_controller
-# This controller shows a read only representation of a match score.
+# This controller provides a representation of the match score and supports
+# commands to change the score.
 class MatchScoreBoardControllerTest < ActionController::TestCase
   def setup
     @match = matches(:m_three_six_game_singles)

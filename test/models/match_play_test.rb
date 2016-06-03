@@ -2,14 +2,11 @@ require 'test_helper'
 require 'play_match_helper'
 
 # Test the Match model.
-# A match keeps track of the match score.
 # The Match model has methods to advance the score of the
-# match and methods to determine whether the score can be advanced,
-# Test the different types of scoring in a match;
-# matches may have different numbers of sets, set tiebreakers and
-# match tiebreakers.
-# The match keeps track of the server of each game;
-# test how the match tracks serving for doubles and singles matches.
+# match and methods to determine whether the score can be advanced.
+# Matches may have different numbers of sets and length of sets.
+# Matches may be singles or doubles.  Singles matches have a first server.
+# Doubles matches have a first server and a second server.
 class MatchTest < ActiveSupport::TestCase
 
   def check_change_score(method, match, actions)
