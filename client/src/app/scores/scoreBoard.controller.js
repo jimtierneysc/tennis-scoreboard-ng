@@ -191,7 +191,9 @@
       };
 
       prepareOpponents();
+      prepareServing();
       prepareScores();
+      prepareTitles();
       prepareView();
       prepareUpdate();
       if (sb.actions.start_tiebreaker || sb.actions.start_next_game)
@@ -202,7 +204,7 @@
       // display most recent games at top of view.
       // Once the set is complete, do not reverse.
       // if (sb.state != 'complete')
-        reverseOrder();  // Always reverse
+      reverseOrder();  // Always reverse
 
       function prepareUpdate() {
 
@@ -247,6 +249,7 @@
         }
       }
 
+      // Add running score to each set
       function prepareScores() {
 
         function incScore(scores, value) {
@@ -259,18 +262,27 @@
         angular.forEach(sb.sets, function (set) {
           incScore(matchScore, set);
           var setScore = [0, 0];
-          angular.forEach(set.games, function (game) {
-            incScore(setScore, game);
-            // Add a scores property to a game
-            game.scores = angular.copy(setScore);
-          });
+
+          // Game score no longer used
+
+          // angular.forEach(set.games, function (game) {
+          //   incScore(setScore, game);
+          //   // Add a scores property to a game
+          //   game.scores = angular.copy(setScore);
+          // });
+
           // Add a scores property to a set
           set.scores = setScore;
         });
         // Add a scores property to a match
         sb.scores = matchScore;
 
-        var setsCount = 0;
+      }
+    
+    
+    // Add set and game titles
+    function prepareTitles() {
+      var setsCount = 0;
 
         // var tieBreakTitle = 'Tiebreak'
         // set titles and game titles properties
@@ -292,6 +304,7 @@
       }
 
 
+      // Add opponents property
       function prepareOpponents() {
         // An opponent is either a player or a team
         var opponents;
@@ -300,11 +313,28 @@
         else
           opponents = [sb.first_player.id, sb.second_player.id];
 
-        // Add opponents property
         sb.opponents = opponents;
 
       }
 
+      // Add server property
+      function prepareServing() {
+        var lastGame = null;
+        if (sb.state == 'in_progress') {
+          if (sb.sets.length > 0) {
+            var lastSet = sb.sets[sb.sets.length-1];
+            if (lastSet.games.length > 0) {
+              lastGame = lastSet.games[lastSet.games.length-1];
+            }
+          }
+        }
+        if (lastGame) {
+          sb.server = lastGame.server;
+        }
+      }
+
+      // Add newGame property if a game is starting
+      // Add startServing property if a first server is neeeded
       function prepareNewGame() {
         // newGame property
         var newGame = {};
@@ -325,6 +355,7 @@
         }
       }
 
+      // Add newSet property if a set is starting
       function prepareNewSet() {
         // newSet property
         // if (sb.actions.start_match_tiebreaker || sb.actions.start_next_set) {
