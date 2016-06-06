@@ -7,7 +7,7 @@ class MatchesControllerTest < ActionController::TestCase
   def setup
     @singles_match = matches(:m_three_six_game_singles)
     @doubles_match = matches(:m_three_six_game_doubles)
-    session[:user_id] = users(:one).id
+    # session[:user_id] = users(:one).id
   end
 
   attr_reader :singles_match

@@ -30,6 +30,7 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'active_model_serializers'
 
+gem 'devise_token_auth'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.4'
