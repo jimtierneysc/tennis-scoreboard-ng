@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  # mount_devise_token_auth_for 'User', at: 'auth'
 
   # contrain to api/players.json or api/players, for example
   scope '/api', constraints: { format: 'json' } do
+    mount_devise_token_auth_for 'User', at: 'auth'
     resources :players, except: [:new, :edit]
     resources :teams, except: [:new, :edit]
     resources :matches, except: [:new, :edit]

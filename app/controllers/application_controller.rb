@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include DeviseTokenAuth::Concerns::SetUserByToken
 
   helper_method :logged_in?, :current_user
   rescue_from ::Exceptions::LoginRequired, with: :forbidden
