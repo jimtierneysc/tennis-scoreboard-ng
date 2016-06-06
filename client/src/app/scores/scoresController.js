@@ -13,7 +13,7 @@
     .controller('ScoreController', MainController);
 
   /** @ngInject */
-  function MainController($log, $filter, $state, matchesResource, $q, loadingHelper, 
+  function MainController($log, $filter, $state, $timeout, $document, matchesResource, $q, loadingHelper,
                           waitIndicator, response) {
 
 
@@ -78,7 +78,16 @@
     }
 
     function selectedMatchChange() {
-      $log.info('selectedMatchChange')
+      $log.info('selectedMatchChange');
+      // Kill focus so that keyboard doesn't show on mobile devices
+      // See https://github.com/angular-ui/ui-select/issues/818
+      $timeout(function(){
+        var active = $document.prop('activeElement');
+        if (active.type == 'text') {
+          $log.info('kill focus');
+          active.blur();
+        }        
+      },1,false);
       $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
     }
   }
