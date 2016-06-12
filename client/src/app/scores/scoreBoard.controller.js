@@ -263,13 +263,13 @@
           incScore(matchScore, set);
           var setScore = [0, 0];
 
-          // Game score no longer used
 
-          // angular.forEach(set.games, function (game) {
-          //   incScore(setScore, game);
+          angular.forEach(set.games, function (game) {
+            incScore(setScore, game);
+          // Game score no longer used
           //   // Add a scores property to a game
-          //   game.scores = angular.copy(setScore);
-          // });
+          //  game.scores = angular.copy(setScore);
+          });
 
           // Add a scores property to a set
           set.scores = setScore;
@@ -278,8 +278,8 @@
         sb.scores = matchScore;
 
       }
-    
-    
+
+
     // Add set and game titles
     function prepareTitles() {
       var setsCount = 0;
