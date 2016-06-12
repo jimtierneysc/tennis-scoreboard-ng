@@ -98,6 +98,11 @@
           response: resolveScoreBoard()
         }
       })
+      .state('signin', {
+        templateUrl: 'app/user/new.html',
+        controller: 'UserController',
+        controllerAs: 'main'
+      })
     ;
 
     $urlRouterProvider.otherwise('/');
