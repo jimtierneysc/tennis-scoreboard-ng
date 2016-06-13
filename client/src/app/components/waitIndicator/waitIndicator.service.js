@@ -3,10 +3,10 @@
  * @name waitIndicator
  * @description
  * Service to track state of a wait indicator
- * 
+ *
  * var endWait = waitIndicator.beginWait();
  * endWait();
- * 
+ *
  * waitIndicator.subscribeChanged(scope, function() { // do something } );
  *
  */
@@ -20,10 +20,10 @@
   /** @ngInject */
   function serviceFunc($log, $rootScope) {
 
-    var vm = this;
-    vm.beginWait = beginWait;
-    vm.waiting = waiting;
-    vm.subscribeChanged = subscribeChanged;
+    var service = this;
+    service.beginWait = beginWait;
+    service.waiting = waiting;
+    service.subscribeChanged = subscribeChanged;
 
     var waitingCount = 0;
 
