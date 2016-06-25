@@ -204,9 +204,7 @@
         prepareNewSet();
       // Reverse order of sets and games to
       // display most recent games at top of view.
-      // Once the set is complete, do not reverse.
-      // if (sb.state != 'complete')
-      reverseOrder();  // Always reverse
+      reverseOrder();
 
       function prepareUpdate() {
 
@@ -264,13 +262,9 @@
         angular.forEach(sb.sets, function (set) {
           incScore(matchScore, set);
           var setScore = [0, 0];
-
-
+          
           angular.forEach(set.games, function (game) {
             incScore(setScore, game);
-            // Game score no longer used
-            // // Add a scores property to a game
-            // game.scores = angular.copy(setScore);
           });
 
           // Add a scores property to a set
