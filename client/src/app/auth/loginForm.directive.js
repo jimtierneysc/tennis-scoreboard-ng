@@ -41,8 +41,6 @@
       vm.submit = submit;
       vm.loginForm = null;
 
-      // reset auth status
-      authenticationService.clearCredentials();
       errorsHelper.activate(vm,
         {
           'username': null,

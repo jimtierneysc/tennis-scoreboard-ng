@@ -1,6 +1,5 @@
 <nav class="navbar navbar-default" ng-controller="HeaderController as vm">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed"
               aria-expanded="false" ng-click="vm.isCollapsed = !vm.isCollapsed" ng-init="vm.isCollapsed = true">
@@ -12,9 +11,7 @@
       <a class="navbar-brand" href="#">Tennis Scoreboard</a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" ng-class="!vm.isCollapsed && 'in'">
-      <!--uib-collapse="vm.isCollapsed">-->
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
         <li ui-sref-active="active"><a ui-sref="players">Players</a></li>
@@ -23,26 +20,24 @@
         <li ui-sref-active="active"><a ui-sref="scores">Scores</a></li>
       </ul>
 
+      <div ng-if="vm.loggedIn">
         <div class="navbar-form navbar-right">
-          <div ng-if="vm.loggedIn">
-            <div class="form-group">
-              <p class="control-label">
-                Logged in as {{vm.userName}}
-              </p>
-            </div>
-            <div class="form-group">
-              <a class="btn btn-link" ng-click="vm.logOut()">Logout</a>
-            </div>
+          <div class="form-group">
+            <p class="control-label">
+              Logged in as {{vm.userName}}
+            </p>
+          </div>
+          <div class="form-group">
+            <a class="btn btn-link" ng-click="vm.logOut()">Logout</a>
           </div>
         </div>
+      </div>
 
-
-      <div ng-if="!vm.loggedIn"> <!-- <% unless @logging_in || logged_in?" -->
-
+      <div ng-if="!vm.loggedIn">
         <ul class="nav navbar-nav navbar-right">
           <!--auto-close="outsideClick" not working so use ng-click-->
           <li uib-dropdown xauto-close="outsideClick" ng-click="$event.preventDefault(); $event.stopPropagation();">
-            <a href uib-dropdown-toggle >Login<span class="caret"></span></a>
+            <a href uib-dropdown-toggle>Login<span class="caret"></span></a>
             <ul id="login-dropdown" class="dropdown-menu">
               <li>
                 <fe-login-form></fe-login-form>
@@ -50,11 +45,11 @@
             </ul>
           </li>
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div>
 
     </div>
 
-  </div><!-- /.container-fluid -->
+  </div>
 </nav>
 
 
