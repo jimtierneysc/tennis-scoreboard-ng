@@ -35,7 +35,7 @@ class MatchTest < ActiveSupport::TestCase
   test 'should initialize two set match' do
     match = matches(:m_two_six_game_ten_point_doubles).change_score! :start_play
     # match.change_score! :start_next_set
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     assert_equal 1, match.match_sets.count
     assert_equal 6, match.first_set.win_threshold
   end
@@ -43,35 +43,35 @@ class MatchTest < ActiveSupport::TestCase
   test 'should initialize three set match' do
     match = matches(:m_three_six_game_doubles).change_score! :start_play
     # match.change_score! :start_next_set
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     assert_equal 1, match.match_sets.count
     assert_equal 6, match.first_set.win_threshold
   end
 
   test 'should initialize eight game match' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     assert_equal 1, match.match_sets.count
     assert_equal 8, match.first_set.win_threshold
   end
 
   test 'should start set' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     assert match.first_set
     assert match.first_set
   end
 
   test 'should start game' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     match.change_score! :start_next_game
     assert match.first_set.last_game
   end
 
   test 'should win game' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     match.change_score! :start_next_game
     match.change_score! :win_game, match.first_team
     assert_equal match.first_set.last_game.team_winner, match.first_team
@@ -79,7 +79,7 @@ class MatchTest < ActiveSupport::TestCase
   end
 
   def do_win_set(match, winner)
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     (1..match.last_set.win_threshold).each do
       match.change_score! :start_next_game
       match.change_score! :win_game, winner
@@ -117,7 +117,7 @@ class MatchTest < ActiveSupport::TestCase
   end
 
   def do_win_tiebreaker(match)
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     do_win_equal_number_of_games(match)
     winner = match.second_team
     match.change_score! :start_tiebreaker
@@ -230,13 +230,13 @@ class MatchTest < ActiveSupport::TestCase
 
   def start_singles_with_server(match, server)
     match.first_player_server = server
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
   end
 
   def start_doubles_with_server(match, server1, server2)
     match.first_player_server = server1
     match.second_player_server = server2
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
   end
 
   test 'that singles players hold serve' do
@@ -344,7 +344,7 @@ class MatchTest < ActiveSupport::TestCase
 
   test 'that cannot change doubles server after match started' do
     match = matches(:m_two_six_game_ten_point_singles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     # match.start_set_play
     match.first_player_server = match.first_singles_player
     match.change_score! :start_next_game
@@ -392,24 +392,26 @@ class MatchTest < ActiveSupport::TestCase
 
   test 'should undo start set' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     assert match.first_set
     match.change_score! :remove_last_change
+    match.reload
     assert_equal nil, match.first_set
   end
 
   test 'should undo start game' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     match.change_score! :start_next_game
     assert match.first_set.last_game
     match.change_score! :remove_last_change
+    match.first_set.reload
     refute match.first_set.last_game
   end
 
   test 'should undo first servers' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     match.change_score! :start_next_game
     match.change_score! :win_game, match.first_team
     match.change_score! :start_next_game
@@ -417,6 +419,7 @@ class MatchTest < ActiveSupport::TestCase
     assert match.second_player_server
     match.change_score! :remove_last_change # Undo start game
     refute match.second_player_server
+    match.last_set.reload
     match.change_score! :remove_last_change # Undo win game
     match.change_score! :remove_last_change # Undo start game
     refute match.first_player_server
@@ -424,7 +427,7 @@ class MatchTest < ActiveSupport::TestCase
 
   test 'should undo win game' do
     match = matches(:m_one_eight_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    match.change_score! :start_next_set if match.change_score? :start_next_set
     match.change_score! :start_next_game
     match.change_score! :win_game, match.first_team
     assert_equal match.last_set.last_game.team_winner, match.first_team

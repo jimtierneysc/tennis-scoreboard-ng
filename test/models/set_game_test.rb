@@ -6,7 +6,9 @@ require 'test_helper'
 class SetGameTest < ActiveSupport::TestCase
   def setup
     match = matches(:m_three_six_game_doubles).change_score! :start_play
-    match.change_score! :start_next_set
+    if match.change_score? :start_next_set
+      match.change_score! :start_next_set
+    end
     @game = match.change_score! :start_next_game
   end
 
