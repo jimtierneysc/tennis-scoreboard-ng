@@ -96,18 +96,6 @@
       })
 
 
-      .state('login', {
-        url: '/login',
-        views: {
-          'header': header,
-          'content': {
-            templateUrl: 'app/auth/login.view.html',
-            controller: 'LoginController',
-            controllerAs: 'vm'
-          }
-        }
-      })
-
     ;
 
     $urlRouterProvider.otherwise('/');
@@ -179,8 +167,6 @@
       );
       return deferred.promise;
     }
-
-
   }
 
 })();

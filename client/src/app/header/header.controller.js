@@ -15,19 +15,15 @@
   /** @ngInject */
   function Controller(authHelper, $scope, $state) {
     var vm = this;
-    vm.isCollapsed = true;
-    vm.loggingIn = loggingIn;
 
     activate();
 
     function activate() {
+      vm.isCollapsed = true;
+
       authHelper.activate(vm, $scope);
     }
-
-    function loggingIn() {
-      return  (['login', 'register'].indexOf($state.current.name) >= 0)
-    }
-
+    
   }
 })();
 

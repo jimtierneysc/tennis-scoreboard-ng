@@ -1,22 +1,46 @@
+/**
+ * @ngdoc directive
+ * @name feLoginForm
+ * @description
+ * Form for login
+ *
+ * @example:
+ <fe-login-form></fe-login-form>
+ */
+
+
 (function () {
   'use strict';
 
   angular
     .module('frontend')
-    .controller('LoginController', LoginController);
+    .directive('feLoginForm', directiveFunc);
+
+  /** @ngInject */
+  function directiveFunc() {
+    var directive = {
+      restrict: 'EA',
+      templateUrl: 'app/auth/loginForm.html',
+      controller: LoginController,
+      controllerAs: 'vm'
+    };
+
+    return directive;
+  }
+
 
   /** @ngInject */
   function LoginController($state, $location, loginResource, authenticationService, errorsHelper, waitIndicator, $log) {
     var vm = this;
 
-    vm.entity = {username: "", password: ""};
-    vm.errors = {};
-    vm.submit = submit;
-    vm.loginForm = null;
-
     activate();
 
     function activate() {
+      vm.entity = {username: "", password: ""};
+      vm.errors = {};
+      vm.submit = submit;
+      vm.loginForm = null;
+
       // reset auth status
       authenticationService.clearCredentials();
       errorsHelper.activate(vm,
@@ -61,10 +85,9 @@
 
     function entityUpdated(entity) {
       authenticationService.setCredentials(entity.username, entity.auth_token);
-      // TODO: go to previous page
-      $state.go('home');
     }
 
   }
+
 
 })();

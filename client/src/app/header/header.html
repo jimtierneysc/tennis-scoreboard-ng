@@ -23,7 +23,6 @@
         <li ui-sref-active="active"><a ui-sref="scores">Scores</a></li>
       </ul>
 
-      <div ng-if="!vm.loggingIn()" >
         <div class="navbar-form navbar-right">
           <div ng-if="vm.loggedIn">
             <div class="form-group">
@@ -35,12 +34,23 @@
               <a class="btn btn-link" ng-click="vm.logOut()">Logout</a>
             </div>
           </div>
-          <div ng-if="!vm.loggedIn && !vm.loggingIn()">
-            <a class="btn btn-link" ui-sref="login">Login</a>
-          </div>
         </div>
-      </div>
 
+
+      <div ng-if="!vm.loggedIn"> <!-- <% unless @logging_in || logged_in?" -->
+
+        <ul class="nav navbar-nav navbar-right">
+          <!--auto-close="outsideClick" not working so use ng-click-->
+          <li uib-dropdown xauto-close="outsideClick" ng-click="$event.preventDefault(); $event.stopPropagation();">
+            <a href uib-dropdown-toggle >Login<span class="caret"></span></a>
+            <ul id="login-dropdown" class="dropdown-menu">
+              <li>
+                <fe-login-form></fe-login-form>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
 
     </div>
 
