@@ -23,52 +23,25 @@
         <li ui-sref-active="active"><a ui-sref="scores">Scores</a></li>
       </ul>
 
-
-      <div ng-if="loggedIn"> <!-- unless @logging_in || !logged_in? -->
-        <form class="navbar-form navbar-right">
-          <div class="form-group">
-            <p class="control-label xnavbar-text">
-              Logged in as {{username}}
-            </p>
+      <div ng-if="!vm.loggingIn()" >
+        <div class="navbar-form navbar-right">
+          <div ng-if="vm.loggedIn">
+            <div class="form-group">
+              <p class="control-label">
+                Logged in as {{vm.userName}}
+              </p>
+            </div>
+            <div class="form-group">
+              <a class="btn btn-link" ng-click="vm.logOut()">Logout</a>
+            </div>
           </div>
-          <div class="form-group">
-            link here
-            <!--<%= link_to "Logout", logout_path, method: :delete, remote: true, class: 'btn btn-link' %>-->
+          <div ng-if="!vm.loggedIn && !vm.loggingIn()">
+            <a class="btn btn-link" ui-sref="login">Login</a>
           </div>
-        </form>
+        </div>
       </div>
 
-      <div ng-if="!loggedIn"> <!-- <% unless @logging_in || logged_in?" -->
 
-        <ul class="nav navbar-nav navbar-right">
-          <!--auto-close="outsideClick" not working so use ng-click-->
-          <li uib-dropdown xauto-close="outsideClick" ng-click="$event.preventDefault(); $event.stopPropagation();">
-            <a href uib-dropdown-toggle >Login<span class="caret"></span></a>
-            <ul id="login-dropdown" class="dropdown-menu">
-              <li>
-                <form novalidate>
-                  <div class="form-group">
-                    <label class="control-label sr-only" for="username">User Name</label>
-                    <input class="form-control" required="required" placeholder="User Name" type="text"
-                           name="username" id="username"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label sr-only" for="password">Password</label>
-                    <input class="form-control" required="required" placeholder="Password" type="password"
-                           name="password" id="password"/>
-                  </div>
-                  <div class="form-group">
-                    <!--TODO implement login-->
-                    <!--Not implemented, so always disabled-->
-                    <input type="submit" name="commit" value="Login" ng-disabled="true" class="btn btn-primary btn-block"/>
-                  </div>
-                </form>
-
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
     </div>
 
   </div><!-- /.container-fluid -->
