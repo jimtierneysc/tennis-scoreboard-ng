@@ -1,13 +1,12 @@
-# Controller for read only view of match scoreboard
-# Shows the current state of the match.
-# A view parameter may be passed as a query parameter.
-# The view parameter indicates how much detail to show.
-# The user may view only the set scores up to all of the games in all sets.
-# The view is persisted in a cookie.
+# Controller for  match scoreboard.
+# Renders the current state of the match.
+# Handles commands to change the state of the match.
 class MatchScoreBoardController < ApplicationController
   include MatchLoader
 
   rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
+  rescue_from ::Exceptions::UnknownOperation, with: :when_unknown_operation
+  before_action :check_login!, only: [:update]
   before_action :set_match_eager_load, only: [:show, :update]
 
   def show
@@ -44,9 +43,12 @@ class MatchScoreBoardController < ApplicationController
   end
 
   def when_record_not_found
-    render json: { error: 'Not found' }, status: :not_found
+    render json: { errors: 'Not found' }, status: :not_found
   end
 
+  def when_unknown_operation(exception)
+    render json: { errors: exception.message }, status: :unprocessable_entity
+  end
 
   def match_score_board_params
     params.require(:match_score_board).permit(:action,
@@ -65,6 +67,8 @@ class MatchScoreBoardController < ApplicationController
       # TODO try to get rid of this query for better performance.  It is needed
       # after delete a game or set.
       @match = self.class.eager_load_match params[:id]
+    rescue ::Exceptions::UnknownOperation
+      raise
     rescue  => e
       @match = self.class.eager_load_match params[:id]
       @match.errors.add(:other, e.message)

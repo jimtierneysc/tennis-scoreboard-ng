@@ -1,15 +1,13 @@
 # Controller for players
 # Renders a list of players.
-# Shows individual players.
 # Creates a new player.
 # Updates a player.
 # Deletes a player.
 class PlayersController < ApplicationController
   rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
+  before_action :check_login!, only:
+    [:update, :create, :destroy]
   before_action :set_player, only: [:show, :update, :destroy]
-  # TODO: Require login
-  # before_action :check_login, only:
-  #   [:update, :create, :destroy]
 
   # GET /players
   def index
@@ -30,7 +28,7 @@ class PlayersController < ApplicationController
     if @player.save
       render json: @player, status: :created, location: @player
     else
-      render json: @player.errors, status: :unprocessable_entity
+      render json: {errors: @player.errors}, status: :unprocessable_entity
     end
   end
 
@@ -39,7 +37,7 @@ class PlayersController < ApplicationController
     if @player.update(player_params)
       render json: @player, status: :ok
     else
-      render json: @player.errors, status: :unprocessable_entity
+      render json: {errors: @player.errors}, status: :unprocessable_entity
     end
   end
 
@@ -48,7 +46,7 @@ class PlayersController < ApplicationController
     if @player.destroy
       head :no_content
     else
-      render json: @player.errors, status: :unprocessable_entity
+      render json: {errors: @player.errors}, status: :unprocessable_entity
     end
   end
 
@@ -64,7 +62,7 @@ class PlayersController < ApplicationController
 
   # Handle record not found exception
   def when_record_not_found
-    render json: { error: 'Not found' }, status: :not_found
+    render json: { errors: 'Not found' }, status: :not_found
   end
 
   # TODO: Make sure that exception does not cause html response

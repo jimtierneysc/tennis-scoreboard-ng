@@ -1,15 +1,13 @@
 # Controller for teams
 # Renders a list of teams.
-# Shows individual teams.
 # Creates a new team.
 # Updates a team.
 # Deletes a team.
 class TeamsController < ApplicationController
   rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
+  before_action :check_login!, only:
+    [:update, :create, :destroy]
   before_action :set_team, only: [:show, :update, :destroy]
-  # TODO: Require login
-  # before_action :check_login, only:
-  #   [:update, :create, :destroy]
 
   # GET /teams
   def index
@@ -32,7 +30,7 @@ class TeamsController < ApplicationController
     if @team.save
       render json: @team, status: :created, location: @team
     else
-      render json: @team.errors, status: :unprocessable_entity
+      render json: {errors: @team.errors}, status: :unprocessable_entity
     end
   end
 
@@ -41,7 +39,7 @@ class TeamsController < ApplicationController
     if @team.update(team_params)
       render json: @team, status: :ok
     else
-      render json: @team.errors, status: :unprocessable_entity
+      render json: {errors: @team.errors}, status: :unprocessable_entity
     end
   end
 
@@ -50,7 +48,7 @@ class TeamsController < ApplicationController
     if @team.destroy
       head :no_content
     else
-      render json: @team.errors, status: :unprocessable_entity
+      render json: {errors: @team.errors}, status: :unprocessable_entity
     end
   end
 
@@ -75,7 +73,7 @@ class TeamsController < ApplicationController
 
   # Handle record not found exception
   def when_record_not_found
-    render json: { error: 'Not found' }, status: :not_found
+    render json: { errors: 'Not found' }, status: :not_found
   end
 
   # TODO: Make sure that exception does not cause html response

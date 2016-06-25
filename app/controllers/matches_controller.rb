@@ -1,16 +1,13 @@
 # Controller for matches.
 # Renders a list of matches.
-# Shows individual matches.
 # Creates new doubles matches and new singles matches.
 # Updates a match.
 # Deletes a match.
 class MatchesController < ApplicationController
   rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
+  before_action :check_login!, only: [:create, :update, :destroy]
   before_action :set_match, only:
     [:show, :update, :destroy]
-  # TODO: require login
-  # before_action :check_login, only:
-  #   [:new, :newdoubles, :edit, :update, :create, :destroy]
 
   @match = nil
   # GET /matches
@@ -24,43 +21,13 @@ class MatchesController < ApplicationController
     render json: @match
   end
 
-  # # GET /matches/new
-  # def new
-  #   # new singles match
-  #   player_count = Player.count
-  #   if player_count < 2
-  #     redirect_to matches_url, alert:
-  #       'Add players before creating a singles match'
-  #   else
-  #     @match = create_empty_singles_match
-  #     assign_default_singles_players(@match) if player_count == 2
-  #     render :new
-  #   end
-  # end
-  # 
-  # def newdoubles
-  #   team_count = Team.where(doubles: true).count
-  #   if team_count < 2
-  #     redirect_to matches_url, alert:
-  #       'Add doubles teams before creating a doubles match'
-  #   else
-  #     @match = create_empty_doubles_match
-  #     assign_default_doubles_teams(@match) if team_count == 2
-  #     render :new
-  #   end
-  # end
-
-  # # GET /matches/1/edit
-  # def edit
-  # end
-
   # POST /matches
   def create
     @match = create_match(match_params)
     if @match.save
       render json: @match, status: :created, location: @match
     else
-      render json: @match.errors, status: :unprocessable_entity
+      render json: {errors: @match.errors}, status: :unprocessable_entity
     end
   end
 
@@ -74,7 +41,7 @@ class MatchesController < ApplicationController
     if send(update_sym, @match, match_params)
       render json: @match, status: :ok
     else
-      render json: @match.errors, status: :unprocessable_entity
+      render json: {errors: @match.errors}, status: :unprocessable_entity
     end
   end
 
@@ -83,7 +50,7 @@ class MatchesController < ApplicationController
     if @match.destroy
       head :no_content
     else
-      render json: @match.errors, status: :unprocessable_entity
+      render json: {errors: @match.errors}, status: :unprocessable_entity
     end
   end
 
@@ -112,7 +79,7 @@ class MatchesController < ApplicationController
 
   # Handle record not found exception
   def when_record_not_found
-    render json: { error: 'Not found' }, status: :not_found
+    render json: { errors: 'Not found' }, status: :not_found
   end
 
   # # when there are only two teams, set as default for new doubles match
@@ -144,15 +111,7 @@ class MatchesController < ApplicationController
       create_singles_match(params_var)
     end
   end
-  # 
-  # def create_empty_singles_match
-  #   Match.new doubles: false
-  # end
-  # 
-  # def create_empty_doubles_match
-  #   Match.new doubles: true
-  # end
-  # 
+
   def create_singles_match(params_var)
     Match.new player_ids_to_team_ids(params_var)
   end
