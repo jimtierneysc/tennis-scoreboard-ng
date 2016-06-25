@@ -9,7 +9,7 @@
   </div>
 
   <div ng-if="!vm.loading && !vm.loadingFailed">
-    <div class="col-xs-12">
+    <div ng-if="vm.loggedIn" class="col-xs-12">
       <button class="btn btn-primary" ng-click="vm.showNewEntityForm()">
         <span class="glyphicon glyphicon-plus"></span> Team
       </button>
@@ -49,7 +49,7 @@
               </div>
             </div>
 
-            <div class="col-xs-2">
+            <div ng-if="vm.loggedIn" class="col-xs-2">
               <!--Delete button-->
               <div class="pull-right">
                 <button class="btn btn-link" ng-click="vm.trashEntity(entity)">

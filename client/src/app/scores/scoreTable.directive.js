@@ -22,7 +22,8 @@
       restrict: 'EA',
       templateUrl: 'app/scores/scoreTable.html',
       scope: {
-        scores: '='
+        scores: '=',
+        loggedin: '='
       }
     };
 

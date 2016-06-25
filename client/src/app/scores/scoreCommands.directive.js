@@ -5,7 +5,7 @@
  * Buttons to change view
  *
  * @example:
- <fe-score-tool-bar></fe-score-tool-bar>
+ <fe-score-commands></fe-score-commands>
  */
 
 
@@ -14,15 +14,16 @@
 
   angular
     .module('frontend')
-    .directive('feScoreToolBar', directiveFunc);
+    .directive('feScoreCommands', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'EA',
-      templateUrl: 'app/scores/scoreToolBar.html',
+      templateUrl: 'app/scores/scoreCommands.html',
       scope: {
-        scores: '='
+        scores: '=',
+        loggedin: '='
       }
 
     };

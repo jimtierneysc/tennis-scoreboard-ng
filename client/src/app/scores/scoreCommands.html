@@ -1,21 +1,12 @@
 <div>
   <div class="pull-right">
     <div uib-dropdown>
-      <!--icon bar button -->
-      <!--<a class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle id="dropdownMenu2"-->
-         <!--aria-expanded="false">-->
-              <!--<span class="icon-bars-button">-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-              <!--</span>-->
-      <!--</a>-->
       <a href uib-dropdown-toggle>Menu<span class="caret"></span></a>
       <ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
         <li role="menuitem" class="disabled-menu-item">
           <!--Undo-->
           <a href ng-click="scores.updateScore('remove_last_change')"
-             ng-class="{'disabled-link' : !scores.keepingScore() || !scores.actions.remove_last_change}">
+             ng-class="{'disabled-link' : !loggedin || !scores.keepingScore() || !scores.actions.remove_last_change}">
             <span class="glyphicon glyphicon-repeat flip-horizontal"></span> Undo
           </a>
         </li>
@@ -23,8 +14,9 @@
         <li role="menuitem">
           <!--Toggle keepscore-->
           <a href ng-click="scores.changeViewKeepScore()" ng-model="scores.view.keepScore"
-             uib-btn-radio="true">
-        <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.keepScore == false}">
+             ng-class="{'disabled-link' : !loggedin}"
+          uib-btn-radio="true">
+        <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !loggedin || (scores.view.keepScore == false)}">
           </span>
             Keep Score
           </a>
@@ -33,7 +25,7 @@
           <!--Toggle keepscore-->
           <a href ng-click="scores.changeViewKeepScore()" ng-model="scores.view.keepScore"
              uib-btn-radio="false">
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.keepScore == true}">
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': loggedin && (scores.view.keepScore == true)}">
           </span>
             Follow Score
           </a>
@@ -47,14 +39,6 @@
             Show Sets Only
           </a>
         </li>
-        <!--<li role="menuitem">-->
-          <!--&lt;!&ndash;Expand set&ndash;&gt;-->
-          <!--<a href ng-click="scores.changeViewExpand()" ng-model="scores.view.expand" uib-btn-radio="'expand_set'">-->
-          <!--<span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': scores.view.expand != 'expand_set'}">-->
-          <!--</span>-->
-            <!--Expand Set-->
-          <!--</a>-->
-        <!--</li>-->
         <li role="menuitem">
           <!--Expand all-->
           <a href ng-click="scores.changeViewExpand()" ng-model="scores.view.expand" uib-btn-radio="'expand_all'">
@@ -67,7 +51,7 @@
         <li role="menuitem">
           <!--Clear score board-->
           <a href ng-click="scores.updateScore('discard_play')"
-             ng-class="{'disabled-link' : !scores.keepingScore() || !scores.actions.discard_play}">
+             ng-class="{'disabled-link' : !loggedin || !scores.keepingScore() || !scores.actions.discard_play}">
             <span class="glyphicon glyphicon-remove"></span> Clear Score Board
           </a>
         </li>

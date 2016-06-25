@@ -13,19 +13,19 @@
     .controller('ScoreController', MainController);
 
   /** @ngInject */
-  function MainController($log, $filter, $state, matchesResource, $q, loadingHelper, 
-                          waitIndicator, response) {
-
-
+  function MainController($log, $filter, $scope, $state, matchesResource, $q, loadingHelper, 
+                         authHelper, waitIndicator, response) {
+    
     var vm = this;
-    vm.matches = [];
-    vm.selectedMatch = null;
-    vm.selectedMatchChange = selectedMatchChange;
 
     activate();
 
     function activate() {
+      vm.matches = [];
+      vm.selectedMatch = null;
+      vm.selectedMatchChange = selectedMatchChange;
 
+      authHelper.activate(vm, $scope);
       loadingHelper.activate(vm);
 
       if (response) {

@@ -14,23 +14,25 @@
 
   /** @ngInject */
   function MainController($log, $q, $scope, $stateParams, feUtils, modalConfirm, $cookies, scoreBoardResource, loadingHelper,
-                          waitIndicator, toastrHelper, response) {
+                          authHelper, waitIndicator, toastrHelper, response) {
     var vm = this;
-
-    vm.id = $stateParams.id;
-    vm.scoreBoard = {};
-    vm.view = {
-      expand: "collapse",
-      keepScore: false
-    };
-
-    vm.updateScore = updateScore;
-    vm.changeViewExpand = changeViewExpand;
-    vm.changeViewKeepScore = changeViewKeepScore;
 
     activate();
 
     function activate() {
+      vm.id = $stateParams.id;
+      vm.scoreBoard = {};
+      vm.view = {
+        expand: "collapse",
+        keepScore: false
+      };
+
+      vm.updateScore = updateScore;
+      vm.changeViewExpand = changeViewExpand;
+      vm.changeViewKeepScore = changeViewKeepScore;
+
+
+      authHelper.activate(vm, $scope);
       loadingHelper.activate(vm);
       toastrHelper.activate(vm, $scope);
       getCookies();
@@ -213,7 +215,7 @@
         sb.keepingScore = keepingScore;
 
         function keepingScore() {
-          return vm.view.keepScore;
+          return vm.loggedIn && vm.view.keepScore;
         }
       }
 

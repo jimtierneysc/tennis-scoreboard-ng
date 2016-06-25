@@ -13,31 +13,34 @@
     .controller('TeamController', MainController);
 
   /** @ngInject */
-  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, playersSelectOptions, response) {
+  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, authHelper, playersSelectOptions, response) {
     var vm = this;
-    vm.playerOptionsList = {list: null};
 
-    crudHelper.activate(vm,
-      {
-        response: response,
-        getResources: teamsResource.getTeams,
-        beforeSubmitNewEntity: beforeSubmitNewEntity,
-        beforeSubmitEditEntity: beforeSubmitEditEntity,
-        beforeShowNewEntityForm: beforeShowNewEntityForm,
-        beforeShowEditEntityForm: beforeShowEditEntityForm,
-        getEntityDisplayName: getEntityDisplayName,
-        makeEntityBody: makeEntityBody,
-        scope: $scope,
-        errorCategories: {
-          'name': null,
-          'first': 'first_player',
-          'second': 'second_player'
+    activate();
+    
+    function activate() {
+      vm.playerOptionsList = {list: null};
+      
+      authHelper.activate(vm, $scope);
+      crudHelper.activate(vm,
+        {
+          response: response,
+          getResources: teamsResource.getTeams,
+          beforeSubmitNewEntity: beforeSubmitNewEntity,
+          beforeSubmitEditEntity: beforeSubmitEditEntity,
+          beforeShowNewEntityForm: beforeShowNewEntityForm,
+          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          getEntityDisplayName: getEntityDisplayName,
+          makeEntityBody: makeEntityBody,
+          scope: $scope,
+          errorCategories: {
+            'name': null,
+            'first': 'first_player',
+            'second': 'second_player'
+          }
         }
-      }
-    );
-
-    return vm;
-
+      );
+    }
 
     function beforeSubmitNewEntity(entity) {
       var result = {

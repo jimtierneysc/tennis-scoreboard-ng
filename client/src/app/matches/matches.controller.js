@@ -5,6 +5,7 @@
  * Controller for displaying and editing matches
  *
  */
+
 (function () {
   'use strict';
 
@@ -14,33 +15,38 @@
 
   /** @ngInject */
   function MainController(matchesResource, $filter, $q, $log, $scope, teamsResource, playersResource, crudHelper,
-    playersSelectOptions, teamsSelectOptions, response) {
+    authHelper, playersSelectOptions, teamsSelectOptions, response) {
     var vm = this;
-    vm.teamOptionsList = {list: null};
-    vm.playerOptionsList = {list: null};
 
-    crudHelper.activate(vm,
-      {
-        response: response,
-        getResources: matchesResource.getMatches,
-        beforeSubmitNewEntity: beforeSubmitNewEntity,
-        beforeSubmitEditEntity: beforeSubmitEditEntity,
-        beforeShowNewEntityForm: beforeShowNewEntityForm,
-        beforeShowEditEntityForm: beforeShowEditEntityForm,
-        getEntityDisplayName: getEntityDisplayName,
-        makeEntityBody: makeEntityBody,
-        scope: $scope,
-        errorCategories: {
-          'title': null,
-          'first_team': null,
-          'second_team': null,
-          'first_singles_player': 'first_player',
-          'second_singles_player': 'second_player',
-          'doubles': null,
-          'scoring': null
+    activate();
+
+    function activate() {
+      vm.teamOptionsList = {list: null};
+      vm.playerOptionsList = {list: null};
+      authHelper.activate(vm, $scope);
+      crudHelper.activate(vm,
+        {
+          response: response,
+          getResources: matchesResource.getMatches,
+          beforeSubmitNewEntity: beforeSubmitNewEntity,
+          beforeSubmitEditEntity: beforeSubmitEditEntity,
+          beforeShowNewEntityForm: beforeShowNewEntityForm,
+          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          getEntityDisplayName: getEntityDisplayName,
+          makeEntityBody: makeEntityBody,
+          scope: $scope,
+          errorCategories: {
+            'title': null,
+            'first_team': null,
+            'second_team': null,
+            'first_singles_player': 'first_player',
+            'second_singles_player': 'second_player',
+            'doubles': null,
+            'scoring': null
+          }
         }
-      }
-    );
+      );
+    }
 
     function beforeSubmitNewEntity(entity) {
       var result = {};
@@ -105,8 +111,7 @@
     function beforeSubmitSingles(entity, result) {
       prepareToSubmitPlayers(entity, result);
     }
-
-
+    
     function prepareToShowTeamOptions() {
       var deferredObject = $q.defer();
       if (vm.teamOptionsList.list == null) {
@@ -147,7 +152,6 @@
         deferredObject.resolve();
       }
       return deferredObject.promise;
-
     }
 
     function prepareToEditPlayers() {
@@ -175,8 +179,7 @@
       if (angular.isDefined(entity.select_second_player))
         result.second_player_id = entity.select_second_player.id;
     }
-
-
+    
     function prepareToEditTeams() {
       var first_team = null;
       var second_team = null;
