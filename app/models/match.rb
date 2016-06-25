@@ -1,14 +1,13 @@
 # Model for a tennis match
 # A match may be a singles match or a doubles match.
 # A match has two opponent teams.  The teams may be doubles teams, or
-# a teams with only one player.
+# singles "teams" (a singles "team" has only one player).
 # A match may be in different states: not started, in progress, finished
 # and complete.
 # Finished and complete matches both have a winner.
 # A match is complete after the scorer has confirmed the final score.
 # A match that has started has sets.  Each set has games.
-# A match that has started has first first servers.  These are players
-# that serve in the first game(s).  For a singles match, there is one
+# A match that has started has first servers.  For a singles match, there is one
 # first server; two for a doubles match.
 class Match < ActiveRecord::Base
   belongs_to :first_player_server,
@@ -61,7 +60,7 @@ class Match < ActiveRecord::Base
         method[:exec].call
       end
     else
-      raise Exceptions::InvalidOperation, "Unknown action: #{action}"
+      raise Exceptions::UnknownOperation, "Unknown action: #{action}"
     end
   end
 
@@ -71,7 +70,7 @@ class Match < ActiveRecord::Base
     if methods
       methods[:query].call
     else
-      raise Exceptions::InvalidOperation, "Unknown action: #{action}"
+      raise Exceptions::UnknownOperation, "Unknown action: #{action}"
     end
   end
 
@@ -264,8 +263,7 @@ class Match < ActiveRecord::Base
   #
   # These methods are responsible for changing and saving entities.
   # An exception will be raised if any errors occur when changing or saving
-  # the match.  The convention is to end the method name with "!", when the
-  # mathod may raise an exception.
+  # the match.
 
   # Starts the match.  Creates the first set.
   def start_play?
@@ -273,10 +271,11 @@ class Match < ActiveRecord::Base
   end
 
   def start_play!
-    unless started
-      ActiveRecord::Base.transaction do
-        update_start_play!
+    ActiveRecord::Base.transaction do
+      unless start_play?
+        raise Exceptions::InvalidOperation, 'Can\'t start play'
       end
+      update_start_play!
     end
     self
   end
@@ -287,13 +286,11 @@ class Match < ActiveRecord::Base
   end
 
   def start_next_set!
-    if last_set && last_set.completed?
-      ActiveRecord::Base.transaction do
-        unless start_next_set?
-          raise Exceptions::InvalidOperation, 'Can\'t start next set'
-        end
-        update_start_next_set!
+    ActiveRecord::Base.transaction do
+      unless start_next_set?
+        raise Exceptions::InvalidOperation, 'Can\'t start next set'
       end
+      update_start_next_set!
     end
   end
 
@@ -311,13 +308,6 @@ class Match < ActiveRecord::Base
       update_start_next_game!
     end
   end
-
-  # def start_next_game_with_server!(player)
-  #   ActiveRecord::Base.transaction do
-  #     update_first_or_second_player_server!(player)
-  #     update_start_next_game!
-  #   end
-  # end
 
   def win_game?
     complete_current_helper.win_game?
@@ -482,6 +472,9 @@ class Match < ActiveRecord::Base
   # Back out one scoring operation.
   def remove_last_change!
     ActiveRecord::Base.transaction do
+      unless remove_last_change?
+        raise Exceptions::InvalidOperation, 'Can\'t remove last change'
+      end
       helper = RemoveLastScoringChangeHelper.new(self)
       helper.save_list.each(&:save!)
       helper.destroy_list.each(&:destroy)
@@ -491,7 +484,6 @@ class Match < ActiveRecord::Base
   def remove_last_change?
     started
   end
-
 
   def methods_table
     unless @methods
@@ -707,9 +699,9 @@ class Match < ActiveRecord::Base
         save_list << last_game_var
       else
         # Undo start game
-        save_list << match if undo_first_servers(last_set_var)
         last = last_set_var.tiebreaker? ? last_set_var : last_game_var
         destroy_list << last
+        save_list << match if undo_first_servers(last_set_var)
       end
     end
 

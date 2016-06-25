@@ -1,5 +1,5 @@
 # Model for a player.
-# A player man be on a doubles team.
+# A player may be on a doubles team.
 # A player may be on a special kind of team to represent a singles
 # player in a match.
 # A player may be the first or second server in a match.
