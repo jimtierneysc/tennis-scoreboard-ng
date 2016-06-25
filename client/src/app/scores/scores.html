@@ -1,13 +1,13 @@
 <div class="container-fluid">
-  <div class="col-xs-12" ng-if="main.loading">
-    {{main.loadingMessage}}
+  <div class="col-xs-12" ng-if="vm.loading">
+    {{vm.loadingMessage}}
   </div>
 
-  <div class="col-xs-12" ng-if="main.loadingFailed">
-    {{main.loadingFailedMessage}}
+  <div class="col-xs-12" ng-if="vm.loadingFailed">
+    {{vm.loadingFailedMessage}}
   </div>
 
-  <div class="col-xs-12" ng-if="!main.loading && !main.loadingFailed">
+  <div class="col-xs-12" ng-if="!vm.loading && !vm.loadingFailed">
 
     <!-- Select match drop down -->
     <!-- Style to appear above child view -->
@@ -15,10 +15,10 @@
     <div class="play-table">
       <div>
         <label for="team" class="control-label sr-only">Team</label>
-        <ui-select ng-model="main.selectedMatch" theme="bootstrap" id="team" name="team"
-                   ng-required="true" on-select="main.selectedMatchChange()">
+        <ui-select ng-model="vm.selectedMatch" theme="bootstrap" id="team" name="team"
+                   ng-required="true" on-select="vm.selectedMatchChange()">
           <ui-select-match placeholder="Select a match">{{$select.selected.title}}</ui-select-match>
-          <ui-select-choices repeat="item in main.matches | filter: $select.search">
+          <ui-select-choices repeat="item in vm.matches | filter: $select.search">
             <div ng-bind-html="item.title | highlight: $select.search"></div>
             <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
           </ui-select-choices>

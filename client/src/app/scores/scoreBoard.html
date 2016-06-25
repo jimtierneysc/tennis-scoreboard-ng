@@ -1,34 +1,34 @@
 <div>
 
-  <div class="col-xs-12" ng-if="sub.loading">
-    {{sub.loadingMessage}}
+  <div class="col-xs-12" ng-if="vm.loading">
+    {{vm.loadingMessage}}
   </div>
 
-  <div class="col-xs-12" ng-if="sub.loadingFailed">
-    {{sub.loadingFailedMessage}}
+  <div class="col-xs-12" ng-if="vm.loadingFailed">
+    {{vm.loadingFailedMessage}}
   </div>
 
 
-  <div ng-if="!sub.loading && !sub.loadingFailed">
+  <div ng-if="!vm.loading && !vm.loadingFailed">
     <div class="play-table">
-      <div ng-if="sub.scoreBoard.doubles && sub.scoreBoard.first_team.name != null && sub.scoreBoard.second_team.name != null" class="match-detail">
-        "{{sub.scoreBoard.first_team.name}}" vs. "{{sub.scoreBoard.second_team.name}}"
+      <div ng-if="vm.scoreBoard.doubles && vm.scoreBoard.first_team.name != null && vm.scoreBoard.second_team.name != null" class="match-detail">
+        "{{vm.scoreBoard.first_team.name}}" vs. "{{vm.scoreBoard.second_team.name}}"
       </div>
       <div class="match-detail">
-        <fe-match-scoring match="sub.scoreBoard"></fe-match-scoring>
+        <fe-match-scoring match="vm.scoreBoard"></fe-match-scoring>
       </div>
       <div class="match-detail">
-        <fe-match-status match="sub.scoreBoard"></fe-match-status>
+        <fe-match-status match="vm.scoreBoard"></fe-match-status>
       </div>
 
     </div>
 
     <div class="play-table">
-      <fe-score-tool-bar scores="sub.scoreBoard"></fe-score-tool-bar>
+      <fe-score-tool-bar scores="vm.scoreBoard"></fe-score-tool-bar>
     </div>
 
     <div>
-      <fe-score-table scores="sub.scoreBoard"></fe-score-table>
+      <fe-score-table scores="vm.scoreBoard"></fe-score-table>
     </div>
 
   </div>
