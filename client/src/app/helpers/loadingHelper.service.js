@@ -17,32 +17,35 @@
     var service = {
       activate: activateFunc
     };
-
-    var vm = null;
     return service;
 
-    function activateFunc(_vm_) {
-      vm = _vm_;
-      vm.loadingHasCompleted = loadingHasCompleted;
-      vm.loadingHasFailed = loadingHasFailed;
+    function activateFunc(vm) {
+      var helper = new Helper(vm);
+      vm.loadingHasCompleted = helper.loadingHasCompleted;
+      vm.loadingHasFailed = helper.loadingHasFailed;
       vm.loading = true;
       vm.loadingMessage = 'Loading...';
       vm.loadingFailed = false;
       vm.loadingFailedMessage = null;
     }
     
-    function loadingHasFailed(response, message) {
-      vm.loading = false;
-      vm.loadingFailed = true;
-      if (angular.isUndefined(message))
-        vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').  Please check your internet connection.';
-      else
-        vm.loadingFailedMessage = message;
-    }
+    function Helper(_vm_) {
+      var helper = this;
+      var vm = _vm_;
+      
+      helper.loadingHasFailed = function(response, message) {
+        vm.loading = false;
+        vm.loadingFailed = true;
+        if (angular.isString(message))
+          vm.loadingFailedMessage = message;
+        else
+          vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').  Please check your internet connection.';
+      }
 
-    function loadingHasCompleted() {
-      vm.loading = false;
-      vm.loadingFailed = false;
+      helper.loadingHasCompleted = function() {
+        vm.loading = false;
+        vm.loadingFailed = false;
+      }
     }
   }
 })();
