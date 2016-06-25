@@ -90,7 +90,7 @@ class PlayMatchHelper
   def start_set
     if match.change_score? :start_match_tiebreaker
       match.change_score! :start_match_tiebreaker
-    else
+    elsif match.change_score? :start_next_set
       match.change_score! :start_next_set
     end
   end
