@@ -1,43 +1,43 @@
 <div class="container-fluid">
 
-  <div class="col-xs-12" ng-if="main.loading">
-    {{main.loadingMessage}}
+  <div class="col-xs-12" ng-if="vm.loading">
+    {{vm.loadingMessage}}
   </div>
 
-  <div class="col-xs-12" ng-if="main.loadingFailed">
-    {{main.loadingFailedMessage}}
+  <div class="col-xs-12" ng-if="vm.loadingFailed">
+    {{vm.loadingFailedMessage}}
   </div>
 
-  <div ng-if="!main.loading && !main.loadingFailed">
+  <div ng-if="!vm.loading && !vm.loadingFailed">
     <div class="col-xs-12">
-      <button class="btn btn-primary" ng-click="main.showNewEntityForm()">
+      <button class="btn btn-primary" ng-click="vm.showNewEntityForm()">
         <span class="glyphicon glyphicon-plus"></span> Team
       </button>
     </div>
 
     <div class="col-xs-12">
       <ol class="list-group">
-        <li class="list-group-item" ng-if="main.showingNewEntityForm">
+        <li class="list-group-item" ng-if="vm.showingNewEntityForm">
 
           <!--New team-->
 
           <fe-teams-form
-            form="main.newEntityForm"
-            errors="main.entityCreateErrors"
-            cancel="main.hideNewEntityForm()"
-            submit="main.submitNewEntityForm()"
-            entity="main.newEntity"
+            form="vm.newEntityForm"
+            errors="vm.entityCreateErrors"
+            cancel="vm.hideNewEntityForm()"
+            submit="vm.submitNewEntityForm()"
+            entity="vm.newEntity"
             ok="Add"
-            playerslist="main.playerOptionsList"
+            playerslist="vm.playerOptionsList"
           >
           </fe-teams-form>
         </li>
 
         <!--Team details-->
-        <li class="list-group-item clearfix" ng-repeat="entity in main.entitys">
+        <li class="list-group-item clearfix" ng-repeat="entity in vm.entitys">
 
 
-          <div ng-hide="main.showingEditEntityForm(entity)">
+          <div ng-hide="vm.showingEditEntityForm(entity)">
             <div class="col-xs-10">
               <div class="h4">
                 <span ng-if="entity.name">{{ entity.name}}</span>
@@ -52,11 +52,11 @@
             <div class="col-xs-2">
               <!--Delete button-->
               <div class="pull-right">
-                <button class="btn btn-link" ng-click="main.trashEntity(entity)">
+                <button class="btn btn-link" ng-click="vm.trashEntity(entity)">
                   <span class="glyphicon glyphicon-trash"></span>
                 </button>
                 <br>
-                <button class="btn btn-link" ng-click="main.showEditEntityForm(entity)">
+                <button class="btn btn-link" ng-click="vm.showEditEntityForm(entity)">
                   <span class="glyphicon glyphicon-edit"></span>
                 </button>
               </div>
@@ -67,16 +67,16 @@
           <!--Edit team-->
 
           <!--Use ng-if so there won't be bunch of forms in the DOM-->
-          <div ng-if="main.showingEditEntityForm(entity)">
+          <div ng-if="vm.showingEditEntityForm(entity)">
             <div>
               <fe-teams-form
-                form="main.editEntityForm"
-                errors="main.entityUpdateErrors"
-                cancel="main.hideEditEntityForm()"
-                submit="main.submitEditEntityForm()"
-                entity="main.editEntity"
+                form="vm.editEntityForm"
+                errors="vm.entityUpdateErrors"
+                cancel="vm.hideEditEntityForm()"
+                submit="vm.submitEditEntityForm()"
+                entity="vm.editEntity"
                 ok="Save"
-                playerslist="main.playerOptionsList"
+                playerslist="vm.playerOptionsList"
               >
               </fe-teams-form>
             </div>

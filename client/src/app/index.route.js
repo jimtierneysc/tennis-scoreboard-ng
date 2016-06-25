@@ -7,14 +7,17 @@
 
   /** @ngInject */
   function routerConfig($stateProvider, $urlRouterProvider) {
+    var header = {
+      templateUrl: 'app/header/header.html',
+      controller: 'HeaderController',
+      controllerAs: 'vm'
+    };
+
     $stateProvider
       .state('home', {
         url: '/',
         views: {
-          'header': {
-            templateUrl: 'app/header/header.html'
-          }
-          ,
+          'header': header,
           'content': {
             templateUrl: 'app/main/main.html'
           }
@@ -23,14 +26,11 @@
       .state('players', {
         url: '/players',
         views: {
-          'header': {
-            templateUrl: 'app/header/header.html'
-          }
-          ,
+          'header': header,
           'content': {
             templateUrl: 'app/players/players.html',
             controller: 'PlayerController',
-            controllerAs: 'main',
+            controllerAs: 'vm',
             resolve: {
               response: resolvePlayers()
             }
@@ -40,14 +40,11 @@
       .state('teams', {
         url: '/teams',
         views: {
-          'header': {
-            templateUrl: 'app/header/header.html'
-          }
-          ,
+          'header': header,
           'content': {
             templateUrl: 'app/teams/teams.html',
             controller: 'TeamController',
-            controllerAs: 'main',
+            controllerAs: 'vm',
             resolve: {
               response: resolveTeams()
             }
@@ -57,14 +54,11 @@
       .state('matches', {
         url: '/matches',
         views: {
-          'header': {
-            templateUrl: 'app/header/header.html'
-          }
-          ,
+          'header': header,
           'content': {
             templateUrl: 'app/matches/matches.html',
             controller: 'MatchController',
-            controllerAs: 'main',
+            controllerAs: 'vm',
             resolve: {
               response: resolveMatches()
             }
@@ -74,14 +68,11 @@
       .state('scores', {
         url: '/scores',
         views: {
-          'header': {
-            templateUrl: 'app/header/header.html'
-          }
-          ,
+          'header': header,
           'content': {
             templateUrl: 'app/scores/scores.html',
             controller: 'ScoreController',
-            controllerAs: 'main',
+            controllerAs: 'vm',
             resolve: {
               // parent view shows list of matches
               response: resolveMatches()
@@ -93,7 +84,7 @@
         url: '/board/:id',
         templateUrl: 'app/scores/scoreBoard.html',
         controller: 'ScoreBoardController',
-        controllerAs: 'sub',
+        controllerAs: 'vm',
         resolve: {
           response: resolveScoreBoard()
         }
@@ -101,8 +92,22 @@
       .state('signin', {
         templateUrl: 'app/user/new.html',
         controller: 'UserController',
-        controllerAs: 'main'
+        controllerAs: 'vm'
       })
+
+
+      .state('login', {
+        url: '/login',
+        views: {
+          'header': header,
+          'content': {
+            templateUrl: 'app/auth/login.view.html',
+            controller: 'LoginController',
+            controllerAs: 'vm'
+          }
+        }
+      })
+
     ;
 
     $urlRouterProvider.otherwise('/');
