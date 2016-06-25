@@ -41,9 +41,7 @@
         helper.vm.loggedIn = authenticationService.loggedIn;
         helper.vm.userName = authenticationService.userName;
       }
-
     }
-
   }
 })();
 

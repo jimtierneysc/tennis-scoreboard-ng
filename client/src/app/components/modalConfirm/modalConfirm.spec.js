@@ -48,8 +48,7 @@
       beforeEach(inject(function (_$controller_) {
         $controller = _$controller_;
       }));
-
-
+      
       it('should have values', function () {
        var vm = $controller('ModalConfirmController', {
           data: labels,

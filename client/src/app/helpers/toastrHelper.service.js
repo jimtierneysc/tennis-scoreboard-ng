@@ -40,8 +40,6 @@
       toastr.clear();
       vm.lastToast = toastr.error(feUtils.escapeHtml(message), caption);
     }
-
-
   }
 })();
 

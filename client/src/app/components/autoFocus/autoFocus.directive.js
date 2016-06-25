@@ -8,7 +8,6 @@
  * <input type="text" fe-auto-focus>
  */
 
-
 (function () {
   'use strict';
 
@@ -20,9 +19,9 @@
   function autoFocus($timeout) {
     return {
       restrict: 'AC',
-      link: function (_scope, _element) {
+      link: function (scope, element) {
         $timeout(function () {
-          _element[0].focus();
+          element[0].focus();
         }, 10);
       }
     }

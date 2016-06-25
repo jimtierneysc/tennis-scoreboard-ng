@@ -48,7 +48,6 @@
           },
           function() {
             error = true;
-
           });
         $httpBackend.flush();
         expect(error).toEqual(true);

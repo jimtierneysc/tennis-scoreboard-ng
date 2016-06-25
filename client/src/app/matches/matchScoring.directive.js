@@ -8,7 +8,6 @@
  * <fe-match-scoring></fe-match-scoring>
  */
 
-
 (function () {
   'use strict';
 
@@ -25,7 +24,6 @@
         match: '='
       }
     };
-
     return directive;
   }
 

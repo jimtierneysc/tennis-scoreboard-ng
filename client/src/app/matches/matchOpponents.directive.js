@@ -8,7 +8,6 @@
  * <fe-match_opponents></fe-match_opponents>
  */
 
-
 (function () {
   'use strict';
 

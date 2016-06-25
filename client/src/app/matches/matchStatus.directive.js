@@ -8,7 +8,6 @@
  * <fe-match_status></fe-match_status>
  */
 
-
 (function () {
   'use strict';
 
@@ -28,5 +27,4 @@
 
     return directive;
   }
-
 })();

@@ -5,6 +5,7 @@
  * Controller for displaying and editing players
  *
  */
+
 (function () {
   'use strict';
 
@@ -27,8 +28,8 @@
           getResources: playersResource.getPlayers,
           beforeSubmitNewEntity: beforeSubmitNewEntity,
           beforeSubmitEditEntity: beforeSubmitEditEntity,
-          beforeShowNewEntityForm: beforeShowNewEntityForm,
-          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          beforeShowNewEntityForm: null,
+          beforeShowEditEntityForm: null,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -49,15 +50,7 @@
         name: entity.name
       };
     }
-
-    function beforeShowNewEntityForm() {
-      // Nothing to do.
-    }
-
-    function beforeShowEditEntityForm() {
-      // Nothing to do.
-    }
-
+    
     function getEntityDisplayName(entity) {
       return entity.name;
     }
@@ -65,8 +58,6 @@
     function makeEntityBody(entity) {
       return {player: entity};
     }
-
-
   }
 })();
 

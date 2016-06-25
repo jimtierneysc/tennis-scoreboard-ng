@@ -8,7 +8,6 @@
  <fe-wait-indicator></fe-wait-indicator>
  */
 
-
 (function () {
   'use strict';
 

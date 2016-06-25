@@ -100,7 +100,7 @@
 
       helper.showNewEntityForm = function() {
         $log.info('showNewEntityForm');
-        beforeShowNewEntityForm();
+        if (beforeShowNewEntityForm) beforeShowNewEntityForm();
         vm.showingNewEntityForm = true;
       }
 
@@ -125,7 +125,7 @@
         $log.info('showEditEntityForm');
         // Edit a copy, so can discard unless click Save
         vm.editEntity = angular.copy(entity);
-        beforeShowEditEntityForm(entity);
+        if (beforeShowEditEntityForm) beforeShowEditEntityForm(entity);
       }
 
       helper.hideEditEntityForm = function() {
@@ -190,7 +190,6 @@
           }
         );
       }
-
 
       function updateEntity(entity) {
         var id = entity.id;
@@ -282,9 +281,7 @@
         }
         vm.showToastrError(message, "Delete Error");
       }
-
     }
-
   }
 })();
 
