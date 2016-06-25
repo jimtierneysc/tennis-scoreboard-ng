@@ -4,19 +4,19 @@ require 'serializers/match_serializer_shared'
 RSpec.shared_examples "a scoreboard" do
 
   it 'has sets' do
-    expect(subject.include? 'sets').to be_truthy
+    expect(subject.include? :sets).to be_truthy
   end
 
   it 'has actions' do
-    expect(subject.include? 'actions').to be_truthy
+    expect(subject.include? :actions).to be_truthy
   end
 
   it 'errors' do
-    expect(subject.include? 'errors').to be_truthy
+    expect(subject.include? :errors).to be_truthy
   end
 
   it 'has servers' do
-    expect(subject.include? 'servers').to be_truthy
+    expect(subject.include? :servers).to be_truthy
   end
 
 end
@@ -28,7 +28,7 @@ RSpec.describe MatchScoreBoardSerializer, ancestor: MatchSerializer do
     let(:serializer) { MatchScoreBoardSerializer.new(resource) }
 
     subject do
-      JSON.parse(serializer.to_json)['match_score_board']
+      JSON.parse(serializer.to_json, symbolize_names: true)[:match_score_board]
     end
 
     it_behaves_like "a doubles match"
@@ -42,7 +42,7 @@ RSpec.describe MatchScoreBoardSerializer, ancestor: MatchSerializer do
     let(:serializer) { MatchScoreBoardSerializer.new(resource) }
 
     subject do
-      JSON.parse(serializer.to_json)['match_score_board']
+      JSON.parse(serializer.to_json, symbolize_names: true)[:match_score_board]
     end
 
     it_behaves_like "a singles match"

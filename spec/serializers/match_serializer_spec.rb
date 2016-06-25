@@ -8,7 +8,7 @@ RSpec.describe MatchSerializer, :type => :serializer do
     let(:serializer) { MatchSerializer.new(resource) }
 
     subject do
-      JSON.parse(serializer.to_json)['match']
+      JSON.parse(serializer.to_json, symbolize_names: true)[:match]
     end
 
     it_behaves_like "a doubles match"
@@ -20,7 +20,7 @@ RSpec.describe MatchSerializer, :type => :serializer do
     let(:serializer) { MatchSerializer.new(resource) }
 
     subject do
-      JSON.parse(serializer.to_json)['match']
+      JSON.parse(serializer.to_json, symbolize_names: true)[:match]
     end
 
     it_behaves_like "a singles match"

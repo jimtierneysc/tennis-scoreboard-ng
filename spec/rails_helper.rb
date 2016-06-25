@@ -20,7 +20,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -61,6 +61,25 @@ RSpec.configure do |config|
   # (eg. Countries, States, etc.)
   config.global_fixtures = :all
 
+  #Including to test requests
+  config.include Request::JsonHelpers, :type => :controller
+  config.include Request::HeadersHelpers, :type => :controller
+  config.include Devise::TestHelpers, :type => :controller
+
+  config.raise_errors_for_deprecations!
+
+  config.before(:each, type: :controller) do
+    include_default_accept_headers
+  end
+end
+
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework:
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
 
 
