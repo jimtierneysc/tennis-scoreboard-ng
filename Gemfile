@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.6'
 
+gem 'rake', '11.2.2'
+
 gem 'rails-api'
 
 gem 'spring', :group => :development
@@ -28,11 +30,27 @@ gem 'bcrypt', '~> 3.1.7'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
-gem 'active_model_serializers'
+gem 'active_model_serializers', '0.9.3'
 
-gem 'devise_token_auth'
-gem 'omniauth'
+# gem 'devise_token_auth'
+# gem 'omniauth'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.4'
+  gem 'rspec-rails'
 end
+
+
+# group :development do
+#   gem 'sqlite3'
+# end
+
+group :test do
+  gem "shoulda-matchers"
+end
+
+group :development, :test do
+  gem "factory_girl_rails"
+  gem 'ffaker'
+end
+
+gem "devise"
