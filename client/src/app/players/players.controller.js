@@ -13,14 +13,14 @@
     .controller('PlayerController', MainController);
 
   /** @ngInject */
-  function MainController(playersResource, $log, $timeout, $scope, crudHelper, response) {
-
-
+  function MainController(playersResource, $log, $timeout, $scope, crudHelper, authHelper, response) {
+    
     var vm = this;
 
     activate();
 
     function activate() {
+      authHelper.activate(vm, $scope);
       crudHelper.activate(vm,
         {
           response: response,
