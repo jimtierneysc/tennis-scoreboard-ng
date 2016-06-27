@@ -4,7 +4,6 @@
 # Updates a team.
 # Deletes a team.
 class TeamsController < ApplicationController
-  rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
   before_action :check_login!, only:
     [:update, :create, :destroy]
   before_action :set_team, only: [:show, :update, :destroy]
@@ -58,10 +57,6 @@ class TeamsController < ApplicationController
     @team = Team.find(params[:id])
   end
 
-  # def team_params
-  #   params[:team].permit :name
-  # end
-  #
   def team_params
     params_var = params[:team].permit(:first_player_id,
                                               :second_player_id,
@@ -71,13 +66,4 @@ class TeamsController < ApplicationController
     params_var
   end
 
-  # Handle record not found exception
-  def when_record_not_found
-    render json: { errors: 'Not found' }, status: :not_found
-  end
-
-  # TODO: Make sure that exception does not cause html response
-  # def when_other_error
-  #   render json: { error: 'Something went wrong' }, status: :internal_server_error
-  # end
 end

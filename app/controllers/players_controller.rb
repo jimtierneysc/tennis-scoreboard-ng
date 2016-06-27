@@ -4,7 +4,6 @@
 # Updates a player.
 # Deletes a player.
 class PlayersController < ApplicationController
-  rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
   before_action :check_login!, only:
     [:update, :create, :destroy]
   before_action :set_player, only: [:show, :update, :destroy]
@@ -60,13 +59,4 @@ class PlayersController < ApplicationController
     params[:player].permit :name
   end
 
-  # Handle record not found exception
-  def when_record_not_found
-    render json: { errors: 'Not found' }, status: :not_found
-  end
-
-  # TODO: Make sure that exception does not cause html response
-  # def when_other_error
-  #   render json: { error: 'Something went wrong' }, status: :internal_server_error
-  # end
 end

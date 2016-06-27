@@ -4,7 +4,6 @@
 # Updates a match.
 # Deletes a match.
 class MatchesController < ApplicationController
-  rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
   before_action :check_login!, only: [:create, :update, :destroy]
   before_action :set_match, only:
     [:show, :update, :destroy]

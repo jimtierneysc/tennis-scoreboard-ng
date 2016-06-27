@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
-  rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
   before_action :authenticate_with_token!, only: [:update, :destroy]
   before_action :set_user, only: [:show]
-  respond_to :json
 
   def show
     # respond_with User.find(params[:id])
@@ -30,7 +28,7 @@ class UsersController < ApplicationController
 
   def destroy
     current_user.destroy
-    head 204
+    head :no_content
   end
 
   private
@@ -41,11 +39,6 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
-  end
-
-  # Handle record not found exception
-  def when_record_not_found
-    render json: { errors: 'Not found' }, status: :not_found
   end
 
 

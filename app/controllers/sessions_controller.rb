@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-  respond_to :json
 
   def create
     session = params[:session]
@@ -10,7 +9,7 @@ class SessionsController < ApplicationController
     if user && user.valid_password?(user_password)
       sign_in user, store: false
       user.generate_authentication_token!
-      user.save
+      user.save!
       # render json: user, status: 200, location: [:api, user]
       render json: user, status: :ok
     else
@@ -21,7 +20,7 @@ class SessionsController < ApplicationController
   def destroy
     user = User.find_by(auth_token: params[:id])    
     user.generate_authentication_token!
-    user.save
-    head 204
+    user.save!
+    head :no_content
   end
 end

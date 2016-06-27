@@ -4,7 +4,6 @@
 class MatchScoreBoardController < ApplicationController
   include MatchLoader
 
-  rescue_from ::ActiveRecord::RecordNotFound, with: :when_record_not_found
   rescue_from ::Exceptions::UnknownOperation, with: :when_unknown_operation
   before_action :check_login!, only: [:update]
   before_action :set_match_eager_load, only: [:show, :update]
@@ -40,10 +39,6 @@ class MatchScoreBoardController < ApplicationController
 
   def set_match_eager_load
     @match = self.class.eager_load_match params[:id]
-  end
-
-  def when_record_not_found
-    render json: { errors: 'Not found' }, status: :not_found
   end
 
   def when_unknown_operation(exception)
