@@ -8,10 +8,12 @@
     var service;
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function (_authenticationService_) {
-      service = _authenticationService_
-      service.clearCredentials();
-    }));
+    beforeEach(function() {
+      inject(function (_authenticationService_) {
+        service = _authenticationService_
+        service.clearCredentials();
+      })
+    });
 
     it('should be registered', function () {
       expect(service).not.toEqual(null);
@@ -23,9 +25,11 @@
 
     describe('storage', function () {
       var $localStorage;
-      beforeEach(inject(function (_$localStorage_) {
-        $localStorage = _$localStorage_;
-      }));
+      beforeEach(function() {
+        inject(function (_$localStorage_) {
+          $localStorage = _$localStorage_;
+        })
+      });
 
       it('has data name', function() {
         expect(service.localDataName).toEqual(jasmine.any(String))
@@ -97,10 +101,12 @@
       var USERNAME = 'username';
       var TOKEN = 'token';
       var $http;
-      beforeEach(inject(function (_$http_) {
-        $http = _$http_;
-        service.setCredentials(USERNAME, TOKEN);
-      }));
+      beforeEach(function() {
+        inject(function (_$http_) {
+          $http = _$http_;
+          service.setCredentials(USERNAME, TOKEN);
+        })
+      });
 
       it('is logged in', function () {
         expect(service.loggedIn).toBe(true);
@@ -117,12 +123,14 @@
 
     describe('log out', function () {
       var $http;
-      beforeEach(inject(function (_$http_) {
-        $http = _$http_;
-        service.setCredentials(USERNAME, TOKEN);
-        expect(service.loggedIn).toBe(true);
-        service.clearCredentials();
-      }));
+      beforeEach(function() {
+        inject(function (_$http_) {
+          $http = _$http_;
+          service.setCredentials(USERNAME, TOKEN);
+          expect(service.loggedIn).toBe(true);
+          service.clearCredentials();
+        })
+      });
 
       it('is logged out', function () {
         expect(service.loggedIn).toBe(false);
@@ -141,11 +149,14 @@
       var scope;
       var changed;
 
-      beforeEach(inject(function ($rootScope) {
-        scope = $rootScope.$new();
-        changed = jasmine.createSpy('dummy')
-        service.subscribeChanged(scope, changed);
-      }));
+      beforeEach(function() {
+
+        inject(function ($rootScope) {
+          scope = $rootScope.$new();
+          changed = jasmine.createSpy('dummy')
+          service.subscribeChanged(scope, changed);
+        })
+      });
 
       it('should not be called', function () {
         expect(changed).not.toHaveBeenCalled();

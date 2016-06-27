@@ -34,7 +34,7 @@
           expect(settings.resolve.data).toEqual(labels);
           return {result: true}
         };
-        spyOn($uibModal, 'open').and.callFake(fakeOpen); //.andReturn(true);
+        spyOn($uibModal, 'open').and.callFake(fakeOpen); 
         var result = service.confirm(labels);
         expect(result).toBe(true);
         expect($uibModal.open).toHaveBeenCalled();

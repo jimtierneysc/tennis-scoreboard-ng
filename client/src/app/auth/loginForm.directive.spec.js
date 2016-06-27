@@ -1,37 +1,35 @@
 (function () {
   'use strict';
 
-  /**
-   * @todo Complete the test
-   */
   describe('loginForm directive', function () {
-    var $log;
-    var compiledDirective;
-    var scope;
+
+    var compile, scope, directiveElem;
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function ($compile, $rootScope, _$log_) {
-      $log = _$log_;
 
-      // TODO test directive
+    beforeEach(function () {
+
+      inject(function ($compile, $rootScope) {
+        compile = $compile;
+        scope = $rootScope.$new();
+      });
+      
       var html = ('<fe-login-form> ' +
       '</fe-login-form>');
 
-      var el = angular.element(html);
-
-      scope = $rootScope.$new();
-      compiledDirective = $compile(el)(scope);
-      scope.$digest();
-    }));
-
-    it('should have isolate scope object with members', function () {
-      var isolatedScope = compiledDirective.isolateScope();
-
-      expect(isolatedScope).not.toEqual(null);
-      // TODO: Get this working
-      // expect(isolatedScope.entity).toBeDefined();
-      // expect(isolatedScope.entity.name).toBeDefined();
-
+      directiveElem = getCompiledElement(html);
     });
+
+    function getCompiledElement(html) {
+      var element = angular.element(html);
+      var compiledElement = compile(element)(scope);
+      scope.$digest();
+      return compiledElement;
+    }
+
+    it('should have credentials-form element', function () {
+      expect(directiveElem.find('fe-credentials-form').length).toEqual(1);
+    });
+
   });
 })();

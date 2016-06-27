@@ -6,10 +6,12 @@
     var $httpBackend;
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function(_loginResource_, _$httpBackend_) {
-      service = _loginResource_;
-      $httpBackend = _$httpBackend_;
-    }));
+    beforeEach(function() {
+      inject(function(_loginResource_, _$httpBackend_) {
+        service = _loginResource_;
+        $httpBackend = _$httpBackend_;
+      })
+    });
 
     it('should be registered', function() {
       expect(service).not.toEqual(null);

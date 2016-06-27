@@ -1,55 +1,85 @@
 (function () {
   'use strict';
 
-  /**
-   * @todo Complete the test
-   */
-  describe('credentialsFrom directive', function () {
-    var $log;
-    var errors;
-    var entity;
-    var compiledDirective;
-    var scope;
-    var okText;
+  describe('credentials form directive', function () {
+
+    var compile, scope, directiveElem, okText;
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function ($compile, $rootScope, _$log_) {
-      $log = _$log_;
 
-      errors = {
-        other: ['othererror'],
-        name: ['nameerror']
-      };
-      entity = { name: 'namevalue'};
-      okText = 'clickme';
+    beforeEach(function () {
 
-      scope = $rootScope.$new();
-      scope.aentity = entity;
-      scope.aerrors = errors; // errors;
-      scope.asubmit = jasmine.createSpy('onSubmit');
+      inject(function ($compile, $rootScope) {
+        compile = $compile;
+        scope = $rootScope.$new();
+      });
 
-      // TODO test directive
-      var html = ('<fe-credentials-form> ' +
+      scope.aerrors = {};
+      scope.aentity = {};
+      okText = 'A OK'
+      scope.asubmit = jasmine.createSpy('submit');
+
+      var html = ('<fe-credentials-form ' +
       'errors="aerrors" ' +
-      'submit="asubmit" ' +
+      'submit="asubmit()" ' +
       'entity="aentity" ' +
       'ok="' + "{{'" + okText + "'}}" + '"' +
-      '</fe-credentials-form>');
+      '></fe-credentials-form>');
 
-      var el = angular.element(html);
-
-      compiledDirective = $compile(el)(scope);
-      scope.$digest();
-    }));
-
-    it('should have isolate scope object with members', function () {
-      var isolatedScope = compiledDirective.isolateScope();
-
-      expect(isolatedScope).not.toEqual(null);
-      // TODO: Get this working
-      // expect(isolatedScope.entity).toBeDefined();
-      // expect(isolatedScope.entity.name).toBeDefined();
-
+      directiveElem = getCompiledElement(html);
     });
+
+    function getCompiledElement(html) {
+      var element = angular.element(html);
+      var compiledElement = compile(element)(scope);
+      scope.$digest();
+      return compiledElement;
+    }
+
+    it('submit should be a function', function(){
+      var isolatedScope = directiveElem.isolateScope();
+
+      expect(typeof(isolatedScope.submit)).toEqual('function');
+    });
+
+
+    it('should call submit method', function () {
+      var isolatedScope = directiveElem.isolateScope();
+      isolatedScope.submit();
+
+      expect(scope.asubmit).toHaveBeenCalled();
+    });
+
+    it('errors should be two-way bound', function(){
+      var isolatedScope = directiveElem.isolateScope();
+
+      var value = {errors: 'one'};
+
+      isolatedScope.errors = value;
+      scope.$digest();
+
+      expect(scope.aerrors).toEqual(value);
+    });
+
+    it('entity should be two-way bound', function(){
+      var isolatedScope = directiveElem.isolateScope();
+
+      var value = {name: 'one'};
+
+      isolatedScope.entity = value;
+      scope.$digest();
+
+      expect(scope.aentity).toEqual(value);
+    });
+
+    it('should have button element', function () {
+      expect(directiveElem.find('button').length).toEqual(1);
+    });
+
+    it('should have button text', function () {
+      expect(directiveElem.find('button')[0].innerText).toEqual(okText);
+    });
+
   });
 })();
+
