@@ -39,7 +39,6 @@
       vm.entity = {username: "", password: ""};
       vm.errors = {};
       vm.submit = submit;
-      vm.loginForm = null;
 
       errorsHelper.activate(vm,
         {

@@ -6,8 +6,11 @@
     .service('authenticationService', Service);
 
   /** @ngInject */
-  function Service($http, $cookieStore, $rootScope, $log) {
+  function Service($http, $cookieStore, $rootScope, $log, $localStorage) {
     var service = this;
+
+    var AUTHORIZATION = 'Authorization';
+    var DATA = 'data';
 
     service.setCredentials = setCredentials;
     service.clearCredentials = clearCredentials;
@@ -15,13 +18,14 @@
     service.subscribeChanged = subscribeChanged;
     service.loggedIn = false;
     service.userName = "";
+    service.headerName = AUTHORIZATION;
+    service.localDataName = DATA;
 
-    var AUTHORIZATION = 'Authorization';
+    var data = null;
+
 
     function setCredentials(username, token) {
-      // var /authdata = Base64.encode(username + ':' + password);
-
-      $rootScope.globals = {
+      data = {
         currentUser: {
           username: username,
           token: token
@@ -29,21 +33,24 @@
       };
 
       $http.defaults.headers.common[AUTHORIZATION] = token; // jshint ignore:line
-      $cookieStore.put('globals', $rootScope.globals);
+      // $cookieStore.put('globals', data);
+      $localStorage[DATA] = data;
       changed();
     }
 
     function clearCredentials() {
-      $rootScope.globals = {};
-      $cookieStore.remove('globals');
+      data = {};
+      // $cookieStore.remove('globals');
+      $localStorage[DATA] = undefined;
       delete $http.defaults.headers.common[AUTHORIZATION];
       changed();
     }
 
     function loadCredentials() {
-      $rootScope.globals = $cookieStore.get('globals') || {};
-      if ($rootScope.globals.currentUser) {
-        $http.defaults.headers.common[AUTHORIZATION] = $rootScope.globals.currentUser.token; // jshint ignore:line
+      // data = $cookieStore.get('globals') || {};
+      data = $localStorage[DATA] || {};
+      if (data.currentUser) {
+        $http.defaults.headers.common[AUTHORIZATION] = data.currentUser.token;
       }
       changed();
     }
@@ -57,9 +64,9 @@
 
     function changed() {
       $log.info('changed');
-      service.loggedIn = angular.isDefined($rootScope.globals.currentUser);
+      service.loggedIn = angular.isDefined(data.currentUser);
       if (service.loggedIn) {
-        service.userName = $rootScope.globals.currentUser.username;
+        service.userName = data.currentUser.username;
       }
       else
         service.userName = "";

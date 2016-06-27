@@ -22,7 +22,6 @@
       restrict: 'EA',
       templateUrl: 'app/auth/credentialsForm.html',
       scope: {
-        form: '=',
         errors: '=',
         submit: '&',
         entity: '=',
