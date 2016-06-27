@@ -13,7 +13,7 @@
     .controller('HeaderController', Controller);
 
   /** @ngInject */
-  function Controller(authHelper, $scope, $state) {
+  function Controller(authHelper, $scope) {
     var vm = this;
 
     activate();

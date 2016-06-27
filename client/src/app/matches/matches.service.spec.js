@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe('service Matche', function() {
+  describe('service Matches', function() {
     var service;
     var $httpBackend;
 
