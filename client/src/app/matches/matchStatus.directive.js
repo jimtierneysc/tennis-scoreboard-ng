@@ -18,7 +18,7 @@
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/matches/matchStatus.html',
       scope: {
         match: '='

@@ -8,7 +8,6 @@
  <fe-teams-form></fe-teams-form>
  */
 
-
 (function () {
   'use strict';
 
@@ -34,5 +33,4 @@
 
     return directive;
   }
-
 })();
