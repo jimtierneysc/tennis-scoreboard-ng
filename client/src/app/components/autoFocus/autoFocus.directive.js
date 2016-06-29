@@ -13,21 +13,47 @@
 
   angular
     .module('frontend')
-    .directive('feAutoFocus', autoFocus);
+    .directive('feAutoFocus', directive)
+    .factory('autoFocus', factory);
 
   /** @ngInject */
-  function autoFocus($timeout) {
+  function directive($timeout) {
     return {
       restrict: 'A',
-      link: function (scope, element) {
-        $timeout(function () {
+      link: function (scope, element, attr) {
+        if (attr.feAutoFocus) {
+          // fe-auto-focus has a value.  Wait for notification.
+          scope.$on('autoFocus', function (e, name) {
+            if (name === attr.feAutoFocus) {
+              setFocus();
+            }
+          });
+        }
+        else {
+          // fe-auto-focus does not have a value.  Focus when linked.
+          $timeout(function () {
+            setFocus();
+          }, 1);
+        }
+
+        function setFocus() {
           if (angular.isDefined(scope.autoFocused)) {
             scope.autoFocused = element[0].name; // for testing
           }
           element[0].focus();
-        }, 10);
+        }
       }
     }
   }
+
+  /** @ngInject */
+  function factory($timeout, $rootScope) {
+    return function (name) {
+      $timeout(function () {
+        $rootScope.$broadcast('autoFocus', name);
+      });
+    }
+  }
+
 
 })();

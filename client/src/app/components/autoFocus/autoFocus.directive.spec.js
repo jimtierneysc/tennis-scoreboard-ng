@@ -3,7 +3,7 @@
 
   describe('directive autoFocus', function () {
 
-    var compile, scope, directiveElem, $rootScope, $timeout;
+    var compile, scope, $rootScope, $timeout;
     beforeEach(module('frontend'));
 
     beforeEach(function () {
@@ -12,14 +12,11 @@
         compile = $compile;
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
-        // special value set by directive
+        // special value that indicate name of element focused, if any
         scope.autoFocused = null;
         $timeout = _$timeout_;
       });
 
-      var html = ('<div><input name="edit1" type="text"><input name="edit2" type="text" fe-auto-focus></div>');
-
-      directiveElem = getCompiledElement(html);
     });
 
     function getCompiledElement(html) {
@@ -29,14 +26,65 @@
       return compiledElement;
     }
 
-    it('should have input elements', function () {
-      expect(directiveElem.find('input').length).toEqual(2);
+    describe('fe-auto-focus does not have value', function(){
+      var directiveElem;
+
+      beforeEach(function() {
+        var html = ('<div><input name="edit1" type="text"><input name="edit2" type="text" fe-auto-focus></div>');
+
+        directiveElem = getCompiledElement(html);
+
+      });
+      
+      it('should have input elements', function () {
+        expect(directiveElem.find('input').length).toEqual(2);
+      });
+
+      it('should set focus', function () {
+        $timeout.flush();  // Give directive time to set focus
+        expect(scope.autoFocused).toEqual('edit2');
+      });
+
     });
 
-    it('should set focus', function () {
-      $timeout.flush();  // Give directive time to set focus
-      expect(scope.autoFocused).toEqual('edit2');
-    });
+    describe('fe-auto-focus has a value', function(){
+      var directiveElem;
+
+      beforeEach(function() {
+        var html = ('<div><input name="edit1" type="text"><input name="edit2" type="text" fe-auto-focus="focusedit2"></div>');
+
+        directiveElem = getCompiledElement(html);
+
+      });
+
+      it('should have input elements', function () {
+        expect(directiveElem.find('input').length).toEqual(2);
+      });
+
+      describe('initial state', function() {
+
+        it('should not have focus', function () {
+          expect(scope.autoFocused).toEqual(null);
+        });
+      });
+
+      describe('use autoFocus service', function() {
+        var autoFocus;
+        beforeEach(function() {
+          inject(function(_autoFocus_){
+            autoFocus = _autoFocus_;
+          });
+        });
+
+        it('should set focus', function () {
+          autoFocus('focusedit2');
+          $timeout.flush();  // Give directive time to set focus
+          expect(scope.autoFocused).toEqual('edit2');
+        });
+      });
+
+    })
+
 
   });
 })();

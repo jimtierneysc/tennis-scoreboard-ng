@@ -13,7 +13,7 @@
     .controller('HeaderController', Controller);
 
   /** @ngInject */
-  function Controller(authHelper, $scope, $log) {
+  function Controller(authHelper, $scope, $log, autoFocus) {
     var vm = this;
 
     activate();
@@ -30,6 +30,8 @@
     function showLogin(open) {
       $log.info('showLogin: ' + open);
       vm.createLoginForm = open;
+      if (open)
+        autoFocus('username')
     }
 
     function showingLogin(showing) {
