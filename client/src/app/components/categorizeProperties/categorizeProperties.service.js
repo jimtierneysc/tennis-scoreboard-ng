@@ -1,38 +1,36 @@
 /**
  * @ngdoc service
- * @name feUtils
+ * @name categorizeProperties
  * @description
- * Utility functions
+ * Group properties together.  The map
+ * parameter identifies the groups.  if
+ * there is no matching group, then 'other' is used.
+ * For example, if the map parameter is this:
+ * { first: 'first_name', last: null }
+ * and, if the data parameter is this:
+ * { firstName: ['f1'], first['f2'], last: ['la'], xyz: ['x'] }
+ * then the result is this:
+ * { first_name: ['f1', 'f2'], last: ['la'], other: ['x'] }
  *
  */
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('frontend')
-    .service('feUtils', utilsFunc);
+    .factory('categorizeProperties', Service);
 
   /** @ngInject */
-  function utilsFunc() {
+  function Service() {
 
-    var vm = this;
-    vm.categorizeProperties = categorizeProperties;
-    vm.escapeHtml = escapeHtml;
-    
+    // var service = this;
+    // service.categorizeProperties = categorizeProperties
 
+    return categorizeProperties;
 
-    // Group properties together.  The map
-    // parameter identifies the groups.  'Other' is the
-    // default group.
-    // If the map parameter is this:
-    // { first: 'first_name', last: null }
-    // If the data parameter is this:
-    // { firstName: ['f1'], first['f2'], last: ['la'], xyz: ['x'] }
-    // Then the result is this:
-    // { first_name: ['f1', 'f2'], last: ['la'], other: ['x'] }
     function categorizeProperties(data, map) {
       var patt = "";
-      
+
       // build pattern like 'key1|key2|key3|.'
       angular.forEach(map, function (value, key) {
         patt = patt + key + "|"
@@ -53,16 +51,11 @@
           }
         }
         if (!newKey)
-          newKey = 'other';  // catch all key name
+          newKey = 'other';  // default key name
         var arr = result[newKey] || [];
         result[newKey] = arr.concat(value);
       });
       return result;
-    }
-
-    /* global _ */
-    function escapeHtml(text) {
-      return _.escape(text);
     }
 
   }

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('credentials form directive', function () {
+  describe('directive credentials form', function () {
 
     var compile, scope, directiveElem, okText;
 

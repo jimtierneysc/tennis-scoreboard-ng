@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('loginForm directive', function () {
+  describe('directive loginForm', function () {
 
     var compile, scope, directiveElem;
 
@@ -13,7 +13,7 @@
         compile = $compile;
         scope = $rootScope.$new();
       });
-      
+
       var html = ('<fe-login-form> ' +
       '</fe-login-form>');
 
@@ -30,6 +30,21 @@
     it('should have credentials-form element', function () {
       expect(directiveElem.find('fe-credentials-form').length).toEqual(1);
     });
+    
+    describe('vm', function () {
+      var vm;
 
+      beforeEach(function () {
+        vm = scope.vm;
+      });
+
+      it('should have members', function () {
+        expect(vm).not.toEqual(null);
+        expect(vm.entity).toEqual(jasmine.any(Object));
+        expect(vm.errors).toEqual(jasmine.any(Object));
+        expect(vm.submit).toEqual(jasmine.any(Function));
+      })
+    })
+    
   });
 })();
