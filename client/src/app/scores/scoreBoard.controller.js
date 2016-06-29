@@ -13,7 +13,8 @@
     .controller('ScoreBoardController', MainController);
 
   /** @ngInject */
-  function MainController($log, $q, $scope, $stateParams, feUtils, modalConfirm, $cookies, scoreBoardResource, loadingHelper,
+  function MainController($log, $q, $scope, $stateParams, categorizeProperties,
+                          modalConfirm, $cookies, scoreBoardResource, loadingHelper,
                           authHelper, waitIndicator, toastrHelper, response) {
     var vm = this;
 
@@ -71,7 +72,7 @@
       if (confirm) {
         modalConfirm.confirm({
           title: confirmActions[action], text: 'Are you sure you want to clear scores of match "' +
-          feUtils.escapeHtml(vm.scoreBoard.title) + '"?'
+          vm.scoreBoard.title + '"?'
         })
           .then(function () {
             $log.info('update confirmed');
@@ -168,7 +169,7 @@
     function scoreUpdated(response) {
       angular.copy(response, vm.scoreBoard);
       if (vm.scoreBoard.errors && !angular.equals({}, vm.scoreBoard.errors)) {
-        var errors = feUtils.categorizeProperties(vm.scoreBoard.errors, null);
+        var errors = categorizeProperties(vm.scoreBoard.errors, null);
         var message = null;
         if (angular.isDefined(errors.other))
           message = errors.other[0];

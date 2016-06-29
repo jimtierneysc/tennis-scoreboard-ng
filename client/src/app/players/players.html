@@ -10,7 +10,7 @@
 
   <div ng-show="!vm.loading && !vm.loadingFailed">
     <div ng-if="vm.loggedIn" class="col-xs-12">
-      <button class="btn btn-primary" ng-click="vm.showNewEntityForm()">
+      <button class="btn btn-primary" ng-click="vm.showNewEntity()">
         <span class="glyphicon glyphicon-plus"></span> Player
       </button>
     </div>
@@ -23,8 +23,8 @@
           <fe-players-form
             form="vm.newEntityForm"
             errors="vm.entityCreateErrors"
-            cancel="vm.hideNewEntityForm()"
-            submit="vm.submitNewEntityForm()"
+            cancel="vm.hideNewEntity()"
+            submit="vm.submitNewEntity()"
             ok="Add"
             entity="vm.newEntity"
           >
@@ -48,7 +48,7 @@
                   <span class="glyphicon glyphicon-trash"></span>
                 </button>
                 <br>
-                <button class="btn btn-link" ng-click="vm.showEditEntityForm(entity)">
+                <button class="btn btn-link" ng-click="vm.showEditEntity(entity)">
                   <span class="glyphicon glyphicon-edit"></span>
                 </button>
               </div>
@@ -64,8 +64,8 @@
               <fe-players-form
                 form="vm.editEntityForm"
                 errors="vm.entityUpdateErrors"
-                cancel="vm.hideEditEntityForm()"
-                submit="vm.submitEditEntityForm()"
+                cancel="vm.hideEditEntity()"
+                submit="vm.submitEditEntity()"
                 entity="vm.editEntity"
                 ok="Save"
               >

@@ -10,36 +10,36 @@
 
   angular
     .module('frontend')
-    .factory('authHelper', helperFunc);
+    .factory('authHelper', factory);
 
   /** @ngInject */
-  function helperFunc($log, authenticationService) {
+  function factory($log, authenticationService) {
     var service = {
-      activate: activateFunc
+      activate: activate
     };
     return service;
 
-    function activateFunc(vm, scope) {
+    function activate(vm, scope) {
       // Initialize controller
       vm.loggedIn = authenticationService.loggedIn;
       vm.userName = authenticationService.userName;
       vm.logOut = logOut;
-      var helper = new AuthHelper(vm);
-      authenticationService.subscribeChanged(scope, helper.changed);
+      var watcher = new AuthWatcher(vm);
+      authenticationService.subscribeChanged(scope, watcher.changed);
     }
 
     function logOut() {
       authenticationService.clearCredentials();
     }
 
-    function AuthHelper(_vm_) {
-      var helper = this;
-      helper.vm = _vm_;
-      helper.changed = changed;
+    function AuthWatcher(_vm_) {
+      var watcher = this;
+      watcher.vm = _vm_;
+      watcher.changed = changed;
 
       function changed() {
-        helper.vm.loggedIn = authenticationService.loggedIn;
-        helper.vm.userName = authenticationService.userName;
+        watcher.vm.loggedIn = authenticationService.loggedIn;
+        watcher.vm.userName = authenticationService.userName;
       }
     }
   }

@@ -13,14 +13,14 @@
 
   angular
     .module('frontend')
-    .directive('feWaitIndicator', directiveFunc);
+    .directive('feWaitIndicator', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/components/waitIndicator/waitIndicator.html',
-      controller: controllerFunc,
+      controller: Controller,
       controllerAs: 'vm'
     };
 
@@ -28,7 +28,7 @@
   }
 
   /** @ngInject */
-  function controllerFunc(waitIndicator, $scope, $timeout) {
+  function Controller(waitIndicator, $scope, $timeout) {
     var vm = this;
     vm.waiting = false;
 

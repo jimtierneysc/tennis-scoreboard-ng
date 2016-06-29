@@ -26,10 +26,10 @@
         {
           response: response,
           getResources: teamsResource.getTeams,
-          beforeSubmitNewEntity: beforeSubmitNewEntity,
-          beforeSubmitEditEntity: beforeSubmitEditEntity,
-          beforeShowNewEntityForm: beforeShowNewEntityForm,
-          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          prepareToCreateEntity: prepareToCreateEntity,
+          prepareToUpdateEntity: prepareToUpdateEntity,
+          beforeshowNewEntity: beforeshowNewEntity,
+          beforeshowEditEntity: beforeshowEditEntity,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -42,28 +42,28 @@
       );
     }
 
-    function beforeSubmitNewEntity(entity) {
+    function prepareToCreateEntity(entity) {
       var result = {
         name: entity.name
       };
-      prepareToSubmitPlayers(entity, result);
+      prepareToApplyEntity(entity, result);
       return result;
     }
 
-    function beforeSubmitEditEntity(entity) {
+    function prepareToUpdateEntity(entity) {
       var result = {
         id: entity.id,
         name: entity.name
       };
-      prepareToSubmitPlayers(entity, result);
+      prepareToApplyEntity(entity, result);
       return result;
     }
 
-    function beforeShowNewEntityForm() {
+    function beforeshowNewEntity() {
       prepareToShowPlayerOptions();
     }
 
-    function beforeShowEditEntityForm() {
+    function beforeshowEditEntity() {
       prepareToShowPlayerOptions().then(
         function () {
           prepareToEditEntity();
@@ -73,14 +73,14 @@
 
     function getEntityDisplayName(entity) {
       // TODO: build team name
-      return entity.displayName;
+      return entity.name || '(unnamed)'
     }
 
     function makeEntityBody(entity) {
       return {team: entity};
     }
 
-    // "Private" methods
+    // internal methods
 
     function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
@@ -123,7 +123,7 @@
       vm.editEntity.select_second_player = second_player;
     }
 
-    function prepareToSubmitPlayers(entity, result) {
+    function prepareToApplyEntity(entity, result) {
       if (angular.isDefined(entity.select_first_player))
         result.first_player_id = entity.select_first_player.id;
       if (angular.isDefined(entity.select_second_player))

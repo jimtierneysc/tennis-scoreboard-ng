@@ -14,14 +14,14 @@
 
   angular
     .module('frontend')
-    .directive('feLoginForm', directiveFunc);
+    .directive('feLoginForm', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/auth/loginForm.html',
-      controller: LoginController,
+      controller: Controller,
       controllerAs: 'vm'
     };
 
@@ -30,12 +30,13 @@
 
 
   /** @ngInject */
-  function LoginController($state, $location, loginResource, authenticationService, errorsHelper, waitIndicator, $log) {
+  function Controller(loginResource, authenticationService, errorsHelper, waitIndicator, $log) {
     var vm = this;
 
     activate();
 
     function activate() {
+      $log.info('create LoginController');
       vm.entity = {username: "", password: ""};
       vm.errors = {};
       vm.submit = submit;

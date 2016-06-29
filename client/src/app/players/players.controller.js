@@ -11,10 +11,10 @@
 
   angular
     .module('frontend')
-    .controller('PlayerController', MainController);
+    .controller('PlayerController', Controller);
 
   /** @ngInject */
-  function MainController(playersResource, $log, $timeout, $scope, crudHelper, authHelper, response) {
+  function Controller(playersResource, $log, $scope, crudHelper, authHelper, response) {
     
     var vm = this;
 
@@ -26,10 +26,10 @@
         {
           response: response,
           getResources: playersResource.getPlayers,
-          beforeSubmitNewEntity: beforeSubmitNewEntity,
-          beforeSubmitEditEntity: beforeSubmitEditEntity,
-          beforeShowNewEntityForm: null,
-          beforeShowEditEntityForm: null,
+          prepareToCreateEntity: prepareToCreateEntity,
+          prepareToUpdateEntity: prepareToUpdateEntity,
+          beforeshowNewEntity: null,
+          beforeshowEditEntity: null,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -40,11 +40,11 @@
       );
     }
     
-    function beforeSubmitNewEntity(entity) {
+    function prepareToCreateEntity(entity) {
       return {name: entity.name};
     }
 
-    function beforeSubmitEditEntity(entity) {
+    function prepareToUpdateEntity(entity) {
       return {
         id: entity.id,
         name: entity.name

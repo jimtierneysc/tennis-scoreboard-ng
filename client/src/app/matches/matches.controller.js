@@ -28,10 +28,10 @@
         {
           response: response,
           getResources: matchesResource.getMatches,
-          beforeSubmitNewEntity: beforeSubmitNewEntity,
-          beforeSubmitEditEntity: beforeSubmitEditEntity,
-          beforeShowNewEntityForm: beforeShowNewEntityForm,
-          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          prepareToCreateEntity: prepareToCreateEntity,
+          prepareToUpdateEntity: prepareToUpdateEntity,
+          beforeshowNewEntity: beforeshowNewEntity,
+          beforeshowEditEntity: beforeshowEditEntity,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -48,21 +48,21 @@
       );
     }
 
-    function beforeSubmitNewEntity(entity) {
+    function prepareToCreateEntity(entity) {
       var result = {};
-      beforeSubmitEntity(entity, result);
+      prepareApplyEntity(entity, result);
       return result;
     }
 
-    function beforeSubmitEditEntity(entity) {
+    function prepareToUpdateEntity(entity) {
       var result = {
         id: entity.id
       };
-      beforeSubmitEntity(entity, result);
+      prepareApplyEntity(entity, result);
       return result;
     }
 
-    function beforeShowNewEntityForm() {
+    function beforeshowNewEntity() {
       // TODO: Preserve last selection when add multiple matches
       vm.newEntity.doubles = false;
       vm.newEntity.scoring = 'two_six_game_ten_point';
@@ -70,7 +70,7 @@
       prepareToShowPlayerOptions();
     }
 
-    function beforeShowEditEntityForm() {
+    function beforeshowEditEntity() {
       prepareToShowTeamOptions().then(
         function () {
           prepareToEditTeams();
@@ -84,7 +84,7 @@
     }
 
     function getEntityDisplayName(entity) {
-      return entity.title;
+      return entity.title || '(untitled)' 
     }
 
     function makeEntityBody(entity) {
@@ -92,7 +92,7 @@
     }
 
     // "Private" methods
-    function beforeSubmitEntity(entity, result) {
+    function prepareApplyEntity(entity, result) {
       result.title = entity.title;
       result.scoring = entity.scoring;
       result.doubles = entity.doubles;
@@ -111,7 +111,7 @@
     function beforeSubmitSingles(entity, result) {
       prepareToSubmitPlayers(entity, result);
     }
-    
+
     function prepareToShowTeamOptions() {
       var deferredObject = $q.defer();
       if (vm.teamOptionsList.list == null) {
@@ -179,7 +179,7 @@
       if (angular.isDefined(entity.select_second_player))
         result.second_player_id = entity.select_second_player.id;
     }
-    
+
     function prepareToEditTeams() {
       var first_team = null;
       var second_team = null;

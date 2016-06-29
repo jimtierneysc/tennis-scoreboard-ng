@@ -18,9 +18,12 @@
   /** @ngInject */
   function autoFocus($timeout) {
     return {
-      restrict: 'AC',
+      restrict: 'A',
       link: function (scope, element) {
         $timeout(function () {
+          if (angular.isDefined(scope.autoFocused)) {
+            scope.autoFocused = element[0].name; // for testing
+          }
           element[0].focus();
         }, 10);
       }

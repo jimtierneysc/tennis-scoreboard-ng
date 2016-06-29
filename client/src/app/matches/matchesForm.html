@@ -26,9 +26,8 @@
     <!--Match title-->
     <label for="title" class="sr-only control-label">Team Name</label>
     <div>
-      <!--angular directive focusOnShow watches ng-show -->
-      <input type="text" ng-show="form" class="form-control" id="title" name="title"
-             fe-focus-on-show
+      <input type="text" class="form-control" id="title" name="title"
+             fe-auto-focus
              placeholder="Match Title (optional)"
              ng-model="entity.title">
 

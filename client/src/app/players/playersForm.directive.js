@@ -19,7 +19,7 @@
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/players/playersForm.html',
       scope: {
         form: '@',

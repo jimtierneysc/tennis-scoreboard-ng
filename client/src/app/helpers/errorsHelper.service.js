@@ -10,10 +10,10 @@
 
   angular
     .module('frontend')
-    .factory('errorsHelper', helperFunc);
+    .factory('errorsHelper', factory);
 
   /** @ngInject */
-  function helperFunc($log, feUtils) {
+  function factory($log, categorizeProperties) {
     var service = {
       activate: activateFunc
     };
@@ -43,7 +43,7 @@
       function categorizeErrors(data) {
         if (angular.isObject(data.errors))
           data = data.errors;
-        var errors = feUtils.categorizeProperties(data, errorCategories);
+        var errors = categorizeProperties(data, errorCategories);
         return errors;
       }
     }

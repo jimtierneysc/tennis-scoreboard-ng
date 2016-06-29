@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('teams controller', function () {
+  describe('controller teams', function () {
     var $httpBackend;
     var $controller;
     var $scope;
@@ -92,7 +92,7 @@
         it('should add 1', function () {
           $httpBackend.when('POST', resourceService.path).respond(201, {mergeKey: "mergeValue"});
           vm.newEntity = {name: "newname"};
-          vm.submitNewEntityForm();
+          vm.submitNewEntity();
           $httpBackend.flush();
 
           expect(angular.isArray(vm.entitys)).toBeTruthy();
@@ -113,7 +113,7 @@
         it('should format body', function () {
           $httpBackend.expect('POST', resourceService.path, {'team': samplePost[0]}).respond(200, {});
           vm.newEntity = samplePost[0];
-          vm.submitNewEntityForm();
+          vm.submitNewEntity();
           $httpBackend.flush();
         });
 
@@ -121,7 +121,7 @@
         it('should capture create error', function () {
           $httpBackend.when('POST', resourceService.path).respond(422, {"name": ["has already been taken"]});
           vm.newEntity = sampleTeams[0];
-          vm.submitNewEntityForm();
+          vm.submitNewEntity();
           $httpBackend.flush();
 
           expect(vm.entitys.length).toBe(sampleTeams.length);

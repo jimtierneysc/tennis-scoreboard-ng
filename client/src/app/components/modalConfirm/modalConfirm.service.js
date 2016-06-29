@@ -12,27 +12,23 @@
 
   angular
     .module('frontend')
-    .controller('ModalConfirmController', modalConfirmController)
-    .factory('modalConfirm', modalConfirm);
-
+    .factory('modalConfirm', factory);
 
   var modalSettings = {
     templateUrl: 'app/components/modalConfirm/modalConfirm.html',
-    controller: 'ModalConfirmController',
+    controller: Controller,
     controllerAs: 'vm'
   };
-
-
+  
   var defaultLabels = {
     text: 'Are you sure?',
     title: 'Confirm',
     ok: 'Yes',
     cancel: 'Cancel'
   };
-
-
+  
   /** @ngInject */
-  function modalConfirmController($uibModalInstance, data) {
+  function Controller($uibModalInstance, data) {
     var vm = this;
     vm.data = data;
     vm.ok = closeFunc;
@@ -51,15 +47,23 @@
   }
 
   /** @ngInject */
-  function modalConfirm($uibModal) {
+  function factory($uibModal) {
 
-    return { confirm: confirmFunc };
+    return {
+      confirm: confirm,
+      open: open
+    };
 
-    function confirmFunc(labels) {
+    function confirm(labels, options) {
+      return open(labels, options).result; // promise
+    }
+
+    function open(labels, options) {
       var settings = angular.copy(modalSettings);
+      angular.extend(settings, options || {});
       settings.resolve = {data: angular.extend({}, defaultLabels, labels || {})};
 
-      return $uibModal.open(settings).result;
+      return $uibModal.open(settings);
     }
   }
 

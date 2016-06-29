@@ -10,39 +10,42 @@
 
   angular
     .module('frontend')
-    .factory('crudHelper', crudHelperFunc);
+    .factory('crudHelper', factory);
 
   /** @ngInject */
-  function crudHelperFunc($log, $q, modalConfirm, toastr, feUtils, $filter, loadingHelper, errorsHelper, toastrHelper,
+  function factory($log, $q, modalConfirm, toastr,
+                          $filter, loadingHelper, errorsHelper, toastrHelper,
                           waitIndicator) {
     var service = {
-      activate: activateFunc
+      activate: activate,
     };
     return service;
-    
-    function activateFunc(vm, controllerOptions) {
-      var response = controllerOptions.response;
-      var errorCategories = controllerOptions.errorCategories;
-      var scope = controllerOptions.scope;
 
-      // Initialize controller
+    function activate(vm, options) {
+      var response = options.response;
+      var errorCategories = options.errorCategories;
+      var scope = options.scope;
+
+      // Aggregate functionality from other helpers
       loadingHelper.activate(vm);
       toastrHelper.activate(vm, scope);
       errorsHelper.activate(vm, errorCategories);
-      
-      var helper = new Helper(vm, controllerOptions);
 
-      vm.trashEntity = helper.trashEntity;
-      vm.submitNewEntityForm = helper.submitNewEntityForm;
-      vm.showNewEntityForm = helper.showNewEntityForm;
-      vm.hideNewEntityForm = helper.hideNewEntityForm;
-      vm.submitEditEntityForm = helper.submitEditEntityForm;
-      vm.showEditEntityForm = helper.showEditEntityForm;
-      vm.hideEditEntityForm = helper.hideEditEntityForm;
+      var operations = new Operations(vm, options);
+
+      // Aggregate crud methods and properties
+      vm.trashEntity = operations.trashEntity;
+      vm.submitNewEntity = operations.submitNewEntity;
+      vm.showNewEntity = operations.showNewEntity;
+      vm.hideNewEntity = operations.hideNewEntity;
+      vm.submitEditEntity = operations.submitEditEntity;
+      vm.showEditEntity = operations.showEditEntity;
+      vm.hideEditEntity = operations.hideEditEntity;
+      vm.showingEditEntityForm = operations.showingEditEntityForm;
 
       vm.newEntity = {};
+      vm.editEntity = null;
       vm.showingNewEntityForm = false;
-      vm.showingEditEntityForm = helper.showingEditEntityForm;
       vm.newEntityForm = null;
       vm.editEntityForm = null;
       vm.entitys = [];
@@ -51,100 +54,85 @@
 
       if (response) {
         if (angular.isArray(response))
-          helper.entityLoaded(response);
+          operations.entityLoaded(response);
         else
-        // error
-          helper.entityLoadFailed(response);
+          operations.entityLoadFailed(response);
       }
       else {
-        helper.getEntitys();
+        operations.getEntitys();
       }
     }
 
-    function Helper(_vm_, controllerOptions) {
+    // Execute code in context of vm
+    function Operations(_vm_, controllerOptions) {
       var helper = this;
       var vm = _vm_
       var getResources = controllerOptions.getResources;
-      var beforeSubmitNewEntity = controllerOptions.beforeSubmitNewEntity;
-      var beforeSubmitEditEntity = controllerOptions.beforeSubmitEditEntity;
-      var beforeShowNewEntityForm = controllerOptions.beforeShowNewEntityForm;
-      var beforeShowEditEntityForm = controllerOptions.beforeShowEditEntityForm;
+      var prepareToCreateEntity = controllerOptions.prepareToCreateEntity;
+      var prepareToUpdateEntity = controllerOptions.prepareToUpdateEntity;
+      var beforeshowNewEntity = controllerOptions.beforeshowNewEntity;
+      var beforeshowEditEntity = controllerOptions.beforeshowEditEntity;
       var getEntityDisplayName = controllerOptions.getEntityDisplayName;
       var makeEntityBody = controllerOptions.makeEntityBody;
 
       helper.trashEntity = function(entity, confirmDelete) {
-        $log.info('destroy');
         if (angular.isUndefined(confirmDelete))
           confirmDelete = true;
         if (confirmDelete) {
           modalConfirm.confirm({
             title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
-            feUtils.escapeHtml(getEntityDisplayName(entity)) + '"?'
+            getEntityDisplayName(entity) + '"?'
           })
             .then(function () {
-              $log.info('delete confirmed');
               removeEntity(entity)
             });
         }
         else {
           removeEntity(entity)
-
         }
-      }
+      };
 
-      helper.submitNewEntityForm = function() {
-        $log.info('submitNewEntityForm');
-        var submitEntity = beforeSubmitNewEntity(vm.newEntity);
+      helper.submitNewEntity = function() {
+        var submitEntity = prepareToCreateEntity(vm.newEntity);
         createEntity(submitEntity);
-      }
+      };
 
-      helper.showNewEntityForm = function() {
-        $log.info('showNewEntityForm');
-        if (beforeShowNewEntityForm) beforeShowNewEntityForm();
+      helper.showNewEntity = function() {
+        if (beforeshowNewEntity) beforeshowNewEntity();
         vm.showingNewEntityForm = true;
-      }
+      };
 
-      helper.hideNewEntityForm = function() {
-        $log.info('hideNewEntityForm');
+      helper.hideNewEntity = function() {
         if (vm.newEntityForm) {
           vm.newEntityForm.$setPristine();
         }
         vm.showingNewEntityForm = false;
         vm.newEntity = {};
         vm.entityCreateErrors = null;
+      };
 
-      }
-
-      helper.submitEditEntityForm = function() {
-        $log.info('submitEditEntityForm');
-        var submit = beforeSubmitEditEntity(vm.editEntity);
+      helper.submitEditEntity = function() {
+        var submit = prepareToUpdateEntity(vm.editEntity);
         updateEntity(submit);
-      }
+      };
 
-      helper.showEditEntityForm = function(entity) {
-        $log.info('showEditEntityForm');
+      helper.showEditEntity = function(entity) {
         // Edit a copy, so can discard unless click Save
         vm.editEntity = angular.copy(entity);
-        if (beforeShowEditEntityForm) beforeShowEditEntityForm(entity);
-      }
+        if (beforeshowEditEntity) beforeshowEditEntity();
+      };
 
-      helper.hideEditEntityForm = function() {
-        $log.info('hideEditEntityForm');
+      helper.hideEditEntity = function() {
         if (vm.editEntityForm) {
           vm.editEntityForm.$setPristine();
         }
         vm.editEntity = null;
         vm.entityUpdateErrors = null;
-
-      }
+      };
 
       helper.showingEditEntityForm = function(entity) {
         return vm.editEntity && (vm.editEntity.id == entity.id);
-      }
-
-      //
-      // Internal methods
-      //
+      };
 
       helper.getEntitys = function() {
         var endWait = waitIndicator.beginWait();
@@ -161,7 +149,6 @@
       }
 
       helper.entityLoaded = function(response) {
-        $log.info('received data');
         vm.entitys = response;
         vm.loadingHasCompleted();
       }
@@ -171,13 +158,15 @@
         vm.loadingHasFailed(response);
       }
 
+      //
+      // Internal methods
+      //
+
       function createEntity(entity) {
         var body = makeEntityBody(entity);
         var endWait = waitIndicator.beginWait();
         getResources().save(body,
           function (response) {
-            $log.info('create/save');
-            $log.info(response);
             endWait();
             var newEntity = angular.copy(entity);
             angular.merge(newEntity, response);
@@ -198,8 +187,6 @@
         var endWait = waitIndicator.beginWait();
         getResources().update(key, body,
           function (response) {
-            $log.info('update');
-            $log.info(response);
             endWait();
             var updatedEntity = angular.copy(entity);
             angular.merge(updatedEntity, response);
@@ -219,8 +206,6 @@
         var endWait = waitIndicator.beginWait();
         getResources().remove(key,
           function (response) {
-            $log.info('remove entity');
-            $log.info(response);
             endWait();
             entityRemoved(entity);
           },
@@ -234,13 +219,13 @@
       }
 
       function entityCreated(entity) {
-        helper.hideNewEntityForm();
+        helper.hideNewEntity();
         vm.entitys.splice(0, 0, entity);
         vm.entityCreateErrors = null;
       }
 
       function entityUpdated(entity) {
-        helper.hideEditEntityForm();
+        helper.hideEditEntity();
         var id = entity.id;
         var found = $filter('filter')(vm.entitys, function (o) {
           return o.id === id;
@@ -264,7 +249,6 @@
       }
 
       function entityRemoved(entity) {
-        $log.info('entityRemoved ' + entity.id);
         vm.entityRemoveErrors = null;
         var i = vm.entitys.indexOf(entity);
         if (i >= 0) {

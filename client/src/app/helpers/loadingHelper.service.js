@@ -10,16 +10,16 @@
 
   angular
     .module('frontend')
-    .factory('loadingHelper', helperFunc);
+    .factory('loadingHelper', factory);
 
   /** @ngInject */
-  function helperFunc() {
+  function factory() {
     var service = {
-      activate: activateFunc
+      activate: activate
     };
     return service;
 
-    function activateFunc(vm) {
+    function activate(vm) {
       var helper = new Helper(vm);
       vm.loadingHasCompleted = helper.loadingHasCompleted;
       vm.loadingHasFailed = helper.loadingHasFailed;

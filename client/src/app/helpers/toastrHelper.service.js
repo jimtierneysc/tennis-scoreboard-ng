@@ -10,10 +10,10 @@
 
   angular
     .module('frontend')
-    .factory('toastrHelper', helperFunc);
+    .factory('toastrHelper', factory);
 
   /** @ngInject */
-  function helperFunc($log, toastr, feUtils) {
+  function factory($log, toastr) {
     var service = {
       activate: activateFunc
     };
@@ -30,15 +30,16 @@
         $log.log('destroying controller');
         // Remove current toasts when switch views
         toastr.clear();
+        vm.lastToast = null;
       });
     }
-    
+
     function showToastrError(message, caption) {
       if (angular.isUndefined(caption))
         caption = 'Error';
 
       toastr.clear();
-      vm.lastToast = toastr.error(feUtils.escapeHtml(message), caption);
+      vm.lastToast = toastr.error(message, caption);
     }
   }
 })();

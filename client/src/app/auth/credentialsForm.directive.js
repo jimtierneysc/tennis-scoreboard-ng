@@ -19,7 +19,7 @@
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/auth/credentialsForm.html',
       scope: {
         errors: '=',
