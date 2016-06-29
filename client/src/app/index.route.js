@@ -10,7 +10,7 @@
     var header = {
       templateUrl: 'app/header/header.html',
       controller: 'HeaderController',
-      controllerAs: 'vm'
+      controllerAs: 'header'
     };
 
     $stateProvider

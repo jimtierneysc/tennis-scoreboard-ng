@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed"
-              aria-expanded="false" ng-click="vm.isCollapsed = !vm.isCollapsed" ng-init="vm.isCollapsed = true">
+              aria-expanded="false" ng-click="header.isCollapsed = !header.isCollapsed" ng-init="header.isCollapsed = true">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -11,7 +11,7 @@
       <a class="navbar-brand" href="#">Tennis Scoreboard</a>
     </div>
 
-    <div class="collapse navbar-collapse" ng-class="!vm.isCollapsed && 'in'">
+    <div class="collapse navbar-collapse" ng-class="!header.isCollapsed && 'in'">
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
         <li ui-sref-active="active"><a ui-sref="players">Players</a></li>
@@ -20,11 +20,11 @@
         <li ui-sref-active="active"><a ui-sref="scores">Scores</a></li>
       </ul>
 
-      <div ng-if="vm.loggedIn">
+      <div ng-if="header.loggedIn">
         <div class="navbar-form navbar-right">
           <div class="form-group">
             <p class="control-label">
-              Logged in as {{vm.userName}}
+              Logged in as {{header.userName}}
             </p>
           </div>
           <div class="form-group">
@@ -33,14 +33,16 @@
         </div>
       </div>
 
-      <div ng-if="!vm.loggedIn">
+      <div ng-if="!header.loggedIn">
         <ul class="nav navbar-nav navbar-right">
           <!--auto-close="outsideClick" not working so use ng-click-->
-          <li uib-dropdown xauto-close="outsideClick" ng-click="$event.preventDefault(); $event.stopPropagation();">
+          <li uib-dropdown on-toggle="header.showLogin(open)" xauto-close="outsideClick"
+              ng-click="header.showingLogin(!is_open);$event.preventDefault(); $event.stopPropagation();">
             <a href uib-dropdown-toggle>Login<span class="caret"></span></a>
             <ul id="login-dropdown" class="dropdown-menu">
               <li>
-                <fe-login-form></fe-login-form>
+                <!--ng-if to recreate login form when shown-->
+                <fe-login-form ng-if="header.createLoginForm"></fe-login-form>
               </li>
             </ul>
           </li>

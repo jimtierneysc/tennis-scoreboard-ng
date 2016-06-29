@@ -5,7 +5,7 @@
  * Manage data required by nav bar
  *
  */
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -13,17 +13,31 @@
     .controller('HeaderController', Controller);
 
   /** @ngInject */
-  function Controller(authHelper, $scope) {
+  function Controller(authHelper, $scope, $log) {
     var vm = this;
 
     activate();
 
     function activate() {
       vm.isCollapsed = true;
+      vm.createLoginForm = true;
+      vm.showingLogin = showingLogin;
+      vm.showLogin = showLogin;
 
       authHelper.activate(vm, $scope);
     }
-    
+
+    function showLogin(open) {
+      $log.info('showLogin: ' + open);
+      vm.createLoginForm = open;
+    }
+
+    function showingLogin(showing) {
+      $log.info('showingLogin: ' + showing);
+      if (showing)
+        vm.createLoginForm = true;
+    }
+
   }
 })();
 
