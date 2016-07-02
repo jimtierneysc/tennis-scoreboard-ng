@@ -11,10 +11,10 @@
 
   angular
     .module('frontend')
-    .controller('MatchController', MainController);
+    .controller('MatchController', Controller);
 
   /** @ngInject */
-  function MainController(matchesResource, $filter, $q, $log, $scope, teamsResource, playersResource, crudHelper,
+  function Controller($filter, $q, $log, $scope, crudHelper, matchesResource,
     authHelper, playersSelectOptions, teamsSelectOptions, response) {
     var vm = this;
 
@@ -27,11 +27,11 @@
       crudHelper.activate(vm,
         {
           response: response,
-          getResources: matchesResource.getMatches,
+          resourceName: matchesResource,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
-          beforeshowNewEntity: beforeshowNewEntity,
-          beforeshowEditEntity: beforeshowEditEntity,
+          beforeShowNewEntity: beforeShowNewEntity,
+          beforeShowEditEntity: beforeShowEditEntity,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -50,7 +50,7 @@
 
     function prepareToCreateEntity(entity) {
       var result = {};
-      prepareApplyEntity(entity, result);
+      prepareToSubmitEntity(entity, result);
       return result;
     }
 
@@ -58,11 +58,11 @@
       var result = {
         id: entity.id
       };
-      prepareApplyEntity(entity, result);
+      prepareToSubmitEntity(entity, result);
       return result;
     }
 
-    function beforeshowNewEntity() {
+    function beforeShowNewEntity() {
       // TODO: Preserve last selection when add multiple matches
       vm.newEntity.doubles = false;
       vm.newEntity.scoring = 'two_six_game_ten_point';
@@ -70,7 +70,7 @@
       prepareToShowPlayerOptions();
     }
 
-    function beforeshowEditEntity() {
+    function beforeShowEditEntity() {
       prepareToShowTeamOptions().then(
         function () {
           prepareToEditTeams();
@@ -84,7 +84,7 @@
     }
 
     function getEntityDisplayName(entity) {
-      return entity.title || '(untitled)' 
+      return entity.title || '(untitled)'
     }
 
     function makeEntityBody(entity) {
@@ -92,23 +92,23 @@
     }
 
     // "Private" methods
-    function prepareApplyEntity(entity, result) {
+    function prepareToSubmitEntity(entity, result) {
       result.title = entity.title;
       result.scoring = entity.scoring;
       result.doubles = entity.doubles;
       if (entity.doubles) {
-        beforeSubmitDoubles(entity, result);
+        prepareToSubmitDoubles(entity, result);
       }
       else {
-        beforeSubmitSingles(entity, result);
+        prepareToSubmitSingles(entity, result);
       }
     }
 
-    function beforeSubmitDoubles(entity, result) {
+    function prepareToSubmitDoubles(entity, result) {
       prepareToSubmitTeams(entity, result);
     }
 
-    function beforeSubmitSingles(entity, result) {
+    function prepareToSubmitSingles(entity, result) {
       prepareToSubmitPlayers(entity, result);
     }
 

@@ -10,26 +10,27 @@
 
   angular
     .module('frontend')
-    .controller('TeamController', MainController);
+    .controller('TeamController', Controller);
 
   /** @ngInject */
-  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, authHelper, playersSelectOptions, response) {
+  function Controller($q, $filter, $log, $scope, crudHelper, authHelper, teamsResource, playersSelectOptions, response) {
     var vm = this;
 
     activate();
-    
+
     function activate() {
       vm.playerOptionsList = {list: null};
-      
+
       authHelper.activate(vm, $scope);
       crudHelper.activate(vm,
         {
           response: response,
-          getResources: teamsResource.getTeams,
+          resourceName: teamsResource,
+          // getResources: teamsResource.getTeams,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
-          beforeshowNewEntity: beforeshowNewEntity,
-          beforeshowEditEntity: beforeshowEditEntity,
+          beforeShowNewEntity: beforeShowNewEntity,
+          beforeShowEditEntity: beforeShowEditEntity,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -59,11 +60,11 @@
       return result;
     }
 
-    function beforeshowNewEntity() {
+    function beforeShowNewEntity() {
       prepareToShowPlayerOptions();
     }
 
-    function beforeshowEditEntity() {
+    function beforeShowEditEntity() {
       prepareToShowPlayerOptions().then(
         function () {
           prepareToEditEntity();
@@ -103,7 +104,7 @@
       return deferredObject.promise;
 
     }
-    
+
     function prepareToEditEntity() {
       var first_player = null;
       var second_player = null;

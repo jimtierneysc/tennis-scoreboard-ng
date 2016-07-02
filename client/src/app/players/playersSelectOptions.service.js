@@ -13,7 +13,7 @@
     .factory('playersSelectOptions', playersFunc);
 
   /** @ngInject */
-  function playersFunc($log, $q, playersResource) {
+  function playersFunc($log, $q, crudResource, playersResource) {
 
     var service = {
       getSelectOptions: getSelectOptions
@@ -24,13 +24,12 @@
     // Return a promise
     function getSelectOptions() {
       var deferredObject = $q.defer();
-      playersResource.getPlayers().query(
+      crudResource.getResource(playersResource).query(
         function (response) {
-          $log.info('received data');
           var options = [];
           angular.forEach(response, function (value) {
             options.push({name: value.name, id: value.id});
-          }, options);
+          });
           deferredObject.resolve(options);
         },
         function (response) {

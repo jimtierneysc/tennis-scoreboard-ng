@@ -32,24 +32,27 @@
         expect(service.confirm).toEqual(jasmine.any(Function));
       });
 
-      it('should call confirm function', function () {
+      it('should have open function', function () {
+        expect(service.open).toEqual(jasmine.any(Function));
+      });
+
+      it('should call modal open function', function () {
         var fakeOpen = function (settings) {
           expect(settings.resolve.data).toEqual(labels);
-          return {result: true}
+          return {}
         };
         spyOn($uibModal, 'open').and.callFake(fakeOpen);
-        var result = service.confirm(labels);
-        expect(result).toBe(true);
+        service.confirm(labels);
         expect($uibModal.open).toHaveBeenCalled();
       });
 
     });
-    
+
     describe('form elements', function () {
       var form;
 
       beforeEach(function () {
-        form = createModal(labels);
+        form = createModal(labels).element;
       })
 
       afterEach(function () {
@@ -58,10 +61,54 @@
 
       it('should find elements', function () {
         expect(form.find('article').length).toEqual(1);
-        expect(form.find('header').length).toEqual(1);
-        expect(form.find('footer').length).toEqual(1);
-
       });
+    });
+
+    describe('button click', function () {
+      var modal;
+      var btns;
+      var $rootScope;
+
+      beforeEach(function () {
+        inject(function (_$rootScope_) {
+          $rootScope = _$rootScope_;
+        })
+        modal = createModal(labels);
+        btns = modal.element.find('button');
+      });
+
+      afterEach(function () {
+        destroyModal();
+      });
+
+      it('should find buttons', function () {
+        expect(btns.length).toBe(2);
+      });
+
+      it('should confirm', function () {
+        var ok = false;
+        modal.modal.result.then(function (value) {
+          ok = true;
+        });
+        btns[0].click();
+        $rootScope.$digest;
+        expect(ok).toBe(true);
+      });
+
+      it('should cancel', function () {
+        var cancel = false;
+        modal.modal.result.then(
+          function (value) {
+          },
+          function (value) {
+            cancel = true;
+          }
+        );
+        btns[1].click();
+        $rootScope.$digest;
+        expect(cancel).toBe(true);
+      });
+
     });
 
     describe('form encode', function () {
@@ -72,7 +119,7 @@
       };
 
       beforeEach(function () {
-        form = createModal(labels);
+        form = createModal(labels).element;
       })
 
       afterEach(function () {
@@ -85,11 +132,11 @@
       });
     });
 
-    describe('vm', function () {
+    describe('controller', function () {
       var vm;
-      
+
       beforeEach(function () {
-        var form = createModal(labels);
+        var form = createModal(labels).element;
         vm = angular.element(form).scope().vm;
       })
 
@@ -97,13 +144,23 @@
         destroyModal();
       })
 
-      it('should have members', function () {
-        expect(vm).not.toEqual(null);
-        expect(vm.data).toEqual(jasmine.any(Object));
-        expect(vm.data).toEqual(labels);
-        expect(vm.ok).toEqual(jasmine.any(Function));
-        expect(vm.cancel).toEqual(jasmine.any(Function));
-      })
+      describe('members', function () {
+        it('should have vm', function () {
+          expect(vm).not.toEqual(null);
+        });
+
+        it('should have data', function () {
+          expect(vm.data).toEqual(labels);
+        });
+
+        it('should have ok', function () {
+          expect(vm.ok).toEqual(jasmine.any(Function));
+        });
+
+        it('should have cancel', function () {
+          expect(vm.cancel).toEqual(jasmine.any(Function));
+        });
+      });
     });
 
     function createModal(labels) {
@@ -115,24 +172,27 @@
         $modalStack = _$modalStack_;
         $rootScope = _$rootScope_;
       })
-      var form = service.open(labels, {animation: false});
-      form.rendered
+      var modal = service.open(labels, {animation: false});
+      modal.rendered
         .then(function () {
         });
 
-      // Propagate promise resolution to 'then' functions using $apply().
-      $rootScope.$apply();
-      return angular.element($modalStack.getTop().value.modalDomEl);
+      // force promise resolution
+      $rootScope.$digest();
+      return {
+        modal: modal,
+        element: angular.element($modalStack.getTop().value.modalDomEl)
+      }
     }
 
     function destroyModal() {
       var $modalStack;
       inject(function (_$modalStack_) {
         $modalStack = _$modalStack_;
-      })
+      });
       $modalStack.dismissAll();
     }
-    
+
   })
 
 })();

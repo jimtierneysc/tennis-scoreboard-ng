@@ -23,22 +23,21 @@
 
     // Return a promise
     function getSelectOptions() {
-      var deferredObject = $q.defer();
+      var deferred = $q.defer();
       matchesResource.getMatches().query(
         function (response) {
-          $log.info('received data');
           var options = [];
           angular.forEach(response, function (value) {
             options.push({name: value.title, id: value.id});
           }, options);
-          deferredObject.resolve(options);
+          deferred.resolve(options);
         },
         function (response) {
           $log.error('data error ' + response.status + " " + response.statusText);
-          deferredObject.reject();
+          deferred.reject();
         }
       );
-      return deferredObject.promise;
+      return deferred.promise;
     }
 
   }

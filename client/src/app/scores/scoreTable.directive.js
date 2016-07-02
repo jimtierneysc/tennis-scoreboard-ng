@@ -14,10 +14,10 @@
 
   angular
     .module('frontend')
-    .directive('feScoreTable', directiveFunc);
+    .directive('feScoreTable', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
       restrict: 'E',
       templateUrl: 'app/scores/scoreTable.html',

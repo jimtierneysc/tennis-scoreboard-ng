@@ -10,11 +10,11 @@
 
   angular
     .module('frontend')
-    .controller('ScoreBoardController', MainController);
+    .controller('ScoreBoardController', Controller);
 
   /** @ngInject */
-  function MainController($log, $q, $scope, $stateParams, categorizeProperties,
-                          modalConfirm, $cookies, scoreBoardResource, loadingHelper,
+  function Controller($log, $q, $scope, $stateParams, categorizeProperties, scoreboardResource,
+                          modalConfirm, $cookies, loadingHelper, crudResource,
                           authHelper, waitIndicator, toastrHelper, response) {
     var vm = this;
 
@@ -101,7 +101,7 @@
 
     function getScoreBoard() {
       var endWait = waitIndicator.beginWait();
-      scoreBoardResource.getScoreBoard().get({id: vm.id},
+      crudResource.getResource(scoreboardResource).get({id: vm.id},
         function (response) {
           endWait();
           getScoreBoardSucceeded(response);
@@ -129,7 +129,7 @@
       var key = {id: vm.id};
       var body = makeUpdateBody(action, params);
       var endWait = waitIndicator.beginWait();
-      scoreBoardResource.getScoreBoard().update(key, body,
+      crudResource.getResource(scoreboardResource).save(key, body,
         function (response) {
           $log.info('update score');
           $log.info(response);
@@ -181,7 +181,7 @@
     }
 
     function scoreUpdateError(body, response) {
-      vm.loadingHasFailed(response, null);
+      vm.loadingHasFailed(response);
     }
 
     // prepare scoreboard for viewing
@@ -263,7 +263,7 @@
         angular.forEach(sb.sets, function (set) {
           incScore(matchScore, set);
           var setScore = [0, 0];
-          
+
           angular.forEach(set.games, function (game) {
             incScore(setScore, game);
           });

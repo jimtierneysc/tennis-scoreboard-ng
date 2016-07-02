@@ -25,6 +25,7 @@
       vm = _vm_;
       vm.showToastrError = showToastrError;
       vm.lastToast = null;
+      vm.supportsToast = true;
 
       _scope_.$on('$destroy', function () {
         $log.log('destroying controller');

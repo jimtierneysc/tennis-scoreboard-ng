@@ -2,139 +2,178 @@
   'use strict';
 
   describe('controller players', function () {
-    var $httpBackend;
     var $controller;
     var $scope;
-    var resourceService;
 
-    var samplePlayers = [
+    var sampleResponse = [
       {
-        id: 33,
-        name: "sample name"
-      }
-    ];
-
-    var samplePost = [
-      {
-        name: "sample name"
+        id: 1,
+        name: "xyz"
       }
     ];
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function (_$controller_, $rootScope, _$httpBackend_, _playersResource_) {
-      $httpBackend = _$httpBackend_;
+    beforeEach(inject(function (_$controller_, $rootScope) {
       $controller = _$controller_;
       $scope = $rootScope.$new();
-      resourceService = _playersResource_;
     }));
 
+
+    function playerController(response, options) {
+      var obj = {
+        $scope: $scope,
+        response: response
+      };
+      if (options)
+        angular.merge(obj, options);
+      var vm = $controller('PlayerController', obj);
+
+      return vm;
+    }
+
+
+    describe('supports', function () {
+      var vm;
+
+      beforeEach(function () {
+        vm = playerController(sampleResponse);
+      });
+
+      it('should support auth', function () {
+        expect(vm.supportsAuth).toBe(true);
+      });
+
+      it('should support crud', function () {
+        expect(vm.supportsCrud).toBe(true);
+      });
+
+    });
 
     describe('loading', function () {
 
       it('should load', function () {
-        var vm;
-        $httpBackend.when('GET', resourceService.path).respond(
-          function () {
-            return [200, samplePlayers]
-          });
-        vm = $controller('PlayerController', {
-          $scope: $scope,
-          response: null
-        });
-        expect(vm.loading).toBe(true);
-        $httpBackend.flush();
-
-        expect(vm.loading).toBe(false);
+        var vm = playerController(sampleResponse);
         expect(vm.loadingFailed).toBe(false);
-        expect(vm.loadingFailedMessage).toBe(null);
       });
 
       it('should fail', function () {
-        var vm;
-        $httpBackend.when('GET', resourceService.path).respond(500, {'error': 'something went wrong'});
-        vm = $controller('PlayerController', {
-          $scope: $scope,
-          response: null
-        });
-        $httpBackend.flush();
-
-        expect(vm.loading).toBe(false);
+        var vm = playerController({error: 'something'});
         expect(vm.loadingFailed).toBe(true);
-        expect(vm.loadingFailedMessage).toEqual(jasmine.any(String));
       });
     });
 
-    describe('crud', function () {
-        var vm;
+    describe('crud interface', function () {
+      var crudMock;
+      var vm;
+      beforeEach(function () {
+        crudMock = new CrudMock();
+        vm = playerController(sampleResponse, {crudHelper: crudMock.crudHelper})
+      })
 
+      it('should activate mock', function () {
+        expect(crudMock.activated()).toBe(true);
+      });
+
+      describe('crud options', function () {
+        var options;
         beforeEach(function () {
-          $httpBackend.when('GET', resourceService.path).respond(200, samplePlayers);
-          vm = $controller('PlayerController', {
-            $scope: $scope,
-            response: null
+          options = crudMock.options;
+        });
+
+        it('should have options', function () {
+          expect(options).toEqual(jasmine.any(Object));
+        });
+
+        it('should have resource name', function () {
+          expect(options.resourceName).toEqual('players');
+        });
+
+        it('should have prepareToCreateEntity', function () {
+          expect(options.prepareToCreateEntity).toEqual(jasmine.any(Function));
+        });
+
+        it('should have prepareToUpdateEntity', function () {
+          expect(options.prepareToUpdateEntity).toEqual(jasmine.any(Function));
+        });
+
+        it('should not have beforeShowNewEntity', function () {
+          expect(options.beforeShowNewEntity).toBe(null);
+        });
+
+        it('should not have beforeShowEditEntity', function () {
+          expect(options.beforeShowEditEntity).toBe(null);
+        });
+
+        it('should have getEntityDisplayName', function () {
+          expect(options.getEntityDisplayName).toEqual(jasmine.any(Function));
+        });
+
+        it('should have makeEntityBody', function () {
+          expect(options.makeEntityBody).toEqual(jasmine.any(Function));
+        });
+
+        it('should have scope', function () {
+          expect(options.scope).toEqual(jasmine.any(Object));
+        });
+
+        it('should have errorCategories', function () {
+          expect(options.errorCategories).toEqual(jasmine.any(Object));
+        });
+
+        describe('getEntityDisplayName', function () {
+
+          it('should return name', function () {
+            expect(options.getEntityDisplayName({name: 'aplayer'})).toEqual('aplayer');
           });
-          $httpBackend.flush();
 
         });
 
-        it('should get', function () {
-          expect(vm.entitys).toEqual(jasmine.any(Array));
-          //expect(angular.isArray(vm.entitys)).toBeTruthy();
-          expect(vm.entitys.length).toBe(samplePlayers.length);
-          expect(angular.equals(vm.entitys[0], samplePlayers[0])).toBeTruthy;
+        describe('makeEntityBody', function () {
+
+          it('should return value', function () {
+            expect(options.makeEntityBody({})).toEqual({player: {}});
+          });
+
         });
 
-        it('should add 1', function () {
-          $httpBackend.when('POST', resourceService.path).respond(201, {mergeKey: "mergeValue"});
-          vm.newEntity = {name: "newname"};
-          vm.submitNewEntity();
-          $httpBackend.flush();
+        describe('prepareToCreateEntity', function () {
 
-          expect(angular.isArray(vm.entitys)).toBeTruthy();
-          expect(vm.entitys.length).toBe(samplePlayers.length + 1);
-          expect(vm.entitys[0].mergeKey).toBe("mergeValue");
-          expect(vm.entitys[0].name).toBe("newname");
+          it('should return value', function () {
+            expect(options.prepareToCreateEntity({name: 'aplayer', id: 1})).toEqual({name: 'aplayer'});
+          });
+
         });
 
-        it('should delete 1', function () {
-          var toRemove = vm.entitys[0];
-          $httpBackend.when('DELETE', resourceService.path + '/' + toRemove.id).respond(200, {});
-          vm.trashEntity(toRemove, false);  // do not confirm: false
-          $httpBackend.flush();
-          expect(angular.isArray(vm.entitys)).toBeTruthy();
-          expect(vm.entitys.length).toBe(samplePlayers.length - 1);
+        describe('prepareToUpdateEntity', function () {
+
+          it('should return value', function () {
+            expect(options.prepareToUpdateEntity({name: 'aplayer', id: 1})).toEqual({id: 1, name: 'aplayer'});
+          });
+
         });
+      });
 
-        it('should format body', function () {
-          $httpBackend.expect('POST', resourceService.path, {'player': samplePost[0]}).respond(200, {});
-          vm.newEntity = samplePost[0];
-          vm.submitNewEntity();
-          $httpBackend.flush();
-        });
-
-        it('should capture create error', function () {
-          $httpBackend.when('POST', resourceService.path).respond(422, {"name": ["has already been taken"]});
-          vm.newEntity = samplePost[0];
-          vm.submitNewEntity();
-          $httpBackend.flush();
-
-          expect(vm.entitys.length).toBe(samplePlayers.length);
-          expect(vm.entityCreateErrors).toEqual(jasmine.any(Object));
-          expect(vm.entityCreateErrors.name).toEqual(jasmine.any(Array));
-          expect(vm.entityCreateErrors.name.length).toBe(1);
-          expect(vm.entityCreateErrors.name[0]).toEqual(jasmine.stringMatching('has already been taken'));
-        });
-
-        it('should capture delete error', function () {
-          $httpBackend.when('DELETE', resourceService.path + '/999').respond(404, {"error": "not found"});
-          vm.trashEntity({id: 999}, false);  // do not confirm: false
-          $httpBackend.flush();
-          expect(vm.entitys.length).toBe(samplePlayers.length);
-          expect(vm.lastToast).toEqual(jasmine.any(Object));
-          expect(vm.lastToast.iconClass).toEqual('toast-error')
-        });
-
-      }
-    )
+    });
   });
+
+
+  function CrudMock() {
+
+    var _this = this;
+
+    _this.options = null;
+    _this.activated = function () {
+      return (_this.options != null);
+    }
+
+    _this.crudHelper = {
+      activate: activate
+    };
+
+    function activate(vm, options) {
+      _this.options = options;
+
+    }
+
+  }
 })();

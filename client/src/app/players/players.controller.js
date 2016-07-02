@@ -14,7 +14,7 @@
     .controller('PlayerController', Controller);
 
   /** @ngInject */
-  function Controller(playersResource, $log, $scope, crudHelper, authHelper, response) {
+  function Controller($log, $scope, crudHelper, authHelper, playersResource, response) {
     
     var vm = this;
 
@@ -25,11 +25,11 @@
       crudHelper.activate(vm,
         {
           response: response,
-          getResources: playersResource.getPlayers,
+          resourceName: playersResource,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
-          beforeshowNewEntity: null,
-          beforeshowEditEntity: null,
+          beforeShowNewEntity: null,
+          beforeShowEditEntity: null,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,

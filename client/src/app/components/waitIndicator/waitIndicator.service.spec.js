@@ -33,6 +33,13 @@
       expect(service.waiting()).toBe(false);
     })
 
+    it('should ignore underflow', function () {
+      var callBack = service.beginWait();
+      callBack();
+      callBack();
+      expect(service.waiting()).toBe(false);
+    })
+
     describe('change notification', function() {
       var scope;
       var spy;

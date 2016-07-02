@@ -29,7 +29,7 @@
       });
 
       it('should return data', function() {
-        $httpBackend.when('POST',  service.path).respond(200, {auth_token: 'atoken'});
+        $httpBackend.expect('POST',  service.path).respond(200, {auth_token: 'atoken'});
         var data = null;
         service.getLogin().login(function(response) {
           data = response;
@@ -42,7 +42,7 @@
       });
 
       it('should return error', function() {
-        $httpBackend.when('POST',  service.path).respond(500);
+        $httpBackend.expect('POST',  service.path).respond(500);
         var error = false;
         service.getLogin().login(function() {
           },

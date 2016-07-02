@@ -2,23 +2,12 @@
   'use strict';
 
   describe('controller matches', function () {
-    var $httpBackend;
     var $controller;
     var $scope;
-    var resourceService;
+    var $q;
+    var $rootScope;
 
-    var samplePost = [
-      {
-        title: "doubles title",
-        scoring: "two_six_game_ten_points",
-        doubles: true
-        // TODO: Test select_first_player, select_second_player
-        // first_player_id: 66,
-        // second_player_id: 77
-      }
-    ];
-
-    var sampleMatches = [
+    var sampleResponse = [
       {
         title: "doubles title",
         id: 22,
@@ -38,141 +27,491 @@
           first_player_name: "second_team_first_player",
           second_player_name: "second_team_second_player"
         }
-      },
-      {
-        title: "singles title",
-        id: 55,
-        scoring: "two_six_game_ten_points",
-        doubles: false,
-        state: "complete",
-        winner: 66,
-        first_player: {
-          id: 66,
-          name: "first_player_name"
-        },
-        second_player: {
-          id: 77,
-          name: "second_player_name"
-        }
       }
     ];
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function (_$controller_, $rootScope, _$httpBackend_, _matchesResource_) {
-      $httpBackend = _$httpBackend_;
-      $controller = _$controller_;
-      $scope = $rootScope.$new();
-      resourceService = _matchesResource_;
-    }));
+    beforeEach(function () {
 
+      inject(function (_$controller_, _$q_, _$rootScope_) {
+        $rootScope = _$rootScope_;
+        $controller = _$controller_;
+        $scope = $rootScope.$new();
+        $q = _$q_;
+      })
+    });
+
+
+    function matchController(response, options) {
+      var obj = {
+        $scope: $scope,
+        response: response
+      };
+      if (options)
+        angular.merge(obj, options);
+      return $controller('MatchController', obj);
+    }
+
+    describe('members', function () {
+      var vm;
+
+      beforeEach(function () {
+        vm = matchController(sampleResponse);
+      });
+
+      describe('supports', function () {
+
+        it('should support auth', function () {
+          expect(vm.supportsAuth).toBe(true);
+        });
+
+        it('should support crud', function () {
+          expect(vm.supportsCrud).toBe(true);
+        });
+
+      });
+
+      describe('options lists', function () {
+        it('has team options', function () {
+          expect(vm.teamOptionsList).toEqual(jasmine.any(Object));
+        });
+
+        it('has players options', function () {
+          expect(vm.playerOptionsList).toEqual(jasmine.any(Object));
+        });
+      });
+
+    });
 
     describe('loading', function () {
 
       it('should load', function () {
-        var vm;
-        $httpBackend.when('GET', resourceService.path).respond(
-          function () {
-            return [200, sampleMatches]
-          });
-        vm = $controller('MatchController', {
-          $scope: $scope,
-          response: null
-        });
-        expect(vm.loading).toBe(true);
-        $httpBackend.flush();
-
-        expect(vm.loading).toBe(false);
+        var vm = matchController(sampleResponse);
         expect(vm.loadingFailed).toBe(false);
-        expect(vm.loadingFailedMessage).toBe(null);
       });
 
       it('should fail', function () {
-        var vm;
-        $httpBackend.when('GET', resourceService.path).respond(500, {'error': 'something went wrong'});
-        vm = $controller('MatchController', {
-          $scope: $scope,
-          response: null
-        });
-        $httpBackend.flush();
-
-        expect(vm.loading).toBe(false);
+        var vm = matchController({error: 'something'});
         expect(vm.loadingFailed).toBe(true);
-        expect(vm.loadingFailedMessage).toEqual(jasmine.any(String));
       });
     });
 
-    describe('crud', function () {
-        var vm;
+    describe('mock crudHelper', function () {
+      var crudMock;
+      var selectOptionsMock;
+      var vm;
+      beforeEach(function () {
+        crudMock = new CrudMock();
+        selectOptionsMock = new SelectOptionsMock($q);
+        vm = matchController(sampleResponse, {
+          // Mock services
+          crudHelper: crudMock.crudHelper,
+          teamsSelectOptions: selectOptionsMock.teamsSelectOptions,
+          playersSelectOptions: selectOptionsMock.playersSelectOptions
+        })
+      })
 
+      it('should activate mock', function () {
+        expect(crudMock.activated()).toBe(true);
+      });
+
+      describe('crud options', function () {
+        var options;
         beforeEach(function () {
-          $httpBackend.when('GET', resourceService.path).respond(200, sampleMatches);
-          vm = $controller('MatchController', {
-            $scope: $scope,
-            response: null
+          options = crudMock.options;
+        });
+
+        it('should have options', function () {
+          expect(options).toEqual(jasmine.any(Object));
+        });
+
+        it('should have resource name', function () {
+          expect(options.resourceName).toEqual('matches');
+        });
+
+        it('should have prepareToCreateEntity', function () {
+          expect(options.prepareToCreateEntity).toEqual(jasmine.any(Function));
+        });
+
+        it('should have prepareToUpdateEntity', function () {
+          expect(options.prepareToUpdateEntity).toEqual(jasmine.any(Function));
+        });
+
+        it('should have beforeShowNewEntity', function () {
+          expect(options.beforeShowNewEntity).toEqual(jasmine.any(Function));
+        });
+
+        it('should have beforeShowEditEntity', function () {
+          expect(options.beforeShowEditEntity).toEqual(jasmine.any(Function));
+        });
+
+        it('should have getEntityDisplayName', function () {
+          expect(options.getEntityDisplayName).toEqual(jasmine.any(Function));
+        });
+
+        it('should have makeEntityBody', function () {
+          expect(options.makeEntityBody).toEqual(jasmine.any(Function));
+        });
+
+        it('should have scope', function () {
+          expect(options.scope).toEqual(jasmine.any(Object));
+        });
+
+        it('should have errorCategories', function () {
+          expect(options.errorCategories).toEqual(jasmine.any(Object));
+        });
+
+        describe('getEntityDisplayName', function () {
+
+          it('should return title', function () {
+            expect(options.getEntityDisplayName({title: 'atitle'})).toEqual('atitle');
           });
-          $httpBackend.flush();
+
+          it('should return untitled', function () {
+            expect(options.getEntityDisplayName({title: ''})).toEqual('(untitled)');
+          });
 
         });
 
-        it('should get', function () {
-          expect(vm.entitys).toEqual(jasmine.any(Array));
-          //expect(angular.isArray(vm.entitys)).toBeTruthy();
-          expect(vm.entitys.length).toBe(sampleMatches.length);
-          // expect(angular.equals(vm.entitys[0], sampleMatches[0])).toBeTruthy;
+        describe('makeEntityBody', function () {
+
+          it('should return value', function () {
+            expect(options.makeEntityBody({})).toEqual({match: {}});
+          });
         });
 
-        it('should add 1', function () {
-          $httpBackend.when('POST', resourceService.path).respond(201, {mergeKey: "mergeValue"});
-          vm.newEntity = {title: "newname"};
-          vm.submitNewEntity();
-          $httpBackend.flush();
+        describe('prepare to update entities', function () {
 
-          expect(angular.isArray(vm.entitys)).toBeTruthy();
-          expect(vm.entitys.length).toBe(sampleMatches.length + 1);
-          expect(vm.entitys[0].mergeKey).toBe("mergeValue");
-          expect(vm.entitys[0].title).toBe("newname");
+          var singlesEntity = {
+            title: "title",
+            scoring: "two_six_game_ten_points",
+            doubles: false,
+            select_first_player: {id: 1},
+            select_second_player: {id: 2}
+          };
+
+          var singlesPrepared = {
+            title: "title",
+            scoring: "two_six_game_ten_points",
+            doubles: false,
+            first_player_id: 1,
+            second_player_id: 2
+          };
+
+          var doublesEntity = {
+            title: "title",
+            scoring: "two_six_game_ten_points",
+            doubles: true,
+            select_first_team: {id: 1},
+            select_second_team: {id: 2}
+          };
+
+          var doublesPrepared = {
+            title: "title",
+            scoring: "two_six_game_ten_points",
+            doubles: true,
+            first_team_id: 1,
+            second_team_id: 2
+          };
+
+          describe('prepareToCreateEntity', function () {
+
+            describe('doubles', function () {
+              var prepared;
+
+              beforeEach(function () {
+                prepared = options.prepareToCreateEntity(doublesEntity);
+              })
+
+              it('should prepare', function () {
+                expect(prepared).toEqual(doublesPrepared);
+              });
+            });
+
+            describe('singles', function () {
+
+              var prepared;
+
+              beforeEach(function () {
+                prepared = options.prepareToCreateEntity(singlesEntity);
+              })
+
+              it('should prepare', function () {
+                expect(prepared).toEqual(singlesPrepared);
+              });
+            });
+
+          });
+
+          describe('prepareToUpdateEntity', function () {
+            describe('doubles', function () {
+              var prepared;
+              var expected;
+              var entity;
+
+              beforeEach(function () {
+                entity = angular.merge({}, doublesEntity, {id: 1});
+                expected = angular.merge({}, doublesPrepared, {id: 1});
+                prepared = options.prepareToUpdateEntity(entity);
+              })
+
+              it('should prepare', function () {
+                expect(prepared).toEqual(expected);
+              });
+            });
+
+            describe('singles', function () {
+
+              var prepared;
+              var expected;
+              var entity;
+
+              beforeEach(function () {
+                entity = angular.merge({}, singlesEntity, {id: 1});
+                expected = angular.merge({}, singlesPrepared, {id: 1});
+                prepared = options.prepareToUpdateEntity(entity);
+              })
+
+              it('should prepare', function () {
+                expect(prepared).toEqual(expected);
+              });
+            });
+          });
         });
 
-        it('should delete 1', function () {
-          var toRemove = vm.entitys[0];
-          $httpBackend.when('DELETE', resourceService.path + '/' + toRemove.id).respond(200, {});
-          vm.trashEntity(toRemove, false);  // do not confirm: false
-          $httpBackend.flush();
-          expect(angular.isArray(vm.entitys)).toBeTruthy();
-          expect(vm.entitys.length).toBe(sampleMatches.length - 1);
+        describe('beforeShowNewEntity', function () {
+
+          describe('before call', function () {
+            it('should not have player select options', function () {
+              expect(vm.playerOptionsList.list).toEqual(null);
+            });
+
+            it('should not have team select options', function () {
+              expect(vm.teamOptionsList.list).toEqual(null);
+            });
+          });
+
+
+          describe('after call', function () {
+
+            describe('default values', function () {
+              var entity;
+
+              beforeEach(function () {
+                options.beforeShowNewEntity();
+                $rootScope.$digest(); // resolve player and team lists
+                entity = vm.newEntity;
+              });
+
+              it('should default singles', function () {
+                expect(entity.doubles).toBe(false);
+              });
+
+              it('should default two sets', function () {
+                expect(entity.scoring).toEqual('two_six_game_ten_point');
+              });
+
+            });
+
+            describe('select options filled', function () {
+              beforeEach(function () {
+                options.beforeShowNewEntity();
+                $rootScope.$digest(); // resolve player and team lists
+              });
+
+              it('should have player select options', function () {
+                expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
+              });
+
+              it('should have team select options', function () {
+                expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
+              });
+            });
+
+            describe('select options empty', function () {
+              beforeEach(function () {
+                selectOptionsMock.reject();
+                options.beforeShowNewEntity();
+                $rootScope.$digest(); // resolve player and team lists
+              });
+
+              it('should have player select options', function () {
+                expect(vm.playerOptionsList.list).toEqual([]);
+              });
+
+              it('should have team select options', function () {
+                expect(vm.teamOptionsList.list).toEqual([]);
+              });
+            });
+          });
         });
 
-        it('should format body', function () {
-          $httpBackend.expect('POST', resourceService.path, {'match': samplePost[0]}).respond(200, {});
-          vm.newEntity = samplePost[0];
-          vm.submitNewEntity();
-          $httpBackend.flush();
+
+        describe('beforeShowEditEntity', function () {
+          describe('before call', function () {
+            it('should not have player select options', function () {
+              expect(vm.playerOptionsList.list).toEqual(null);
+            });
+
+            it('should not have team select options', function () {
+              expect(vm.teamOptionsList.list).toEqual(null);
+            });
+          });
+
+          describe('after call', function () {
+
+            describe('options lists', function () {
+
+              beforeEach(function () {
+                spyOn(selectOptionsMock, 'getTeamSelectOptions').and.callThrough();
+                vm.editEntity = {};
+                options.beforeShowEditEntity();
+                $rootScope.$digest(); // resolve player and team lists
+              });
+
+              it('should player select options', function () {
+                expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
+              });
+
+              it('should team select options', function () {
+                expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
+              });
+
+              it('should call getSelectOptions', function() {
+                expect(selectOptionsMock.getTeamSelectOptions).toHaveBeenCalled();
+              });
+            });
+
+            describe('select players', function () {
+              var firstPlayer, secondPlayer;
+
+              beforeEach(function () {
+                firstPlayer = selectOptionsMock.playerList[0];
+                secondPlayer = selectOptionsMock.playerList[1];
+                vm.editEntity = {
+                  first_player: firstPlayer,
+                  second_player: secondPlayer
+                };
+                options.beforeShowEditEntity();
+                $rootScope.$digest(); // resolve player and team lists
+              });
+
+              it('should select first player', function () {
+                expect(vm.editEntity.select_first_player).toEqual(firstPlayer);
+              });
+
+              it('should select second player', function () {
+                expect(vm.editEntity.select_second_player).toEqual(secondPlayer);
+              });
+            });
+
+
+            describe('select teams', function () {
+              var firstTeam, secondTeam;
+
+              beforeEach(function () {
+                spyOn(selectOptionsMock.teamsSelectOptions, 'getSelectOptions').and.callThrough();
+                firstTeam = selectOptionsMock.teamList[0];
+                secondTeam = selectOptionsMock.teamList[1];
+                vm.editEntity = {
+                  first_team: firstTeam,
+                  second_team: secondTeam
+                };
+                options.beforeShowEditEntity();
+                $rootScope.$digest(); // resolve player and team lists
+              });
+
+
+              it('should select first team', function () {
+                expect(vm.editEntity.select_first_team).toEqual(firstTeam);
+              });
+
+              it('should select second team', function () {
+                expect(vm.editEntity.select_second_team).toEqual(secondTeam);
+              });
+            });
+
+          });
         });
 
-
-        it('should capture create error', function () {
-          $httpBackend.when('POST', resourceService.path).respond(422, {"title": ["has already been taken"]});
-          vm.newEntity = sampleMatches[0];
-          vm.submitNewEntity();
-          $httpBackend.flush();
-
-          expect(vm.entitys.length).toBe(sampleMatches.length);
-          expect(vm.entityCreateErrors).toEqual(jasmine.any(Object));
-          expect(vm.entityCreateErrors.title).toEqual(jasmine.any(Array));
-          expect(vm.entityCreateErrors.title.length).toBe(1);
-          expect(vm.entityCreateErrors.title[0]).toEqual(jasmine.stringMatching('has already been taken'));
-        });
-
-        it('should capture delete error', function () {
-          $httpBackend.when('DELETE', resourceService.path + '/999').respond(404, {"error": "not found"});
-          vm.trashEntity({id: 999}, false);  // do not confirm: false
-          $httpBackend.flush();
-          expect(vm.entitys.length).toBe(sampleMatches.length);
-          expect(vm.lastToast).toEqual(jasmine.any(Object));
-          expect(vm.lastToast.iconClass).toEqual('toast-error')
-        });
-
-      }
-    )
+      });
+    });
   });
+
+
+  function CrudMock() {
+
+    var _this = this;
+
+    _this.options = null;
+    _this.activated = function () {
+      return (_this.options != null);
+    };
+
+    _this.crudHelper = {
+      activate: activate
+    };
+
+    function activate(vm, options) {
+      _this.options = options;
+      vm.newEntity = {};
+      vm.editEntity = {};
+
+    }
+
+  }
+
+  function SelectOptionsMock(_$q_) {
+
+    var $q = _$q_;
+    var _this = this;
+    var teamList = [
+      {name: 'team1', id: 1},
+      {name: 'team2', id: 2}
+    ];
+
+    var playerList = [
+      {name: 'player1', id: 1},
+      {name: 'player2', id: 2}
+    ];
+    var reject = false;
+
+    _this.teamList = teamList;
+
+    _this.playerList = playerList;
+
+    _this.reject = function () {
+      reject = true;
+    }
+
+    // Return a promise
+    _this.getTeamSelectOptions = function() {
+      return getSelectOptions(teamList);
+    };
+
+    // Return a promise
+    _this.getPlayerSelectOptions = function() {
+      return getSelectOptions(playerList);
+    };
+
+    _this.playersSelectOptions = {
+      getSelectOptions: _this.getPlayerSelectOptions
+    };
+
+    _this.teamsSelectOptions = {
+      getSelectOptions: _this.getTeamSelectOptions
+    }
+
+    function getSelectOptions(list) {
+      var deferred = $q.defer();
+      if (reject)
+        deferred.reject()
+      else
+        deferred.resolve(list);
+      return deferred.promise;
+    }
+
+
+  }
 })();
+

@@ -27,22 +27,20 @@
       vm.loadingMessage = 'Loading...';
       vm.loadingFailed = false;
       vm.loadingFailedMessage = null;
+      vm.supportsLoading = true;
     }
-    
+
     function Helper(_vm_) {
       var helper = this;
       var vm = _vm_;
-      
-      helper.loadingHasFailed = function(response, message) {
+
+      helper.loadingHasFailed = function (response) {
         vm.loading = false;
         vm.loadingFailed = true;
-        if (angular.isString(message))
-          vm.loadingFailedMessage = message;
-        else
-          vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').  Please check your internet connection.';
+        vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').';
       }
 
-      helper.loadingHasCompleted = function() {
+      helper.loadingHasCompleted = function () {
         vm.loading = false;
         vm.loadingFailed = false;
       }

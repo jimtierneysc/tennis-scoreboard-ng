@@ -6,7 +6,8 @@
     .config(routerConfig);
 
   /** @ngInject */
-  function routerConfig($stateProvider, $urlRouterProvider) {
+  function routerConfig($stateProvider, $urlRouterProvider,  
+                        teamsResource, playersResource, matchesResource, scoreboardResource) {
     var header = {
       templateUrl: 'app/header/header.html',
       controller: 'HeaderController',
@@ -101,72 +102,66 @@
     $urlRouterProvider.otherwise('/');
 
     function resolvePlayers() {
-      /** @ngInject */
-      function resolve(playersResource, $q, $log, waitIndicator) {
-        return resolveResourceQuery(playersResource.getPlayers(), $q, waitIndicator, $log);
-      }
-      return resolve;
+      return resolveResourceQuery(playersResource);
     }
 
     function resolveMatches() {
-      /** @ngInject */
-      function resolve(matchesResource, $log, $q, waitIndicator) {
-        return resolveResourceQuery(matchesResource.getMatches(), $q, waitIndicator, $log);
-      }
-      return resolve;
+      return resolveResourceQuery(matchesResource);
     }
 
     function resolveTeams() {
-      /** @ngInject */
-      function resolve(teamsResource, $q, $log, waitIndicator) {
-        return resolveResourceQuery(teamsResource.getTeams(), $q, waitIndicator, $log);
-      }
-      return resolve;
+      return resolveResourceQuery(teamsResource);
     }
 
     function resolveScoreBoard() {
+      return resolveResourceGet(scoreboardResource);
+    }
+
+    function resolveResourceQuery(resourceName) {
       /** @ngInject */
-      function resolve(scoreBoardResource, $stateParams, $q, waitIndicator, $log) {
-        return resolveResourceGet(scoreBoardResource.getScoreBoard(), $stateParams.id, $q, waitIndicator, $log);
-      }
+      function resolve($q, $log, waitIndicator, crudResource) {
+        var resource = crudResource.getResource(resourceName);
+        var deferred = $q.defer();
+        var endWait = waitIndicator.beginWait();
+        resource.query(
+          function (response) {
+            endWait();
+            deferred.resolve(response);
+          },
+          function (response) {
+            $log.error('data error ' + response.status + " " + response.statusText);
+            endWait();
+            deferred.resolve(response);
+          }
+        )
+        return deferred.promise;
+      };
       return resolve;
     }
 
-    function resolveResourceQuery(resource, $q, waitIndicator, $log) {
-      var deferred = $q.defer();
-      var endWait = waitIndicator.beginWait();
-      resource.query(
-        function (response) {
-          $log.info('received data');
-          endWait();
-          deferred.resolve(response);
-        },
-        function (response) {
-          $log.error('data error ' + response.status + " " + response.statusText);
-          endWait();
-          deferred.resolve(response);
-        }
-      );
-      return deferred.promise;
+
+    function resolveResourceGet(resourceName) {
+      /** @ngInject */
+      function resolve($q, $log, waitIndicator, crudResource, $stateParams) {
+        var resource = crudResource.getResource(resourceName);
+        var deferred = $q.defer();
+        var endWait = waitIndicator.beginWait();
+        resource.get({id: $stateParams.id},
+          function (response) {
+            endWait();
+            deferred.resolve(response);
+          },
+          function (response) {
+            $log.error('data error ' + response.status + " " + response.statusText);
+            endWait();
+            deferred.resolve(response);
+          }
+        )
+        return deferred.promise;
+      };
+      return resolve;
     }
 
-    function resolveResourceGet(resource, id, $q, waitIndicator, $log) {
-      var deferred = $q.defer();
-      var endWait = waitIndicator.beginWait();
-      resource.get({id: id},
-        function (response) {
-          $log.info('received data');
-          endWait();
-          deferred.resolve(response);
-        },
-        function (response) {
-          $log.error('data error ' + response.status + " " + response.statusText);
-          endWait();
-          deferred.resolve(response);
-        }
-      );
-      return deferred.promise;
-    }
   }
 
 })();

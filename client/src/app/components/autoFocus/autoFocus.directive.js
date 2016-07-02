@@ -23,7 +23,7 @@
       link: function (scope, element, attr) {
         if (attr.feAutoFocus) {
           // fe-auto-focus has a value.  Wait for notification.
-          scope.$on('autoFocus', function (e, name) {
+          scope.$on('fe-autoFocus', function (e, name) {
             if (name === attr.feAutoFocus) {
               setFocus();
             }
@@ -50,7 +50,7 @@
   function factory($timeout, $rootScope) {
     return function (name) {
       $timeout(function () {
-        $rootScope.$broadcast('autoFocus', name);
+        $rootScope.$broadcast('fe-autoFocus', name);
       });
     }
   }

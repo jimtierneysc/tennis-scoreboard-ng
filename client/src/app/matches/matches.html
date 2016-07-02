@@ -17,7 +17,7 @@
 
     <div class="col-xs-12">
       <ol class="list-group">
-        <li class="list-group-item" ng-if="vm.showingNewEntityForm">
+        <li class="list-group-item" ng-if="vm.showingNewEntity">
           <fe-matches-form
             form="vm.newEntityForm"
             errors="vm.entityCreateErrors"
@@ -37,7 +37,7 @@
         <li class="list-group-item clearfix" ng-repeat="entity in vm.entitys">
 
 
-          <div ng-hide="vm.showingEditEntityForm(entity)">
+          <div ng-hide="vm.showingEditEntity(entity)">
             <div class="col-xs-10">
               <div class="h4">
                 <span ng-if="entity.title">
@@ -82,7 +82,7 @@
           </div>
 
           <!--Use ng-if so there won't be bunch of forms in the DOM-->
-          <div ng-if="vm.showingEditEntityForm(entity)">
+          <div ng-if="vm.showingEditEntity(entity)">
             <fe-matches-form
               form="vm.editEntityForm"
               errors="vm.entityUpdateErrors"

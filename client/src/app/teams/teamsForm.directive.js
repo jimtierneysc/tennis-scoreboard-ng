@@ -13,10 +13,10 @@
 
   angular
     .module('frontend')
-    .directive('feTeamsForm', directiveFunc);
+    .directive('feTeamsForm', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
       restrict: 'E',
       templateUrl: 'app/teams/teamsForm.html',

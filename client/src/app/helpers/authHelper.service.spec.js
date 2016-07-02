@@ -35,9 +35,13 @@
           service.activate(vm, scope);
         });
 
+        it ('should support', function() {
+          expect(vm.supportsAuth).toBe(true);
+        });
+
         it ('should have loggedin member', function() {
           expect(vm.loggedIn).toEqual(jasmine.any(Boolean));
-        })
+        });
 
         it ('should have username member', function() {
           expect(vm.userName).toEqual(jasmine.any(String));
@@ -70,6 +74,11 @@
           it('should log out', function () {
             service.clearCredentials();
             expect(vm.loggedIn).toEqual(false);
+          });
+
+          it('should clearCredentials', function () {
+            vm.logOut();
+            expect(service.loggedIn).toEqual(false);
           });
 
         });

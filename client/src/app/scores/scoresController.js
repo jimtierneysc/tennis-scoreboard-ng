@@ -10,10 +10,10 @@
 
   angular
     .module('frontend')
-    .controller('ScoreController', MainController);
+    .controller('ScoreController', Controller);
 
   /** @ngInject */
-  function MainController($log, $filter, $scope, $state, matchesResource, $q, loadingHelper, 
+  function Controller($log, $filter, $scope, $state, crudResource, $q, loadingHelper, 
                          authHelper, waitIndicator, response) {
     
     var vm = this;
@@ -40,7 +40,7 @@
 
     function getMatches() {
       var endWait = waitIndicator.beginWait();
-      matchesResource.getMatches().query(
+      crudResource.getResource('matches').query(
         function (response) {
           endWait();
           getMatchesSucceeded(response);

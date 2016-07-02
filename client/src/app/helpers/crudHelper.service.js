@@ -14,10 +14,10 @@
 
   /** @ngInject */
   function factory($log, $q, modalConfirm, toastr,
-                          $filter, loadingHelper, errorsHelper, toastrHelper,
-                          waitIndicator) {
+                   $filter, loadingHelper, errorsHelper, toastrHelper,
+                   waitIndicator, crudResource) {
     var service = {
-      activate: activate,
+      activate: activate
     };
     return service;
 
@@ -33,6 +33,7 @@
 
       var operations = new Operations(vm, options);
 
+      vm.supportsCrud = true;
       // Aggregate crud methods and properties
       vm.trashEntity = operations.trashEntity;
       vm.submitNewEntity = operations.submitNewEntity;
@@ -41,41 +42,38 @@
       vm.submitEditEntity = operations.submitEditEntity;
       vm.showEditEntity = operations.showEditEntity;
       vm.hideEditEntity = operations.hideEditEntity;
-      vm.showingEditEntityForm = operations.showingEditEntityForm;
+      vm.showingEditEntity = operations.showingEditEntity;
 
       vm.newEntity = {};
       vm.editEntity = null;
-      vm.showingNewEntityForm = false;
+      vm.showingNewEntity = false;
       vm.newEntityForm = null;
       vm.editEntityForm = null;
       vm.entitys = [];
       vm.entityCreateErrors = null;
       vm.entityUpdateErrors = null;
 
-      if (response) {
-        if (angular.isArray(response))
-          operations.entityLoaded(response);
-        else
-          operations.entityLoadFailed(response);
-      }
-      else {
-        operations.getEntitys();
-      }
+      if (angular.isArray(response))
+        operations.entityLoaded(response);
+      else
+        operations.entityLoadFailed(response);
     }
 
     // Execute code in context of vm
     function Operations(_vm_, controllerOptions) {
       var helper = this;
       var vm = _vm_
-      var getResources = controllerOptions.getResources;
+      var getResource = function() {
+        return crudResource.getResource(controllerOptions.resourceName)
+      };
       var prepareToCreateEntity = controllerOptions.prepareToCreateEntity;
       var prepareToUpdateEntity = controllerOptions.prepareToUpdateEntity;
-      var beforeshowNewEntity = controllerOptions.beforeshowNewEntity;
-      var beforeshowEditEntity = controllerOptions.beforeshowEditEntity;
+      var beforeShowNewEntity = controllerOptions.beforeShowNewEntity;
+      var beforeShowEditEntity = controllerOptions.beforeShowEditEntity;
       var getEntityDisplayName = controllerOptions.getEntityDisplayName;
       var makeEntityBody = controllerOptions.makeEntityBody;
 
-      helper.trashEntity = function(entity, confirmDelete) {
+      helper.trashEntity = function (entity, confirmDelete) {
         if (angular.isUndefined(confirmDelete))
           confirmDelete = true;
         if (confirmDelete) {
@@ -92,37 +90,38 @@
         }
       };
 
-      helper.submitNewEntity = function() {
+      helper.submitNewEntity = function () {
         var submitEntity = prepareToCreateEntity(vm.newEntity);
         createEntity(submitEntity);
       };
 
-      helper.showNewEntity = function() {
-        if (beforeshowNewEntity) beforeshowNewEntity();
-        vm.showingNewEntityForm = true;
+      helper.showNewEntity = function () {
+        vm.newEntity = {};
+        if (beforeShowNewEntity) beforeShowNewEntity();
+        vm.showingNewEntity = true;
       };
 
-      helper.hideNewEntity = function() {
+      helper.hideNewEntity = function () {
         if (vm.newEntityForm) {
           vm.newEntityForm.$setPristine();
         }
-        vm.showingNewEntityForm = false;
-        vm.newEntity = {};
+        vm.showingNewEntity = false;
+        vm.newEntity = null;
         vm.entityCreateErrors = null;
       };
 
-      helper.submitEditEntity = function() {
+      helper.submitEditEntity = function () {
         var submit = prepareToUpdateEntity(vm.editEntity);
         updateEntity(submit);
       };
 
-      helper.showEditEntity = function(entity) {
+      helper.showEditEntity = function (entity) {
         // Edit a copy, so can discard unless click Save
         vm.editEntity = angular.copy(entity);
-        if (beforeshowEditEntity) beforeshowEditEntity();
+        if (beforeShowEditEntity) beforeShowEditEntity();
       };
 
-      helper.hideEditEntity = function() {
+      helper.hideEditEntity = function () {
         if (vm.editEntityForm) {
           vm.editEntityForm.$setPristine();
         }
@@ -130,30 +129,16 @@
         vm.entityUpdateErrors = null;
       };
 
-      helper.showingEditEntityForm = function(entity) {
+      helper.showingEditEntity = function (entity) {
         return vm.editEntity && (vm.editEntity.id == entity.id);
       };
 
-      helper.getEntitys = function() {
-        var endWait = waitIndicator.beginWait();
-        getResources().query(
-          function (response) {
-            endWait();
-            helper.entityLoaded(response);
-          },
-          function (response) {
-            endWait();
-            helper.entityLoadFailed(response);
-          }
-        );
-      }
-
-      helper.entityLoaded = function(response) {
+      helper.entityLoaded = function (response) {
         vm.entitys = response;
         vm.loadingHasCompleted();
       }
 
-      helper.entityLoadFailed = function(response) {
+      helper.entityLoadFailed = function (response) {
         $log.error('data error ' + response.status + " " + response.statusText);
         vm.loadingHasFailed(response);
       }
@@ -165,7 +150,7 @@
       function createEntity(entity) {
         var body = makeEntityBody(entity);
         var endWait = waitIndicator.beginWait();
-        getResources().save(body,
+        getResource().save(body,
           function (response) {
             endWait();
             var newEntity = angular.copy(entity);
@@ -185,7 +170,7 @@
         var key = {id: id};
         var body = makeEntityBody(entity);
         var endWait = waitIndicator.beginWait();
-        getResources().update(key, body,
+        getResource().update(key, body,
           function (response) {
             endWait();
             var updatedEntity = angular.copy(entity);
@@ -204,8 +189,8 @@
         var id = entity.id;
         var key = {id: id};
         var endWait = waitIndicator.beginWait();
-        getResources().remove(key,
-          function (response) {
+        getResource().remove(key,
+          function () {
             endWait();
             entityRemoved(entity);
           },
@@ -233,10 +218,7 @@
         if (found && found.length === 1) {
           angular.copy(entity, found[0]);
         }
-        else {
-          $log.error('id not found: ' + id);
-        }
-      }
+       }
 
       function entityCreateError(entity, response) {
         var errors = vm.errorsOfResponse(response);
@@ -261,7 +243,7 @@
         if (angular.isObject(response.data)) {
           var errors = vm.errorsOfResponse(response);
           if (angular.isDefined(errors.other))
-            message = errors.other;
+            message = errors.other[0];
         }
         vm.showToastrError(message, "Delete Error");
       }

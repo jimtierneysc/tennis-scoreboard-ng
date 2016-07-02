@@ -19,7 +19,7 @@
       <ol class="list-group">
 
         <!--Add player-->
-        <li class="list-group-item" ng-if="vm.showingNewEntityForm">
+        <li class="list-group-item" ng-if="vm.showingNewEntity">
           <fe-players-form
             form="vm.newEntityForm"
             errors="vm.entityCreateErrors"
@@ -34,7 +34,7 @@
 
         <!--Player details-->
         <li class="list-group-item clearfix" ng-repeat="entity in vm.entitys">
-          <div ng-hide="vm.showingEditEntityForm(entity)">
+          <div ng-hide="vm.showingEditEntity(entity)">
             <div class="col-xs-10">
               <div class="h4">
                 {{ entity.name}}
@@ -58,7 +58,7 @@
 
           <!--Edit player-->
 
-          <div ng-if="vm.showingEditEntityForm(entity)">
+          <div ng-if="vm.showingEditEntity(entity)">
 
             <div>
               <fe-players-form

@@ -77,13 +77,9 @@
           it('should have errors', function () {
             expect(errorsOfResponse).toEqual({other: [STATUS]});
           });
-
         });
-
       });
-
     })
-
   })
 })();
 

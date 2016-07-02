@@ -24,6 +24,7 @@
       var vm = _vm_;
       var helper = new Helper(errorCategories);
       vm.errorsOfResponse = helper.errorsOfResponse;
+      vm.supportsErrors = true;
     }
     
     function Helper(_errorCategories_) {
