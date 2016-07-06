@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name authHelper
  * @description
- * Common functionality shared by CRUD controllers
+ * Add authentication functionality to a controller
  *
  */
 (function () {
@@ -14,10 +14,8 @@
 
   /** @ngInject */
   function factory($log, authenticationService) {
-    var service = {
-      activate: activate
-    };
-    return service;
+    
+    return activate;
 
     function activate(vm, scope) {
       // Initialize controller

@@ -21,8 +21,8 @@
     activate();
 
     function activate() {
-      authHelper.activate(vm, $scope);
-      crudHelper.activate(vm,
+      authHelper(vm, $scope);
+      crudHelper(vm,
         {
           response: response,
           resourceName: playersResource,

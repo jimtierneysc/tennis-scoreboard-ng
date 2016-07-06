@@ -5,7 +5,7 @@
  * Provide list of teams for select list
  *
  */
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -15,11 +15,7 @@
   /** @ngInject */
   function factory($log, $q, crudResource, teamsResource) {
 
-    var service = {
-      getSelectOptions: getSelectOptions
-    };
-
-    return service;
+    return getSelectOptions;
 
     // Return a promise
     function getSelectOptions() {
@@ -28,7 +24,7 @@
         function (response) {
           var options = [];
           angular.forEach(response, function (value) {
-            options.push({name: value.displayName, id: value.id});
+            options.push({name: value.name || '(unnamed)', id: value.id});
           });
           deferredObject.resolve(options);
         },

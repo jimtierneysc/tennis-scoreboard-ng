@@ -23,8 +23,8 @@
     function activate() {
       vm.teamOptionsList = {list: null};
       vm.playerOptionsList = {list: null};
-      authHelper.activate(vm, $scope);
-      crudHelper.activate(vm,
+      authHelper(vm, $scope);
+      crudHelper(vm,
         {
           response: response,
           resourceName: matchesResource,
@@ -115,7 +115,7 @@
     function prepareToShowTeamOptions() {
       var deferredObject = $q.defer();
       if (vm.teamOptionsList.list == null) {
-        teamsSelectOptions.getSelectOptions().then(
+        teamsSelectOptions().then(
           function (list) {
             vm.teamOptionsList.list = list;
             deferredObject.resolve();
@@ -136,7 +136,7 @@
     function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
-        playersSelectOptions.getSelectOptions().then(
+        playersSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
             deferredObject.resolve();

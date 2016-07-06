@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name loadingHelper
  * @description
- * Common controller functionality shared by controllers
+ * Adds loading functionality to a controller
  *
  */
 (function () {
@@ -14,10 +14,7 @@
 
   /** @ngInject */
   function factory() {
-    var service = {
-      activate: activate
-    };
-    return service;
+    return activate;
 
     function activate(vm) {
       var helper = new Helper(vm);

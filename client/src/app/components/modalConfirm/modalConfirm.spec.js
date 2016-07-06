@@ -55,9 +55,9 @@
         form = createModal(labels).element;
       })
 
-      afterEach(function () {
-        destroyModal();
-      })
+      // afterEach(function () {
+      //   destroyModal();
+      // })
 
       it('should find elements', function () {
         expect(form.find('article').length).toEqual(1);
@@ -77,9 +77,9 @@
         btns = modal.element.find('button');
       });
 
-      afterEach(function () {
-        destroyModal();
-      });
+      // afterEach(function () {
+      //   destroyModal();
+      // });
 
       it('should find buttons', function () {
         expect(btns.length).toBe(2);
@@ -87,26 +87,26 @@
 
       it('should confirm', function () {
         var ok = false;
-        modal.modal.result.then(function (value) {
+        modal.modal.result.then(function () {
           ok = true;
         });
         btns[0].click();
         $rootScope.$digest;
-        expect(ok).toBe(true);
+        expect(ok).toBeTruthy();
       });
 
       it('should cancel', function () {
         var cancel = false;
         modal.modal.result.then(
-          function (value) {
+          function () {
           },
-          function (value) {
+          function () {
             cancel = true;
           }
         );
         btns[1].click();
         $rootScope.$digest;
-        expect(cancel).toBe(true);
+        expect(cancel).toBeTruthy();
       });
 
     });
@@ -120,11 +120,11 @@
 
       beforeEach(function () {
         form = createModal(labels).element;
-      })
+      });
 
-      afterEach(function () {
-        destroyModal();
-      })
+      // afterEach(function () {
+      //   destroyModal();
+      // })
 
       it('should encode text', function () {
         var el = form.find('article');
@@ -138,11 +138,11 @@
       beforeEach(function () {
         var form = createModal(labels).element;
         vm = angular.element(form).scope().vm;
-      })
+      });
 
-      afterEach(function () {
-        destroyModal();
-      })
+      // afterEach(function () {
+      //   destroyModal();
+      // })
 
       describe('members', function () {
         it('should have vm', function () {
@@ -185,13 +185,14 @@
       }
     }
 
-    function destroyModal() {
-      var $modalStack;
-      inject(function (_$modalStack_) {
-        $modalStack = _$modalStack_;
-      });
-      $modalStack.dismissAll();
-    }
+    // Not necessary. Phantomjs cleans up.
+    // function destroyModal() {
+    //   var $modalStack;
+    //   inject(function (_$modalStack_) {
+    //     $modalStack = _$modalStack_;
+    //   });
+    //   $modalStack.dismissAll();
+    // }
 
   })
 

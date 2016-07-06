@@ -49,6 +49,21 @@
         var expected = {other: ['one', 'two', 'three']}
         expect(service(value, map)).toEqual(expected);
       });
+
+      describe('map not required', function() {
+        var value;
+        var expected;
+        beforeEach(function() {
+          value = {x: ['one', 'two'], y: 'three'}
+          expected = {other: ['one', 'two', 'three']}
+        });
+        it('should support null map', function () {
+          expect(service(value, null)).toEqual(expected);
+        });
+        it('should support optional map', function () {
+          expect(service(value)).toEqual(expected);
+        });
+      });
     });
 
   });

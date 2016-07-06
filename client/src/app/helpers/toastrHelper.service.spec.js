@@ -15,12 +15,8 @@
         })
       });
 
-      it('should be registered', function () {
-        expect(service).not.toEqual(null);
-      });
-
-      it('should activate', function () {
-        expect(service.activate).toEqual(jasmine.any(Function));
+      it('should register', function () {
+        expect(service).toEqual(jasmine.any(Function));
       });
 
       describe('activate', function () {
@@ -34,7 +30,7 @@
             $rootScope = _$rootScope_;
             scope = $rootScope.$new();
           });
-          service.activate(vm, scope);
+          service(vm, scope);
         });
 
         it('should have show error function', function () {

@@ -13,23 +13,18 @@
     .factory('matchesSelectOptions', matchesFunc);
 
   /** @ngInject */
-  function matchesFunc($log, $q, matchesResource) {
+  function matchesFunc($log, $q, matchesResource, crudResource) {
 
-    var service = {
-      getSelectOptions: getSelectOptions
-    };
+    return getSelectOptions;
 
-    return service;
-
-    // Return a promise
     function getSelectOptions() {
       var deferred = $q.defer();
-      matchesResource.getMatches().query(
+      crudResource.getResource(matchesResource).query(
         function (response) {
           var options = [];
           angular.forEach(response, function (value) {
-            options.push({name: value.title, id: value.id});
-          }, options);
+            options.push({title: value.title || '(untitled)', id: value.id});
+          });
           deferred.resolve(options);
         },
         function (response) {

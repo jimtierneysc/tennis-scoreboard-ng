@@ -40,11 +40,11 @@
       });
 
       it('should support auth', function () {
-        expect(vm.supportsAuth).toBe(true);
+        expect(vm.supportsAuth).toBeTruthy();
       });
 
       it('should support crud', function () {
-        expect(vm.supportsCrud).toBe(true);
+        expect(vm.supportsCrud).toBeTruthy();
       });
 
     });
@@ -53,25 +53,24 @@
 
       it('should load', function () {
         var vm = playerController(sampleResponse);
-        expect(vm.loadingFailed).toBe(false);
+        expect(vm.loadingFailed).toBeFalsy();
       });
 
       it('should fail', function () {
         var vm = playerController({error: 'something'});
-        expect(vm.loadingFailed).toBe(true);
+        expect(vm.loadingFailed).toBeTruthy();
       });
     });
 
     describe('crud interface', function () {
       var crudMock;
-      var vm;
       beforeEach(function () {
         crudMock = new CrudMock();
-        vm = playerController(sampleResponse, {crudHelper: crudMock.crudHelper})
-      })
+        playerController(sampleResponse, {crudHelper: crudMock.crudHelper})
+      });
 
       it('should activate mock', function () {
-        expect(crudMock.activated()).toBe(true);
+        expect(crudMock.activated()).toBeTruthy();
       });
 
       describe('crud options', function () {
@@ -166,9 +165,7 @@
       return (_this.options != null);
     }
 
-    _this.crudHelper = {
-      activate: activate
-    };
+    _this.crudHelper = activate;
 
     function activate(vm, options) {
       _this.options = options;

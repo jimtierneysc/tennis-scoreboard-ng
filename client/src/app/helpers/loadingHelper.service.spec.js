@@ -15,19 +15,15 @@
         })
       });
 
-      it('should be registered', function () {
-        expect(service).not.toEqual(null);
-      });
-
-      it('should activate', function () {
-        expect(service.activate).toEqual(jasmine.any(Function));
+      it('should register', function () {
+        expect(service).toEqual(jasmine.any(Function));
       });
 
       describe('activate', function () {
         var vm = {};
 
         beforeEach(function () {
-          service.activate(vm);
+          service(vm);
         });
 
         it('should have completed function', function () {
@@ -60,7 +56,7 @@
         var vm = {};
 
         beforeEach(function () {
-          service.activate(vm);
+          service(vm);
           var response = {statusText: STATUSTEXT};
           vm.loadingHasFailed(response);
         });
@@ -85,7 +81,7 @@
         var vm = {};
 
         beforeEach(function () {
-          service.activate(vm);
+          service(vm);
           vm.loadingHasCompleted();
         });
 

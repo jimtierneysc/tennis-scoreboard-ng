@@ -1,58 +1,84 @@
 (function () {
   'use strict';
 
-  /**
-   * @todo Complete the test
-   */
+
   describe('directive players form', function () {
-    var $log;
-    var errors;
-    var entity;
     var compiledDirective;
     var scope;
     var okText;
+    var isolatedScope;
+    var element;
 
     beforeEach(module('frontend'));
-    beforeEach(inject(function ($compile, $rootScope, _$log_) {
-      $log = _$log_;
+    beforeEach(inject(function ($compile, $rootScope) {
 
-      errors = {
+      var errors = {
         other: ['othererror'],
         name: ['nameerror']
       };
-      entity = { name: 'namevalue'};
+      var entity = {name: 'aname'};
       okText = 'clickme';
 
       scope = $rootScope.$new();
+      scope.aform = null;
       scope.aentity = entity;
       scope.aerrors = errors; // errors;
       scope.asubmit = jasmine.createSpy('onSubmit');
       scope.acancel = jasmine.createSpy('onCancel');
 
-      // TODO test directive
-      var html = ('<fe-players-form>' +
-      'form="formName" ' +
+      var html = ('<fe-players-form ' +
+      'form="aform" ' +
       'errors="aerrors" ' +
-      'cancel="acancel" ' +
-      'submit="asubmit" ' +
+      'cancel="acancel()" ' +
+      'submit="asubmit()" ' +
       'entity="aentity" ' +
-      'ok="' + "{{'" + okText + "'}}" + '"' +
-      '</fe-players-form>');
+      'ok="' + okText + '"' +
+      '></fe-players-form>');
 
-      var el = angular.element(html);
+      element = angular.element(html);
 
-      compiledDirective = $compile(el)(scope);
+      compiledDirective = $compile(element)(scope);
       scope.$digest();
+      isolatedScope = compiledDirective.isolateScope();
     }));
 
-    it('should have isolate scope object with members', function () {
-      var isolatedScope = compiledDirective.isolateScope();
 
-      expect(isolatedScope).not.toEqual(null);
-      // TODO: Get this working
-      // expect(isolatedScope.entity).toBeDefined();
-      // expect(isolatedScope.entity.name).toBeDefined();
+    describe('isolated scope', function () {
+      it('should not be null', function () {
+        expect(isolatedScope).not.toBe(null);
+      });
+
+      describe('members', function () {
+        it('should have form', function () {
+          expect(isolatedScope.form).toEqual("aform");
+        });
+
+        it('should have errors', function () {
+          expect(isolatedScope.errors).toBe(scope.aerrors);
+        });
+
+        it('should have entity', function () {
+          expect(isolatedScope.entity).toBe(scope.aentity);
+        });
+
+        it('should have cancel', function () {
+          isolatedScope.cancel();
+          expect(scope.acancel).toHaveBeenCalled();
+        });
+
+        it('should have submit', function () {
+          isolatedScope.submit();
+          expect(scope.asubmit).toHaveBeenCalled();
+        });
+
+        it('should have ok', function () {
+          expect(isolatedScope.ok).toEqual(okText);
+        });
+      })
+
+
+      // TODO: Test form elements
 
     });
-   });
+  });
 })();

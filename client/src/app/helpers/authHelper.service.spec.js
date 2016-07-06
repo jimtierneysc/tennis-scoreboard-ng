@@ -15,12 +15,8 @@
         })
       });
 
-      it('should be registered', function () {
-        expect(service).not.toEqual(null);
-      });
-
-      it('should activate', function () {
-        expect(service.activate).toEqual(jasmine.any(Function));
+      it('should register', function () {
+        expect(service).toEqual(jasmine.any(Function));
       });
 
       describe('activate', function () {
@@ -32,11 +28,11 @@
           inject(function($rootScope) {
             scope = $rootScope.$new();
           });
-          service.activate(vm, scope);
+          service(vm, scope);
         });
 
         it ('should support', function() {
-          expect(vm.supportsAuth).toBe(true);
+          expect(vm.supportsAuth).toBeTruthy();
         });
 
         it ('should have loggedin member', function() {

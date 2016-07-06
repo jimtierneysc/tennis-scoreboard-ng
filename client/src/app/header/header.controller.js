@@ -24,7 +24,7 @@
       vm.showingLogin = showingLogin;
       vm.showLogin = showLogin;
 
-      authHelper.activate(vm, $scope);
+      authHelper(vm, $scope);
     }
 
     function showLogin(open) {

@@ -30,6 +30,7 @@
 
     function categorizeProperties(data, map) {
       var patt = "";
+      map = map || {};
 
       // build pattern like 'key1|key2|key3|.'
       angular.forEach(map, function (value, key) {
@@ -43,7 +44,7 @@
         var newKey = null;
         if (match) {
           match = match[0];
-          if (map && angular.isDefined(map[match])) {
+          if (angular.isDefined(map[match])) {
             newKey = map[match];
             if (newKey == null) {
               newKey = key;  // same key name

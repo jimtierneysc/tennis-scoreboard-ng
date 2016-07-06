@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name toastrHelper
  * @description
- * Common controller functionality shared controllers
+ * Adds popup message functionality to a controller
  *
  */
 (function () {
@@ -14,18 +14,13 @@
 
   /** @ngInject */
   function factory($log, toastr) {
-    var service = {
-      activate: activateFunc
-    };
+    return activate;
 
-    var vm = null;
-    return service;
-
-    function activateFunc(_vm_, _scope_) {
-      vm = _vm_;
-      vm.showToastrError = showToastrError;
+    function activate(_vm_, _scope_) {
+      var vm = _vm_;
+      vm.showToastrError = new ShowToastError(vm).showToastrError;
       vm.lastToast = null;
-      vm.supportsToast = true;
+      vm.supportsToastr = true;
 
       _scope_.$on('$destroy', function () {
         $log.log('destroying controller');
@@ -35,12 +30,17 @@
       });
     }
 
-    function showToastrError(message, caption) {
-      if (angular.isUndefined(caption))
-        caption = 'Error';
+    function ShowToastError(_vm_) {
+      var vm = _vm_;
+      this.showToastrError = showToastrError;
 
-      toastr.clear();
-      vm.lastToast = toastr.error(message, caption);
+      function showToastrError(message, caption) {
+        if (angular.isUndefined(caption))
+          caption = 'Error';
+
+        toastr.clear();
+        vm.lastToast = toastr.error(message, caption);
+      }
     }
   }
 })();

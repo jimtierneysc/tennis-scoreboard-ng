@@ -24,7 +24,7 @@
     });
 
     it('should support auth', function () {
-      expect(vm.supportsAuth).toBe(true);
+      expect(vm.supportsAuth).toBeTruthy();
     });
 
     describe('members', function () {
@@ -71,7 +71,7 @@
       });
       vm.showLogin(true);
       $timeout.flush();
-      expect(setFocus).toBe(true);
+      expect(setFocus).toBeTruthy();
     });
 
 

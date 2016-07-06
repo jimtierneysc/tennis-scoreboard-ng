@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('helper auth', function () {
+  describe('helper crud', function () {
 
     var mocks;
 
@@ -18,12 +18,8 @@
         mocks = mockFactories();
       });
 
-      it('should be registered', function () {
-        expect(service).not.toEqual(null);
-      });
-
-      it('should activate', function () {
-        expect(service.activate).toEqual(jasmine.any(Function));
+       it('should register', function () {
+        expect(service).toEqual(jasmine.any(Function));
       });
 
       describe('activate', function () {
@@ -51,14 +47,14 @@
 
           beforeEach(function () {
 
-            inject(function ($rootScope, _waitIndicator_) {
+            inject(function ($rootScope) {
               scope = $rootScope.$new();
             });
 
             crudMethods = mocks.controllerMethods();
             crudOptions = mocks.controllerOptions(scope, {error: 'error'}, crudMethods, {});
 
-            service.activate(vm, crudOptions);
+            service(vm, crudOptions);
           });
 
           it('should have loaded', function () {
@@ -100,30 +96,30 @@
 
           describe('supports', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
             });
 
             it('should support loading', function () {
-              expect(vm.supportsLoading).toBe(true);
+              expect(vm.supportsLoading).toBeTruthy();
             })
 
             it('should support errors', function () {
-              expect(vm.supportsErrors).toBe(true);
+              expect(vm.supportsErrors).toBeTruthy();
             })
 
             it('should support crud', function () {
-              expect(vm.supportsCrud).toBe(true);
+              expect(vm.supportsCrud).toBeTruthy();
             })
 
             it('should support toast', function () {
-              expect(vm.supportsToast).toBe(true);
+              expect(vm.supportsToastr).toBeTruthy();
             })
 
           });
 
           describe('loaded', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
             });
 
             it('should have loaded', function () {
@@ -140,7 +136,7 @@
             var editForm;
             var newForm;
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               editForm = mocks.mockForm();
               vm.editEntityForm = editForm;
               newForm = mocks.mockForm();
@@ -153,7 +149,7 @@
               });
 
               it('is shown', function() {
-                expect(vm.showingEditEntity(entities[0])).toBe(true);
+                expect(vm.showingEditEntity(entities[0])).toBeTruthy();
               });
 
               it('should set edit entity', function() {
@@ -199,7 +195,7 @@
               });
 
               it('is hidden', function() {
-                expect(vm.showingNewEntity).toBe(false);
+                expect(vm.showingNewEntity).toBeFalsy();
               });
 
               it('sets pristine', function() {
@@ -211,7 +207,7 @@
 
           describe('crud create success', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               spyOn(crudMethods, 'prepareToCreateEntityImpl').and.callThrough();
               vm.newEntity = {name: 'four'};
               vm.submitNewEntity();
@@ -235,13 +231,13 @@
             });
 
             it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBe(false);
+              expect(waitIndicator.waiting()).toBeFalsy();
             });
           });
 
           describe('crud create error', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               mockResource.respondWithError = true;
               vm.newEntity = {name: 'four'};
               vm.submitNewEntity();
@@ -260,14 +256,14 @@
             });
 
             it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBe(false);
+              expect(waitIndicator.waiting()).toBeFalsy();
             });
 
           });
 
           describe('crud update success', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               spyOn(crudMethods, 'prepareToUpdateEntityImpl').and.callThrough();
               vm.editEntity = angular.copy(entities[2]);
               vm.editEntity.name = 'xyz'
@@ -291,13 +287,13 @@
             });
 
             it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBe(false);
+              expect(waitIndicator.waiting()).toBeFalsy();
             });
           });
 
           describe('crud update error', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               mockResource.respondWithError = true;
               vm.editEntity = angular.copy(entities[2]);
               vm.editEntity.name = 'xyz'
@@ -317,13 +313,13 @@
             });
 
             it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBe(false);
+              expect(waitIndicator.waiting()).toBeFalsy();
             });
           });
 
           describe('crud delete success', function () {
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               vm.trashEntity(entities[2], false);
             });
 
@@ -341,15 +337,15 @@
             });
 
             it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBe(false);
+              expect(waitIndicator.waiting()).toBeFalsy();
             });
           });
 
           describe('crud delete fail', function () {
             var message;
             beforeEach(function () {
-              service.activate(vm, crudOptions);
-              vm.showToastrError = function (_message_, caption) {
+              service(vm, crudOptions);
+              vm.showToastrError = function (_message_) {
                 message = _message_;
               };
               mockResource.respondWithError = true;
@@ -365,7 +361,7 @@
             });
 
             it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBe(false);
+              expect(waitIndicator.waiting()).toBeFalsy();
             });
 
             it('should display message', function () {
@@ -375,9 +371,8 @@
           });
 
           describe('crude delete error toast', function() {
-            var message;
             beforeEach(function () {
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
               mockResource.respondWithError = true;
               vm.trashEntity(entities[2], false);
             });
@@ -398,7 +393,7 @@
                 $q = _$q_;
                 $rootScope = _$rootScope_;
               });
-              service.activate(vm, crudOptions);
+              service(vm, crudOptions);
             });
 
             describe('open modal', function () {
@@ -541,8 +536,7 @@
       _this.prepareToUpdateEntityImpl = function (entity) {
         return entity;
       };
-
-    };
+    }
 
     function MockForm() {
       var _this = this;
@@ -609,7 +603,7 @@
 
       function updateResource(id, item, fn1, fn2) {
         var updateItem = angular.copy(item);
-        fn1(item)
+        fn1(updateItem)
       }
 
       function updateResourceError(id, item, fn1, fn2) {

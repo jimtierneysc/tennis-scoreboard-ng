@@ -24,20 +24,20 @@
 
     it('should set waiting', function () {
       service.beginWait();
-      expect(service.waiting()).toBe(true);
+      expect(service.waiting()).toBeTruthy();
     });
 
     it('should clear waiting', function () {
       var callBack = service.beginWait();
       callBack();
-      expect(service.waiting()).toBe(false);
+      expect(service.waiting()).toBeFalsy();
     })
 
     it('should ignore underflow', function () {
       var callBack = service.beginWait();
       callBack();
       callBack();
-      expect(service.waiting()).toBe(false);
+      expect(service.waiting()).toBeFalsy();
     })
 
     describe('change notification', function() {
@@ -83,7 +83,7 @@
     it('should change when clear waiting', function () {
       var callBack = service.beginWait();
       callBack();
-      expect(service.waiting()).toBe(false);
+      expect(service.waiting()).toBeFalsy();
     })
 
     describe('nested waiting', function () {
@@ -94,18 +94,18 @@
       });
 
       it('should be waiting', function () {
-        expect(service.waiting()).toBe(true);
+        expect(service.waiting()).toBeTruthy();
       });
 
       it('should still be waiting', function () {
         callBack1();
-        expect(service.waiting()).toBe(true);
+        expect(service.waiting()).toBeTruthy();
       });
 
       it('should not be waiting', function () {
         callBack1();
         callBack2();
-        expect(service.waiting()).toBe(false);
+        expect(service.waiting()).toBeFalsy();
 
       });
     });

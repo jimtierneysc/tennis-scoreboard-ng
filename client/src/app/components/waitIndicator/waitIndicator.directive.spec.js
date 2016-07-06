@@ -45,12 +45,12 @@
 
       it('should have values', function () {
         expect(vm).not.toEqual(null);
-      })
+      });
 
       it('should not be waiting', function () {
-        expect(vm.waiting).toBe(false);
+        expect(vm.waiting).toBeFalsy();
       })
-    })
+    });
 
     describe('use waitIndicator service', function () {
       var vm;
@@ -68,14 +68,14 @@
       it('should set waiting', function () {
         service.beginWait();
         $timeout.flush();
-        expect(vm.waiting).toBe(true);
+        expect(vm.waiting).toBeTruthy();
       });
 
       it('should clear waiting', function () {
         var callBack = service.beginWait();
         $timeout.flush();
         callBack();
-        expect(vm.waiting).toBe(false);
+        expect(vm.waiting).toBeFalsy();
       })
     })
 

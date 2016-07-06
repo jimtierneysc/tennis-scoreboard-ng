@@ -48,7 +48,9 @@
 
   /** @ngInject */
   function factory($timeout, $rootScope) {
-    return function (name) {
+    return broadcast;
+
+    function broadcast(name) {
       $timeout(function () {
         $rootScope.$broadcast('fe-autoFocus', name);
       });

@@ -20,7 +20,7 @@
     });
 
     it('is logged out', function () {
-      expect(service.loggedIn).toBe(false);
+      expect(service.loggedIn).toBeFalsy();
     });
 
     describe('storage', function () {
@@ -109,7 +109,7 @@
       });
 
       it('is logged in', function () {
-        expect(service.loggedIn).toBe(true);
+        expect(service.loggedIn).toBeTruthy();
       });
 
       it('has username', function () {
@@ -127,13 +127,13 @@
         inject(function (_$http_) {
           $http = _$http_;
           service.setCredentials(USERNAME, TOKEN);
-          expect(service.loggedIn).toBe(true);
+          expect(service.loggedIn).toBeTruthy();
           service.clearCredentials();
         })
       });
 
       it('is logged out', function () {
-        expect(service.loggedIn).toBe(false);
+        expect(service.loggedIn).toBeFalsy();
       });
 
       it('has username', function () {

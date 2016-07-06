@@ -15,11 +15,7 @@
   /** @ngInject */
   function playersFunc($log, $q, crudResource, playersResource) {
 
-    var service = {
-      getSelectOptions: getSelectOptions
-    };
-
-    return service;
+    return getSelectOptions;
 
     // Return a promise
     function getSelectOptions() {

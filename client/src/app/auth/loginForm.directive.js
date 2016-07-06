@@ -41,7 +41,7 @@
       vm.errors = {};
       vm.submit = submit;
 
-      errorsHelper.activate(vm,
+      errorsHelper(vm,
         {
           'username': null,
           'password': null

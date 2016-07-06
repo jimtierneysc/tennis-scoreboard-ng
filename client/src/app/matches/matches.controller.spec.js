@@ -9,24 +9,24 @@
 
     var sampleResponse = [
       {
-        title: "doubles title",
+        // title: "doubles title",
         id: 22,
-        scoring: "two_six_game_ten_points",
-        doubles: true,
-        state: "complete",
-        winner: 33,
-        first_team: {
-          id: 33,
-          name: "first_team",
-          first_player_name: "first_team_first_player",
-          second_player_name: "first_team_second_player"
-        },
-        second_team: {
-          id: 44,
-          name: "second_team",
-          first_player_name: "second_team_first_player",
-          second_player_name: "second_team_second_player"
-        }
+        // scoring: "two_six_game_ten_points",
+        // doubles: true,
+        // state: "complete",
+        // winner: 33,
+        // first_team: {
+        //   id: 33,
+        //   name: "first_team",
+        //   first_player_name: "first_team_first_player",
+        //   second_player_name: "first_team_second_player"
+        // },
+        // second_team: {
+        //   id: 44,
+        //   name: "second_team",
+        //   first_player_name: "second_team_first_player",
+        //   second_player_name: "second_team_second_player"
+        // }
       }
     ];
 
@@ -43,13 +43,13 @@
 
 
     function matchController(response, options) {
-      var obj = {
+      var locals = {
         $scope: $scope,
         response: response
       };
       if (options)
-        angular.merge(obj, options);
-      return $controller('MatchController', obj);
+        angular.merge(locals, options);
+      return $controller('MatchController', locals);
     }
 
     describe('members', function () {
@@ -62,11 +62,11 @@
       describe('supports', function () {
 
         it('should support auth', function () {
-          expect(vm.supportsAuth).toBe(true);
+          expect(vm.supportsAuth).toBeTruthy();
         });
 
         it('should support crud', function () {
-          expect(vm.supportsCrud).toBe(true);
+          expect(vm.supportsCrud).toBeTruthy();
         });
 
       });
@@ -87,12 +87,12 @@
 
       it('should load', function () {
         var vm = matchController(sampleResponse);
-        expect(vm.loadingFailed).toBe(false);
+        expect(vm.loadingFailed).toBeFalsy();
       });
 
       it('should fail', function () {
         var vm = matchController({error: 'something'});
-        expect(vm.loadingFailed).toBe(true);
+        expect(vm.loadingFailed).toBeTruthy();
       });
     });
 
@@ -106,13 +106,13 @@
         vm = matchController(sampleResponse, {
           // Mock services
           crudHelper: crudMock.crudHelper,
-          teamsSelectOptions: selectOptionsMock.teamsSelectOptions,
-          playersSelectOptions: selectOptionsMock.playersSelectOptions
+          teamsSelectOptions: selectOptionsMock.getTeamsSelectOptions,
+          playersSelectOptions: selectOptionsMock.getPlayersSelectOptions
         })
-      })
+      });
 
       it('should activate mock', function () {
-        expect(crudMock.activated()).toBe(true);
+        expect(crudMock.activated()).toBeTruthy();
       });
 
       describe('crud options', function () {
@@ -304,7 +304,7 @@
               });
 
               it('should default singles', function () {
-                expect(entity.doubles).toBe(false);
+                expect(entity.doubles).toBeFalsy();
               });
 
               it('should default two sets', function () {
@@ -325,6 +325,26 @@
 
               it('should have team select options', function () {
                 expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
+              });
+            });
+
+            describe('memoize select options', function () {
+              beforeEach(function () {
+                options.beforeShowNewEntity();
+                $rootScope.$digest(); // resolve player and team list
+                vm.playerOptionsList.list = {};
+                vm.teamOptionsList.list = {};
+                // Should not refill lists
+                options.beforeShowNewEntity();
+                $rootScope.$digest(); // resolve player and team list
+              });
+
+              it('should have player select options', function () {
+                expect(vm.playerOptionsList.list).toEqual({});
+              });
+
+              it('should have team select options', function () {
+                expect(vm.teamOptionsList.list).toEqual({});
               });
             });
 
@@ -363,7 +383,6 @@
             describe('options lists', function () {
 
               beforeEach(function () {
-                spyOn(selectOptionsMock, 'getTeamSelectOptions').and.callThrough();
                 vm.editEntity = {};
                 options.beforeShowEditEntity();
                 $rootScope.$digest(); // resolve player and team lists
@@ -377,9 +396,6 @@
                 expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
               });
 
-              it('should call getSelectOptions', function() {
-                expect(selectOptionsMock.getTeamSelectOptions).toHaveBeenCalled();
-              });
             });
 
             describe('select players', function () {
@@ -410,7 +426,6 @@
               var firstTeam, secondTeam;
 
               beforeEach(function () {
-                spyOn(selectOptionsMock.teamsSelectOptions, 'getSelectOptions').and.callThrough();
                 firstTeam = selectOptionsMock.teamList[0];
                 secondTeam = selectOptionsMock.teamList[1];
                 vm.editEntity = {
@@ -420,7 +435,6 @@
                 options.beforeShowEditEntity();
                 $rootScope.$digest(); // resolve player and team lists
               });
-
 
               it('should select first team', function () {
                 expect(vm.editEntity.select_first_team).toEqual(firstTeam);
@@ -448,9 +462,7 @@
       return (_this.options != null);
     };
 
-    _this.crudHelper = {
-      activate: activate
-    };
+    _this.crudHelper = activate;
 
     function activate(vm, options) {
       _this.options = options;
@@ -485,22 +497,14 @@
     }
 
     // Return a promise
-    _this.getTeamSelectOptions = function() {
+    _this.getTeamsSelectOptions = function() {
       return getSelectOptions(teamList);
     };
 
     // Return a promise
-    _this.getPlayerSelectOptions = function() {
+    _this.getPlayersSelectOptions = function() {
       return getSelectOptions(playerList);
     };
-
-    _this.playersSelectOptions = {
-      getSelectOptions: _this.getPlayerSelectOptions
-    };
-
-    _this.teamsSelectOptions = {
-      getSelectOptions: _this.getTeamSelectOptions
-    }
 
     function getSelectOptions(list) {
       var deferred = $q.defer();

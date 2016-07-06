@@ -15,12 +15,8 @@
         })
       });
 
-      it('should be registered', function () {
-        expect(service).not.toEqual(null);
-      });
-
-      it('should activate', function () {
-        expect(service.activate).toEqual(jasmine.any(Function));
+      it('should register', function () {
+        expect(service).toEqual(jasmine.any(Function));
       });
 
       describe('activate', function () {
@@ -31,7 +27,7 @@
         var STATUS = 'status message'
 
         beforeEach(function () {
-          service.activate(vm, map);
+          service(vm, map);
         });
 
         it('should have errors function', function () {
@@ -42,7 +38,7 @@
           var errorsOfResponse;
 
           beforeEach(function () {
-            service.activate(vm, map);
+            service(vm, map);
             errorsOfResponse = vm.errorsOfResponse({data: data, statusText: STATUS});
           });
 
@@ -56,7 +52,7 @@
           var errorsOfResponse;
 
           beforeEach(function () {
-            service.activate(vm, map);
+            service(vm, map);
             errorsOfResponse = vm.errorsOfResponse({data: {errors: data}, statusText: STATUS});
           });
 
@@ -70,7 +66,7 @@
           var errorsOfResponse;
 
           beforeEach(function () {
-            service.activate(vm, map);
+            service(vm, map);
             errorsOfResponse = vm.errorsOfResponse({statusText: STATUS});
           });
 

@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name crudHelper
  * @description
- * Common functionality shared by CRUD controllers
+ * Add CRUD functionality to a controller
  *
  */
 (function () {
@@ -16,10 +16,7 @@
   function factory($log, $q, modalConfirm, toastr,
                    $filter, loadingHelper, errorsHelper, toastrHelper,
                    waitIndicator, crudResource) {
-    var service = {
-      activate: activate
-    };
-    return service;
+    return activate;
 
     function activate(vm, options) {
       var response = options.response;
@@ -27,9 +24,9 @@
       var scope = options.scope;
 
       // Aggregate functionality from other helpers
-      loadingHelper.activate(vm);
-      toastrHelper.activate(vm, scope);
-      errorsHelper.activate(vm, errorCategories);
+      loadingHelper(vm);
+      toastrHelper(vm, scope);
+      errorsHelper(vm, errorCategories);
 
       var operations = new Operations(vm, options);
 
@@ -242,7 +239,7 @@
         var message = "";
         if (angular.isObject(response.data)) {
           var errors = vm.errorsOfResponse(response);
-          if (angular.isDefined(errors.other))
+          if (angular.isDefined(errors.other[0]))
             message = errors.other[0];
         }
         vm.showToastrError(message, "Delete Error");

@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name errorsHelper
  * @description
- * Common functionality shared by CRUD controllers
+ * Add error processing to a controller
  *
  */
 (function () {
@@ -14,12 +14,9 @@
 
   /** @ngInject */
   function factory($log, categorizeProperties) {
-    var service = {
-      activate: activateFunc
-    };
-    return service;
+    return activate;
 
-    function activateFunc(_vm_, errorCategories) {
+    function activate(_vm_, errorCategories) {
       // Initialize controller
       var vm = _vm_;
       var helper = new Helper(errorCategories);

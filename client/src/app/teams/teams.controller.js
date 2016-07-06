@@ -21,8 +21,8 @@
     function activate() {
       vm.playerOptionsList = {list: null};
 
-      authHelper.activate(vm, $scope);
-      crudHelper.activate(vm,
+      authHelper(vm, $scope);
+      crudHelper(vm,
         {
           response: response,
           resourceName: teamsResource,
@@ -86,7 +86,7 @@
     function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
-        playersSelectOptions.getSelectOptions().then(
+        playersSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
             deferredObject.resolve();

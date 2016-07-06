@@ -131,7 +131,7 @@
           it('should login', function() {
             vm.submit();
             $httpBackend.flush();
-            expect(authenticationService.loggedIn).toBe(true);
+            expect(authenticationService.loggedIn).toBeTruthy();
           })
         });
 
