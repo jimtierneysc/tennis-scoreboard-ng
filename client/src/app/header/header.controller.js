@@ -28,14 +28,12 @@
     }
 
     function showLogin(open) {
-      $log.info('showLogin: ' + open);
       vm.createLoginForm = open;
       if (open)
         autoFocus('username')
     }
 
     function showingLogin(showing) {
-      $log.info('showingLogin: ' + showing);
       if (showing)
         vm.createLoginForm = true;
     }

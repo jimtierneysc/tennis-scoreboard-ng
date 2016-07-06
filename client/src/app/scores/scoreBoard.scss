@@ -12,6 +12,8 @@ $col_1_min_width: 60px;
 $col_2_min_width: 120px;
 $col_3_min_width: 240px;
 
+$score_color: green;
+
 @mixin center-cell {
   text-align: center;
 }
@@ -112,19 +114,19 @@ div.play-table {
 
 div.game-col-3 {
   @include hide-overflow-padding;
-  color: $btn-success-color; // bootstrap variable
+  color: $score_color;
   text-align: left;
 }
 
 div.game-col-1 {
   @include hide-overflow-padding;
-  color: $btn-success-color; // bootstrap variable
+  color: $score_color;
   text-align: right;
 }
 
 div.game-col-2 {
   @include hide-overflow-padding;
-  color: $btn-success-color; // bootstrap variable
+  color: $score_color;
 }
 
 div.player-col-3 {

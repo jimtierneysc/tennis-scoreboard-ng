@@ -9,8 +9,8 @@
   function Service($http, $cookieStore, $rootScope, $log, $localStorage) {
     var service = this;
 
-    var AUTHORIZATION = 'Authorization';
-    var DATA = 'data';
+    var HEADERNAME = 'Authorization';
+    var DATANAME = 'credentials';
 
     service.setCredentials = setCredentials;
     service.clearCredentials = clearCredentials;
@@ -18,8 +18,8 @@
     service.subscribeChanged = subscribeChanged;
     service.loggedIn = false;
     service.userName = "";
-    service.headerName = AUTHORIZATION;
-    service.localDataName = DATA;
+    service.headerName = HEADERNAME;
+    service.localDataName = DATANAME;
 
     var data = null;
 
@@ -32,25 +32,25 @@
         }
       };
 
-      $http.defaults.headers.common[AUTHORIZATION] = token; // jshint ignore:line
+      $http.defaults.headers.common[HEADERNAME] = token; 
       // $cookieStore.put('globals', data);
-      $localStorage[DATA] = data;
+      $localStorage[DATANAME] = data;
       changed();
     }
 
     function clearCredentials() {
       data = {};
       // $cookieStore.remove('globals');
-      $localStorage[DATA] = undefined;
-      delete $http.defaults.headers.common[AUTHORIZATION];
+      $localStorage[DATANAME] = undefined;
+      delete $http.defaults.headers.common[HEADERNAME];
       changed();
     }
 
     function loadCredentials() {
       // data = $cookieStore.get('globals') || {};
-      data = $localStorage[DATA] || {};
+      data = $localStorage[DATANAME] || {};
       if (data.currentUser) {
-        $http.defaults.headers.common[AUTHORIZATION] = data.currentUser.token;
+        $http.defaults.headers.common[HEADERNAME] = data.currentUser.token;
       }
       changed();
     }
@@ -63,7 +63,6 @@
     }
 
     function changed() {
-      $log.info('changed');
       service.loggedIn = angular.isDefined(data.currentUser);
       if (service.loggedIn) {
         service.userName = data.currentUser.username;

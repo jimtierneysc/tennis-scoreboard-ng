@@ -36,7 +36,6 @@
     activate();
 
     function activate() {
-      $log.info('create LoginController');
       vm.entity = {username: "", password: ""};
       vm.errors = {};
       vm.submit = submit;
@@ -62,8 +61,6 @@
       var endWait = waitIndicator.beginWait();
       loginResource.getLogin().login(body,
         function (response) {
-          $log.info('login');
-          $log.info(response);
           endWait();
           var updatedEntity = angular.copy(entity);
           angular.merge(updatedEntity, response);

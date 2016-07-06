@@ -11,13 +11,16 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       var scores = {};
+      var view = {};
 
       scope = $rootScope.$new();
       scope.ascores = scores;
       scope.aloggedIn = true;
+      scope.aview = view;
 
       var html = ('<fe-score-commands ' +
       'scores="ascores" ' +
+      'view="aview" ' +
       'loggedin="aloggedIn" ' +
       '></fe-score-commands>');
 
@@ -39,6 +42,12 @@
         });
         it('should have loggedin', function () {
           expect(isolatedScope.loggedin).toEqual(scope.aloggedIn);
+        })
+        it('should have scores', function () {
+          expect(isolatedScope.scores).toBe(scope.ascores);
+        })
+        it('should have view', function () {
+          expect(isolatedScope.view).toBe(scope.aview);
         })
       });
 

@@ -359,11 +359,6 @@
             showWin: true,
             customTitle: 'Tiebreak'
           };
-          var winMatchTiebreakerActivity = {
-            showMatch: true,
-            showWin: true,
-            customTitle: 'Tiebreak'
-          };
           var actions = {
             win_game: winGameActivity,
             win_tiebreaker: winTiebreakerActivity,

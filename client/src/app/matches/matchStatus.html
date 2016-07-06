@@ -3,10 +3,10 @@
     Match won by
     <span ng-init="winner = (match.winner == match.first_team.id) ? match.first_team : match.second_team">
       <span ng-if="winner.name">
-        {{winner.name}}
+        {{winner.name}}.
       </span>
       <span ng-if="!winner.name">
-        {{winner.first_player.name}} and {{winner.second_player.name}}
+        {{winner.first_player.name}} and {{winner.second_player.name}}.
       </span>
     </span>
   </div>
@@ -20,19 +20,19 @@
 
 <div ng-if="!match.winner">
   <div ng-if="match.state == 'in_progress'">
-    Match is in progress
+    Match is in progress.
   </div>
 
   <div ng-if="match.state == 'complete'">
-    Match is complete
+    Match is complete.
   </div>
 
   <div ng-if="match.state == 'finished'">
-    Match is finished
+    Match is finished.
   </div>
 
   <div ng-if="match.state == 'not_started'">
-    Match has not started
+    Match has not started.
   </div>
 </div>
 

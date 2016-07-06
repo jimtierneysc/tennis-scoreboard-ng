@@ -10,7 +10,7 @@
     beforeEach(module('frontend'));
     beforeEach(function() {
       inject(function (_authenticationService_) {
-        service = _authenticationService_
+        service = _authenticationService_;
         service.clearCredentials();
       })
     });
@@ -33,7 +33,7 @@
 
       it('has data name', function() {
         expect(service.localDataName).toEqual(jasmine.any(String))
-      })
+      });
 
       describe('sets data', function () {
         beforeEach(function () {

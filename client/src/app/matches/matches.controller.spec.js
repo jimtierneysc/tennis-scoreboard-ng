@@ -10,7 +10,7 @@
     var sampleResponse = [
       {
         // title: "doubles title",
-        id: 22,
+        id: 22
         // scoring: "two_six_game_ten_points",
         // doubles: true,
         // state: "complete",

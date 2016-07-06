@@ -22,7 +22,6 @@
     var waitingCount = 0;
 
     function beginWait() {
-      $log.info("beginWait");
       var last = waiting();
       waitingCount++;
       if (last != waiting())
@@ -31,7 +30,6 @@
     }
 
     function endWait() {
-      $log.info("endWait");
       var last = waiting();
       waitingCount--;
       if (waitingCount < 0) {
@@ -53,8 +51,6 @@
     }
 
     function changed() {
-      $log.info('changed');
-      $log.info('waitingCount: ' + waitingCount);
       $rootScope.$emit(EVENT_NAME);
     }
 

@@ -31,7 +31,7 @@
         <div ng-if="!scores.doubles">
           <!--Singles player-->
           <div ng-if="scores.server" class="col-xs-2"></div>
-          <div ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{scores.first_player.name}}</div>
+          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{scores.first_player.name}}</div>
           <div ng-if="scores.server" class="col-xs-2">
             <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.first_player.id}"></span>
           </div>
@@ -70,7 +70,7 @@
           <div ng-if="scores.server" class="col-xs-2">
             <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_player.id}"></span>
           </div>
-          <div ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{scores.second_player.name}}</div>
+          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{scores.second_player.name}}</div>
           <div ng-if="scores.server" class="col-xs-2"></div>
         </div>
       </th>
@@ -92,7 +92,7 @@
     </tr>
 
     <!--match button-->
-    <tr ng-if="scores.btns.showMatch && scores.keepingScore()">
+    <tr ng-if="scores.btns.showMatch && view.keepingScore()">
       <th class="score-col-1">
       </th>
       <th colspan=2 class="score-col-3">
@@ -105,11 +105,11 @@
       <th class="score-col-1">
       </th>
       <th colspan=2 class="score-col-3">
-        <div ng-if="scores.keepingScore()">
+        <div ng-if="view.keepingScore()">
           <!--New set button-->
           <fe-score-button scores="scores" title="scores.newSet.title"></fe-score-button>
         </div>
-        <div ng-if="!scores.keepingScore()">
+        <div ng-if="!view.keepingScore()">
           <!--New set status-->
           <fe-score-status scores="scores" title="scores.newSet.title"></fe-score-status>
 
@@ -140,12 +140,12 @@
       <th class="score-col-1">
       </th>
       <th colspan=2 class="score-col-3">
-        <div ng-if="!scores.keepingScore()">
+        <div ng-if="!view.keepingScore()">
           <!--Set status-->
           <fe-score-status scores="scores" title="set.title"></fe-score-status>
 
         </div>
-        <div ng-if="scores.keepingScore()">
+        <div ng-if="view.keepingScore()">
           <!--Set button-->
           <fe-score-button scores="scores" title="newSet.title"></fe-score-button>
 
@@ -157,7 +157,7 @@
     <tr ng-if="scores.newGame && scores.newGame.set == set">
       <th class="score-col-1">
       </th>
-      <th colspan=2 class="score-col-3" ng-if="scores.keepingScore()">
+      <th colspan=2 class="score-col-3" ng-if="view.keepingScore()">
 
         <!--Select next server when starting 1st or 2nd game-->
         <form ng-if="scores.firstServers" name="scores.firstServers.Form" novalidate>
@@ -180,16 +180,14 @@
           <fe-score-button scores="scores" title="scores.newGame.title"></fe-score-button>
         </div>
       </th>
-      <th colspan=2 class="score-col-3" ng-if="!scores.keepingScore()">
+      <th colspan=2 class="score-col-3" ng-if="!view.keepingScore()">
         <!--New Game Status-->
         <fe-score-status scores="scores" title="scores.newGame.title"></fe-score-status>
       </th>
-
-
     </tr>
 
     <!-- Game button when collapsed -->
-    <tr ng-if="!set.showGames() && scores.btns.showWin && set == scores.sets[0]"
+    <tr ng-if="!view.showGames(set) && scores.btns.showWin && set == scores.sets[0]"
         ng-init="title = set.games.length">
       <th class="score-col-1">
 
@@ -205,19 +203,19 @@
         </span>
         </div>
       </th>
-      <th class="score-col-3" colspan="2" ng-if="!scores.keepingScore()">
+      <th class="score-col-3" colspan="2" ng-if="!view.keepingScore()">
         <!--Game status-->
         <fe-score-status scores="scores" title="title"></fe-score-status>
       </th>
 
-      <th class="score-col-2" ng-if="scores.keepingScore()" ng-init="win1 = game.winner === scores.opponents[0]">
+      <th class="score-col-2" ng-if="view.keepingScore()" ng-init="win1 = game.winner === scores.opponents[0]">
         <div>
           <!--Game Button-->
           <fe-score-button scores="scores" param="0" title="title"></fe-score-button>
         </div>
 
       </th>
-      <th class="score-col-2" ng-if="scores.keepingScore()">
+      <th class="score-col-2" ng-if="view.keepingScore()">
 
         <div>
           <!--Game Button-->
@@ -227,7 +225,7 @@
       </th>
     </tr>
 
-    <tr ng-repeat="game in set.games" ng-init="break = game.winner != game.server" ng-if="set.showGames()">
+    <tr ng-repeat="game in set.games" ng-init="break = game.winner != game.server" ng-if="view.showGames(set)">
       <th class="score-col-1">
         <!--Display "Game" prefix sometimes-->
         <span><span class="hidden-xs"
@@ -235,10 +233,10 @@
           Game </span>{{game.title}}
         </span>
       </th>
-      <th class="score-col-3" colspan="2" ng-if="!game.winner && !scores.keepingScore()">
+      <th class="score-col-3" colspan="2" ng-if="!game.winner && !view.keepingScore()">
         <fe-score-status scores="scores" title="game.title"></fe-score-status>
       </th>
-      <th class="score-col-2" ng-if="game.winner || scores.keepingScore()"
+      <th class="score-col-2" ng-if="game.winner || view.keepingScore()"
           ng-init="win1 = game.winner === scores.opponents[0]">
         <div ng-if="game.winner">
           <div class="col-xs-4 game-col-1">
@@ -257,7 +255,7 @@
         </div>
 
       </th>
-      <th class="score-col-2" ng-if="game.winner || scores.keepingScore()"
+      <th class="score-col-2" ng-if="game.winner || view.keepingScore()"
           ng-init="win2 = game.winner === scores.opponents[1]">
 
         <div ng-if="game.winner">

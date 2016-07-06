@@ -11,14 +11,17 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       var scores = {};
+      var view = {};
 
       scope = $rootScope.$new();
       scope.ascores = scores;
       scope.aloggedIn = true;
+      scope.aview = view;
 
       var html = ('<fe-score-table ' +
       'scores="ascores" ' +
       'loggedin="aloggedIn" ' +
+      'view="aview" ' +
       '></fe-score-table>');
 
       element = angular.element(html);
@@ -39,6 +42,9 @@
         });
         it('should have loggedin', function () {
           expect(isolatedScope.loggedin).toEqual(scope.aloggedIn);
+        })
+        it('should have view', function () {
+          expect(isolatedScope.view).toBe(scope.aview);
         })
       });
 

@@ -41,7 +41,7 @@
     }
 
     function getMatchesFailed(response) {
-      $log.info('data error ' + response.status + " " + response.statusText);
+      $log.error('data error ' + response.status + " " + response.statusText);
       vm.loadingHasFailed(response);
     }
 

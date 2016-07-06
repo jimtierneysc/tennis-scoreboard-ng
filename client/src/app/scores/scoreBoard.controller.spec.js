@@ -4,7 +4,6 @@
   describe('controller scoreboard', function () {
     var $controller;
     var $scope;
-    var $q;
     var $rootScope;
     var mockResource;
 
@@ -49,7 +48,7 @@
       // winner: 1,
       sets: [{games: []}],
       servers: [],
-      actions: {},
+      actions: {}
     };
 
     function doublesResponse() {
@@ -71,11 +70,10 @@
     beforeEach(module('frontend'));
     beforeEach(function () {
 
-      inject(function (_$controller_, _$q_, _$rootScope_) {
+      inject(function (_$controller_, _$rootScope_) {
         $rootScope = _$rootScope_;
         $controller = _$controller_;
         $scope = $rootScope.$new();
-        $q = _$q_;
       });
       mockResource = new MockResource();
     });
@@ -117,6 +115,10 @@
       it('has id', function () {
         expect(vm.id).toEqual(scoresResponse.id);
       });
+      it('has #view', function () {
+        expect(vm.view).toEqual(jasmine.any(Object));
+      });
+
     });
 
     describe('loading', function () {
@@ -145,10 +147,6 @@
 
         it('has #opponents', function () {
           expect(sb.opponents).toEqual(jasmine.any(Array));
-        });
-
-        it('has #view', function () {
-          expect(sb.view).toEqual(jasmine.any(Object));
         });
 
         it('does not have #server', function () {
@@ -181,20 +179,8 @@
           sb = vm.scoreboard;
         });
 
-        it('has #keepingScore', function () {
-          expect(sb.keepingScore).toEqual(jasmine.any(Function));
-        });
-
-        it('has #updateScore', function () {
-          expect(sb.updateScore).toEqual(jasmine.any(Function));
-        });
-
-        it('has #changeViewExpand', function () {
-          expect(sb.changeViewExpand).toEqual(jasmine.any(Function));
-        });
-
-        it('has #changeViewKeepScore', function () {
-          expect(sb.changeViewKeepScore).toEqual(jasmine.any(Function));
+        it('has #update', function () {
+          expect(sb.update).toEqual(jasmine.any(Function));
         });
 
       });
@@ -265,7 +251,7 @@
         var response = singlesResponse();
         vm = scoreboardController(response);
         var sb = vm.scoreboard;
-        sb.updateScore('fake', 0, true);
+        sb.update('fake', 0, true);
       });
 
       it('should save', function () {
@@ -311,14 +297,14 @@
         angular.forEach(params, function (value, key) {
           it('valid params for ' + key, function () {
             mockResource.params = null;
-            sb.updateScore(key, 0, true);
+            sb.update(key, 0, true);
             expect(mockResource.params).toEqual(params[key])
           });
         });
 
         it('valid params for start_next_game', function () {
           mockResource.params = null;
-          sb.updateScore('start_next_game', 10, true);
+          sb.update('start_next_game', 10, true);
           expect(mockResource.params).toEqual(startNextGameParams(10));
         });
       });
@@ -350,7 +336,7 @@
         angular.forEach(params, function (value, key) {
           it('valid params for ' + key, function () {
             mockResource.params = null;
-            sb.updateScore(key, 1);
+            sb.update(key, 1);
             expect(mockResource.params).toEqual(params[key])
           });
 
@@ -362,13 +348,12 @@
 
     describe('save data error', function () {
       var vm;
-      var gameCount;
       beforeEach(function () {
         mockResource.respondWithDataError = true;
         var response = angular.copy(singlesResponse());
         vm = scoreboardController(response);
         var sb = vm.scoreboard;
-        sb.updateScore('fake', 0, true);
+        sb.update('fake', 0, true);
       });
 
       it('should save with error', function () {
@@ -387,13 +372,12 @@
 
     describe('save HTTP error', function () {
       var vm;
-      var gameCount;
       beforeEach(function () {
         mockResource.respondWithHTTPError = true;
         var response = singlesResponse();
         vm = scoreboardController(response);
         var sb = vm.scoreboard;
-        sb.updateScore('fake', 0, true);
+        sb.update('fake', 0, true);
       });
 
       it('should not show toastr', function () {
@@ -405,29 +389,119 @@
       });
     });
 
-    describe('keeping score', function () {
+    describe('#view', function() {
 
-      var authenticationService;
-      var sb;
-      beforeEach(function () {
-        inject(function (_authenticationService_) {
-          authenticationService = _authenticationService_;
+      describe('members', function() {
+        var view;
+        beforeEach(function () {
+          var vm = scoreboardController(singlesResponse());
+          view = vm.view;
+         });
+
+        it('has #expand', function() {
+          expect(view.expand).toEqual(jasmine.any(String));
         });
-        var vm = scoreboardController(singlesResponse());
-        sb = vm.scoreboard;
-        authenticationService.setCredentials('user', 'token');
-        sb.view.keepScore = true;
+
+        it('has #keepScore', function() {
+          expect(view.keepScore).toEqual(jasmine.any(Boolean));
+        });
+
+        it('has #keepingScore', function() {
+          expect(view.keepingScore).toEqual(jasmine.any(Function));
+        });
+
+        it('has #changeKeepScore', function() {
+          expect(view.changeKeepScore).toEqual(jasmine.any(Function));
+        });
+
+        it('has #changeExpand', function() {
+          expect(view.changeExpand).toEqual(jasmine.any(Function));
+        });
+
+        it('has #showGames', function() {
+          expect(view.showGames).toEqual(jasmine.any(Function));
+        });
+
       });
 
-      it('should be false when not logged in', function () {
-        authenticationService.clearCredentials();
-        expect(sb.keepingScore()).toBeFalsy();
-      })
+      describe('#keepingScore', function () {
 
-      it('should be true when not logged in', function () {
-        expect(sb.keepingScore()).toBeTruthy();
-      })
+        var authenticationService;
+        var view;
+        beforeEach(function () {
+          inject(function (_authenticationService_) {
+            authenticationService = _authenticationService_;
+          });
+          var vm = scoreboardController(singlesResponse());
+          view = vm.view;
+          authenticationService.setCredentials('user', 'token');
+          view.keepScore = true;
+        });
 
+        it('should be false when not logged in', function () {
+          authenticationService.clearCredentials();
+          expect(view.keepingScore()).toBeFalsy();
+        });
+
+        it('should be true when not logged in', function () {
+          expect(view.keepingScore()).toBeTruthy();
+        });
+
+      });
+
+
+      describe('#showGames', function() {
+
+      });
+
+      // describe('storage of #expand and #keepingScore', function () {
+      //   var $localStorage;
+      //   beforeEach(function() {
+      //     inject(function (_$localStorage_) {
+      //       $localStorage = _$localStorage_;
+      //     })
+      //   });
+      //
+      //   it('has data name', function() {
+      //     var vm = scoreboardController(singlesResponse());
+      //     expect(vm.view.localDataName).toEqual(jasmine.any(String))
+      //   });
+      //
+      //   describe('sets data', function () {
+      //     var view;
+      //     beforeEach(function () {
+      //       var vm = scoreboardController(singlesResponse());
+      //       view = vm.view;
+      //     });
+      //
+      //     it('is not null', function () {
+      //       expect($localStorage[view.localDataName]).not.toBeNull();
+      //     });
+      //
+      //     it('has data', function () {
+      //       expect($localStorage[view.localDataName]).toEqual(jasmine.any(Object))
+      //     });
+      //   });
+      //
+      //   describe('load data', function () {
+      //     var data;
+      //     beforeEach(function () {
+      //       // data = $localStorage[view.localDataName];
+      //       // service.clearCredentials();
+      //       // $localStorage[service.localDataName] = data;
+      //       // service.loadCredentials();
+      //     });
+      //
+      //     it('is not null', function () {
+      //       expect(data).not.toBeNull();
+      //     });
+      //
+      //     it('has data', function () {
+      //       expect(data).toEqual(jasmine.any(Object));
+      //     });
+      //
+      //   });
+      // });
     });
 
     function MockResource() {

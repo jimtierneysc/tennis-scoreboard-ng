@@ -24,7 +24,6 @@
     return service;
 
     function getLogin() {
-      $log.info("getLogin()");
       return $resource(path, null, {'login': {method: 'POST', params: null}});
     }
   }
