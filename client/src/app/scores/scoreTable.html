@@ -92,7 +92,7 @@
     </tr>
 
     <!--match button-->
-    <tr ng-if="scores.showMatchButton && scores.keepingScore()">
+    <tr ng-if="scores.btns.showMatch && scores.keepingScore()">
       <th class="score-col-1">
       </th>
       <th colspan=2 class="score-col-3">
@@ -136,7 +136,7 @@
       </th>
     </tr>
 
-    <tr ng-if="!set.winner && scores.showSetButton">
+    <tr ng-if="!set.winner && scores.btns.showSet">
       <th class="score-col-1">
       </th>
       <th colspan=2 class="score-col-3">
@@ -160,23 +160,23 @@
       <th colspan=2 class="score-col-3" ng-if="scores.keepingScore()">
 
         <!--Select next server when starting 1st or 2nd game-->
-        <form ng-if="scores.startServing" name="scores.startServing.form" novalidate>
+        <form ng-if="scores.firstServers" name="scores.firstServers.Form" novalidate>
 
           <div class="form-group text-left">
             <!--Doubles-->
             <label class="control-label">Select a player to serve game {{scores.newGame.title}}</label>
-            <div class="radio" ng-repeat="player in scores.startServing.players">
+            <div class="radio" ng-repeat="player in scores.firstServers.list">
               <label>
-                <input type="radio" name="player" value="{{player.id}}" ng-model="scores.startServing.playerId">
+                <input type="radio" name="player" value="{{player.id}}" ng-model="scores.firstServers.id">
                 {{player.name}}
               </label>
             </div>
           </div>
           <fe-score-button scores="scores" title="scores.newGame.title"
-                           param="scores.startServing.playerId"></fe-score-button>
+                           param="scores.firstServers.id"></fe-score-button>
         </form>
 
-        <div ng-if="!scores.startServing">
+        <div ng-if="!scores.firstServers">
           <fe-score-button scores="scores" title="scores.newGame.title"></fe-score-button>
         </div>
       </th>
@@ -189,15 +189,15 @@
     </tr>
 
     <!-- Game button when collapsed -->
-    <tr ng-if="!set.showGames() && scores.showWinGameButton && set == scores.sets[0]"
+    <tr ng-if="!set.showGames() && scores.btns.showWin && set == scores.sets[0]"
         ng-init="title = set.games.length">
       <th class="score-col-1">
 
-        <span ng-if="scores.gameTiebreakerLabel">
-          {{scores.gameTiebreakerLabel}}
+        <span ng-if="scores.btns.customTitle">
+          {{scores.btns.customTitle}}
         </span>
         <!--Display "Game" prefix sometimes-->
-        <div ng-if="!scores.gameTiebreakerLabel">
+        <div ng-if="!scores.btns.customTitle">
         <span class="hidden-xs">
           Game
         </span>
@@ -251,7 +251,7 @@
           </div>
         </div>
 
-        <div ng-if="!game.winner && scores.showGameButton">
+        <div ng-if="!game.winner && scores.btns.showGame">
           <!--Game Button-->
           <fe-score-button scores="scores" param="0" title="game.title"></fe-score-button>
         </div>
@@ -271,7 +271,7 @@
           </div>
         </div>
 
-        <div ng-if="!game.winner && scores.showGameButton">
+        <div ng-if="!game.winner && scores.btns.showGame">
           <!--Game Button-->
           <fe-score-button scores="scores" param="1" title="game.title"></fe-score-button>
         </div>

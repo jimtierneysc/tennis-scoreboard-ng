@@ -84,7 +84,7 @@
       .state('scores.board', {
         url: '/board/:id',
         templateUrl: 'app/scores/scoreBoard.html',
-        controller: 'ScoreBoardController',
+        controller: 'ScoreboardController',
         controllerAs: 'vm',
         resolve: {
           response: resolveScoreBoard()
@@ -133,9 +133,9 @@
             endWait();
             deferred.resolve(response);
           }
-        )
+        );
         return deferred.promise;
-      };
+      }
       return resolve;
     }
 
@@ -158,7 +158,7 @@
           }
         )
         return deferred.promise;
-      };
+      }
       return resolve;
     }
 

@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name ScoreBoardController
+ * @name ScoreboardController
  * @description
  * Controller for displaying a match score
  *
@@ -10,53 +10,36 @@
 
   angular
     .module('frontend')
-    .controller('ScoreBoardController', Controller);
+    .controller('ScoreboardController', Controller);
 
   /** @ngInject */
   function Controller($log, $q, $scope, $stateParams, categorizeProperties, scoreboardResource,
-                          modalConfirm, $cookies, loadingHelper, crudResource,
-                          authHelper, waitIndicator, toastrHelper, response) {
+                      modalConfirm, $cookies, loadingHelper, crudResource,
+                      authHelper, waitIndicator, toastrHelper, response,
+                      scoreboardBuilder) {
     var vm = this;
+    var view;
 
     activate();
 
     function activate() {
       vm.id = $stateParams.id;
-      vm.scoreBoard = {};
-      vm.view = {
+      vm.scoreboard = {};
+      view = {
         expand: "collapse",
         keepScore: false
       };
 
-      vm.updateScore = updateScore;
-      vm.changeViewExpand = changeViewExpand;
-      vm.changeViewKeepScore = changeViewKeepScore;
-
-
-      authHelper.activate(vm, $scope);
-      loadingHelper.activate(vm);
-      toastrHelper.activate(vm, $scope);
+      authHelper(vm, $scope);
+      loadingHelper(vm);
+      toastrHelper(vm, $scope);
       getCookies();
-      if (response) {
-        if (angular.isDefined(response.id))
-          getScoreBoardSucceeded(response);
-        else
-          getScoreBoardFailed(response);
-      }
-      else {
-        getScoreBoard();
-      }
+      if (angular.isDefined(response.id))
+        getScoreBoardSucceeded(response);
+      else
+        getScoreBoardFailed(response);
     }
 
-    function changeViewExpand() {
-      $log.info('cookie');
-      $cookies.put('viewExpand', vm.view.expand);
-    }
-
-    function changeViewKeepScore() {
-      $log.info('cookie');
-      $cookies.put('viewKeepScore', vm.view.keepScore);
-    }
 
     function updateScore(action, params, confirm) {
 
@@ -65,22 +48,20 @@
         restart_play: 'Confirm Restart Scoring'
       };
 
-      $log.info('confirm');
       if (angular.isUndefined(confirm))
         confirm = true;
-      confirm = confirm && confirmActions[action]; // ['discard_play', 'restart_play'].indexOf(action) >= 0;
+      confirm = confirm && confirmActions[action];
       if (confirm) {
         modalConfirm.confirm({
           title: confirmActions[action], text: 'Are you sure you want to clear scores of match "' +
-          vm.scoreBoard.title + '"?'
+          vm.scoreboard.title + '"?'
         })
           .then(function () {
-            $log.info('update confirmed');
-            scoreBoardResourceUpdate(action, params);
+            scoreboardResourceUpdate(action, params);
           });
       }
       else {
-        scoreBoardResourceUpdate(action, params);
+        scoreboardResourceUpdate(action, params);
       }
     }
 
@@ -91,32 +72,17 @@
     function getCookies() {
       var expand = $cookies.get('viewExpand');
       if (expand) {
-        vm.view.expand = expand;
+        view.expand = expand;
       }
       var keepScore = $cookies.get('viewKeepScore');
       if (keepScore) {
-        vm.view.keepScore = keepScore == 'true';
+        view.keepScore = keepScore == 'true';
       }
     }
 
-    function getScoreBoard() {
-      var endWait = waitIndicator.beginWait();
-      crudResource.getResource(scoreboardResource).get({id: vm.id},
-        function (response) {
-          endWait();
-          getScoreBoardSucceeded(response);
-        },
-        function (response) {
-          endWait();
-          getScoreBoardFailed(response);
-        }
-      );
-    }
-
     function getScoreBoardSucceeded(response) {
-      $log.info('received data');
-      vm.scoreBoard = response;
-      prepareScoreBoard(vm.scoreBoard);
+      vm.scoreboard = response;
+      prepareScoreBoard(vm.scoreboard);
       vm.loadingHasCompleted();
     }
 
@@ -125,14 +91,12 @@
       vm.loadingHasFailed(response);
     }
 
-    function scoreBoardResourceUpdate(action, params) {
+    function scoreboardResourceUpdate(action, params) {
       var key = {id: vm.id};
       var body = makeUpdateBody(action, params);
       var endWait = waitIndicator.beginWait();
       crudResource.getResource(scoreboardResource).save(key, body,
         function (response) {
-          $log.info('update score');
-          $log.info(response);
           endWait();
           scoreUpdated(response);
         },
@@ -154,8 +118,8 @@
       }
       else if (action.startsWith('win')) {
         if (id == 0 || id == 1) {
-          var opponent = vm.scoreBoard.opponents[id];
-          if (vm.scoreBoard.doubles)
+          var opponent = vm.scoreboard.opponents[id];
+          if (vm.scoreboard.doubles)
             params.team = opponent;
           else
             params.player = opponent;
@@ -167,17 +131,15 @@
     }
 
     function scoreUpdated(response) {
-      angular.copy(response, vm.scoreBoard);
-      if (vm.scoreBoard.errors && !angular.equals({}, vm.scoreBoard.errors)) {
-        var errors = categorizeProperties(vm.scoreBoard.errors, null);
-        var message = null;
-        if (angular.isDefined(errors.other))
+      angular.copy(response, vm.scoreboard);
+      if (vm.scoreboard.errors && !angular.equals({}, vm.scoreboard.errors)) {
+        var errors = categorizeProperties(vm.scoreboard.errors, null);
+        var message = 'Unable to update score';
+        if (angular.isDefined(errors.other[0]))
           message = errors.other[0];
-        if (!message)
-          message = 'Unable to update score';
         vm.showToastrError(message)
       }
-      prepareScoreBoard(vm.scoreBoard);
+      prepareScoreBoard(vm.scoreboard);
     }
 
     function scoreUpdateError(body, response) {
@@ -186,55 +148,51 @@
 
     // prepare scoreboard for viewing
     function prepareScoreBoard(sb) {
-      var tieBreakTitle = 'Tiebreak'
-      var setsTitles = {
-        1: '1st',
-        2: '2nd',
-        3: '3rd'
-      };
 
-      prepareOpponents();
-      prepareServing();
-      prepareScores();
-      prepareTitles();
-      prepareView();
-      prepareUpdate();
-      if (sb.actions.start_tiebreaker || sb.actions.start_next_game)
-        prepareNewGame();
-      if (sb.actions.start_match_tiebreaker || sb.actions.start_next_set)
-        prepareNewSet();
+      // Add some values to the score board object
+      prepareValues();
+      // Add some methods to the score board object
+      prepareMethods();
       // Reverse order of sets and games to
       // display most recent games at top of view.
       reverseOrder();
 
-      function prepareUpdate() {
-
-        // Method to update the score
-        sb.updateScore = vm.updateScore;
-        sb.keepingScore = keepingScore;
-
-        function keepingScore() {
-          return vm.loggedIn && vm.view.keepScore;
+      function prepareValues() {
+        sb.opponents = scoreboardBuilder.opponents(sb);
+        sb.server = scoreboardBuilder.server(sb);
+        scoreboardBuilder.insertScores(sb);
+        scoreboardBuilder.insertTitles(sb);
+        sb.btns = scoreboardBuilder.buttonStatus(sb);
+        var newGame = scoreboardBuilder.newGame(sb);
+        if (newGame) {
+          sb.newGame = newGame;
+          var firstServers = scoreboardBuilder.firstServers(sb);
+          if (firstServers) {
+            sb.firstServers =
+            {
+              list: firstServers,
+              id: firstServers[0].id
+            };
+          }
+        } else {
+          var newSet = scoreboardBuilder.newSet(sb);
+          if (newSet)
+            sb.newSet = newSet;
         }
+        sb.view = view;
       }
 
-      function prepareView() {
-        // View model
-        sb.view = vm.view;
+      function prepareMethods() {
 
+        sb.keepingScore = function () {
+          return vm.loggedIn && view.keepScore;
+        };
+
+        // Method to update the score
+        sb.updateScore = updateScore;
         // Methods to update the view
-        sb.changeViewExpand = vm.changeViewExpand;
-        sb.changeViewKeepScore = vm.changeViewKeepScore;
-
-        sb.showMatchButton = sb.state != 'in_progress' && !sb.actions.complete_set_play && !sb.actions.complete_match_tiebreaker &&
-          (sb.actions.complete_play || sb.actions.restart_play || sb.actions.start_play);
-        sb.showSetButton =
-          sb.actions.start_next_set || sb.actions.complete_set_play || sb.actions.start_match_tiebreaker ||
-          sb.actions.complete_set_play || sb.actions.complete_match_tiebreaker;
-        sb.showGameButton = sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.start_next_game ||
-          sb.actions.start_tiebreaker || sb.actions.win_match_tiebreaker;
-        sb.showWinGameButton = sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.win_match_tiebreaker;
-        sb.gameTiebreakerLabel = sb.actions.win_tiebreaker || sb.actions.win_match_tiebreaker ? 'Tiebreak' : null;
+        sb.changeViewExpand = changeViewExpand;
+        sb.changeViewKeepScore = changeViewKeepScore;
 
         angular.forEach(sb.sets, function (set) {
           set.showGames = showSetGames;
@@ -244,126 +202,19 @@
           if (vm.view.expand == 'collapse')
             return false;
           else if (vm.view.expand == 'expand_set')
-            return vm.scoreBoard.sets.length <= 1 || vm.scoreBoard.sets[0] == this;
+            return vm.scoreboard.sets.length <= 1 || vm.scoreboard.sets[0] == this;
           else // expand_all
             return true;
         }
-      }
 
-      // Add running score to each set
-      function prepareScores() {
-
-        function incScore(scores, value) {
-          if (angular.isDefined(value.winner))
-            scores[sb.opponents.indexOf(value.winner)] += 1;
+        function changeViewExpand() {
+          $cookies.put('viewExpand', vm.view.expand);
         }
 
-        // Add some properties to make rendering code simple
-        var matchScore = [0, 0];
-        angular.forEach(sb.sets, function (set) {
-          incScore(matchScore, set);
-          var setScore = [0, 0];
-
-          angular.forEach(set.games, function (game) {
-            incScore(setScore, game);
-          });
-
-          // Add a scores property to a set
-          set.scores = setScore;
-        });
-        // Add a scores property to a match
-        sb.scores = matchScore;
-
-      }
-
-
-    // Add set and game titles
-    function prepareTitles() {
-      var setsCount = 0;
-
-        // var tieBreakTitle = 'Tiebreak'
-        // set titles and game titles properties
-        angular.forEach(sb.sets, function (set) {
-          setsCount++;
-          if (set.tiebreaker)
-            set.title = 'Tiebreak';
-          else
-            set.title = setsTitles[setsCount];
-          var gameCount = 0;
-          angular.forEach(set.games, function (game) {
-            gameCount++;
-            if (game.tiebreaker)
-              game.title = tieBreakTitle;
-            else
-              game.title = gameCount.toString();
-          });
-        });
-      }
-
-
-      // Add opponents property
-      function prepareOpponents() {
-        // An opponent is either a player or a team
-        var opponents;
-        if (sb.doubles)
-          opponents = [sb.first_team.id, sb.second_team.id];
-        else
-          opponents = [sb.first_player.id, sb.second_player.id];
-
-        sb.opponents = opponents;
-
-      }
-
-      // Add server property
-      function prepareServing() {
-        var lastGame = null;
-        if (sb.state == 'in_progress') {
-          if (sb.sets.length > 0) {
-            var lastSet = sb.sets[sb.sets.length-1];
-            if (lastSet.games.length > 0) {
-              lastGame = lastSet.games[lastSet.games.length-1];
-            }
-          }
-        }
-        if (lastGame) {
-          sb.server = lastGame.server;
-        }
-      }
-
-      // Add newGame property if a game is starting
-      // Add startServing property if a first server is neeeded
-      function prepareNewGame() {
-        // newGame property
-        var newGame = {};
-        sb.newGame = newGame;
-        var set = sb.sets[sb.sets.length - 1];
-        newGame.set = set;
-        if (sb.actions.start_tiebreaker)
-          newGame.title = tieBreakTitle;
-        else {
-          var nextGame = set.games.length + 1;
-          newGame.title = nextGame.toString();
+        function changeViewKeepScore() {
+          $cookies.put('viewKeepScore', vm.view.keepScore);
         }
 
-        if ((sb.doubles && sb.servers.length < 2) || (!sb.doubles && sb.servers.length < 1)) {
-          // Server must be selected when starting game
-          var startServing = new playerServing(sb);
-          sb.startServing = startServing;
-        }
-      }
-
-      // Add newSet property if a set is starting
-      function prepareNewSet() {
-        // newSet property
-        // if (sb.actions.start_match_tiebreaker || sb.actions.start_next_set) {
-        var newSet = {};
-        sb.newSet = newSet;
-        if (sb.actions.start_match_tiebreaker)
-          newSet.title = tieBreakTitle;
-        else {
-          var nextSet = sb.sets.length + 1;
-          newSet.title = setsTitles[nextSet];
-        }
       }
 
       function reverseOrder() {
@@ -375,59 +226,6 @@
           set.games.reverse();
         });
         sb.sets.reverse();
-      }
-    }
-
-    // Class to select player to serve next game
-    function playerServing(scores) {
-      var ps = this;
-      ps.players = null;
-      ps.playerId = null;
-
-      activate();
-
-      function activate() {
-        listPlayers();
-      }
-
-      function listPlayers() {
-        var list = [];
-
-        if (scores.doubles) {
-          if (scores.servers.length == 1) {
-            if ([scores.first_team.first_player.id,
-                scores.first_team.second_player_id].indexOf(scores.servers[0]) >= 0) {
-              addTeamPlayers([scores.second_team]);
-            }
-            else
-              addTeamPlayers([scores.first_team]);
-          }
-          else {
-            addTeamPlayers([scores.first_team, scores.second_team]);
-          }
-        }
-        else {
-          addPlayers([scores.first_player, scores.second_player]);
-        }
-        ps.players = list;
-        ps.playerId = list[0].id;
-
-        function addPlayers(players) {
-          angular.forEach(players, function (player) {
-            list.push(
-              {
-                id: player.id,
-                name: player.name
-              });
-          });
-        }
-
-        function addTeamPlayers(teams) {
-          angular.forEach(teams, function (team) {
-            addPlayers([team.first_player, team.second_player]);
-          });
-        }
-
       }
     }
   }
