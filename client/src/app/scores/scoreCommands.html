@@ -13,7 +13,7 @@
         <li class="divider"></li>
         <li role="menuitem">
           <!--Toggle keepscore-->
-          <a href ng-click="view.changeKeepScore()" ng-model="view.keepScore"
+          <a href ng-click="view.changed()" ng-model="view.keepScore"
              ng-class="{'disabled-link' : !loggedin}"
           uib-btn-radio="true">
         <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !loggedin || (view.keepScore == false)}">
@@ -23,7 +23,7 @@
         </li>
         <li role="menuitem">
           <!--Toggle keepscore-->
-          <a href ng-click="view.changeKeepScore()" ng-model="view.keepScore"
+          <a href ng-click="view.changed()" ng-model="view.keepScore"
              uib-btn-radio="false">
           <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': loggedin && (view.keepScore == true)}">
           </span>
@@ -33,7 +33,7 @@
         <li class="divider"></li>
         <li role="menuitem">
           <!--Collapsed view-->
-          <a href ng-click="view.changeExpand()" ng-model="view.expand" uib-btn-radio="'collapse'">
+          <a href ng-click="view.changed()" ng-model="view.expand" uib-btn-radio="'collapse'">
           <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': view.expand != 'collapse'}">
           </span>
             Show Sets Only
@@ -41,7 +41,7 @@
         </li>
         <li role="menuitem">
           <!--Expand all-->
-          <a href ng-click="view.changeExpand()" ng-model="view.expand" uib-btn-radio="'expand_all'">
+          <a href ng-click="view.changed()" ng-model="view.expand" uib-btn-radio="'expand_all'">
           <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': view.expand != 'expand_all'}">
           </span>
             Show Sets and Games

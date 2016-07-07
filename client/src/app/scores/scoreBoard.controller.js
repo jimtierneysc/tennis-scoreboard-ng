@@ -15,8 +15,8 @@
   /** @ngInject */
   function Controller($log, $q, $scope, $stateParams, categorizeProperties, scoreboardResource,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
-                      authHelper, waitIndicator, toastrHelper, response,
-                      scoreboardBuilder) {
+                      authHelper, waitIndicator, toastrHelper,
+                      scoreboardBuilder, response) {
     var vm = this;
 
     activate();
@@ -24,7 +24,7 @@
     function activate() {
       vm.id = $stateParams.id;
       vm.scoreboard = {};
-      vm.view = new View(vm);
+      vm.view = new View();
 
       authHelper(vm, $scope);
       loadingHelper(vm);
@@ -133,11 +133,10 @@
 
     function View() {
 
-      var DATANAME = 'View';
+      var DATANAME = 'scoreboardView';
 
-      var _this = this;
-      _this.changeExpand = storeView;
-      _this.changeKeepScore = storeView;
+      var _this = this; // eslint-disable-line
+      _this.changed = storeView;
       _this.showGames = showGames;
       _this.keepingScore = keepingScore;
       _this.localDataName = DATANAME;
@@ -145,11 +144,12 @@
       _this.keepScore = false;
       loadView();
 
-      function showGames(set) {
+      function showGames(set) {  // eslint-disable-line
         if (_this.expand == 'collapse')
           return false;
-        else if (_this.expand == 'expand_set')
-          return vm.scoreboard.sets.length <= 1 || vm.scoreboard.sets[0] == set;
+        // expand_set not longer supported.   Too confusing.
+        // else if (_this.expand == 'expand_set')
+        //   return vm.scoreboard.sets.length <= 1 || vm.scoreboard.sets[0] == set;
         else // expand_all
           return true;
       }
@@ -158,19 +158,7 @@
         return vm.loggedIn && _this.keepScore;
       }
 
-      // function loadView() {
-      //   var data = $localStorage[DATANAME] || {};
-      //   var expand = $cookies.get(_this.localDataExpand);
-      //   if (expand) {
-      //     _this.expand = expand;
-      //   }
-      //   var keepScore = $cookies.get(_this.localDataKeepScore);
-      //   if (keepScore) {
-      //     _this.keepScore = keepScore == 'true';
-      //   }
-      // }
-
-      function viewData() {
+       function viewData() {
         return {
           view: {
             expand: _this.expand,
@@ -180,7 +168,7 @@
       }
 
       function storeView() {
-        $localStorage[DATANAME] = viewData;
+        $localStorage[DATANAME] = viewData();
       }
 
       function loadView() {
@@ -190,7 +178,6 @@
           _this.keepScore = data.view.keepScore;
         }
       }
-
     }
 
     // prepare scoreboard for viewing

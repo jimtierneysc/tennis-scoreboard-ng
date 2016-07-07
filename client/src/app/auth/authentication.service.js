@@ -6,7 +6,7 @@
     .service('authenticationService', Service);
 
   /** @ngInject */
-  function Service($http, $cookieStore, $rootScope, $log, $localStorage) {
+  function Service($http, $rootScope, $log, $localStorage) {
     var service = this;
 
     var HEADERNAME = 'Authorization';
@@ -32,7 +32,7 @@
         }
       };
 
-      $http.defaults.headers.common[HEADERNAME] = token; 
+      $http.defaults.headers.common[HEADERNAME] = token;
       // $cookieStore.put('globals', data);
       $localStorage[DATANAME] = data;
       changed();

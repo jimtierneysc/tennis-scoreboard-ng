@@ -583,30 +583,30 @@
 
       var nextId = 999;
 
-      function saveResource(item, fn1, fn2) {
+      function saveResource(item, fn1, fn2) { // eslint-disable-line
         var newItem = angular.copy(item);
         newItem.id = nextId++;
         fn1(newItem);
       }
 
-      function saveResourceError(item, fn1, fn2) {
+      function saveResourceError(item, fn1, fn2) { // eslint-disable-line
         fn2(_this.errors);
       }
 
-      function removeResource(id, fn1, fn2) {
+      function removeResource(id, fn1, fn2) { // eslint-disable-line
         fn1({})
       }
 
-      function removeResourceError(id, fn1, fn2) {
+      function removeResourceError(id, fn1, fn2) { // eslint-disable-line
         fn2(_this.errors)
       }
 
-      function updateResource(id, item, fn1, fn2) {
+      function updateResource(id, item, fn1, fn2) { // eslint-disable-line
         var updateItem = angular.copy(item);
         fn1(updateItem)
       }
 
-      function updateResourceError(id, item, fn1, fn2) {
+      function updateResourceError(id, item, fn1, fn2) { // eslint-disable-line
         fn2(_this.errors)
       }
 

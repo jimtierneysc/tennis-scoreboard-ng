@@ -55,7 +55,7 @@
           service.clearCredentials();
         });
 
-        it('has data', function () {
+        it('has no data', function () {
           expect($localStorage[service.localDataName]).toBeUndefined();
         });
 

@@ -40,12 +40,8 @@
 
     var scoresResponse =
     {
-      // title: "doubles title",
       id: 1,
-      // scoring: "two_six_game_ten_points",
-      // doubles: true,
       state: "in_progress",
-      // winner: 1,
       sets: [{games: []}],
       servers: [],
       actions: {}
@@ -389,36 +385,32 @@
       });
     });
 
-    describe('#view', function() {
+    describe('#view', function () {
 
-      describe('members', function() {
+      describe('members', function () {
         var view;
         beforeEach(function () {
           var vm = scoreboardController(singlesResponse());
           view = vm.view;
-         });
+        });
 
-        it('has #expand', function() {
+        it('has #expand', function () {
           expect(view.expand).toEqual(jasmine.any(String));
         });
 
-        it('has #keepScore', function() {
+        it('has #keepScore', function () {
           expect(view.keepScore).toEqual(jasmine.any(Boolean));
         });
 
-        it('has #keepingScore', function() {
+        it('has #keepingScore', function () {
           expect(view.keepingScore).toEqual(jasmine.any(Function));
         });
 
-        it('has #changeKeepScore', function() {
-          expect(view.changeKeepScore).toEqual(jasmine.any(Function));
+        it('has #changed', function () {
+          expect(view.changed).toEqual(jasmine.any(Function));
         });
 
-        it('has #changeExpand', function() {
-          expect(view.changeExpand).toEqual(jasmine.any(Function));
-        });
-
-        it('has #showGames', function() {
+        it('has #showGames', function () {
           expect(view.showGames).toEqual(jasmine.any(Function));
         });
 
@@ -450,58 +442,179 @@
       });
 
 
-      describe('#showGames', function() {
+      describe('#showGames', function () {
+        var vm;
+        beforeEach(function () {
+          vm = scoreboardController(singlesResponse());
+          vm.scoreboard.sets = [{}, {}];
+
+        });
+
+        it('should show games when expanded', function () {
+          vm.view.expand = 'expand_all';
+          expect(vm.view.showGames(1)).toBeTruthy();
+
+        });
+
+        it('it should not show games when collapsed', function () {
+          vm.view.expand = 'collapse';
+          expect(vm.view.showGames(1)).toBeFalsy();
+        })
 
       });
 
-      // describe('storage of #expand and #keepingScore', function () {
-      //   var $localStorage;
-      //   beforeEach(function() {
-      //     inject(function (_$localStorage_) {
-      //       $localStorage = _$localStorage_;
-      //     })
-      //   });
-      //
-      //   it('has data name', function() {
-      //     var vm = scoreboardController(singlesResponse());
-      //     expect(vm.view.localDataName).toEqual(jasmine.any(String))
-      //   });
-      //
-      //   describe('sets data', function () {
-      //     var view;
-      //     beforeEach(function () {
-      //       var vm = scoreboardController(singlesResponse());
-      //       view = vm.view;
-      //     });
-      //
-      //     it('is not null', function () {
-      //       expect($localStorage[view.localDataName]).not.toBeNull();
-      //     });
-      //
-      //     it('has data', function () {
-      //       expect($localStorage[view.localDataName]).toEqual(jasmine.any(Object))
-      //     });
-      //   });
-      //
-      //   describe('load data', function () {
-      //     var data;
-      //     beforeEach(function () {
-      //       // data = $localStorage[view.localDataName];
-      //       // service.clearCredentials();
-      //       // $localStorage[service.localDataName] = data;
-      //       // service.loadCredentials();
-      //     });
-      //
-      //     it('is not null', function () {
-      //       expect(data).not.toBeNull();
-      //     });
-      //
-      //     it('has data', function () {
-      //       expect(data).toEqual(jasmine.any(Object));
-      //     });
-      //
-      //   });
-      // });
+      describe('storage of #expand and #keepingScore', function () {
+        var $localStorage;
+        beforeEach(function () {
+          inject(function (_$localStorage_) {
+            $localStorage = _$localStorage_;
+          })
+        });
+
+        it('has data name', function () {
+          var vm = scoreboardController(singlesResponse());
+          expect(vm.view.localDataName).toEqual(jasmine.any(String))
+        });
+
+        describe('saves data', function () {
+          var view;
+          beforeEach(function () {
+            var vm = scoreboardController(singlesResponse());
+            view = vm.view;
+            $localStorage[view.localDataName] = undefined;
+          });
+
+          it('has no data', function () {
+            expect($localStorage[view.localDataName]).toBeUndefined();
+          });
+
+          it('has data after changed', function () {
+            view.changed();
+            expect($localStorage[view.localDataName]).not.toBeUndefined();
+          });
+
+        });
+
+        describe('loads data', function () {
+          beforeEach(function () {
+            var vm = scoreboardController(singlesResponse());
+            vm.view.expand = 'xyz';
+            vm.view.keepScore = true;
+            vm.view.changed();
+          });
+
+          it('has expand', function () {
+            var vm = scoreboardController(singlesResponse());
+            expect(vm.view.expand).toEqual('xyz');
+          });
+
+          it('has keep score', function () {
+            var vm = scoreboardController(singlesResponse());
+            expect(vm.view.keepScore).toBe(true)
+          });
+
+        });
+      });
+
+
+      describe('confirm change', function () {
+        var modalConfirm;
+        var $q;
+        var vm;
+
+        beforeEach(function () {
+          inject(function (_modalConfirm_, _$q_) {
+            modalConfirm = _modalConfirm_;
+            $q = _$q_;
+          });
+          vm = scoreboardController(singlesResponse());
+        });
+
+        var confirmActions = {
+          discard_play: true,
+          restart_play: true,
+          start_next_set: false
+        };
+
+        describe('open modal', function () {
+          beforeEach(function () {
+            spyOn(modalConfirm, 'confirm').and.callThrough();
+          });
+
+          angular.forEach(confirmActions, function (value, key) {
+            describe(key, function () {
+              beforeEach(function () {
+                vm.scoreboard.update(key, 0, true);
+              });
+              if (value) {
+                it('should open modal', function () {
+                  expect(modalConfirm.confirm).toHaveBeenCalled();
+                });
+              }
+              else {
+                it('should not open modal', function () {
+                  expect(modalConfirm.confirm).not.toHaveBeenCalled();
+                });
+              }
+            })
+          })
+        });
+
+        function returnPromise(resolve) {
+          return function () {
+            var deferred = $q.defer();
+            if (resolve)
+              deferred.resolve();
+            else
+              deferred.reject();
+            return deferred.promise;
+          }
+        }
+
+        describe('confirm action', function () {
+          beforeEach(function () {
+            spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(true));
+          });
+
+          angular.forEach(confirmActions, function (value, key) {
+            describe(key, function () {
+              beforeEach(function () {
+                mockResource.params = null;
+                vm.scoreboard.update(key, 0, true);
+                $rootScope.$digest();
+              });
+              if (value) {
+                it('should confirm change', function () {
+                  expect(mockResource.params).not.toBe(null);
+                });
+              }
+            })
+          });
+        });
+
+        describe('cancel action', function () {
+          beforeEach(function () {
+            spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(false));
+          });
+
+          angular.forEach(confirmActions, function (value, key) {
+            describe(key, function () {
+              beforeEach(function () {
+                mockResource.params = null;
+                vm.scoreboard.update(key, 0, true);
+                $rootScope.$digest();
+              });
+              if (value) {
+                it('should cancel change', function () {
+                  expect(mockResource.params).toBe(null);
+                });
+              }
+            })
+          });
+
+
+        });
+      });
     });
 
     function MockResource() {
@@ -540,21 +653,21 @@
         }
       };
 
-      function saveResource(id, item, fn1, fn2) {
+      function saveResource(id, item, fn1, fn2) { // eslint-disable-line
         var response = singlesResponse();
         _this.params = angular.copy(item);
         response.mockSaved = true;
         fn1(response);
       }
 
-      function saveRequestWithDataError(id, item, fn1, fn2) {
+      function saveRequestWithDataError(id, item, fn1, fn2) { // eslint-disable-line
         var response = singlesResponse();
         response.mockSavedWithError = true;
         response.errors = _this.errors.data;
         fn1(response);
       }
 
-      function saveResourceWithHTTPError(id, item, fn1, fn2) {
+      function saveResourceWithHTTPError(id, item, fn1, fn2) { // eslint-disable-line
         fn2(_this.errors);
       }
     }
