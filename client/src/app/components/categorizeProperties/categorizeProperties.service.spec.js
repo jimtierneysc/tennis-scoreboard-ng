@@ -1,66 +1,60 @@
-(function() {
+(function () {
   'use strict';
 
-  describe('service categorizeProperties', function() {
+  describe('service categorizeProperties', function () {
     var service;
 
     beforeEach(module('frontend'));
-    beforeEach(function() {
-      inject(function(_categorizeProperties_) {
+    beforeEach(function () {
+      inject(function (_categorizeProperties_) {
         service = _categorizeProperties_;
       })
     });
 
-    it('should be registered', function() {
-      expect(service).not.toEqual(null);
+    it('is a function', function () {
+      expect(service).toEqual(jasmine.any(Function));
     });
 
-    describe('members', function() {
-      it('should have function', function() {
-        expect(service).toEqual(jasmine.any(Function));
-      });
-    });
-
-    describe('categorization ', function() {
-      it('should support partial match', function() {
+    describe('categorization ', function () {
+      it('should support partial match', function () {
         var map = {aprefix: 'acategory'};
         var value = {aprefix_one: 'one', aprefix_two: 'two'}
         var expected = {acategory: ['one', 'two']}
         expect(service(value, map)).toEqual(expected);
       });
 
-      it('should support exact match', function() {
+      it('makes exact match', function () {
         var map = {aprefix: 'acategory'};
         var value = {aprefix: ['one', 'two']}
         var expected = {acategory: ['one', 'two']}
         expect(service(value, map)).toEqual(expected);
       });
 
-      it('should support implicit category', function() {
-        var map = {aprefix: null};
+      it('uses implied category', function () {
+        var map = {aprefix: null};  // Implies 'aprefix' category
         var value = {aprefix: ['one', 'two']}
         var expected = {aprefix: ['one', 'two']}
         expect(service(value, map)).toEqual(expected);
       });
 
-      it('should support default category', function() {
+      it('uses default (other) category', function () {
         var map = {};
         var value = {x: ['one', 'two'], y: 'three'}
         var expected = {other: ['one', 'two', 'three']}
         expect(service(value, map)).toEqual(expected);
       });
 
-      describe('map not required', function() {
+      describe('map not required', function () {
         var value;
         var expected;
-        beforeEach(function() {
+        beforeEach(function () {
           value = {x: ['one', 'two'], y: 'three'}
           expected = {other: ['one', 'two', 'three']}
         });
-        it('should support null map', function () {
+        it('supports null map', function () {
           expect(service(value, null)).toEqual(expected);
         });
-        it('should support optional map', function () {
+        it('supports undefined map', function () {
           expect(service(value)).toEqual(expected);
         });
       });

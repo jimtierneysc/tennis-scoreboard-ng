@@ -18,8 +18,8 @@
 
     function activate(vm) {
       var helper = new Helper(vm);
-      vm.loadingHasCompleted = helper.loadingHasCompleted;
-      vm.loadingHasFailed = helper.loadingHasFailed;
+      vm.updateLoadingCompleted = helper.completed;
+      vm.updateLoadingFailed = helper.failed;
       vm.loading = true;
       vm.loadingMessage = 'Loading...';
       vm.loadingFailed = false;
@@ -31,13 +31,15 @@
       var helper = this;
       var vm = _vm_;
 
-      helper.loadingHasFailed = function (response) {
+      helper.failed = function (response) {
         vm.loading = false;
         vm.loadingFailed = true;
-        vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').';
+        var statusText = response.statusText;
+        vm.loadingFailedMessage = 'Page cannot be displayed because ' +
+          'the data could not be retrieved (' + statusText + ').';
       }
 
-      helper.loadingHasCompleted = function () {
+      helper.completed = function () {
         vm.loading = false;
         vm.loadingFailed = false;
       }

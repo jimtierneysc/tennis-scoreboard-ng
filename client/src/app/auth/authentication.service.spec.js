@@ -15,10 +15,6 @@
       })
     });
 
-    it('should be registered', function () {
-      expect(service).not.toEqual(null);
-    });
-
     it('is logged out', function () {
       expect(service.loggedIn).toBeFalsy();
     });
@@ -31,7 +27,7 @@
         })
       });
 
-      it('has data name', function() {
+      it('has .localDataName', function() {
         expect(service.localDataName).toEqual(jasmine.any(String))
       });
 
@@ -40,11 +36,11 @@
           service.setCredentials(USERNAME, TOKEN);
         });
 
-        it('is not null', function () {
+        it('is not null data', function () {
           expect($localStorage[service.localDataName]).not.toBeNull();
         });
 
-        it('has data', function () {
+        it('has object', function () {
           expect($localStorage[service.localDataName]).toEqual(jasmine.any(Object))
         });
 
@@ -86,17 +82,6 @@
       });
     });
 
-    describe('clear local storage', function () {
-      beforeEach(function () {
-        service.clearCredentials();
-      });
-
-      it('has no data', function () {
-        expect(localStorage[service.localDataName]).not.toBeNull();
-      });
-
-    });
-
     describe('logged in', function () {
       var USERNAME = 'username';
       var TOKEN = 'token';
@@ -136,7 +121,7 @@
         expect(service.loggedIn).toBeFalsy();
       });
 
-      it('has username', function () {
+      it('has blank username', function () {
         expect(service.userName).toBe('');
       });
 
@@ -162,17 +147,17 @@
         expect(changed).not.toHaveBeenCalled();
       });
 
-      it('should set credentials', function () {
+      it('sets credentials', function () {
         service.setCredentials('username', 'token');
         expect(changed).toHaveBeenCalled();
       });
 
-      it('should clear credentials', function () {
+      it('clears credentials', function () {
         service.clearCredentials();
         expect(changed).toHaveBeenCalled();
       });
 
-      it('should load credentials', function () {
+      it('loads credentials', function () {
         service.loadCredentials();
         expect(changed).toHaveBeenCalled();
       });

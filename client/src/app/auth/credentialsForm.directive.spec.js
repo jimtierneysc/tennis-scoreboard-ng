@@ -36,21 +36,21 @@
       return compiledElement;
     }
 
-    it('submit should be a function', function(){
+    it('has .submit()', function () {
       var isolatedScope = directiveElem.isolateScope();
 
-      expect(typeof(isolatedScope.submit)).toEqual('function');
+      expect(isolatedScope.submit).toEqual(jasmine.any(Function));
     });
 
 
-    it('should call submit method', function () {
+    it('calls .submit()', function () {
       var isolatedScope = directiveElem.isolateScope();
       isolatedScope.submit();
 
       expect(scope.asubmit).toHaveBeenCalled();
     });
 
-    it('errors should be two-way bound', function(){
+    it('.errors should be two-way bound', function () {
       var isolatedScope = directiveElem.isolateScope();
 
       var value = {errors: 'one'};
@@ -61,7 +61,7 @@
       expect(scope.aerrors).toEqual(value);
     });
 
-    it('entity should be two-way bound', function(){
+    it('.entity should be two-way bound', function () {
       var isolatedScope = directiveElem.isolateScope();
 
       var value = {name: 'one'};
@@ -72,12 +72,15 @@
       expect(scope.aentity).toEqual(value);
     });
 
-    it('should have button element', function () {
-      expect(directiveElem.find('button').length).toEqual(1);
-    });
+    describe('elements', function () {
+      it('has button', function () {
+        expect(directiveElem.find('button').length).toEqual(1);
+      });
 
-    it('should have button text', function () {
-      expect(directiveElem.find('button')[0].innerText).toEqual(okText);
+      it('has button ok text', function () {
+        expect(directiveElem.find('button')[0].innerText).toEqual(okText);
+      });
+
     });
 
   });

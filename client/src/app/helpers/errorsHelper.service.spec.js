@@ -2,80 +2,69 @@
   'use strict';
 
   describe('helper errors', function () {
+    var map = {aprefix: null};
+    var data = {aprefix: 'one', a: 'two', b: 'three'};
+    var expected = {aprefix: ['one'], other: ['two', 'three']}
+    var STATUS = 'status message'
+    var service;
 
     beforeEach(module('frontend'));
 
-    describe('service', function () {
-      var service;
-
-      beforeEach(function () {
-
-        inject(function (_errorsHelper_) {
-          service = _errorsHelper_;
-        })
+    beforeEach(function () {
+      inject(function (_errorsHelper_) {
+        service = _errorsHelper_;
       });
+    });
 
-      it('should register', function () {
+    describe('members', function () {
+      it('is function', function () {
         expect(service).toEqual(jasmine.any(Function));
       });
+    });
 
-      describe('activate', function () {
-        var vm = {};
-        var map = {aprefix: null};
-        var data = {aprefix: 'one', a: 'two', b: 'three'};
-        var expected = {aprefix: ['one'], other: ['two', 'three']}
-        var STATUS = 'status message'
+    describe('activate', function () {
+      var vm;
+      beforeEach(function() {
+        vm = {};
+        service(vm, map)
+      });
+
+      describe('errors in response.data', function () {
+        var errorsOfResponse;
 
         beforeEach(function () {
-          service(vm, map);
+          errorsOfResponse = vm.errorsOfResponse({data: data, statusText: STATUS});
         });
 
-        it('should have errors function', function () {
-          expect(vm.errorsOfResponse).toEqual(jasmine.any(Function));
+        it('has expected errors', function () {
+          expect(errorsOfResponse).toEqual(expected);
+        });
+      });
+
+      describe('errors in response.data.errors', function () {
+        var errorsOfResponse;
+
+        beforeEach(function () {
+          errorsOfResponse = vm.errorsOfResponse({data: {errors: data}, statusText: STATUS});
         });
 
-        describe('errors in response.data', function () {
-          var errorsOfResponse;
+        it('has expected errors', function () {
+          expect(errorsOfResponse).toEqual(expected);
+        });
+      });
 
-          beforeEach(function () {
-            service(vm, map);
-            errorsOfResponse = vm.errorsOfResponse({data: data, statusText: STATUS});
-          });
+      describe('errors in statusText', function () {
+        var errorsOfResponse;
 
-          it('should have errors', function () {
-            expect(errorsOfResponse).toEqual(expected);
-          });
-
+        beforeEach(function () {
+          errorsOfResponse = vm.errorsOfResponse({statusText: STATUS});
         });
 
-        describe('errors in response.data.errors', function () {
-          var errorsOfResponse;
-
-          beforeEach(function () {
-            service(vm, map);
-            errorsOfResponse = vm.errorsOfResponse({data: {errors: data}, statusText: STATUS});
-          });
-
-          it('should have errors', function () {
-            expect(errorsOfResponse).toEqual(expected);
-          });
-
-        });
-
-        describe('errors in statusText', function () {
-          var errorsOfResponse;
-
-          beforeEach(function () {
-            service(vm, map);
-            errorsOfResponse = vm.errorsOfResponse({statusText: STATUS});
-          });
-
-          it('should have errors', function () {
-            expect(errorsOfResponse).toEqual({other: [STATUS]});
-          });
+        it('has expected errors', function () {
+          expect(errorsOfResponse).toEqual({other: [STATUS]});
         });
       });
     })
-  })
+  });
 })();
 

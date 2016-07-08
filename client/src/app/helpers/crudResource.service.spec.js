@@ -15,13 +15,84 @@
       $httpBackend = _$httpBackend_;
     }));
 
-    it('should have resource', function () {
-      expect($resource).not.toEqual(null);
-    });
-
-    it('should have path', function () {
+    it('has path', function () {
       expect(path).toMatch(resourceName);
     });
+    
+    describe('query', function () {
+      expectSampleDataArray('GET', null, 'query');
+    });
+
+    describe('query item', function () {
+      expectSampleDataArray('GET', 1, 'query');
+    });
+
+    describe('create', function () {
+      expectSampleDataObject('POST', null, 'save');
+    });
+
+    describe('save item', function () {
+      expectSampleDataObject('POST', 1, 'save');
+    });
+
+    describe('remove item', function () {
+      expectStatus('DELETE', 1, 'remove');
+    });
+
+    describe('update item', function () {
+      expectSampleDataObject('PUT', 1, 'update');
+    });
+    
+    function expectSampleDataArray(verb, id, fnName) {
+      var fn;
+      beforeEach(function() {
+        fn = $resource[fnName];
+      });
+
+      it('returns data', function () {
+        var data = backendExpectData(verb, id, fn, 200, [sampleData]);
+        expect(data[0].name).toEqual(sampleData.name);
+      });
+
+      it('returns an error', function () {
+        var status = backendExpectStatus(verb, id, fn, 500, [sampleData]);
+        expect(status).toEqual(false);
+      });
+    }
+
+    function expectSampleDataObject(verb, id, fnName) {
+      var fn;
+      beforeEach(function() {
+        fn = $resource[fnName];
+      });
+
+      it('returns data', function () {
+        var data = backendExpectData(verb, id, fn, 200, sampleData);
+        expect(data.name).toEqual(sampleData.name);
+      });
+
+      it('returns an error', function () {
+        var status = backendExpectStatus(verb, id, fn, 500, sampleData);
+        expect(status).toEqual(false);
+      });
+    }
+
+    function expectStatus(verb, id, fnName) {
+      var fn;
+      beforeEach(function() {
+        fn = $resource[fnName];
+      });
+
+      it('returns data', function () {
+        var status = backendExpectStatus(verb, id, fn, 200);
+        expect(status).toEqual(true);
+      });
+
+      it('returns an error', function () {
+        var status = backendExpectStatus(verb, id, fn, 500);
+        expect(status).toEqual(false);
+      });
+    }
 
     function backendExpectData(verb, id, fn, code, data) {
       code = code || 200;
@@ -69,77 +140,6 @@
         return undefined;
     }
 
-    describe('query', function () {
-      it('should return data', function () {
-        var data = backendExpectData('GET', null, $resource.query, 200, [sampleData]);
-        expect(data[0].name).toEqual(sampleData.name);
-      });
-
-      it('should log an error', function () {
-        var status = backendExpectStatus('GET', null, $resource.query, 500, [sampleData]);
-        expect(status).toEqual(false);
-      });
-    });
-
-    describe('query item', function () {
-      it('should return data', function () {
-        var data = backendExpectData('GET', 1, $resource.query, 200, [sampleData]);
-        expect(data[0].name).toEqual(sampleData.name);
-      });
-
-      it('should log an error', function () {
-        var status = backendExpectStatus('GET', 1, $resource.query, 500, [sampleData]);
-        expect(status).toEqual(false);
-      });
-    });
-
-    describe('create', function () {
-      it('should return data', function () {
-        var data = backendExpectData('POST', null, $resource.save, 200, sampleData);
-        expect(data.name).toEqual(sampleData.name);
-      });
-
-      it('should log an error', function () {
-        var status = backendExpectStatus('POST', null, $resource.save, 500, sampleData);
-        expect(status).toEqual(false);
-      });
-    });
-
-    describe('save item', function () {
-      it('should return data', function () {
-        var data = backendExpectData('POST', 1, $resource.save, 200, sampleData);
-        expect(data.name).toEqual(sampleData.name);
-      });
-
-      it('should log an error', function () {
-        var status = backendExpectStatus('POST', 1, $resource.save, 500, sampleData);
-        expect(status).toEqual(false);
-      });
-    });
-
-    describe('remove item', function () {
-      it('should return data', function () {
-        var status = backendExpectStatus('DELETE', 1, $resource.remove, 200);
-         expect(status).toEqual(true);
-      });
-
-      it('should log an error', function () {
-        var status = backendExpectStatus('DELETE', 1, $resource.remove, 500);
-        expect(status).toEqual(false);
-      });
-    });
-
-    describe('update item', function () {
-      it('should return data', function () {
-        var data = backendExpectData('PUT', 1, $resource.update, 200, sampleData);
-        expect(data.name).toEqual(sampleData.name);
-      });
-
-      it('should log an error', function () {
-        var status = backendExpectStatus('PUT', 1, $resource.update, 500, sampleData);
-        expect(status).toEqual(false);
-      });
-    });
   });
 })();
 

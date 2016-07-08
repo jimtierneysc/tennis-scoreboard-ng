@@ -13,22 +13,18 @@
       })
     });
 
-    it('should be registered', function() {
-      expect(service).not.toEqual(null);
-    });
-
-    describe('path variable', function() {
+    describe('.path', function() {
       it('should exist', function() {
         expect(service.path).not.toEqual(null);
       });
     });
 
-    describe('getLogin function', function() {
-      it('should exist', function() {
+    describe('.getLogin()', function() {
+      it('exists', function() {
         expect(service.getLogin).not.toEqual(null);
       });
 
-      it('should return data', function() {
+      it('returns data', function() {
         $httpBackend.expect('POST',  service.path).respond(200, {auth_token: 'atoken'});
         var data = null;
         service.getLogin().login(function(response) {
@@ -41,7 +37,7 @@
         expect(data).toEqual(jasmine.any(Object));
       });
 
-      it('should return error', function() {
+      it('returns error', function() {
         $httpBackend.expect('POST',  service.path).respond(500);
         var error = false;
         service.getLogin().login(function() {

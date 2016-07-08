@@ -26,17 +26,15 @@
       return compiledElement;
     }
 
-    describe('fe-auto-focus does not have value', function(){
+    describe('attribute no value', function(){
       var directiveElem;
 
       beforeEach(function() {
         var html = ('<div><input name="edit1" type="text"><input name="edit2" type="text" fe-auto-focus></div>');
-
         directiveElem = getCompiledElement(html);
-
       });
-      
-      it('should have input elements', function () {
+
+      it('has input elements', function () {
         expect(directiveElem.find('input').length).toEqual(2);
       });
 
@@ -47,23 +45,21 @@
 
     });
 
-    describe('fe-auto-focus has a value', function(){
+    describe('attribute has value', function(){
       var directiveElem;
 
       beforeEach(function() {
         var html = ('<div><input name="edit1" type="text"><input name="edit2" type="text" fe-auto-focus="focusedit2"></div>');
-
         directiveElem = getCompiledElement(html);
-
       });
 
-      it('should have input elements', function () {
+      it('has input elements', function () {
         expect(directiveElem.find('input').length).toEqual(2);
       });
 
       describe('initial state', function() {
 
-        it('should not have focus', function () {
+        it('does not have focus', function () {
           expect(scope.autoFocused).toEqual(null);
         });
       });
@@ -76,9 +72,9 @@
           });
         });
 
-        it('should set focus', function () {
+        it('has focus', function () {
           autoFocus('focusedit2');
-          $timeout.flush();  // Give directive time to set focus
+          $timeout.flush();
           expect(scope.autoFocused).toEqual('edit2');
         });
       });

@@ -132,12 +132,12 @@
 
       helper.entityLoaded = function (response) {
         vm.entitys = response;
-        vm.loadingHasCompleted();
+        vm.updateLoadingCompleted();
       }
 
       helper.entityLoadFailed = function (response) {
         $log.error('data error ' + response.status + " " + response.statusText);
-        vm.loadingHasFailed(response);
+        vm.updateLoadingFailed(response);
       }
 
       //

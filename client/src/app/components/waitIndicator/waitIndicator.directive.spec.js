@@ -27,51 +27,53 @@
       return compiledElement;
     }
 
-    it('should have div', function () {
-      expect(directiveElem.find('div').length > 1).toBeTruthy();
+    describe('elements', function () {
+      it('has div', function () {
+        expect(directiveElem.find('div').length > 1).toBeTruthy();
+      });
+
+      it('is centered', function () {
+        var div = directiveElem.find('div')[0];
+        expect(div.className).toMatch('screen-center');
+      });
     });
 
-    it('should be centered', function () {
-      var div = directiveElem.find('div')[0];
-      expect(div.className).toMatch('screen-center');
-    });
-
-    describe('vm', function () {
+    describe('members', function () {
       var vm;
 
       beforeEach(function () {
         vm = scope.vm;
       });
 
-      it('should have values', function () {
+      it('has .vm', function () {
         expect(vm).not.toEqual(null);
       });
 
-      it('should not be waiting', function () {
+      it('has .waiting', function () {
         expect(vm.waiting).toBeFalsy();
       })
     });
 
-    describe('use waitIndicator service', function () {
+    describe('waitIndicator service', function () {
       var vm;
       var service;
       var $timeout;
 
       beforeEach(function () {
-        inject(function(waitIndicator, _$timeout_){
+        inject(function (waitIndicator, _$timeout_) {
           service = waitIndicator;
           $timeout = _$timeout_;
         });
         vm = scope.vm;
       });
 
-      it('should set waiting', function () {
+      it('set .waiting', function () {
         service.beginWait();
         $timeout.flush();
         expect(vm.waiting).toBeTruthy();
       });
 
-      it('should clear waiting', function () {
+      it('clears .waiting', function () {
         var callBack = service.beginWait();
         $timeout.flush();
         callBack();

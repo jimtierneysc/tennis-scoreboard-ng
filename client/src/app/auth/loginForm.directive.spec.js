@@ -27,7 +27,7 @@
       return compiledElement;
     }
 
-    it('should have credentials-form element', function () {
+    it('has fe-credentials-form element', function () {
       expect(directiveElem.find('fe-credentials-form').length).toEqual(1);
     });
 
@@ -56,7 +56,7 @@
         })
       });
 
-      describe('inputs', function () {
+      describe('input elements', function () {
         var inputs;
         var username = 'someuser';
         var password = 'somepassword';
@@ -67,21 +67,16 @@
           scope.$digest();
         });
 
-        it('should have user name', function () {
+        it('has user name', function () {
           expect(inputs[0].value).toEqual(username)
         });
 
-        it('should have password', function () {
+        it('has password', function () {
           expect(inputs[1].value).toEqual(password)
         });
-
-        it('should have password', function () {
-          expect(inputs[1].value).toEqual(password)
-        });
-
       });
 
-      describe('submit', function () {
+      describe('.submit()', function () {
 
         beforeEach(function () {
           // username and password needed to make valid
@@ -103,11 +98,11 @@
             btn = directiveElem.find('button');
           });
 
-          it('should have button', function () {
+          it('has button', function () {
             expect(btn).not.toEqual(null);
           });
 
-          it('should submit', function () {
+          it('should call .submit()', function () {
             spyOn(vm, 'submit').and.callThrough();
             btn[0].click();
             expect(vm.submit).toHaveBeenCalled();
@@ -128,7 +123,7 @@
             authenticationService.clearCredentials();
           });
 
-          it('should login', function() {
+          it('should be loggedIn', function() {
             vm.submit();
             $httpBackend.flush();
             expect(authenticationService.loggedIn).toBeTruthy();
@@ -158,7 +153,7 @@
               $httpBackend.flush();
             });
 
-            it('should have errors', function () {
+            it('has expected .errors', function () {
               expect(vm.errors).toEqual(expected);
             });
 

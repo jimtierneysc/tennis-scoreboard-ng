@@ -19,28 +19,24 @@
       });
     });
 
-    it('should be registered', function () {
-      expect(vm.loading).not.toBe(null);
-    });
-
-    it('should support auth', function () {
+    it('supports auth', function () {
       expect(vm.supportsAuth).toBeTruthy();
     });
 
     describe('members', function () {
-      it('has isCollapsed', function () {
+      it('has .isCollapsed', function () {
         expect(vm.isCollapsed).toEqual(jasmine.any(Boolean));
       });
 
-      it('has createLoginForm', function () {
+      it('has .createLoginForm()', function () {
         expect(vm.createLoginForm).toEqual(jasmine.any(Boolean));
       });
 
-      it('has showingLogin', function () {
+      it('has .showingLogin()', function () {
         expect(vm.showingLogin).toEqual(jasmine.any(Function));
       });
 
-      it('has showLogin', function () {
+      it('has .showLogin()', function () {
         expect(vm.showLogin).toEqual(jasmine.any(Function));
       });
     });

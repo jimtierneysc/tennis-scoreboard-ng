@@ -24,19 +24,15 @@
         })
       });
 
-      it('should be registered', function () {
-        expect(service).not.toEqual(null);
-      });
-
-      it('should have confirm function', function () {
+       it('has .confirm()', function () {
         expect(service.confirm).toEqual(jasmine.any(Function));
       });
 
-      it('should have open function', function () {
+      it('has .open()', function () {
         expect(service.open).toEqual(jasmine.any(Function));
       });
 
-      it('should call modal open function', function () {
+      it('calls $uibModal.open()', function () {
         var fakeOpen = function (settings) {
           expect(settings.resolve.data).toEqual(labels);
           return {}
@@ -53,13 +49,13 @@
 
       beforeEach(function () {
         form = createModal(labels).element;
-      })
+      });
 
       // afterEach(function () {
       //   destroyModal();
       // })
 
-      it('should find elements', function () {
+      it('has <article>', function () {
         expect(form.find('article').length).toEqual(1);
       });
     });
@@ -72,20 +68,16 @@
       beforeEach(function () {
         inject(function (_$rootScope_) {
           $rootScope = _$rootScope_;
-        })
+        });
         modal = createModal(labels);
         btns = modal.element.find('button');
       });
 
-      // afterEach(function () {
-      //   destroyModal();
-      // });
-
-      it('should find buttons', function () {
+      it('has buttons', function () {
         expect(btns.length).toBe(2);
       });
 
-      it('should confirm', function () {
+      it('confirms when click', function () {
         var ok = false;
         modal.modal.result.then(function () {
           ok = true;
@@ -95,7 +87,7 @@
         expect(ok).toBeTruthy();
       });
 
-      it('should cancel', function () {
+      it('cancels when click', function () {
         var cancel = false;
         modal.modal.result.then(
           function () {
@@ -122,11 +114,7 @@
         form = createModal(labels).element;
       });
 
-      // afterEach(function () {
-      //   destroyModal();
-      // })
-
-      it('should encode text', function () {
+      it('html encodes text', function () {
         var el = form.find('article');
         expect(el.html().trim()).toEqual('&lt;hello&gt;&amp;hello')
       });
@@ -140,24 +128,20 @@
         vm = angular.element(form).scope().vm;
       });
 
-      // afterEach(function () {
-      //   destroyModal();
-      // })
-
       describe('members', function () {
-        it('should have vm', function () {
+        it('has .vm', function () {
           expect(vm).not.toEqual(null);
         });
 
-        it('should have data', function () {
+        it('has .data', function () {
           expect(vm.data).toEqual(labels);
         });
 
-        it('should have ok', function () {
+        it('has .ok()', function () {
           expect(vm.ok).toEqual(jasmine.any(Function));
         });
 
-        it('should have cancel', function () {
+        it('has .cancel()', function () {
           expect(vm.cancel).toEqual(jasmine.any(Function));
         });
       });
@@ -173,27 +157,12 @@
         $rootScope = _$rootScope_;
       })
       var modal = service.open(labels, {animation: false});
-      modal.rendered
-        .then(function () {
-        });
-
-      // force promise resolution
       $rootScope.$digest();
       return {
         modal: modal,
         element: angular.element($modalStack.getTop().value.modalDomEl)
       }
     }
-
-    // Not necessary. Phantomjs cleans up.
-    // function destroyModal() {
-    //   var $modalStack;
-    //   inject(function (_$modalStack_) {
-    //     $modalStack = _$modalStack_;
-    //   });
-    //   $modalStack.dismissAll();
-    // }
-
   })
 
 })();

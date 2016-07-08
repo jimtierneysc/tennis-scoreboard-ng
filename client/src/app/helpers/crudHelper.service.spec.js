@@ -18,10 +18,6 @@
         mocks = mockFactories();
       });
 
-       it('should register', function () {
-        expect(service).toEqual(jasmine.any(Function));
-      });
-
       describe('activate', function () {
 
         var mockResource;
@@ -57,11 +53,11 @@
             service(vm, crudOptions);
           });
 
-          it('should have loaded', function () {
+          it('not .loading', function () {
             expect(vm.loading).toEqual(false);
           });
 
-          it('should have failed', function () {
+          it('sets .loadingFailed', function () {
             expect(vm.loadingFailed).toEqual(true);
           });
 
@@ -99,19 +95,19 @@
               service(vm, crudOptions);
             });
 
-            it('should support loading', function () {
+            it('supports loading', function () {
               expect(vm.supportsLoading).toBeTruthy();
             })
 
-            it('should support errors', function () {
+            it('supports errors', function () {
               expect(vm.supportsErrors).toBeTruthy();
             })
 
-            it('should support crud', function () {
+            it('supports crud', function () {
               expect(vm.supportsCrud).toBeTruthy();
             })
 
-            it('should support toast', function () {
+            it('support toastr', function () {
               expect(vm.supportsToastr).toBeTruthy();
             })
 
@@ -122,11 +118,11 @@
               service(vm, crudOptions);
             });
 
-            it('should have loaded', function () {
+            it('not .loading', function () {
               expect(vm.loading).toEqual(false);
             });
 
-            it('should have not failed', function () {
+            it('not .loadingFailed', function () {
               expect(vm.loadingFailed).toEqual(false);
             });
 
@@ -148,11 +144,11 @@
                 vm.showEditEntity(entities[0]);
               });
 
-              it('is shown', function() {
+              it('is .showingEditEntity()', function() {
                 expect(vm.showingEditEntity(entities[0])).toBeTruthy();
               });
 
-              it('should set edit entity', function() {
+              it('set .editEntity', function() {
                 expect(vm.editEntity).toEqual(entities[0]);
               });
             });
@@ -164,11 +160,11 @@
                 vm.hideEditEntity();
               });
 
-              it('is hidden', function() {
+              it('no .showingEditEntity()', function() {
                 expect(vm.showingEditEntity(entities[0])).toBeFalsey;
               });
 
-              it('sets pristine', function() {
+              it('calls .$setPristine()', function() {
                 expect(editForm.$setPristine).toHaveBeenCalled();
               });
             });
@@ -178,11 +174,11 @@
                 vm.showNewEntity();
               });
 
-              it('is shown', function() {
+              it('is .showingNewEntity()', function() {
                 expect(vm.showingNewEntity).toBeTruthy;
               });
 
-              it('should set new entity', function() {
+              it('set .newEntity', function() {
                 expect(vm.newEntity).toEqual({});
               });
             });
@@ -194,16 +190,26 @@
                 vm.hideNewEntity();
               });
 
-              it('is hidden', function() {
+              it('not .showingNewEntity', function() {
                 expect(vm.showingNewEntity).toBeFalsy();
               });
 
-              it('sets pristine', function() {
+              it('called $setPristine()', function() {
                 expect(newForm.$setPristine).toHaveBeenCalled();
               });
             });
 
           });
+
+          function expectWaitIndicator() {
+            it('called .beginWait()', function () {
+              expect(waitIndicator.beginWait).toHaveBeenCalled();
+            });
+
+            it('is not .waiting', function () {
+              expect(waitIndicator.waiting()).toBeFalsy();
+            });
+          }
 
           describe('crud create success', function () {
             beforeEach(function () {
@@ -213,26 +219,20 @@
               vm.submitNewEntity();
             });
 
-            it('should add', function () {
+            it('inserted entity', function () {
               expect(entities.length).toEqual(originalEntities.length + 1);
               expect(entities[1]).toEqual(originalEntities[0]);
             });
 
-            it('should prepare', function () {
+            it('called prepareToCreateEntity()', function () {
               expect(crudMethods.prepareToCreateEntityImpl).toHaveBeenCalled();
             });
 
-            it('should have no errors', function () {
+            it('does not have .entityCreateErrors', function () {
               expect(vm.entityCreateErrors).toBe(null);
             });
 
-            it('should show wait indicator', function () {
-              expect(waitIndicator.beginWait).toHaveBeenCalled();
-            });
-
-            it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBeFalsy();
-            });
+            expectWaitIndicator();
           });
 
           describe('crud create error', function () {
@@ -243,21 +243,15 @@
               vm.submitNewEntity();
             });
 
-            it('should fail', function () {
+            it('does not change entities', function () {
               expect(entities.length).toEqual(originalEntities.length);
             });
 
-            it('should have errors', function () {
+            it('has .entityCreateErrors', function () {
               expect(vm.entityCreateErrors).not.toBe(null);
             });
 
-            it('should show wait indicator', function () {
-              expect(waitIndicator.beginWait).toHaveBeenCalled();
-            });
-
-            it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBeFalsy();
-            });
+            expectWaitIndicator();
 
           });
 
@@ -270,25 +264,19 @@
               vm.submitEditEntity();
             });
 
-            it('should update', function () {
+            it('updated entity', function () {
               expect(entities[2].name).toEqual('xyz');
             });
 
-            it('should prepare', function () {
+            it('called .prepareToUpdateEntity()', function () {
               expect(crudMethods.prepareToUpdateEntityImpl).toHaveBeenCalled();
             });
 
-            it('should have no errors', function () {
+            it('does not have entityUpdateErrors', function () {
               expect(vm.entityUpdateErrors).toBe(null);
             });
 
-            it('should show wait indicator', function () {
-              expect(waitIndicator.beginWait).toHaveBeenCalled();
-            });
-
-            it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBeFalsy();
-            });
+            expectWaitIndicator();
           });
 
           describe('crud update error', function () {
@@ -300,21 +288,15 @@
               vm.submitEditEntity();
             });
 
-            it('should fail', function () {
+            it('does not change entities', function () {
               expect(entities).toEqual(originalEntities);
             });
 
-            it('should have errors', function () {
+            it('has .entityUpdateErrors', function () {
               expect(vm.entityUpdateErrors).not.toBe(null);
             });
 
-            it('should show wait indicator', function () {
-              expect(waitIndicator.beginWait).toHaveBeenCalled();
-            });
-
-            it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBeFalsy();
-            });
+            expectWaitIndicator();
           });
 
           describe('crud delete success', function () {
@@ -323,22 +305,16 @@
               vm.trashEntity(entities[2], false);
             });
 
-            it('should delete', function () {
+            it('changes entities', function () {
               expect(entities.length).toEqual(originalEntities.length - 1);
               expect(entities[2]).toEqual(originalEntities[3]);
             });
 
-            it('should not have toast', function () {
+            it('does not have .lastToast', function () {
               expect(vm.lastToast).toBe(null);
             });
 
-            it('should show wait indicator', function () {
-              expect(waitIndicator.beginWait).toHaveBeenCalled();
-            });
-
-            it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBeFalsy();
-            });
+            expectWaitIndicator();
           });
 
           describe('crud delete fail', function () {
@@ -352,21 +328,15 @@
               vm.trashEntity(entities[2], false);
             });
 
-            it('should fail', function () {
+            it('does not change entities', function () {
               expect(entities).toEqual(originalEntities);
             });
 
-            it('should show wait indicator', function () {
-              expect(waitIndicator.beginWait).toHaveBeenCalled();
-            });
-
-            it('should hide wait indicator', function () {
-              expect(waitIndicator.waiting()).toBeFalsy();
-            });
-
-            it('should display message', function () {
+            it('displays for error', function () {
               expect(message).toBe(mockResource.firstError);
             });
+
+            expectWaitIndicator();
 
           });
 
@@ -377,7 +347,7 @@
               vm.trashEntity(entities[2], false);
             });
 
-            it('should have toast', function () {
+            it('has .lastToast', function () {
               expect(vm.lastToast).not.toBe(null);
             });
           });
@@ -403,11 +373,11 @@
                 vm.trashEntity(entities[2]);
               });
 
-              it('should getDisplayName', function () {
+              it('called .getEntityDisplayName()', function () {
                 expect(crudMethods.getEntityDisplayNameImpl).toHaveBeenCalled();
               });
 
-              it('should open modal', function () {
+              it('called .confirm()', function () {
                 expect(modalConfirm.confirm).toHaveBeenCalled();
               });
             });
@@ -430,12 +400,12 @@
                 $rootScope.$digest(); // process promise
               });
 
-              it('should change entities', function () {
+              it('changes entities', function () {
                 expect(entities).not.toEqual(originalEntities);
 
               });
 
-              it('should confirm', function () {
+              it('called .confirm()', function () {
                 expect(modalConfirm.confirm).toHaveBeenCalled();
               });
             });
@@ -447,22 +417,18 @@
                 $rootScope.$digest(); // process promise
               });
 
-              it('should change entities', function () {
+              it('does not change entities', function () {
                 expect(entities).toEqual(originalEntities);
               });
 
-              it('should confirm', function () {
+              it('call .confirm()', function () {
                 expect(modalConfirm.confirm).toHaveBeenCalled();
               });
             });
-
           });
-
         });
       });
     })
-
-
   });
 
 

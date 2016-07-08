@@ -3,7 +3,7 @@
  * @name categorizeProperties
  * @description
  * Group properties together.  The map
- * parameter identifies the groups.  if
+ * parameter identifies groups.  if
  * there is no matching group, then 'other' is used.
  * For example, if the map parameter is this:
  * { first: 'first_name', last: null }
@@ -22,10 +22,7 @@
 
   /** @ngInject */
   function Service() {
-
-    // var service = this;
-    // service.categorizeProperties = categorizeProperties
-
+    
     return categorizeProperties;
 
     function categorizeProperties(data, map) {

@@ -2,100 +2,92 @@
   'use strict';
 
   describe('helper loading', function () {
+    var service;
 
     beforeEach(module('frontend'));
 
-    describe('service', function () {
-      var service;
-
-      beforeEach(function () {
-
-        inject(function (_loadingHelper_) {
-          service = _loadingHelper_;
-        })
+    beforeEach(function () {
+      inject(function (_loadingHelper_) {
+        service = _loadingHelper_;
       });
+    });
 
-      it('should register', function () {
+    describe('members', function () {
+      it('is function', function () {
         expect(service).toEqual(jasmine.any(Function));
       });
+    });
 
-      describe('activate', function () {
-        var vm = {};
+    describe('activate', function () {
+      var vm;
 
-        beforeEach(function () {
-          service(vm);
+      beforeEach(function () {
+        vm = {};
+        service(vm);
+      });
+
+      describe('members', function () {
+        it('has .updateLoadingCompleted()', function () {
+          expect(vm.updateLoadingCompleted).toEqual(jasmine.any(Function));
         });
 
-        it('should have completed function', function () {
-          expect(vm.loadingHasCompleted).toEqual(jasmine.any(Function));
+        it('has .updateLoadingFailed()', function () {
+          expect(vm.updateLoadingFailed).toEqual(jasmine.any(Function));
         });
 
-        it('should have failed function', function () {
-          expect(vm.loadingHasFailed).toEqual(jasmine.any(Function));
-        });
-
-        it('should have loading', function () {
+        it('has .loading', function () {
           expect(vm.loading).toEqual(jasmine.any(Boolean));
         });
 
-        it('should have loading failed', function () {
+        it('has .loadingFailed', function () {
           expect(vm.loadingFailed).toEqual(jasmine.any(Boolean));
         });
 
-        it('should be loading by default', function () {
+        it('has .loading', function () {
           expect(vm.loading).toEqual(true);
         });
 
-        it('should not fail by default', function () {
+        it('is not .loadingFailed', function () {
           expect(vm.loadingFailed).toEqual(false);
         });
-
       });
 
-      describe('loading failed', function() {
-        var vm = {};
+      describe('loading failed', function () {
 
         beforeEach(function () {
-          service(vm);
           var response = {statusText: STATUSTEXT};
-          vm.loadingHasFailed(response);
+          vm.updateLoadingFailed(response);
         });
 
-        var STATUSTEXT = 'abcd'
+        var STATUSTEXT = 'abcd';
 
-        it('should have status text', function() {
+        it('has .loadingFailedMessage', function () {
           expect(vm.loadingFailedMessage).toMatch(STATUSTEXT);
         });
 
-        it('should have failed', function() {
+        it('is .loadingFailed', function () {
           expect(vm.loadingFailed).toEqual(true);
         });
 
-        it('should not be loading', function() {
+        it('is not .loading', function () {
           expect(vm.loading).toEqual(false);
         })
-
       });
 
-      describe('loading completed', function() {
-        var vm = {};
-
+      describe('loading completed', function () {
         beforeEach(function () {
-          service(vm);
-          vm.loadingHasCompleted();
+          vm.updateLoadingCompleted();
         });
 
-        it('should not have failed', function() {
+        it('is not .loadingFailed', function () {
           expect(vm.loadingFailed).toEqual(false);
         });
 
-        it('should not be loading', function() {
+        it('is not .loading', function () {
           expect(vm.loading).toEqual(false);
         })
-
       })
     })
-
   })
 })();
 
