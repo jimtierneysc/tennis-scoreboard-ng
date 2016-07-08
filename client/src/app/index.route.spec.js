@@ -17,7 +17,7 @@
         'scores.board': {
           url: '/board/:id',
           controller: 'ScoreboardController',
-          templateUrl: 'app/scores/scoreboard.html',
+          templateUrl: 'app/scores/scoreBoard.html',
           params: {id: '1'}
         }
       };
