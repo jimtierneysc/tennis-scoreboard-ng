@@ -6,7 +6,7 @@
     .config(routerConfig);
 
   /** @ngInject */
-  function routerConfig($stateProvider, $urlRouterProvider,  
+  function routerConfig($stateProvider, $urlRouterProvider,
                         teamsResource, playersResource, matchesResource, scoreboardResource) {
     var header = {
       templateUrl: 'app/header/header.html',
@@ -20,7 +20,7 @@
         views: {
           'header': header,
           'content': {
-            templateUrl: 'app/main/main.html'
+            templateUrl: 'app/home/home.html'
           }
         }
       })
@@ -30,7 +30,7 @@
           'header': header,
           'content': {
             templateUrl: 'app/players/players.html',
-            controller: 'PlayerController',
+            controller: 'PlayersController',
             controllerAs: 'vm',
             resolve: {
               response: resolvePlayers()
@@ -44,7 +44,7 @@
           'header': header,
           'content': {
             templateUrl: 'app/teams/teams.html',
-            controller: 'TeamController',
+            controller: 'TeamsController',
             controllerAs: 'vm',
             resolve: {
               response: resolveTeams()
@@ -58,7 +58,7 @@
           'header': header,
           'content': {
             templateUrl: 'app/matches/matches.html',
-            controller: 'MatchController',
+            controller: 'MatchesController',
             controllerAs: 'vm',
             resolve: {
               response: resolveMatches()
@@ -72,7 +72,7 @@
           'header': header,
           'content': {
             templateUrl: 'app/scores/scores.html',
-            controller: 'ScoreController',
+            controller: 'ScoresController',
             controllerAs: 'vm',
             resolve: {
               // parent view shows list of matches
@@ -83,18 +83,18 @@
       })
       .state('scores.board', {
         url: '/board/:id',
-        templateUrl: 'app/scores/scoreBoard.html',
+        templateUrl: 'app/scores/scoreboard.html',
         controller: 'ScoreboardController',
         controllerAs: 'vm',
         resolve: {
           response: resolveScoreBoard()
         }
       })
-      .state('signin', {
-        templateUrl: 'app/user/new.html',
-        controller: 'UserController',
-        controllerAs: 'vm'
-      })
+      // .state('signin', {
+      //   templateUrl: 'app/user/new.html',
+      //   controller: 'UserController',
+      //   controllerAs: 'vm'
+      // })
 
 
     ;
@@ -138,6 +138,25 @@
       }
       return resolve;
     }
+
+    // function resolveResourceQuery(resourceName) {
+    //   /** @ngInject */
+    //   function resolve($q, $log, waitIndicator, crudResource) {
+    //     var resource = crudResource.getResource(resourceName);
+    //     var endWait = waitIndicator.beginWait();
+    //     return resource.query(
+    //       function (response) {
+    //         endWait();
+    //       },
+    //       function (response) {
+    //         $log.error('data error ' + response.status + " " + response.statusText);
+    //         endWait();
+    //       }
+    //     );
+    //     // return deferred.promise;
+    //   }
+    //   return resolve;
+    // }
 
 
     function resolveResourceGet(resourceName) {

@@ -68,12 +68,12 @@
     function getScoreBoardSucceeded(response) {
       vm.scoreboard = response;
       prepareScoreBoard(vm.scoreboard);
-      vm.loadingHasCompleted();
+      vm.updateLoadingCompleted();
     }
 
     function getScoreBoardFailed(response) {
       $log.error('data error ' + response.status + " " + response.statusText);
-      vm.loadingHasFailed(response);
+      vm.updateLoadingFailed(response);
     }
 
     function scoreboardResourceUpdate(action, params) {
@@ -128,7 +128,7 @@
     }
 
     function scoreUpdateError(body, response) {
-      vm.loadingHasFailed(response);
+      vm.updateLoadingFailed(response);
     }
 
     function View() {

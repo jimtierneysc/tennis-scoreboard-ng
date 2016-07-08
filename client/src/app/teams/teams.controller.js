@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name TeamController
+ * @name TeamsController
  * @description
  * Controller for displaying and editing teams
  *
@@ -10,7 +10,7 @@
 
   angular
     .module('frontend')
-    .controller('TeamController', Controller);
+    .controller('TeamsController', Controller);
 
   /** @ngInject */
   function Controller($q, $filter, $log, $scope, crudHelper, authHelper, teamsResource, playersSelectOptions, response) {

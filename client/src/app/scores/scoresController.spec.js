@@ -27,7 +27,7 @@
         $state: $state,
         response: response
       };
-      var vm = $controller('ScoreController', locals);
+      var vm = $controller('ScoresController', locals);
 
       return vm;
     }

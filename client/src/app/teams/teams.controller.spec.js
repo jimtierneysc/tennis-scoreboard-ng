@@ -33,7 +33,7 @@
       };
       if (options)
         angular.merge(locals, options);
-      return $controller('TeamController', locals);
+      return $controller('TeamsController', locals);
     }
 
     describe('members', function () {

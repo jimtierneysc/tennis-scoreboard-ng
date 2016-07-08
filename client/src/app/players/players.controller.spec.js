@@ -26,7 +26,7 @@
       };
       if (options)
         angular.merge(obj, options);
-      var vm = $controller('PlayerController', obj);
+      var vm = $controller('PlayersController', obj);
 
       return vm;
     }

@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name PlayerController
+ * @name PlayersController
  * @description
  * Controller for displaying and editing players
  *
@@ -11,7 +11,7 @@
 
   angular
     .module('frontend')
-    .controller('PlayerController', Controller);
+    .controller('PlayersController', Controller);
 
   /** @ngInject */
   function Controller($log, $scope, crudHelper, authHelper, playersResource, response) {

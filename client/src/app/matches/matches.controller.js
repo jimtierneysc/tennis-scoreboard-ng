@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name MatchController
+ * @name MatchesController
  * @description
  * Controller for displaying and editing matches
  *
@@ -11,7 +11,7 @@
 
   angular
     .module('frontend')
-    .controller('MatchController', Controller);
+    .controller('MatchesController', Controller);
 
   /** @ngInject */
   function Controller($filter, $q, $log, $scope, crudHelper, matchesResource,

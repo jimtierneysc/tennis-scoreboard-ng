@@ -49,7 +49,7 @@
       };
       if (options)
         angular.merge(locals, options);
-      return $controller('MatchController', locals);
+      return $controller('MatchesController', locals);
     }
 
     describe('members', function () {
@@ -133,7 +133,7 @@
           expect(options.prepareToCreateEntity).toEqual(jasmine.any(Function));
         });
 
-        it('should have prepareToUpdateEntity', function () {
+        it('should have .prepareToUpdateEntity', function () {
           expect(options.prepareToUpdateEntity).toEqual(jasmine.any(Function));
         });
 
@@ -367,7 +367,7 @@
         });
 
 
-        describe('beforeShowEditEntity', function () {
+        describe('.beforeShowEditEntity', function () {
           describe('before call', function () {
             it('should not have player select options', function () {
               expect(vm.playerOptionsList.list).toEqual(null);
