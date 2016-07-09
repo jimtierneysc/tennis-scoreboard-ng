@@ -40,12 +40,13 @@
         vm = scoreController(sampleResponse);
       });
 
-      it('should support auth', function () {
-        expect(vm.supportsAuth).toBeTruthy();
+      it('supports auth', function () {
+        expect(vm).toSupportAuth();
       });
 
-      it('should supports loading', function () {
-        expect(vm.supportsLoading).toBeTruthy();
+      it('supports loading', function () {
+        // custom matcher
+        expect(vm).toSupportLoading();
       });
 
     });
@@ -54,12 +55,12 @@
 
       it('should load', function () {
         var vm = scoreController(sampleResponse);
-        expect(vm.loadingFailed).toBeFalsy();
+        expect(vm).not.toFailLoading();
       });
 
       it('should fail', function () {
         var vm = scoreController({error: 'something'});
-        expect(vm.loadingFailed).toBeTruthy();
+        expect(vm).toFailLoading();
       });
 
       describe('select match', function () {

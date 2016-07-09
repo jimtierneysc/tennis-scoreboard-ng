@@ -1,6 +1,65 @@
 (function () {
   'use strict';
 
+  beforeEach(function () {
+    var matchers = {
+      // toBeCrudOptions matcher
+      // Validate parameter to crudHelper service
+      // Usage: expect(options).toBeCrudOptions();
+      toBeCrudOptions: function () {
+        return {
+          compare: compare
+        };
+        function compare(options) {
+          var helper = new MatcherHelper(options);
+          helper.checkFunction('prepareToCreateEntity');
+          helper.checkFunction('prepareToUpdateEntity');
+          helper.checkFunction('beforeShowNewEntity', false);
+          helper.checkFunction('beforeShowEditEntity', false);
+          helper.checkFunction('getEntityDisplayName');
+          helper.checkFunction('makeEntityBody');
+          helper.checkObject('errorCategories');
+          helper.checkObject('scope');
+          helper.checkString('resourceName');
+
+          return helper.getResult();
+        }
+      },
+      // toSupportCrud matcher
+      // Validate crued members
+      // Usage: expect(vm).supportsCrud();
+      toSupportCrud: function () {
+        return {
+          compare: compare
+        };
+        function compare(vm) {
+          var helper = new MatcherHelper(vm);
+
+          helper.checkFunction('trashEntity');
+          helper.checkFunction('submitNewEntity');
+          helper.checkFunction('showNewEntity');
+          helper.checkFunction('hideNewEntity');
+          helper.checkFunction('submitEditEntity');
+          helper.checkFunction('showEditEntity');
+          helper.checkFunction('hideEditEntity');
+          helper.checkFunction('showingEditEntity');
+          helper.checkBoolean('showingNewEntity');
+          helper.checkObject('newEntity');
+          helper.checkObject('editEntity', false);
+          helper.checkObject('newEntityForm', false);
+          helper.checkObject('editEntityForm', false);
+          helper.checkObject('entityCreateErrors', false);
+          helper.checkObject('entityUpdateErrors', false);
+
+          return helper.getResult();
+        }
+      }
+    };
+
+    jasmine.addMatchers(matchers);
+  });
+
+
   describe('helper crud', function () {
 
     var mocks;
@@ -53,12 +112,10 @@
             service(vm, crudOptions);
           });
 
-          it('not .loading', function () {
-            expect(vm.loading).toEqual(false);
-          });
 
-          it('sets .loadingFailed', function () {
-            expect(vm.loadingFailed).toEqual(true);
+          it('failed to load', function () {
+            // custom matcher
+            expect(vm).toFailLoading();
           });
 
         });
@@ -96,20 +153,21 @@
             });
 
             it('supports loading', function () {
-              expect(vm.supportsLoading).toBeTruthy();
-            })
+              // custom matcher
+              expect(vm).toSupportLoading();
+            });
 
             it('supports errors', function () {
-              expect(vm.supportsErrors).toBeTruthy();
-            })
+              expect(vm).toSupportErrors();
+            });
+
+            it('supports toastr', function () {
+              expect(vm).toSupportToastr();
+            });
 
             it('supports crud', function () {
-              expect(vm.supportsCrud).toBeTruthy();
-            })
-
-            it('support toastr', function () {
-              expect(vm.supportsToastr).toBeTruthy();
-            })
+              expect(vm).toSupportCrud();
+            });
 
           });
 
@@ -118,17 +176,13 @@
               service(vm, crudOptions);
             });
 
-            it('not .loading', function () {
-              expect(vm.loading).toEqual(false);
-            });
-
             it('not .loadingFailed', function () {
-              expect(vm.loadingFailed).toEqual(false);
+              expect(vm).not.toFailLoading();
             });
 
           });
 
-          describe('form', function() {
+          describe('form', function () {
             var editForm;
             var newForm;
             beforeEach(function () {
@@ -139,62 +193,62 @@
               vm.newEntityForm = newForm;
             });
 
-            describe('show edit', function() {
-              beforeEach(function() {
+            describe('show edit', function () {
+              beforeEach(function () {
                 vm.showEditEntity(entities[0]);
               });
 
-              it('is .showingEditEntity()', function() {
+              it('is .showingEditEntity()', function () {
                 expect(vm.showingEditEntity(entities[0])).toBeTruthy();
               });
 
-              it('set .editEntity', function() {
+              it('set .editEntity', function () {
                 expect(vm.editEntity).toEqual(entities[0]);
               });
             });
 
-            describe('hide edit', function() {
-              beforeEach(function() {
+            describe('hide edit', function () {
+              beforeEach(function () {
                 vm.showEditEntity(entities[0]);
                 spyOn(editForm, '$setPristine').and.callThrough();
                 vm.hideEditEntity();
               });
 
-              it('no .showingEditEntity()', function() {
+              it('no .showingEditEntity()', function () {
                 expect(vm.showingEditEntity(entities[0])).toBeFalsey;
               });
 
-              it('calls .$setPristine()', function() {
+              it('calls .$setPristine()', function () {
                 expect(editForm.$setPristine).toHaveBeenCalled();
               });
             });
 
-            describe('show new', function() {
-              beforeEach(function() {
+            describe('show new', function () {
+              beforeEach(function () {
                 vm.showNewEntity();
               });
 
-              it('is .showingNewEntity()', function() {
+              it('is .showingNewEntity()', function () {
                 expect(vm.showingNewEntity).toBeTruthy;
               });
 
-              it('set .newEntity', function() {
+              it('set .newEntity', function () {
                 expect(vm.newEntity).toEqual({});
               });
             });
 
-            describe('hide new', function() {
-              beforeEach(function() {
+            describe('hide new', function () {
+              beforeEach(function () {
                 vm.showNewEntity();
                 spyOn(newForm, '$setPristine').and.callThrough();
                 vm.hideNewEntity();
               });
 
-              it('not .showingNewEntity', function() {
+              it('not .showingNewEntity', function () {
                 expect(vm.showingNewEntity).toBeFalsy();
               });
 
-              it('called $setPristine()', function() {
+              it('called $setPristine()', function () {
                 expect(newForm.$setPristine).toHaveBeenCalled();
               });
             });
@@ -310,8 +364,8 @@
               expect(entities[2]).toEqual(originalEntities[3]);
             });
 
-            it('does not have .lastToast', function () {
-              expect(vm.lastToast).toBe(null);
+            it('does not have toast', function () {
+              expect(vm).not.toHaveToast();
             });
 
             expectWaitIndicator();
@@ -340,15 +394,15 @@
 
           });
 
-          describe('crude delete error toast', function() {
+          describe('crude delete error toast', function () {
             beforeEach(function () {
               service(vm, crudOptions);
               mockResource.respondWithError = true;
               vm.trashEntity(entities[2], false);
             });
 
-            it('has .lastToast', function () {
-              expect(vm.lastToast).not.toBe(null);
+            it('has last toast', function () {
+              expect(vm).toHaveToast();
             });
           });
 
@@ -442,7 +496,7 @@
       mockResource: function () {
         return new MockResource();
       },
-      mockForm: function() {
+      mockForm: function () {
         return new MockForm();
       }
     };
@@ -507,7 +561,7 @@
     function MockForm() {
       var _this = this;
 
-      _this.$setPristine = function() {
+      _this.$setPristine = function () {
 
       }
     }

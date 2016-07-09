@@ -1,6 +1,24 @@
 (function () {
   'use strict';
 
+  beforeEach(function () {
+    var matchers = {
+      toSupportErrors: function () {
+        return {
+          compare: compare
+        };
+        function compare(vm) {
+          var helper = new MatcherHelper(vm);
+
+          helper.checkFunction('errorsOfResponse');
+          return helper.getResult();
+        }
+      }
+    };
+
+    jasmine.addMatchers(matchers);
+  });
+
   describe('helper errors', function () {
     var map = {aprefix: null};
     var data = {aprefix: 'one', a: 'two', b: 'three'};
@@ -27,6 +45,10 @@
       beforeEach(function() {
         vm = {};
         service(vm, map)
+      });
+
+      it('supports errors', function() {
+        expect(vm).toSupportErrors();
       });
 
       describe('errors in response.data', function () {

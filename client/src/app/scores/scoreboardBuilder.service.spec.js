@@ -68,12 +68,9 @@
         it('builds singles opponents', function () {
           expect(service.opponents(doublesScore)).toEqual(doublesExpected);
         });
-
       });
 
-
       describe('#server', function () {
-
         var server = 3;
         var inProgress = 'in_progress';
         var complete = 'complete';

@@ -30,8 +30,7 @@
 
       var operations = new Operations(vm, options);
 
-      vm.supportsCrud = true;
-      // Aggregate crud methods and properties
+      // Set crud methods and properties
       vm.trashEntity = operations.trashEntity;
       vm.submitNewEntity = operations.submitNewEntity;
       vm.showNewEntity = operations.showNewEntity;

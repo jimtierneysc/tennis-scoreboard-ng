@@ -1,5 +1,54 @@
 (function () {
   'use strict';
+  
+  beforeEach(function () {
+    var matchers = {
+      toFailLoading: function() {
+        return {
+          compare: function (vm) {
+            var helper = new MatcherHelper(vm);
+            if (vm.loading)
+              helper.fail('expect not to be .loading');
+            if (!vm.loadingFailed)
+              helper.fail('expect to be .loadingFailed');
+            return helper.getResult();
+          }
+        }
+      },
+      toBeLoading: function() {
+        return {
+          compare: function (vm) {
+            var helper = new MatcherHelper(vm);
+            if (!vm.loading)
+              helper.fail('expect to be .loading');
+            return helper.getResult();
+          }
+        }
+      },
+      // toSupportLoading matcher
+      // Validate loading members
+      // Usage: expect(vm).supportLoading();
+      toSupportLoading: function () {
+        return {
+          compare: compare
+        };
+        function compare(vm) {
+          var helper = new MatcherHelper(vm);
+
+          helper.checkFunction('updateLoadingCompleted');
+          helper.checkFunction('updateLoadingFailed');
+          helper.checkBoolean('loading');
+          helper.checkBoolean('loadingFailed');
+          helper.checkString('loadingFailedMessage', false);
+
+          return helper.getResult();
+        }
+      }
+    };
+
+    jasmine.addMatchers(matchers);
+  });
+
 
   describe('helper loading', function () {
     var service;
@@ -27,30 +76,15 @@
       });
 
       describe('members', function () {
-        it('has .updateLoadingCompleted()', function () {
-          expect(vm.updateLoadingCompleted).toEqual(jasmine.any(Function));
+        it('supports loading', function () {
+          expect(vm).toSupportLoading();
         });
 
-        it('has .updateLoadingFailed()', function () {
-          expect(vm.updateLoadingFailed).toEqual(jasmine.any(Function));
+        it('is loading', function() {
+          // custom matcher
+          expect(vm).toBeLoading();
         });
-
-        it('has .loading', function () {
-          expect(vm.loading).toEqual(jasmine.any(Boolean));
-        });
-
-        it('has .loadingFailed', function () {
-          expect(vm.loadingFailed).toEqual(jasmine.any(Boolean));
-        });
-
-        it('has .loading', function () {
-          expect(vm.loading).toEqual(true);
-        });
-
-        it('is not .loadingFailed', function () {
-          expect(vm.loadingFailed).toEqual(false);
-        });
-      });
+       });
 
       describe('loading failed', function () {
 
@@ -65,13 +99,10 @@
           expect(vm.loadingFailedMessage).toMatch(STATUSTEXT);
         });
 
-        it('is .loadingFailed', function () {
-          expect(vm.loadingFailed).toEqual(true);
+        it('failed', function() {
+          // custom matcher
+          expect(vm).toFailLoading();
         });
-
-        it('is not .loading', function () {
-          expect(vm.loading).toEqual(false);
-        })
       });
 
       describe('loading completed', function () {
@@ -79,13 +110,10 @@
           vm.updateLoadingCompleted();
         });
 
-        it('is not .loadingFailed', function () {
-          expect(vm.loadingFailed).toEqual(false);
+        it('did not failed', function() {
+          // custom matcher
+          expect(vm).not.toFailLoading();
         });
-
-        it('is not .loading', function () {
-          expect(vm.loading).toEqual(false);
-        })
       })
     })
   })

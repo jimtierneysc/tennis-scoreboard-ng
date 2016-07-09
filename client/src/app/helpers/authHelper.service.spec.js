@@ -1,5 +1,26 @@
 (function () {
   'use strict';
+  
+  beforeEach(function () {
+    var matchers = {
+      toSupportAuth: function () {
+        return {
+          compare: compare
+        };
+        function compare(vm) {
+          var helper = new MatcherHelper(vm);
+
+          helper.checkFunction('logOut');
+          helper.checkBoolean('loggedIn');
+          helper.checkString('userName');
+
+          return helper.getResult();
+        }
+      }
+    };
+
+    jasmine.addMatchers(matchers);
+  });
 
   describe('helper auth', function () {
     var service;
@@ -17,20 +38,8 @@
     });
 
     describe('members', function () {
-      it('has .supportsAuth', function () {
-        expect(vm.supportsAuth).toBeTruthy();
-      });
-
-      it('has .loggedIn', function () {
-        expect(vm.loggedIn).toEqual(jasmine.any(Boolean));
-      });
-
-      it('has .userName', function () {
-        expect(vm.userName).toEqual(jasmine.any(String));
-      });
-
-      it('has .logOut()', function () {
-        expect(vm.logOut).toEqual(jasmine.any(Function));
+      it('supports auth', function () {
+        expect(vm).toSupportAuth();
       });
     });
 

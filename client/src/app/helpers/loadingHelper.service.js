@@ -24,7 +24,6 @@
       vm.loadingMessage = 'Loading...';
       vm.loadingFailed = false;
       vm.loadingFailedMessage = null;
-      vm.supportsLoading = true;
     }
 
     function Helper(_vm_) {

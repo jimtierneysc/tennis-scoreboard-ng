@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-
   describe('directive matches form', function () {
     var compiledDirective;
     var scope;
@@ -55,44 +54,42 @@
       });
 
       describe('members', function () {
-        it('should have form', function () {
+        it('has .form', function () {
           expect(isolatedScope.form).toEqual("aform");
         });
 
-        it('should have errors', function () {
+        it('has .errors', function () {
           expect(isolatedScope.errors).toBe(scope.aerrors);
         });
 
-        it('should have entity', function () {
+        it('has .entity entity', function () {
           expect(isolatedScope.entity).toBe(scope.aentity);
         });
 
-        it('should have playes', function () {
+        it('has .playersList', function () {
           expect(isolatedScope.playerslist).toBe(scope.aplayers);
         });
 
-        it('should have teams', function () {
+        it('has .teamsList', function () {
           expect(isolatedScope.teamslist).toBe(scope.ateams);
         });
 
-        it('should have cancel', function () {
+        it('called .cancel()', function () {
           isolatedScope.cancel();
           expect(scope.acancel).toHaveBeenCalled();
         });
 
-        it('should have submit', function () {
+        it('called .submit()', function () {
           isolatedScope.submit();
           expect(scope.asubmit).toHaveBeenCalled();
         });
 
-        it('should have ok', function () {
+        it('has .ok text', function () {
           expect(isolatedScope.ok).toEqual(okText);
         });
       })
 
-
-      // TODO: Test form elements
-
+      // TODO: validate HTML elements
     });
   });
 })();

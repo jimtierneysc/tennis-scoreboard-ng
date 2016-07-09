@@ -45,19 +45,17 @@
 
       describe('supports', function () {
 
-        it('should support auth', function () {
-          expect(vm.supportsAuth).toBeTruthy();
+        it('supports auth', function () {
+          expect(vm).toSupportAuth();
         });
 
-        it('should support crud', function () {
-          expect(vm.supportsCrud).toBeTruthy();
+        it('supports crud', function () {
+          expect(vm).toSupportCrud();
         });
-
       });
 
       describe('options lists', function () {
-
-        it('has players options', function () {
+        it('has .playerOptionsList', function () {
           expect(vm.playerOptionsList).toEqual(jasmine.any(Object));
         });
       });
@@ -66,14 +64,14 @@
 
     describe('loading', function () {
 
-      it('should load', function () {
+      it('is not .loadingFailed', function () {
         var vm = teamController(sampleResponse);
-        expect(vm.loadingFailed).toBeFalsy();
+        expect(vm).not.toFailLoading();
       });
 
-      it('should fail', function () {
+      it('is .loadingFailed', function () {
         var vm = teamController({error: 'something'});
-        expect(vm.loadingFailed).toBeTruthy();
+        expect(vm).toFailLoading();
       });
     });
 
@@ -89,7 +87,7 @@
           crudHelper: crudMock.crudHelper,
           playersSelectOptions: selectOptionsMock.getPlayersSelectOptions
         })
-      })
+      });
 
       it('should activate mock', function () {
         expect(crudMock.activated()).toBeTruthy();
@@ -97,50 +95,23 @@
 
       describe('crud options', function () {
         var options;
+        var resourceName;
         beforeEach(function () {
+          inject(function(_teamsResource_) {
+            resourceName = _teamsResource_;
+          });
           options = crudMock.options;
         });
 
-        it('should have options', function () {
-          expect(options).toEqual(jasmine.any(Object));
+        it('is crud options', function() {
+          // custom matcher
+          expect(options).toBeCrudOptions();
         });
-
+        
         it('should have resource name', function () {
-          expect(options.resourceName).toEqual('teams');
+          expect(options.resourceName).toEqual(resourceName);
         });
-
-        it('should have prepareToCreateEntity', function () {
-          expect(options.prepareToCreateEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have prepareToUpdateEntity', function () {
-          expect(options.prepareToUpdateEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have beforeShowNewEntity', function () {
-          expect(options.beforeShowNewEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have beforeShowEditEntity', function () {
-          expect(options.beforeShowEditEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have getEntityDisplayName', function () {
-          expect(options.getEntityDisplayName).toEqual(jasmine.any(Function));
-        });
-
-        it('should have makeEntityBody', function () {
-          expect(options.makeEntityBody).toEqual(jasmine.any(Function));
-        });
-
-        it('should have scope', function () {
-          expect(options.scope).toEqual(jasmine.any(Object));
-        });
-
-        it('should have errorCategories', function () {
-          expect(options.errorCategories).toEqual(jasmine.any(Object));
-        });
-
+        
         describe('getEntityDisplayName', function () {
 
           it('should return title', function () {
@@ -150,11 +121,9 @@
           it('should return untitled', function () {
             expect(options.getEntityDisplayName({name: ''})).toEqual('(unnamed)');
           });
-
         });
 
         describe('makeEntityBody', function () {
-
           it('should return value', function () {
             expect(options.makeEntityBody({})).toEqual({team: {}});
           });
@@ -175,7 +144,6 @@
           };
 
           describe('prepareToCreateEntity', function () {
-
             var prepared;
 
             beforeEach(function () {
@@ -192,13 +160,12 @@
 
             var prepared;
             var expected;
-            var entity;
 
             beforeEach(function () {
-              entity = angular.merge({}, sampleEntity, {id: 1});
+              var entity = angular.merge({}, sampleEntity, {id: 1});
               expected = angular.merge({}, samplePrepared, {id: 1});
               prepared = options.prepareToUpdateEntity(entity);
-            })
+            });
 
             it('should prepare', function () {
               expect(prepared).toEqual(expected);
@@ -300,8 +267,6 @@
                 expect(vm.editEntity.select_second_player).toEqual(secondPlayer);
               });
             });
-
-
           });
         });
       });

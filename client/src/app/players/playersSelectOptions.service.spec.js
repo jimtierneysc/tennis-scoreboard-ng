@@ -7,11 +7,11 @@
     var $httpBackend;
     var service;
     var $rootScope;
-    var list = [
+    var sampleResponse = [
       {name: 'player1', id: 1, something: 'xyz'},
       {name: 'player2', id: 2}
     ];
-    var options = [
+    var expectedOptionsList = [
       {name: 'player1', id: 1},
       {name: 'player2', id: 2}
     ];
@@ -30,7 +30,7 @@
     describe('request success', function () {
       var result;
       beforeEach(function () {
-        $httpBackend.expect('GET', path).respond(200, list);
+        $httpBackend.expect('GET', path).respond(200, sampleResponse);
         service().then(
           function(value) {
             result = value;
@@ -39,8 +39,8 @@
         $rootScope.$digest();
       });
 
-      it('should have list', function () {
-        expect(result).toEqual(options);
+      it('has expected options', function () {
+        expect(result).toEqual(expectedOptionsList);
       })
     });
 
@@ -58,7 +58,7 @@
         $rootScope.$digest();
       });
 
-      it('should have empty list', function () {
+      it('calls fail function', function () {
         expect(failed).toBeTruthy;
       })
     });

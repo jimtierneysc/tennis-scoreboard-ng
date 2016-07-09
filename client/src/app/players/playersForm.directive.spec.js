@@ -1,7 +1,6 @@
 (function () {
   'use strict';
-
-
+  
   describe('directive players form', function () {
     var compiledDirective;
     var scope;
@@ -44,40 +43,39 @@
 
 
     describe('isolated scope', function () {
-      it('should not be null', function () {
+      it('has scope', function () {
         expect(isolatedScope).not.toBe(null);
       });
 
       describe('members', function () {
-        it('should have form', function () {
+        it('has .form', function () {
           expect(isolatedScope.form).toEqual("aform");
         });
 
-        it('should have errors', function () {
+        it('has .errors', function () {
           expect(isolatedScope.errors).toBe(scope.aerrors);
         });
 
-        it('should have entity', function () {
+        it('has .entity', function () {
           expect(isolatedScope.entity).toBe(scope.aentity);
         });
 
-        it('should have cancel', function () {
+        it('calls .cancel()', function () {
           isolatedScope.cancel();
           expect(scope.acancel).toHaveBeenCalled();
         });
 
-        it('should have submit', function () {
+        it('calls .submit()', function () {
           isolatedScope.submit();
           expect(scope.asubmit).toHaveBeenCalled();
         });
 
-        it('should have ok', function () {
+        it('has .ok text', function () {
           expect(isolatedScope.ok).toEqual(okText);
         });
-      })
-
-
-      // TODO: Test form elements
+      });
+      
+      // TODO: Test HTML elements
 
     });
   });

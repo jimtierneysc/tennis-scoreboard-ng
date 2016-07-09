@@ -53,21 +53,25 @@
           beforeEach(function () {
             state = $state.get(key);
           });
+
           it('matches url', function () {
             expect(state.url).toEqual(value.url);
           });
+
           it('matches templateUrl', function () {
             if (state.views)
               expect(state.views.content.templateUrl).toEqual(value.templateUrl);
             else
               expect(state.templateUrl).toEqual(value.templateUrl);
           });
+
           it('matches controller', function () {
             if (state.views)
               expect(state.views.content.controller).toEqual(value.controller);
             else
               expect(state.controller).toEqual(value.controller);
           });
+
           it('resolves', function () {
             if (value.controller)
               if (state.views)
@@ -104,13 +108,16 @@
               mockResource.lastResponse = null;
               goState(state, value.params);
             });
+
             it('goes to', function () {
               expect($state.current.name).toEqual(state);
             });
+
             it('has id', function () {
               if (value.params)
                 expect(mockResource.lastParams).toEqual(value.params);
             });
+
             it('passes success response', function () {
               if (value.controller)
                 expect($state.$current.locals['content@'].response).toEqual(mockResource.lastResponse)
@@ -129,9 +136,11 @@
             beforeEach(function () {
               goState(state, value);
             });
+
             it('goes to', function () {
               expect($state.current.name).toEqual(state);
             });
+            
             it('passes error response', function () {
               if (value.controller)
                 expect($state.$current.locals['content@'].response).toEqual(mockResource.errors)

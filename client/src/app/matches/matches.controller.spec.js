@@ -9,24 +9,7 @@
 
     var sampleResponse = [
       {
-        // title: "doubles title",
         id: 22
-        // scoring: "two_six_game_ten_points",
-        // doubles: true,
-        // state: "complete",
-        // winner: 33,
-        // first_team: {
-        //   id: 33,
-        //   name: "first_team",
-        //   first_player_name: "first_team_first_player",
-        //   second_player_name: "first_team_second_player"
-        // },
-        // second_team: {
-        //   id: 44,
-        //   name: "second_team",
-        //   first_player_name: "second_team_first_player",
-        //   second_player_name: "second_team_second_player"
-        // }
       }
     ];
 
@@ -40,7 +23,6 @@
         $q = _$q_;
       })
     });
-
 
     function matchController(response, options) {
       var locals = {
@@ -61,22 +43,22 @@
 
       describe('supports', function () {
 
-        it('should support auth', function () {
-          expect(vm.supportsAuth).toBeTruthy();
+        it('supports Auth', function () {
+          expect(vm).toSupportAuth();
         });
 
-        it('should support crud', function () {
-          expect(vm.supportsCrud).toBeTruthy();
+        it('supports Crud', function () {
+          expect(vm).toSupportCrud();
         });
 
       });
 
       describe('options lists', function () {
-        it('has team options', function () {
+        it('has .teamOptionsList', function () {
           expect(vm.teamOptionsList).toEqual(jasmine.any(Object));
         });
 
-        it('has players options', function () {
+        it('has .playerObjectsList', function () {
           expect(vm.playerOptionsList).toEqual(jasmine.any(Object));
         });
       });
@@ -85,18 +67,20 @@
 
     describe('loading', function () {
 
-      it('should load', function () {
+      it('did not fail', function () {
         var vm = matchController(sampleResponse);
-        expect(vm.loadingFailed).toBeFalsy();
+        // custom matcher
+        expect(vm).not.toFailLoading();
       });
 
-      it('should fail', function () {
+      it('failed', function () {
         var vm = matchController({error: 'something'});
-        expect(vm.loadingFailed).toBeTruthy();
+        // custom matcher
+        expect(vm).toFailLoading();
       });
     });
 
-    describe('mock crudHelper', function () {
+    describe('use crudHelper', function () {
       var crudMock;
       var selectOptionsMock;
       var vm;
@@ -111,76 +95,46 @@
         })
       });
 
-      it('should activate mock', function () {
+      it('is activated', function () {
         expect(crudMock.activated()).toBeTruthy();
       });
 
-      describe('crud options', function () {
+      describe('options parameter', function () {
         var options;
+        var resourceName;
         beforeEach(function () {
+          inject(function (_matchesResource_) {
+            resourceName = _matchesResource_;
+          });
           options = crudMock.options;
         });
 
-        it('should have options', function () {
-          expect(options).toEqual(jasmine.any(Object));
+        it('is crud options', function () {
+          // custom matcher
+          expect(options).toBeCrudOptions();
         });
 
-        it('should have resource name', function () {
-          expect(options.resourceName).toEqual('matches');
+        it('has .resourceName', function () {
+          expect(options.resourceName).toEqual(resourceName);
         });
 
-        it('should have prepareToCreateEntity', function () {
-          expect(options.prepareToCreateEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have .prepareToUpdateEntity', function () {
-          expect(options.prepareToUpdateEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have beforeShowNewEntity', function () {
-          expect(options.beforeShowNewEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have beforeShowEditEntity', function () {
-          expect(options.beforeShowEditEntity).toEqual(jasmine.any(Function));
-        });
-
-        it('should have getEntityDisplayName', function () {
-          expect(options.getEntityDisplayName).toEqual(jasmine.any(Function));
-        });
-
-        it('should have makeEntityBody', function () {
-          expect(options.makeEntityBody).toEqual(jasmine.any(Function));
-        });
-
-        it('should have scope', function () {
-          expect(options.scope).toEqual(jasmine.any(Object));
-        });
-
-        it('should have errorCategories', function () {
-          expect(options.errorCategories).toEqual(jasmine.any(Object));
-        });
-
-        describe('getEntityDisplayName', function () {
-
-          it('should return title', function () {
+        describe('.getEntityDisplayName()', function () {
+          it('returns title', function () {
             expect(options.getEntityDisplayName({title: 'atitle'})).toEqual('atitle');
           });
 
-          it('should return untitled', function () {
+          it('returns untitled', function () {
             expect(options.getEntityDisplayName({title: ''})).toEqual('(untitled)');
           });
-
         });
 
-        describe('makeEntityBody', function () {
-
-          it('should return value', function () {
+        describe('.makeEntityBody()', function () {
+          it('returns value', function () {
             expect(options.makeEntityBody({})).toEqual({match: {}});
           });
         });
 
-        describe('prepare to update entities', function () {
+        describe('prepare to change entities', function () {
 
           var singlesEntity = {
             title: "title",
@@ -214,16 +168,16 @@
             second_team_id: 2
           };
 
-          describe('prepareToCreateEntity', function () {
+          describe('.prepareToCreateEntity()', function () {
 
             describe('doubles', function () {
               var prepared;
 
               beforeEach(function () {
                 prepared = options.prepareToCreateEntity(doublesEntity);
-              })
+              });
 
-              it('should prepare', function () {
+              it('prepared', function () {
                 expect(prepared).toEqual(doublesPrepared);
               });
             });
@@ -234,28 +188,26 @@
 
               beforeEach(function () {
                 prepared = options.prepareToCreateEntity(singlesEntity);
-              })
+              });
 
-              it('should prepare', function () {
+              it('prepared', function () {
                 expect(prepared).toEqual(singlesPrepared);
               });
             });
-
           });
 
-          describe('prepareToUpdateEntity', function () {
+          describe('.prepareToUpdateEntity()', function () {
             describe('doubles', function () {
               var prepared;
               var expected;
-              var entity;
 
               beforeEach(function () {
-                entity = angular.merge({}, doublesEntity, {id: 1});
+                var entity = angular.merge({}, doublesEntity, {id: 1});
                 expected = angular.merge({}, doublesPrepared, {id: 1});
                 prepared = options.prepareToUpdateEntity(entity);
-              })
+              });
 
-              it('should prepare', function () {
+              it('prepared', function () {
                 expect(prepared).toEqual(expected);
               });
             });
@@ -264,31 +216,24 @@
 
               var prepared;
               var expected;
-              var entity;
 
               beforeEach(function () {
-                entity = angular.merge({}, singlesEntity, {id: 1});
+                var entity = angular.merge({}, singlesEntity, {id: 1});
                 expected = angular.merge({}, singlesPrepared, {id: 1});
                 prepared = options.prepareToUpdateEntity(entity);
-              })
+              });
 
-              it('should prepare', function () {
+              it('prepared', function () {
                 expect(prepared).toEqual(expected);
               });
             });
           });
         });
 
-        describe('beforeShowNewEntity', function () {
+        describe('.beforeShowNewEntity()', function () {
 
           describe('before call', function () {
-            it('should not have player select options', function () {
-              expect(vm.playerOptionsList.list).toEqual(null);
-            });
-
-            it('should not have team select options', function () {
-              expect(vm.teamOptionsList.list).toEqual(null);
-            });
+            expectNullOptionsLists();
           });
 
 
@@ -303,11 +248,11 @@
                 entity = vm.newEntity;
               });
 
-              it('should default singles', function () {
+              it('defaults to singles', function () {
                 expect(entity.doubles).toBeFalsy();
               });
 
-              it('should default two sets', function () {
+              it('defaults 2 sets', function () {
                 expect(entity.scoring).toEqual('two_six_game_ten_point');
               });
 
@@ -319,33 +264,21 @@
                 $rootScope.$digest(); // resolve player and team lists
               });
 
-              it('should have player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
-              });
-
-              it('should have team select options', function () {
-                expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
-              });
+              expectOptionsLists();
             });
 
             describe('memoize select options', function () {
               beforeEach(function () {
                 options.beforeShowNewEntity();
                 $rootScope.$digest(); // resolve player and team list
-                vm.playerOptionsList.list = {};
-                vm.teamOptionsList.list = {};
+                vm.playerOptionsList.list = [];
+                vm.teamOptionsList.list = [];
                 // Should not refill lists
                 options.beforeShowNewEntity();
                 $rootScope.$digest(); // resolve player and team list
               });
 
-              it('should have player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual({});
-              });
-
-              it('should have team select options', function () {
-                expect(vm.teamOptionsList.list).toEqual({});
-              });
+              expectEmptyOptionsLists();
             });
 
             describe('select options empty', function () {
@@ -355,13 +288,7 @@
                 $rootScope.$digest(); // resolve player and team lists
               });
 
-              it('should have player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual([]);
-              });
-
-              it('should have team select options', function () {
-                expect(vm.teamOptionsList.list).toEqual([]);
-              });
+              expectEmptyOptionsLists();
             });
           });
         });
@@ -369,13 +296,8 @@
 
         describe('.beforeShowEditEntity', function () {
           describe('before call', function () {
-            it('should not have player select options', function () {
-              expect(vm.playerOptionsList.list).toEqual(null);
-            });
 
-            it('should not have team select options', function () {
-              expect(vm.teamOptionsList.list).toEqual(null);
-            });
+            expectNullOptionsLists();
           });
 
           describe('after call', function () {
@@ -388,14 +310,7 @@
                 $rootScope.$digest(); // resolve player and team lists
               });
 
-              it('should player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
-              });
-
-              it('should team select options', function () {
-                expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
-              });
-
+              expectOptionsLists();
             });
 
             describe('select players', function () {
@@ -444,14 +359,42 @@
                 expect(vm.editEntity.select_second_team).toEqual(secondTeam);
               });
             });
-
           });
         });
+
+        function expectOptionsLists() {
+          it('has .playerOptionsList.list', function () {
+            expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
+          });
+
+          it('has .teamOptionsList.list', function () {
+            expect(vm.teamOptionsList.list).toEqual(selectOptionsMock.teamList);
+          });
+        }
+
+        function expectNullOptionsLists() {
+          it('has null .playerOptionsList.list', function () {
+            expect(vm.playerOptionsList.list).toBe(null);
+          });
+
+          it('has null .teamOptionsList.list', function () {
+            expect(vm.teamOptionsList.list).toBe(null);
+          });
+        }
+
+        function expectEmptyOptionsLists() {
+          it('has empty .playerOptionsList.list', function () {
+            expect(vm.playerOptionsList.list).toEqual([]);
+          });
+
+          it('has empty .teamOptionsList.list', function () {
+            expect(vm.teamOptionsList.list).toEqual([]);
+          });
+        }
 
       });
     });
   });
-
 
   function CrudMock() {
 
@@ -468,9 +411,7 @@
       _this.options = options;
       vm.newEntity = {};
       vm.editEntity = {};
-
     }
-
   }
 
   function SelectOptionsMock(_$q_) {
@@ -494,15 +435,15 @@
 
     _this.reject = function () {
       reject = true;
-    }
+    };
 
     // Return a promise
-    _this.getTeamsSelectOptions = function() {
+    _this.getTeamsSelectOptions = function () {
       return getSelectOptions(teamList);
     };
 
     // Return a promise
-    _this.getPlayersSelectOptions = function() {
+    _this.getPlayersSelectOptions = function () {
       return getSelectOptions(playerList);
     };
 
@@ -514,8 +455,6 @@
         deferred.resolve(list);
       return deferred.promise;
     }
-
-
   }
 })();
 

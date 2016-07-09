@@ -94,16 +94,16 @@
 
       describe('supports', function () {
 
-        it('should support auth', function () {
-          expect(vm.supportsAuth).toBeTruthy();
+        it('supports auth', function () {
+          expect(vm).toSupportAuth();
         });
 
         it('should support loading', function () {
-          expect(vm.supportsLoading).toBeTruthy();
+          expect(vm).toSupportLoading();
         });
 
         it('should support toastr', function () {
-          expect(vm.supportsToastr).toBeTruthy();
+          expect(vm).toSupportToastr();
         });
 
       });
@@ -121,12 +121,13 @@
 
       it('should load', function () {
         var vm = scoreboardController(singlesResponse());
-        expect(vm.loadingFailed).toBeFalsy();
+          // custom matcher
+          expect(vm).not.toFailLoading();
       });
 
       it('should fail', function () {
         var vm = scoreboardController({error: 'something'});
-        expect(vm.loadingFailed).toBeTruthy();
+        expect(vm).toFailLoading();
       });
     });
 
@@ -356,12 +357,12 @@
         expect(vm.scoreboard.mockSavedWithError).toBeTruthy();
       });
 
-      it('should show toastr', function () {
-        expect(vm.lastToast).not.toBe(null);
+      it('should show toast', function () {
+        expect(vm).toHaveToast();
       });
 
       it('not show loading error', function () {
-        expect(vm.loadingFailed).toBeFalsy();
+        expect(vm).not.toFailLoading();
       });
 
     });
@@ -376,12 +377,12 @@
         sb.update('fake', 0, true);
       });
 
-      it('should not show toastr', function () {
-        expect(vm.lastToast).toBe(null);
+      it('should not show toast', function () {
+        expect(vm).not.toHaveToast();
       });
 
       it('should show loading error', function () {
-        expect(vm.loadingFailed).toBeTruthy();
+        expect(vm).toFailLoading();
       });
     });
 
@@ -641,7 +642,6 @@
             save: saveResource
           };
         return methods;
-
       };
 
       _this.firstError = 'some error';
@@ -671,7 +671,6 @@
         fn2(_this.errors);
       }
     }
-
   });
 })();
 

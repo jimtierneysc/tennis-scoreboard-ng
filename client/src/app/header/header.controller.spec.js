@@ -20,7 +20,7 @@
     });
 
     it('supports auth', function () {
-      expect(vm.supportsAuth).toBeTruthy();
+      expect(vm).toSupportAuth();
     });
 
     describe('members', function () {
@@ -69,7 +69,5 @@
       $timeout.flush();
       expect(setFocus).toBeTruthy();
     });
-
-
   })
 })();

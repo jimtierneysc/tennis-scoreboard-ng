@@ -1,6 +1,36 @@
 (function () {
   'use strict';
 
+  beforeEach(function () {
+    var matchers = {
+     toHaveToast: function() {
+        return {
+          compare: function (vm) {
+            var helper = new MatcherHelper(vm);
+            if (!vm.lastToast)
+              helper.fail('expect to have .lastToast');
+            return helper.getResult();
+          }
+        }
+      },
+      toSupportToastr: function () {
+        return {
+          compare: compare
+        };
+        function compare(vm) {
+          var helper = new MatcherHelper(vm);
+
+          helper.checkFunction('showToastrError');
+          helper.checkObject('lastToast', false);
+          return helper.getResult();
+        }
+      }
+    };
+
+    jasmine.addMatchers(matchers);
+  });
+
+
   describe('helper toastr', function () {
 
     beforeEach(module('frontend'));

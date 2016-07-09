@@ -20,7 +20,6 @@
       var vm = _vm_;
       vm.showToastrError = new ShowToastError(vm).showToastrError;
       vm.lastToast = null;
-      vm.supportsToastr = true;
 
       _scope_.$on('$destroy', function () {
         // Remove current toasts when switch views

@@ -22,7 +22,6 @@
       vm.loggedIn = authenticationService.loggedIn;
       vm.userName = authenticationService.userName;
       vm.logOut = logOut;
-      vm.supportsAuth = true;
       var watcher = new AuthWatcher(vm);
       authenticationService.subscribeChanged(scope, watcher.changed);
     }

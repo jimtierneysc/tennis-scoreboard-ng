@@ -28,17 +28,17 @@
 
 
     describe('isolated scope', function () {
-      it('should not be null', function () {
+      it('has .scope', function () {
         expect(isolatedScope).not.toBe(null);
       });
 
       describe('members', function () {
-        it('should have match', function () {
+        it('has .match', function () {
           expect(isolatedScope.match).toBe(scope.amatch);
         });
       });
 
-      // TODO: Test elements
+      // TODO: Test HTML elements
 
     });
   });

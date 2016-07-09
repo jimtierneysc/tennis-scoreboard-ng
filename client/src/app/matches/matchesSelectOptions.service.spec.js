@@ -1,17 +1,17 @@
 (function () {
   'use strict';
 
-  describe('matchesSelectOptions', function () {
+  describe('factory matchesSelectOptions', function () {
 
     var path;
     var $httpBackend;
     var service;
     var $rootScope;
-    var list = [
+    var sampleResponse = [
       {title: 'match1', id: 1},
       {title: null, id: 2}
     ];
-    var options = [
+    var expectedOptionsList = [
       {title: 'match1', id: 1},
       {title: '(untitled)', id: 2}
     ];
@@ -30,7 +30,7 @@
     describe('request success', function () {
       var result;
       beforeEach(function () {
-        $httpBackend.expect('GET', path).respond(200, list);
+        $httpBackend.expect('GET', path).respond(200, sampleResponse);
         service().then(
           function(value) {
             result = value;
@@ -39,8 +39,8 @@
         $rootScope.$digest();
       });
 
-      it('should have list', function () {
-        expect(result).toEqual(options);
+      it('returns expected options list', function () {
+        expect(result).toEqual(expectedOptionsList);
       })
     });
 
@@ -58,7 +58,7 @@
         $rootScope.$digest();
       });
 
-      it('should have empty list', function () {
+      it('should call failure function', function () {
         expect(failed).toBeTruthy;
       })
     });
