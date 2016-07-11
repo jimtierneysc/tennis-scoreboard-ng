@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe TeamSerializer, :type => :serializer do
-
   context 'Resource Representation' do
     let(:resource) { teams(:orphan) } # fixture
     let(:serializer) { TeamSerializer.new(resource) }
@@ -27,6 +26,5 @@ RSpec.describe TeamSerializer, :type => :serializer do
       expect(subject[:second_player][:id]).to eql(resource.second_player.id)
       expect(subject[:second_player][:name]).to eql(resource.second_player.name)
     end
-
   end
 end

@@ -16,7 +16,6 @@ RSpec.shared_examples "login required" do
 
 end
 
-
 RSpec.shared_examples "not found" do
   it "renders an errors json" do
     controller_response = json_response

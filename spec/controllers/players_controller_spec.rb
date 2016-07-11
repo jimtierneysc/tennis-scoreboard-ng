@@ -62,7 +62,7 @@ RSpec.describe PlayersController, type: :controller do
           post :create, { player: invalid_model_attributes }
         end
 
-        it_behaves_like "attribute error", :name, "can't be blank"
+        it_behaves_like "attribute error", :name, CANT_BE_BLANK
       end
 
       context "when name is already taken" do

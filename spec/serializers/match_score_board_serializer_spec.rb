@@ -21,7 +21,6 @@ RSpec.shared_examples "a scoreboard" do
 
 end
 
-
 RSpec.describe MatchScoreBoardSerializer, ancestor: MatchSerializer do
   context "doubles" do
     let(:resource) { matches(:m_one_eight_game_doubles) } # fixture
@@ -48,6 +47,5 @@ RSpec.describe MatchScoreBoardSerializer, ancestor: MatchSerializer do
     it_behaves_like "a singles match"
 
     it_behaves_like "a scoreboard"
-
   end
 end

@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.shared_examples "a match" do
-
-
   it 'has id' do
     expect(subject[:id]).to eql(resource.id)
   end
@@ -26,13 +24,11 @@ RSpec.shared_examples "a match" do
   it 'has winner' do
     expect(subject.include? :winner).to be_truthy
   end
-
 end
 
 
 RSpec.shared_examples "a doubles match" do
   it_behaves_like "a match"
-
 
   it 'has doubles' do
     expect(subject[:doubles]).to eql(true)
@@ -47,7 +43,6 @@ RSpec.shared_examples "a doubles match" do
     expect(subject[:second_team][:id]).to eql(resource.second_team.id)
     expect(subject[:second_team][:name]).to eql(resource.second_team.name)
   end
-
 end
 
 RSpec.shared_examples "a singles match" do
@@ -66,5 +61,4 @@ RSpec.shared_examples "a singles match" do
     expect(subject[:second_player][:id]).to eql(resource.second_team.first_player.id)
     expect(subject[:second_player][:name]).to eql(resource.second_team.first_player.name)
   end
-
 end

@@ -46,7 +46,7 @@ RSpec.describe UsersController, type: :controller do
 
       it "renders the json errors on why the user could not be created" do
         user_response = json_response
-        expect(user_response[:errors][:username]).to include "can't be blank"
+        expect(user_response[:errors][:username]).to include CANT_BE_BLANK
       end
 
       it { is_expected.to respond_with 422 }

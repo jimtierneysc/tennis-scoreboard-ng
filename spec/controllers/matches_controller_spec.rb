@@ -18,6 +18,8 @@ RSpec.describe MatchesController, type: :controller do
     attributes
   end
 
+  CANT_BE_BLANK = 'can\'t be blank'
+
   describe "GET #show" do
     context "when doubles exists" do
       before(:each) do
@@ -89,7 +91,7 @@ RSpec.describe MatchesController, type: :controller do
           post :create, { match: exclude_attribute(:first_team_id) }
         end
 
-        it_behaves_like "attribute error", :first_team, "must not be blank"
+        it_behaves_like "attribute error", :first_team, CANT_BE_BLANK
       end
 
       context "when second team is missing" do
@@ -97,7 +99,7 @@ RSpec.describe MatchesController, type: :controller do
           post :create, { match: exclude_attribute(:second_team_id) }
         end
 
-        it_behaves_like "attribute error", :second_team, "must not be blank"
+        it_behaves_like "attribute error", :second_team, CANT_BE_BLANK
       end
 
       context "when scoring is missing" do
@@ -105,7 +107,7 @@ RSpec.describe MatchesController, type: :controller do
           post :create, { match: exclude_attribute(:scoring) }
         end
 
-        it_behaves_like "attribute error", :scoring, "can't be blank"
+        it_behaves_like "attribute error", :scoring, CANT_BE_BLANK
       end
 
       context "when name is already taken" do

@@ -121,7 +121,7 @@ RSpec.describe TeamsController, type: :controller do
           post :create, { team: exclude_attribute(:first_player_id) }
         end
 
-        it_behaves_like "attribute error", :first_player, "must not be blank"
+        it_behaves_like "attribute error", :first_player, "can't be blank"
       end
 
       context "when second player is missing" do

@@ -131,7 +131,6 @@ RSpec.describe MatchScoreBoardController, type: :controller do
               it_behaves_like "accepted action"
 
             end
-
           end
         end
 
@@ -146,10 +145,8 @@ RSpec.describe MatchScoreBoardController, type: :controller do
               it_behaves_like "denied action"
 
             end
-
           end
         end
-
       end
 
       context "when does not exists" do
@@ -158,9 +155,7 @@ RSpec.describe MatchScoreBoardController, type: :controller do
         end
 
         it_behaves_like "not found"
-
       end
-
     end
 
     context "when not authorized" do

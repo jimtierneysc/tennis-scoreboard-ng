@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe PlayerSerializer, :type => :serializer do
-
   context 'Resource Representation' do
     let(:resource) { players(:orphan) } # fixture
     let(:serializer) { PlayerSerializer.new(resource) }
@@ -17,6 +16,5 @@ RSpec.describe PlayerSerializer, :type => :serializer do
     it 'has name' do
       expect(subject[:name]).to eql(resource.name)
     end
-
-   end
+  end
 end
