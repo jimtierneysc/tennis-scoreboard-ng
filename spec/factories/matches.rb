@@ -7,14 +7,10 @@ end
 
 
 FactoryGirl.define do
-  factory :match do
-    title "match1"
-    scoring "one_eight_game"
-    doubles true
-  end
 
   factory :doubles_match, class: Match do
     transient do
+      match_title 'doubles_match'
       first_player_name 'first'
       second_player_name 'second'
       third_player_name 'third'
@@ -23,8 +19,10 @@ FactoryGirl.define do
       second_team_name 'second'
     end
 
-    title 'match1'
-    scoring 'one_eight_game'
+    title do
+      match_title
+    end
+    scoring :one_eight_game
     doubles true
     first_team_id do
       (Team.find_by(name: first_team_name) || FactoryGirl.create(:doubles_team,
@@ -42,12 +40,15 @@ FactoryGirl.define do
 
     factory :singles_match, class: Match do
       transient do
+        match_title 'singles match'
         first_player_name 'first'
         second_player_name 'second'
       end
 
-      title 'match2'
-      scoring 'one_eight_game'
+      title do
+        match_title
+      end
+      scoring :one_eight_game
       doubles false
 
       trait :team_ids do
@@ -71,20 +72,6 @@ FactoryGirl.define do
           p2.id
         end
       end
-
-      # after(:create) do |singles_match, factory|
-      #   p1 = (Player.find_by(name: factory.first_player_name) || FactoryGirl.create(:player, name: factory.first_player_name))
-      #   p2 = (Player.find_by(name: factory.second_player_name) || FactoryGirl.create(:player, name: factory.second_player_name))
-      #   unless factory.player_ids
-      #     singles_match.first_team_id = p1.singles_team!.id
-      #     singles_match.second_team_id = p2.singles_team!.id
-      #   else
-      #     singles_match.first_player_id = p1.id
-      #     singles_match.second_player_id = p2.id
-      #   end
-      # end
-
-
     end
 
 

@@ -6,9 +6,12 @@ FactoryGirl.define do
     transient do
       first_player_name 'first'
       second_player_name 'second'
+      team_name 'doubles_team'
     end
 
-    name 'doubles team'
+    name do
+      team_name
+    end
     doubles true
     first_player_id do
       (Player.find_by(name: first_player_name) || FactoryGirl.create(:player, name: first_player_name)).id
@@ -20,7 +23,7 @@ FactoryGirl.define do
 
   factory :singles_team, class: Team do
     transient do
-      player_name ''  # required
+      player_name '' # required
     end
 
     name null
