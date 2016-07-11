@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe SetGame, type: :model do
-  before {
-    @set_game = FactoryGirl.build(:set_game)
-  }
+  # before {
+  #   @set_game = FactoryGirl.build(:set_game)
+  # }
 
-  subject { @set_game }
+  subject { FactoryGirl.build(:set_game) }
 
   it 'has #ordinal' do
     is_expected.to respond_to(:ordinal)

@@ -14,7 +14,6 @@ class SetGameSerializer < ActiveModel::Serializer
     end
   end
 
-
   def attributes(*args)
     hash = super
     hash[:tiebreaker] = true if object.tiebreaker

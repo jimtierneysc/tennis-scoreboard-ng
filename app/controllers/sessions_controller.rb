@@ -10,7 +10,6 @@ class SessionsController < ApplicationController
       sign_in user, store: false
       user.generate_authentication_token!
       user.save!
-      # render json: user, status: 200, location: [:api, user]
       render json: user, status: :ok
     else
       render json: { errors: "Invalid username or password" }, status: 422

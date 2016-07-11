@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Player, type: :model do
-  before {
-    @player = FactoryGirl.build(:player)
-  }
-  subject { @player }
+  subject { FactoryGirl.build :player  }
 
   it 'has #name' do
     is_expected.to respond_to(:name)

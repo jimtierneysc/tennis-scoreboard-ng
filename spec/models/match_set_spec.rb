@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe MatchSet, type: :model do
-  before {
-    @match_set = FactoryGirl.build(:match_set)
-  }
-  subject { @match_set }
+  subject { FactoryGirl.build(:match_set) }
 
   it 'has #ordinal' do
     is_expected.to respond_to(:ordinal)
@@ -44,5 +41,4 @@ RSpec.describe MatchSet, type: :model do
       expect { subject.destroy! }.to change { MatchSet.count }.by(-1)
     end
   end
-
 end

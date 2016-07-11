@@ -1,5 +1,6 @@
 # Controller for matches.
 # Renders a list of matches.
+# Renders a single match.
 # Creates new doubles matches and new singles matches.
 # Updates a match.
 # Deletes a match.

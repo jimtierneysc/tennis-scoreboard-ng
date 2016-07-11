@@ -1,5 +1,6 @@
 # Controller for teams
 # Renders a list of teams.
+# Renders a single team.
 # Creates a new team.
 # Updates a team.
 # Deletes a team.

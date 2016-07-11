@@ -37,6 +37,7 @@ gem 'active_model_serializers', '0.9.3'
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'simplecov'
 end
 
 

@@ -1,5 +1,6 @@
 # Controller for players
 # Renders a list of players.
+# Renders a single player
 # Creates a new player.
 # Updates a player.
 # Deletes a player.

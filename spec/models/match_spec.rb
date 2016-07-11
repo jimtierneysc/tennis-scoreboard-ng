@@ -65,10 +65,7 @@ RSpec.describe Match, type: :model do
   end
 
   context 'doubles match' do
-    before {
-      @match = FactoryGirl.build(:doubles_match)
-    }
-    subject { @match }
+    subject { FactoryGirl.build(:doubles_match) }
 
     it_behaves_like 'match'
 
@@ -82,10 +79,7 @@ RSpec.describe Match, type: :model do
   end
 
   context 'singles match' do
-    before {
-      @match = FactoryGirl.build(:singles_match)
-    }
-    subject { @match }
+    subject { FactoryGirl.build(:singles_match) }
 
     it_behaves_like 'match'
 

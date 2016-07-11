@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Team, type: :model do
-  before {
-    @team = FactoryGirl.build(:doubles_team)
-  }
-  subject { @team }
+  subject { FactoryGirl.build(:doubles_team) }
 
   it 'has #name' do
     is_expected.to respond_to(:name)
