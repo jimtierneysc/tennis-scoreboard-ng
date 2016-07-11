@@ -1,7 +1,7 @@
 # Model for a tennis match
 # A match may be a singles match or a doubles match.
 # A match has two opponent teams.  The teams may be doubles teams, or
-# singles "teams" (a singles "team" has only one player).
+# singles teams (a singles team has only one player).
 # A match may be in different states: not started, in progress, finished
 # and complete.
 # Finished and complete matches both have a winner.
@@ -23,8 +23,7 @@ class Match < ActiveRecord::Base
   # Store nil instead of "".  The schema does not allow duplicate titles,
   # including duplicate ""
   before_validation { self.title = nil if self.title.blank? }
-  # If a title is not provided when match is created, generate
-  # one (as convenience for user)
+  # If a title is not provided when match is created, generate one
   before_create { self.title = next_match_title if self.title.blank? }
 
   # Some of these rules mimic constraints in the schema
@@ -34,7 +33,7 @@ class Match < ActiveRecord::Base
     ValidationHelper.new(self).validate(errors)
   end
 
-  # Change score by an action, for example :start_next_game
+  # Change score by an action
   # Valid actions:
   # :start_play - Start match
   # :restart_play - Restart match
@@ -466,7 +465,7 @@ class Match < ActiveRecord::Base
   end
 
   def restart_play?
-    true
+    started
   end
 
   # Back out one scoring operation.
@@ -960,7 +959,7 @@ class Match < ActiveRecord::Base
                end
       fields.each do |sym|
         value = match.send(sym)
-        errors.add sym, 'must not be blank' unless value
+        errors.add sym, 'can\'t be blank' unless value
       end
     end
   end

@@ -4,8 +4,8 @@
 # A doubles team has two players.
 # A singles team has one player.
 # Singles teams are created as needed to allow a
-# player to be an opponent in a match.  Singles teams should
-# not be visible to users.
+# player to be an opponent in a match.
+# Singles teams should not be visible to users.
 class Team < ActiveRecord::Base
   belongs_to :first_player,
              class_name: 'Player', foreign_key: :first_player_id
@@ -19,8 +19,7 @@ class Team < ActiveRecord::Base
   validate :that_is_unique_player_pair
   before_destroy :that_can_destroy_team
 
-  # If a name is not provided when match is created, generate
-  # one (as convenience for user)
+  # If a name is not provided when match is created, generate name
   before_create { self.name = next_team_name if self.name.blank? }
 
   def players
@@ -62,7 +61,7 @@ class Team < ActiveRecord::Base
   def that_is_valid_first_player
       if first_player.nil?
         errors.add(:first_player, if first_player_id.blank?
-                                     'must not be blank'
+                                     'can\'t be blank'
                                    else
                                      'not found'
                                    end)

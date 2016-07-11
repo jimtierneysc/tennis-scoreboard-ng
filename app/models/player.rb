@@ -1,8 +1,10 @@
 # Model for a player.
 # A player may be on a doubles team.
-# A player may be on a special kind of team to represent a singles
-# player in a match.
+# A player may be on a "singles team".
+# A singles team is a special kind of team to represent
+# a player in a singles match.
 # A player may be the first or second server in a match.
+# A player may be the winner of a game.
 class Player < ActiveRecord::Base
   validates :name, presence: true
   validates_uniqueness_of :name

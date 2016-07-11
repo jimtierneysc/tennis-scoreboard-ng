@@ -1,9 +1,7 @@
 # Model for a set in a match.
 # A set may has a state: in progress, finished and complete.
-# Finished and complete sets both have a winner.  Complete mean that
-# the scorer has confirmed the finished score.
-# Sets are contained within a match.
-# Games are contained within a set.
+# Finished and complete sets both have a winner.
+# A set is complete after the scorer has confirmed the final score.
 # A match tiebreaker is a special kind of set with only one game.
 # A set has an ordinal.  The first set in the match has ordinal 1.
 class MatchSet < ActiveRecord::Base
