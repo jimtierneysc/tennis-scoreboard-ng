@@ -5,11 +5,6 @@ class MatchScoreBoardSerializer < MatchSerializer
     ActiveModel::ArraySerializer.new(object.match_sets, each_serializer: MatchSetSerializer)
   end
 
-  def status
-    # not_started, in-progress, finished, etc.
-    object.state
-  end
-
   def actions
     # TODO: Array rather than hash?
     object.score_actions

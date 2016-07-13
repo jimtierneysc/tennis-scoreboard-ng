@@ -1,11 +1,6 @@
 class MatchSerializer < ActiveModel::Serializer
   attributes :id, :title, :scoring, :doubles, :state, :winner
 
-  def status
-    # not_started, in-progress, finished, etc.
-    object.state
-  end
-
   def winner
     unless object.team_winner.nil?
       if object.doubles

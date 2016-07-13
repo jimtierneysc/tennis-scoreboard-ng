@@ -22,10 +22,6 @@ class Team < ActiveRecord::Base
   # If a name is not provided when match is created, generate name
   before_create { self.name = next_team_name if self.name.blank? }
 
-  def players
-    [first_player, second_player]
-  end
-
   # indicate whether team includes a set of players
   def include_players?(players)
     players == [first_player, second_player] & players.compact
@@ -108,6 +104,4 @@ class Team < ActiveRecord::Base
     result = Team.connection.execute("SELECT nextval('team_number_seq')")
     result[0]['nextval']
   end
-
-
 end

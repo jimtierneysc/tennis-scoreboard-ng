@@ -84,31 +84,6 @@ class Match < ActiveRecord::Base
     result
   end
 
-  # This method may be used by a controller to start the next game.
-  # It captures errors rather than raise an exception
-  def validate_start_next_game_with_server(player)
-    if player.nil?
-      errors.add(:player_server, 'must be specified')
-    else
-      begin
-        start_next_game_with_server!(player)
-      rescue
-        errors.add(:root, 'Operation could not be completed')
-      end
-    end
-    errors.count == 0
-  end
-
-  # If the first server is already specified, set the second server
-  def apply_first_or_second_player_server(player)
-    if player
-      ActiveRecord::Base.transaction do
-        update_first_or_second_player_server! player
-      end
-    end
-  end
-
-
   # Retrieve information about the match
 
   def completed?
@@ -117,27 +92,23 @@ class Match < ActiveRecord::Base
 
   # The opponents in a match are teams.  For singles matches,
   # each team has a single player.
-  def first_singles_player
+  def first_player
     singles_player_of_team first_team
   end
 
-  def first_singles_player=(player)
+  def first_player=(player)
     self.first_team = singles_player_team(player)
   end
 
-  def second_singles_player
+  def second_player
     singles_player_of_team second_team
   end
 
-  def second_singles_player=(player)
+  def second_player=(player)
     self.second_team = singles_player_team(player)
   end
 
-  def teams
-    [first_team, second_team]
-  end
-
-  def state
+   def state
     if completed?
       :complete
     elsif compute_team_winner
@@ -167,38 +138,12 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def match_score(team)
-    if min_sets_to_play > 1
-      sets_won(team)
-    else
-      last_set ? last_set.games_won(team) : 0
-    end
-  end
-
-  def players
-    players_var = []
-    first_team.players.each { |p| players_var << p } if first_team
-    second_team.players.each { |p| players_var << p } if second_team
-    players_var
-  end
-
   def first_set
     match_sets.first
   end
 
   def last_set
     match_sets.last
-  end
-
-  def last_game
-    last_set.last_game if last_set
-  end
-
-  def player_serving
-    if state == :in_progress
-      last_game_var = last_game
-      last_game_var.player_server if last_game_var && !last_game_var.tiebreaker?
-    end
   end
 
   def min_sets_to_play
@@ -220,19 +165,11 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def first_servers_provided?
-    player_server_helper.first_servers_provided?
-  end
-
   def next_game_ordinal
     last_set ? last_set.set_games.count + 1 : 0
   end
 
-  def players_that_may_serve_first
-    player_server_helper.players_that_may_serve_first
-  end
-
-  def next_player_server
+   def next_player_server
     player_server_helper.next_player_server
   end
 
@@ -245,7 +182,6 @@ class Match < ActiveRecord::Base
   end
 
   private
-
 
   # Operations to change the score of a match.
   #
@@ -736,30 +672,6 @@ class Match < ActiveRecord::Base
       end
     end
 
-    def players_that_may_serve_first
-      unless match.first_team && match.second_team
-        raise Exception.InvalidOperation, 'No opponents'
-      end
-      if first_servers_provided?
-        []
-      else
-        remaining_servers
-      end
-    end
-
-    # Determine if the players who will serve first are known.
-    # For singles and doubles, there is one first
-    # server that must be known before the first game can be started.
-    # For doubles, there is another player
-    # that must be known before the second game is started.
-    def first_servers_provided?
-      if match.doubles && match.next_game_ordinal > 1
-        match.first_player_server && match.second_player_server
-      else
-        match.first_player_server
-      end
-    end
-
     def team_of_player(player)
       if (first_team_var = match.first_team) &&
         first_team_var.include_player?(player)
@@ -772,16 +684,6 @@ class Match < ActiveRecord::Base
 
     def remaining_servers
       remaining_servers_on_teams.compact
-    end
-
-    def remaining_servers_on_teams
-      if match.second_player_server
-        []
-      elsif match.first_player_server
-        other_players_on_other_team(match.first_player_server)
-      else
-        (match.first_team.players + match.second_team.players)
-      end
     end
 
     def next_doubles_server(games_played)
@@ -802,11 +704,6 @@ class Match < ActiveRecord::Base
       team.other_player player if team
     end
 
-    def other_players_on_other_team(player)
-      team = team_of_player player
-      other_team(team).players if team
-    end
-
     def next_singles_server(games_played)
       if games_played.even?
         match.first_player_server
@@ -816,16 +713,8 @@ class Match < ActiveRecord::Base
     end
 
     def other_singles_player(player)
-      if player == (first_var = match.first_singles_player)
-        match.second_singles_player
-      else
-        first_var
-      end
-    end
-
-    def other_team(team)
-      if team == (first_var = match.first_team)
-        match.second_team
+      if player == (first_var = match.first_player)
+        match.second_player
       else
         first_var
       end
@@ -856,10 +745,10 @@ class Match < ActiveRecord::Base
     def find_invalid_changes
       doubles_var = match.doubles
       if match.first_team.id != match.first_team_id_was
-        yield doubles_var ? :first_team_id : :first_singles_player
+        yield doubles_var ? :first_team_id : :first_player
       end
       if match.second_team.id_changed?
-        yield doubles_var ? :second_team_id : :second_singles_player
+        yield doubles_var ? :second_team_id : :second_player
       end
       yield :scoring if match.scoring_changed?
       find_invalid_change_servers { |sym| yield sym }
@@ -919,9 +808,9 @@ class Match < ActiveRecord::Base
     end
 
     def that_singles_players_different(errors)
-      unless match.first_singles_player.nil? ||
-        match.first_singles_player != match.second_singles_player
-        errors.add(:second_singles_player,
+      unless match.first_player.nil? ||
+        match.first_player != match.second_player
+        errors.add(:second_player,
                    'must not be the same as first player')
       end
     end
@@ -930,7 +819,7 @@ class Match < ActiveRecord::Base
       if match.first_player_server && match.second_player_server
         if match.team_of_player(match.first_player_server) ==
           match.team_of_player(match.second_player_server)
-          errors.add(:first_player_server,
+          errors.add(:first_server,
                      'may not be in the same team as second server')
         end
       end
@@ -955,7 +844,7 @@ class Match < ActiveRecord::Base
       fields = if match.doubles
                  [:first_team, :second_team]
                else
-                 [:first_singles_player, :second_singles_player]
+                 [:first_player, :second_player]
                end
       fields.each do |sym|
         value = match.send(sym)
@@ -1069,14 +958,10 @@ class Match < ActiveRecord::Base
     end
 
     def win_match_tiebreaker?
-      # last_set_var = match.last_set
-      # last_set_var && last_set_var.tiebreaker? &&
       win_game_kind?(:match_tiebreaker)
     end
 
     def win_tiebreaker(team)
-      # last_set_var = match.last_set
-      # last_set_var && !last_set_var.tiebreaker? &&
       win_game_kind team, :tiebreaker
     end
 

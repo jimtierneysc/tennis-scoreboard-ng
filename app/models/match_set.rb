@@ -17,21 +17,6 @@ class MatchSet < ActiveRecord::Base
   validate :that_scoring_is_known
   default_scope { order('ordinal ASC') }
 
-  def games_won(team)
-    raise Exceptions::InvalidOperation, 'Use #tiebreaker_won?' if tiebreaker?
-    lookup_games_won[team.id][0]
-  end
-
-  def games_won_ordinal(team, game_ordinal)
-    raise Exceptions::InvalidOperation, 'Use #tiebreaker_won?' if tiebreaker?
-    lookup_games_won[team.id][game_ordinal]
-  end
-
-  def tiebreaker_won?(team)
-    raise Exceptions::InvalidOperation, 'Use #games_won.' unless tiebreaker?
-    lookup_games_won[team.id][0] > 0
-  end
-
   def completed?
     team_winner_id
   end
@@ -51,21 +36,6 @@ class MatchSet < ActiveRecord::Base
     # pass games won by each team
     calc_winner_team(lookup[match.first_team_id][0],
                      lookup[match.second_team_id][0])
-  end
-
-  def scores
-    lookup = lookup_games_won
-    [lookup[match.first_team_id][0], lookup[match.second_team_id][0]]
-  end
-
-  def winner_score
-    raise Exceptions::InvalidOperation, 'No winner' unless compute_team_winner
-    scores.max
-  end
-
-  def loser_score
-    raise Exceptions::InvalidOperation, 'No loser' unless compute_team_winner
-    scores.min
   end
 
   def last_game
