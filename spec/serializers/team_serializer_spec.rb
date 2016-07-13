@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe TeamSerializer, :type => :serializer do
+RSpec.describe TeamSerializer, type: :serializer do
   context 'Resource Representation' do
-    let(:resource) { teams(:orphan) } # fixture
+    let(:resource) { FactoryGirl.create :doubles_team }
     let(:serializer) { TeamSerializer.new(resource) }
 
     subject do

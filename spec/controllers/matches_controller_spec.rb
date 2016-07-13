@@ -6,8 +6,7 @@ RSpec.describe MatchesController, type: :controller do
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_match) { FactoryGirl.create :doubles_match }
   let(:doubles_match_attributes) { FactoryGirl.attributes_for :doubles_match }
-  let(:singles_match) { FactoryGirl.create :singles_match, :team_ids }
-  let(:singles_match_attributes) { FactoryGirl.attributes_for :singles_match }
+  let(:singles_match) { FactoryGirl.create :singles_match }
   let(:not_found_match_id) {doubles_match.id + singles_match.id}
   let(:match_title) { doubles_match.title + 'a' }
   let(:singles_match_attributes) { FactoryGirl.attributes_for :singles_match, :player_ids }

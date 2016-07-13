@@ -21,18 +21,5 @@ FactoryGirl.define do
     end
   end
 
-  factory :singles_team, class: Team do
-    transient do
-      player_name '' # required
-    end
-
-    name null
-    doubles false
-    first_player_id do
-      (Player.find_by(name: player_name) || FactoryGirl.create(:player, name: player_name)).id
-    end
-    second_player_id null
-  end
-
 end
 

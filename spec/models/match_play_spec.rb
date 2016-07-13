@@ -1,83 +1,46 @@
 require 'rails_helper'
 require 'models/match_play_shared'
 
-# Test actions:
-# :start_play - Start match
-# :restart_play - Restart match
-# :discard_play - Discard all scoring
-# :complete_play - Complete match
-# :start_next_set
-# :complete_set_play
-# :start_next_game
-# :start_tiebreaker - Start game tiebreaker
-# :remove_last_change - Undo
-# :start_match_tiebreaker
-# :complete_match_tiebreaker
-# :win_game
-# :win_tiebreaker
-# :win_match_tiebreaker
-# Test match scoring:
-# :one_eight_game
-# :two_six_game_ten_point
-# :three_six_game
 
+# Test match scoring
 
 RSpec.describe 'Match Play', type: :model do
   describe 'empty match' do
-    before {
-      @match = FactoryGirl.build(:singles_match)
-    }
-    subject { @match }
+    subject { FactoryGirl.build(:play_singles_match) }
 
-    it_behaves_like 'match not started'
+    it_behaves_like 'a match not started'
   end
 
   describe 'start match' do
-    before {
-      @match = FactoryGirl.build(:singles_match)
-      @match.save!
-      @match.change_score! :start_play
-    }
-    subject { @match }
+    subject { FactoryGirl.build(:play_singles_match, start_play: true) }
 
-    it_behaves_like 'match just started'
+    it_behaves_like 'a match just started'
 
     context 'remove last change' do
-      before {
-        subject.change_score! :remove_last_change
-      }
-      it_behaves_like 'match not started'
+      before { subject.change_score! :remove_last_change }
+      it_behaves_like 'a match not started'
     end
 
     context 'discard play' do
-      before {
-        subject.change_score! :discard_play
-      }
-      it_behaves_like 'match not started'
+      before { subject.change_score! :discard_play }
+      it_behaves_like 'a match not started'
     end
   end
 
   describe 'start game' do
     context 'singles match' do
-      before {
-        @match = FactoryGirl.build(:singles_match)
-        @match.save!
-        @match.change_score! :start_play
-      }
-      subject { @match }
+      subject { FactoryGirl.build(:play_singles_match, start_play: true) }
 
       context 'start game with first server' do
-        before {
-          subject.change_score! :start_next_game, subject.first_singles_player
-        }
+        before do
+          subject.change_score! :start_next_game, subject.first_player
+        end
 
-        it_behaves_like 'match with first game started'
+        it_behaves_like 'a match with first game started'
 
         context 'remove last change' do
-          before {
-            subject.change_score! :remove_last_change
-          }
-          it_behaves_like 'match just started'
+          before { subject.change_score! :remove_last_change }
+          it_behaves_like 'a match just started'
         end
       end
 
@@ -88,52 +51,41 @@ RSpec.describe 'Match Play', type: :model do
       end
 
       context 'restart play' do
-        before {
-          subject.change_score! :restart_play
-        }
-        it_behaves_like 'match just started'
+        before { subject.change_score! :restart_play }
+        it_behaves_like 'a match just started'
       end
     end
 
     context 'doubles match' do
-      before {
-        @match = FactoryGirl.build(:doubles_match)
-        @match.save!
-        @match.change_score! :start_play
-      }
-      subject { @match }
+      subject { FactoryGirl.build(:play_doubles_match, start_play: true) }
 
       context 'start first game with first server' do
-        before {
+        before do
           subject.change_score! :start_next_game, subject.first_team.first_player
-        }
+        end
 
-        it_behaves_like 'match with first game started'
+        it_behaves_like 'a match with first game started'
 
         context 'remove last change' do
-          before {
-            subject.change_score! :remove_last_change
-          }
-          it_behaves_like 'match just started'
+          before { subject.change_score! :remove_last_change }
+          it_behaves_like 'a match just started'
         end
 
         context 'start second game' do
-          before {
-            subject.change_score! :win_game, subject.first_team
-          }
+          before { subject.change_score! :win_game, subject.first_team }
 
           context 'start second game with second server' do
-            before {
+            before do
               subject.change_score! :start_next_game, subject.second_team.first_player
-            }
+            end
 
-            it_behaves_like 'match with second game started'
+            it_behaves_like 'a match with second game started'
 
             context 'remove last change' do
               before {
                 subject.change_score! :remove_last_change
               }
-              it_behaves_like 'match with first game started'
+              it_behaves_like 'a match with game won'
             end
           end
 
@@ -164,20 +116,12 @@ RSpec.describe 'Match Play', type: :model do
   end
 
   describe 'win game' do
-    before {
-      @match = FactoryGirl.build(:singles_match)
-      @match.save!
-      @match.change_score! :start_play
-      @match.change_score! :start_next_game, @match.first_singles_player
-    }
-    subject { @match }
+    subject { FactoryGirl.build(:play_singles_match, start_first_game: true) }
 
     context 'win game with player' do
-      before {
-        subject.change_score! :win_game, subject.first_team
-      }
+      before { subject.change_score! :win_game, subject.first_team }
 
-      it_behaves_like 'match with game won'
+      it_behaves_like 'a match with game won'
     end
 
     context 'win game without player' do
@@ -188,70 +132,46 @@ RSpec.describe 'Match Play', type: :model do
   end
 
   describe 'complete set' do
-    before {
-      @match = FactoryGirl.build(:singles_match, scoring: :three_six_game)
-      @match.save!
-      @match.change_score! :start_play
-      @match.change_score! :start_next_game, @match.first_singles_player
-      (1..6).each do |ordinal|
-        @match.change_score! :start_next_game if ordinal > 1
-        @match.change_score! :win_game, @match.first_team
-      end
-    }
-    subject { @match }
+    subject do
+      FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
+                        scores: [[6, 0]], complete_set: false)
+    end
 
-    it_behaves_like 'match set can be completed'
+    it_behaves_like 'a match set can be completed'
 
     context 'complete play' do
-      before {
-        subject.change_score! :complete_set_play
-      }
+      before { subject.change_score! :complete_set_play }
 
-      it_behaves_like 'match with complete set'
+      it_behaves_like 'a match with complete set'
 
       context 'remove last change' do
-        before {
-          subject.change_score! :remove_last_change
-        }
-        it_behaves_like 'match set can be completed'
+        before { subject.change_score! :remove_last_change }
+        it_behaves_like 'a match set can be completed'
       end
     end
   end
 
   describe 'set tiebreaker' do
-    before {
-      @match = FactoryGirl.build(:singles_match, scoring: :one_eight_game)
-      @match.save!
-      @match.change_score! :start_play
-      @match.change_score! :start_next_game, @match.first_singles_player
-      (1..16).each do |ordinal|
-        @match.change_score! :start_next_game if ordinal > 1
-        @match.change_score! :win_game, ordinal.odd? ? @match.first_team : @match.second_team
-      end
-    }
-    subject { @match }
+    subject do
+      FactoryGirl.build(:play_singles_match, scoring: :one_eight_game,
+                        scores: [[8, 8]])
+    end
 
-    it_behaves_like 'match can start set tiebreaker'
+    it_behaves_like 'a match can start set tiebreaker'
 
     context 'start tiebreaker' do
-      before {
-        subject.change_score! :start_tiebreaker
-      }
+      before { subject.change_score! :start_tiebreaker }
 
-      it_behaves_like 'match in set tiebreaker'
+      it_behaves_like 'a match in set tiebreaker'
 
       context 'win tiebreaker with player' do
-        before {
-          subject.change_score! :win_tiebreaker, subject.first_team
-        }
+        before { subject.change_score! :win_tiebreaker, subject.first_team }
 
-        it_behaves_like 'match with finished set'
+        it_behaves_like 'a match with finished set'
 
         context 'remove last change' do
-          before {
-            subject.change_score! :remove_last_change
-          }
-          it_behaves_like 'match in set tiebreaker'
+          before { subject.change_score! :remove_last_change }
+          it_behaves_like 'a match in set tiebreaker'
         end
       end
 
@@ -262,52 +182,49 @@ RSpec.describe 'Match Play', type: :model do
       end
 
       context 'remove last change' do
-        before {
+        before do
           subject.change_score! :remove_last_change
-        }
-        it_behaves_like 'match can start set tiebreaker'
+          subject.reload
+        end
+        it_behaves_like 'a match can start set tiebreaker'
       end
     end
   end
 
   describe 'match tiebreaker' do
-    before {
-      @match = FactoryGirl.build(:singles_match, scoring: :two_six_game_ten_point)
-      @match.save!
-      @match.change_score! :start_play
-      (0..1).each do |set|
-        @match.change_score! :start_next_set if set > 0
-        @match.change_score! :start_next_game, (@match.first_singles_player if set == 0)
-        (1..6).each do |game|
-          @match.change_score! :start_next_game if game > 1
-          @match.change_score! :win_game, set.odd? ? @match.first_team : @match.second_team
-        end
-        @match.change_score! :complete_set_play
-      end
-    }
-    subject { @match }
+    subject do
+      FactoryGirl.build(:play_singles_match,
+                        scoring: :two_six_game_ten_point, scores: [[6, 0], [0, 6]])
+    end
 
-    it_behaves_like 'match can start match tiebreaker'
+    it_behaves_like 'a match can start match tiebreaker'
 
     context 'start match tiebreaker' do
-      before {
-        subject.change_score! :start_match_tiebreaker
-      }
+      before { subject.change_score! :start_match_tiebreaker }
 
-      it_behaves_like 'match in match tiebreaker'
+      it_behaves_like 'a match in match tiebreaker'
 
       context 'win match tiebreaker with player' do
-        before {
+        before do
           subject.change_score! :win_match_tiebreaker, subject.first_team
-        }
+        end
 
-        it_behaves_like 'match finished'
+        it_behaves_like 'a match finished'
 
         context 'remove last change' do
-          before {
-            subject.change_score! :remove_last_change
-          }
-          it_behaves_like 'match in match tiebreaker'
+          before { subject.change_score! :remove_last_change }
+          it_behaves_like 'a match in match tiebreaker'
+        end
+
+        context 'complete match tiebreaker' do
+          before { subject.change_score! :complete_match_tiebreaker }
+          it_behaves_like 'a match with complete set'
+
+          context 'remove last change' do
+            before { subject.change_score! :remove_last_change }
+            it_behaves_like 'a match with finished set'
+          end
+
         end
       end
 
@@ -318,80 +235,204 @@ RSpec.describe 'Match Play', type: :model do
       end
 
       context 'remove last change' do
-        before {
+        before do
           subject.change_score! :remove_last_change
           subject.reload # clears destroyed entities
-        }
-        it_behaves_like 'match can start match tiebreaker'
+        end
+        it_behaves_like 'a match can start match tiebreaker'
       end
     end
   end
 
   describe 'complete match' do
     context 'multiple set match' do
-      before {
-        @match = FactoryGirl.build(:singles_match, scoring: :three_six_game)
-        @match.save!
-        @match.change_score! :start_play
-        @match.change_score! :start_next_game, @match.first_singles_player
-        (1..2).each do |set|
-          (1..6).each do |game|
-            @match.change_score! :start_next_game if set > 1 || game > 1
-            @match.change_score! :win_game, @match.first_team
-          end
-          @match.change_score! :complete_set_play
-          @match.change_score! :start_next_set if set == 1
-        end
-      }
-      subject { @match }
+      subject do
+        FactoryGirl.build(:play_singles_match, scoring: :three_six_game, scores: [[6, 0], [6, 0]],
+                          complete_match: false)
+      end
 
-      it_behaves_like 'match can be completed'
+      it_behaves_like 'a match can be completed'
 
       context 'complete play' do
-        before {
-          subject.change_score! :complete_play
-        }
+        before { subject.change_score! :complete_play }
 
-        it_behaves_like 'match complete'
+        it_behaves_like 'a match complete'
 
         context 'remove last change' do
-          before {
-            subject.change_score! :remove_last_change
-          }
-          it_behaves_like 'match can be completed'
+          before { subject.change_score! :remove_last_change }
+          it_behaves_like 'a match can be completed'
         end
       end
     end
 
     context 'one set match' do
-      before {
-        @match = FactoryGirl.build(:singles_match, scoring: :one_eight_game)
-        @match.save!
-        @match.change_score! :start_play
-        @match.change_score! :start_next_game, @match.first_singles_player
-        (1..8).each do |ordinal|
-          @match.change_score! :start_next_game if ordinal > 1
-          @match.change_score! :win_game, @match.first_team
-        end
-        # when only one set, no need to complete_set_play
-        # @match.change_score! :complete_set_play
-      }
-      subject { @match }
+      subject do
+        FactoryGirl.build(:play_singles_match, scoring: :one_eight_game, scores: [[8, 0]],
+                          complete_match: false)
+      end
 
-      it_behaves_like 'match can be completed'
+      it_behaves_like 'a match can be completed'
 
       context 'complete play' do
-        before {
-          subject.change_score! :complete_play
-        }
+        before { subject.change_score! :complete_play }
 
-        it_behaves_like 'match complete'
+        it_behaves_like 'a match complete'
 
         context 'remove last change' do
-          before {
-            subject.change_score! :remove_last_change
-          }
-          it_behaves_like 'match can be completed'
+          before { subject.change_score! :remove_last_change }
+
+          it_behaves_like 'a match can be completed'
+        end
+      end
+    end
+  end
+
+  describe 'first set servers' do
+    context 'singles' do
+      subject do
+        FactoryGirl.build(:play_singles_match, scoring: :three_six_game, start_first_game: true)
+      end
+
+      context 'first game' do
+        it_behaves_like 'a match with first player serving'
+      end
+
+      context 'second game' do
+        before do
+          subject.change_score! :win_game, subject.first_player
+          subject.change_score! :start_next_game
+        end
+
+        it_behaves_like 'a match with second player serving'
+
+        context 'third game' do
+          before do
+            subject.change_score! :win_game, subject.first_player
+            subject.change_score! :start_next_game
+          end
+
+          it_behaves_like 'a match with first player serving'
+        end
+      end
+
+    end
+    context 'doubles' do
+      subject do
+        FactoryGirl.build(:play_doubles_match, scoring: :three_six_game, start_first_game: true)
+      end
+      let(:winner) { subject.first_team.first_player }
+
+      context 'first game' do
+        it_behaves_like 'a match with first player serving'
+      end
+
+      context 'second game' do
+        before do
+          subject.change_score! :win_game, winner
+          subject.change_score! :start_next_game, subject.second_team.first_player
+        end
+
+        it_behaves_like 'a match with third player serving'
+
+        context 'third game' do
+          before do
+            subject.change_score! :win_game, winner
+            subject.change_score! :start_next_game
+          end
+
+          it_behaves_like 'a match with second player serving'
+
+          context 'fourth game' do
+            before {
+              subject.change_score! :win_game, winner
+              subject.change_score! :start_next_game
+            }
+
+            it_behaves_like 'a match with fourth player serving'
+
+            context 'fifth game' do
+              before do
+                subject.change_score! :win_game, winner
+                subject.change_score! :start_next_game
+              end
+
+              it_behaves_like 'a match with first player serving'
+            end
+          end
+        end
+      end
+    end
+  end
+
+  describe 'second set servers' do
+    context 'odd' do
+      context 'singles' do
+        subject do
+          FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
+                            scores: [[6, 3]], start_next_set_game: true)
+        end
+
+        context 'first game' do
+          it_behaves_like 'a match with second player serving'
+        end
+
+      end
+      context 'doubles' do
+        subject do
+          FactoryGirl.build(:play_doubles_match, scoring: :three_six_game,
+                            scores: [[6, 3]], start_next_set_game: true)
+        end
+
+        context 'first game' do
+          it_behaves_like 'a match with third player serving'
+        end
+      end
+
+    end
+    context 'even' do
+      context 'singles' do
+        subject do
+          FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
+                            scores: [[7, 5]], start_next_set_game: true)
+        end
+
+        context 'first game' do
+          it_behaves_like 'a match with first player serving'
+        end
+      end
+
+      context 'doubles' do
+        subject do
+          FactoryGirl.build(:play_doubles_match, scoring: :three_six_game,
+                            scores: [[6, 4]], start_next_set_game: true)
+        end
+
+        context 'first game' do
+          it_behaves_like 'a match with second player serving'
+        end
+      end
+    end
+
+    context 'tiebreaker' do
+      context 'singles' do
+        subject do
+          FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
+                            scores: [[6, 7]], start_next_set_game: true)
+        end
+
+        context 'first game' do
+          it_behaves_like 'a match with first player serving'
+        end
+      end
+
+      context 'doubles' do
+        subject do
+          FactoryGirl.build(:play_doubles_match, scoring: :three_six_game,
+                            scores: [[7, 6]], start_next_set_game: true)
+        end
+
+        context 'first game' do
+          it_behaves_like 'a match with first player serving'
         end
       end
     end

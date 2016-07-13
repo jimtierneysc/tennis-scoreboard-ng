@@ -32,12 +32,12 @@ RSpec.describe Match, type: :model do
       is_expected.to respond_to(:second_team)
     end
 
-    it 'has #first_singles_player' do
-      is_expected.to respond_to(:first_singles_player)
+    it 'has #first_player' do
+      is_expected.to respond_to(:first_player)
     end
 
-    it 'has #second_singles_player' do
-      is_expected.to respond_to(:second_singles_player)
+    it 'has #second_player' do
+      is_expected.to respond_to(:second_player)
     end
 
     it 'is valid' do
@@ -83,12 +83,12 @@ RSpec.describe Match, type: :model do
 
     it_behaves_like 'match'
 
-    it 'validates presence of #second_singles_player' do
-      is_expected.to validate_presence_of(:first_singles_player)
+    it 'validates presence of #second_player' do
+      is_expected.to validate_presence_of(:first_player)
     end
 
-    it 'validates presence of #second_singles_player' do
-      is_expected.to validate_presence_of(:second_singles_player)
+    it 'validates presence of #second_player' do
+      is_expected.to validate_presence_of(:second_player)
     end
   end
 end

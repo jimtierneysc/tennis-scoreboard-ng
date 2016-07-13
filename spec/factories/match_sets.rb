@@ -10,7 +10,7 @@ FactoryGirl.define do
     ordinal 1
     scoring 'six_game'
     match_id do
-      (Match.find_by(title: match_title) || FactoryGirl.create(:singles_match, match_title: match_title)).id
+      (Match.find_by(title: match_title) || FactoryGirl.create(:singles_match, title: match_title)).id
     end
   end
 end

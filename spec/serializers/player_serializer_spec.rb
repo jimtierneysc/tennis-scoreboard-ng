@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe PlayerSerializer, :type => :serializer do
+RSpec.describe PlayerSerializer, type: :serializer do
   context 'Resource Representation' do
-    let(:resource) { players(:orphan) } # fixture
+    let(:resource) { FactoryGirl.create :player }
     let(:serializer) { PlayerSerializer.new(resource) }
 
     subject do

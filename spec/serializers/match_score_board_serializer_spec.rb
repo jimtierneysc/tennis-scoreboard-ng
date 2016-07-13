@@ -1,51 +1,78 @@
 require 'rails_helper'
 require 'serializers/match_serializer_shared'
 
-RSpec.shared_examples "a scoreboard" do
-
-  it 'has sets' do
-    expect(subject.include? :sets).to be_truthy
-  end
-
-  it 'has actions' do
-    expect(subject.include? :actions).to be_truthy
-  end
-
-  it 'errors' do
-    expect(subject.include? :errors).to be_truthy
-  end
-
-  it 'has servers' do
-    expect(subject.include? :servers).to be_truthy
-  end
-
+def scoreboard_json(match)
+  serializer = MatchScoreBoardSerializer.new(match)
+  JSON.parse(serializer.to_json, symbolize_names: true)[:match_score_board]
 end
 
 RSpec.describe MatchScoreBoardSerializer, ancestor: MatchSerializer do
-  context "doubles" do
-    let(:resource) { matches(:m_one_eight_game_doubles) } # fixture
-    let(:serializer) { MatchScoreBoardSerializer.new(resource) }
+  describe 'empty match' do
+    context "doubles" do
+      let(:match) { FactoryGirl.create :doubles_match }
 
-    subject do
-      JSON.parse(serializer.to_json, symbolize_names: true)[:match_score_board]
+      subject do
+        scoreboard_json(match)
+      end
+
+      it_behaves_like "a doubles scoreboard"
+
+      it 'equals match' do
+        is_expected.to eql_match(match)
+      end
+
     end
 
-    it_behaves_like "a doubles match"
+    context "singles" do
+      let(:match) { FactoryGirl.create :singles_match }
 
-    it_behaves_like "a scoreboard"
+      subject do
+        scoreboard_json(match)
+      end
 
+      it_behaves_like "a singles scoreboard"
+
+      it 'equals match' do
+        is_expected.to eql_match(match)
+      end
+    end
   end
 
-  context "singles" do
-    let(:resource) { matches(:m_one_eight_game_singles) } # fixture
-    let(:serializer) { MatchScoreBoardSerializer.new(resource) }
+  describe 'complete match' do
+    context "doubles" do
+      let(:match) { FactoryGirl.create :play_doubles_match,
+                                       scoring: :two_six_game_ten_point,
+                                       scores: [[7, 6],[4, 6],[1, 0]]}
 
-    subject do
-      JSON.parse(serializer.to_json, symbolize_names: true)[:match_score_board]
+      subject do
+        scoreboard_json(match)
+      end
+
+      it_behaves_like "a doubles scoreboard"
+
+      it 'equals match' do
+        is_expected.to eql_match(match)
+      end
+
     end
 
-    it_behaves_like "a singles match"
+    context "singles" do
+      let(:match) { FactoryGirl.create :play_singles_match,
+                                       scoring: :two_six_game_ten_point,
+                                       scores: [[7, 6], [4, 6], [1, 0]]}
 
-    it_behaves_like "a scoreboard"
+      subject do
+        scoreboard_json(match)
+      end
+
+      it_behaves_like "a singles scoreboard"
+
+      it 'equals match' do
+        is_expected.to eql_match(match)
+      end
+    end
   end
+
 end
+
+
