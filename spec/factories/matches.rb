@@ -1,6 +1,4 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
-
+# TODO Move this
 def find_or_create_player(player_name)
   (Player.find_by(name: player_name) || FactoryGirl.create(:player, name: player_name))
 end

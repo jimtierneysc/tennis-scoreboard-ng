@@ -36,6 +36,16 @@ RSpec.describe Team, type: :model do
     is_expected.to validate_presence_of(:first_player)
   end
 
+  it 'validates existence of #first_player' do
+    subject.first_player_id = 0
+    is_expected.not_to be_valid
+  end
+
+  it 'validates existence of #second_player' do
+    subject.second_player_id = 0
+    is_expected.not_to be_valid
+  end
+
   it 'validates two different players' do
     subject.second_player = subject.first_player
     is_expected.to_not be_valid
@@ -43,9 +53,10 @@ RSpec.describe Team, type: :model do
 
   context 'when already have a team with players' do
     it 'validates duplicate players in same order' do
-      FactoryGirl.build(:doubles_team, team_name: nil).save!
+      FactoryGirl.build(:doubles_team, name: 'other team').save!
       is_expected.to_not be_valid
     end
+
     it 'validates duplicate players in reverse order' do
       FactoryGirl.build(:doubles_team, first_player_name: subject.second_player.name,
                         second_player_name: subject.first_player.name).save!
@@ -53,8 +64,14 @@ RSpec.describe Team, type: :model do
     end
   end
 
+  it 'generates a default team name' do
+    subject.name = nil
+    subject.save!
+    expect(subject.name).to start_with('Team')
+  end
+
   describe '#destroy!' do
-    before(:each) do
+    before do
       subject.save!
     end
 
@@ -63,7 +80,7 @@ RSpec.describe Team, type: :model do
     end
 
     context 'when referenced by match' do
-      before(:each) do
+      before do
         @match = FactoryGirl.build(:doubles_match, first_team_name: subject.name)
         @match.save!
       end

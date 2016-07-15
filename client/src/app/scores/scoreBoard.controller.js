@@ -95,7 +95,7 @@
 
     function makeUpdateBody(action, id) {
       var params = {};
-      if (action == 'start_next_game') {
+      if (action == 'start_game') {
         if (id) {
           // player to serve next
           params.player = id;

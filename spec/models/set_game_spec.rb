@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe SetGame, type: :model do
-  # before {
-  #   @set_game = FactoryGirl.build(:set_game)
-  # }
-
   subject { FactoryGirl.build(:set_game) }
 
   it 'has #ordinal' do
@@ -36,7 +32,7 @@ RSpec.describe SetGame, type: :model do
   end
 
   describe '#destroy!' do
-    before(:each) do
+    before do
       subject.save!
     end
 

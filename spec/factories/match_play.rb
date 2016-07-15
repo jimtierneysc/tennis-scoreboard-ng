@@ -7,7 +7,7 @@ FactoryGirl.define do
       start_first_game false
       complete_set true
       complete_match true
-      start_next_set_game false
+      start_set_game false
     end
 
     after(:build) do |subject, factory|
@@ -22,7 +22,7 @@ FactoryGirl.define do
       start_first_game false
       complete_set true
       complete_match true
-      start_next_set_game false
+      start_set_game false
     end
 
     after(:build) do |subject, factory|
@@ -41,8 +41,8 @@ def after_build(subject, factory)
   if factory.scores.count > 0
     MatchPlayHelper.new(subject).score!(factory.scores, factory.complete_set, factory.complete_match)
   end
-  if factory.start_next_set_game
-    MatchPlayHelper.new(subject).start_next_set_game!
+  if factory.start_set_game
+    MatchPlayHelper.new(subject).start_set_game!
   end
 end
 
@@ -56,18 +56,18 @@ class MatchPlayHelper
 
   def start_play!
     subject.save!
-    if subject.change_score? :start_play
-      subject.change_score! :start_play
+    if subject.play_match? :start_play
+      subject.play_match! :start_play
     end
   end
 
   def start_first_game!
     start_play!
-    if subject.change_score?(:start_next_game) && no_games?
+    if subject.play_match?(:start_game) && no_games?
       if subject.doubles
-        subject.change_score! :start_next_game, subject.first_team.first_player
+        subject.play_match! :start_game, subject.first_team.first_player
       else
-        subject.change_score! :start_next_game, subject.first_player
+        subject.play_match! :start_game, subject.first_player
       end
     end
   end
@@ -76,8 +76,8 @@ class MatchPlayHelper
     start_play!
     (1..scores.count).each do |set|
       if set > 1
-        subject.change_score! :complete_set_play
-        change_score! [:start_next_set, :start_match_tiebreaker]
+        subject.play_match! :complete_set_play
+        play_match! [:start_set, :start_match_tiebreaker]
       end
       if subject.match_sets[set-1].tiebreaker?
         score_match_tiebreaker(set, scores[set-1], subject.first_team, subject.second_team)
@@ -86,22 +86,22 @@ class MatchPlayHelper
       end
     end
     if complete_set
-      change_score! [:complete_set_play, :complete_match_tiebreaker]
+      play_match! [:complete_set_play, :complete_match_tiebreaker]
     end
     if complete_match
-      change_score! [:complete_play]
+      play_match! [:complete_play]
     end
   end
 
-  def start_next_set_game!
-    subject.change_score! :start_next_set
-    subject.change_score! :start_next_game
+  def start_set_game!
+    subject.play_match! :start_set
+    subject.play_match! :start_game
   end
 
   private
 
   def score_match_tiebreaker(set, scores, first_opponent, second_opponent)
-    subject.change_score! :win_match_tiebreaker,
+    subject.play_match! :win_match_tiebreaker,
                           scores[0] == 1 ? first_opponent : second_opponent
   end
 
@@ -118,26 +118,26 @@ class MatchPlayHelper
             game % 2
           end
       if counters[i] > 0
-        start_next_game!
-        subject.change_score! :win_game, opponents[i]
+        start_game!
+        subject.play_match! :win_game, opponents[i]
         counters[i] -= 1
       else
         break
       end
     end
     if counters.max == 1
-      subject.change_score! :start_tiebreaker
-      subject.change_score! :win_tiebreaker, opponents[counters.rindex(1)]
+      subject.play_match! :start_tiebreaker
+      subject.play_match! :win_tiebreaker, opponents[counters.rindex(1)]
     end
   end
 
-  def start_next_game!
+  def start_game!
     if no_games?
       start_first_game!
     elsif one_game?
       start_second_game!
     else
-      subject.change_score! :start_next_game
+      subject.play_match! :start_game
     end
   end
 
@@ -151,16 +151,16 @@ class MatchPlayHelper
 
   def start_second_game!
     if subject.doubles
-      subject.change_score! :start_next_game, subject.second_team.first_player
+      subject.play_match! :start_game, subject.second_team.first_player
     else
-      subject.change_score! :start_next_game
+      subject.play_match! :start_game
     end
   end
 
-  def change_score! actions
+  def play_match! actions
     actions.each do |action|
-      if subject.change_score? action
-        subject.change_score! action
+      if subject.play_match? action
+        subject.play_match! action
         break
       end
     end

@@ -1,104 +1,80 @@
 require 'rails_helper'
-
+require 'controllers/controllers_shared'
 
 RSpec.describe UsersController, type: :controller do
-# RSpec.describe Api::V1::UsersController, type: :controller do
-  describe "GET #show" do
-    before(:each) do 
-      @user = FactoryGirl.create :user
-      get :show, id: @user.id
-    end
+  let(:username1) {'one'}
+  let(:username2) {'two'}
+  let(:password) {'12345768'}
+  let(:user1) { FactoryGirl.create :user, username: username1 }
+  let(:user1_attributes) { FactoryGirl.attributes_for :user, username: username1 }
+  let(:invalid_user1_attributes) do
+    # missing username
+    {password: password, password_confirmation: password}
+  end
 
-    it "returns the information about a reporter on a hash" do
-      user_response = json_response
-      expect(user_response[:username]).to eql @user.username
+  describe 'GET #show' do
+    before { get :show, id: user1.id }
+
+    it 'renders json' do
+      expect(json_response[:username]).to eql user1.username
     end
 
     it { is_expected.to respond_with 200 }
   end
 
-  describe "POST #create" do
+  describe 'POST #create' do
 
-    context "when is successfully created" do
-      before(:each) do
-        @user_attributes = FactoryGirl.attributes_for :user
-        post :create, { user: @user_attributes }
-      end
+    context 'when is successfully created' do
+      before { post :create, { user: user1_attributes } }
 
-      it "renders the json representation for the user record just created" do
-        user_response = json_response
-        expect(user_response[:username]).to eql @user_attributes[:username]
+      it 'renders json' do
+        expect(json_response[:username]).to eql user1_attributes[:username]
       end
 
       it { is_expected.to respond_with 201 }
     end
 
-    context "when is not created" do
-      before(:each) do
-        @invalid_user_attributes = { password: "12345678", password_confirmation: "12345678" } #notice I'm not including the username
-        post :create, { user: @invalid_user_attributes }
-      end
+    context 'when is not created' do
+      before { post :create, { user: invalid_user1_attributes } }
 
-      it "renders an errors json" do
-        user_response = json_response
-        expect(user_response).to have_key(:errors)
-      end
-
-      it "renders the json errors on why the user could not be created" do
-        user_response = json_response
-        expect(user_response[:errors][:username]).to include CANT_BE_BLANK
-      end
+      it_behaves_like 'attribute error', :username, :cant_be_blank
 
       it { is_expected.to respond_with 422 }
     end
   end
 
-  describe "PUT/PATCH #update" do
-    before(:each) do
-      @user = FactoryGirl.create :user
-      api_authorization_header @user.auth_token 
-    end
+  describe 'PUT/PATCH #update' do
+    before { api_authorization_header user1.auth_token }
 
-    context "when is successfully updated" do
-      before(:each) do
-        patch :update, { id: @user.id, user: { username: "newmail@example.com" } }
+    context 'when is successfully updated' do
+      before do
+        patch :update, { id: user1.id, user: { username: username2 } }
       end
 
-      it "renders the json representation for the updated user" do
-        user_response = json_response
-        expect(user_response[:username]).to eql "newmail@example.com"
+      it 'renders json' do
+        expect(json_response[:username]).to eql username2
       end
 
       it { is_expected.to respond_with 200 }
     end
 
-    # context "when is not updated" do
-    #   before(:each) do
-    #     patch :update, { id: @user.id, user: { username: "bademail.com" } }
-    #   end
-    #
-    #   it "renders an errors json" do
-    #     user_response = json_response
-    #     expect(user_response).to have_key(:errors)
-    #   end
-    #
-    #   it "renders the json errors on why the user could not be created" do
-    #     user_response = json_response
-    #     expect(user_response[:errors][:username]).to include "is invalid"
-    #   end
-    #
-    #   it { is_expected.to respond_with 422 }
-    # end
+    context 'when is not updated' do
+      before do
+        patch :update, { id: user1.id, user: { username: '' } }
+      end
+
+      it_behaves_like 'attribute error', :username, :cant_be_blank
+
+      it { is_expected.to respond_with 422 }
+    end
   end
 
-  describe "DELETE #destroy" do
-    before(:each) do
-      @user = FactoryGirl.create :user
-      api_authorization_header @user.auth_token 
-      delete :destroy, { id: @user.id }
+  describe 'DELETE #destroy' do
+    before do
+      api_authorization_header user1.auth_token
+      delete :destroy, { id: user1.id }
     end
 
     it { is_expected.to respond_with 204 }
-
   end
 end

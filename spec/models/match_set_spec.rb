@@ -33,7 +33,7 @@ RSpec.describe MatchSet, type: :model do
   end
 
   describe '#destroy!' do
-    before(:each) do
+    before do
       subject.save!
     end
 

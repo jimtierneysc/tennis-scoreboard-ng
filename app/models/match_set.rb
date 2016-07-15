@@ -50,8 +50,6 @@ class MatchSet < ActiveRecord::Base
       8
     when :ten_point
       1
-    else
-      raise ArgumentError, "Unknown scoring: #{scoring}"
     end
   end
 

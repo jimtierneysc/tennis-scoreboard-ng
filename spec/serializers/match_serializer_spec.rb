@@ -1,21 +1,22 @@
 require 'rails_helper'
 require 'serializers/match_serializer_shared'
 
-def match_json(match)
-  serializer = MatchSerializer.new(match)
-  JSON.parse(serializer.to_json, symbolize_names: true)[:match]
-end
+RSpec.describe MatchSerializer, { type: :serializer, match_serializer_shared: true } do
 
-RSpec.describe MatchSerializer, ancestor: MatchSerializer do
+  def match_json(match)
+    serializer = MatchSerializer.new(match)
+    JSON.parse(serializer.to_json, symbolize_names: true)[:match]
+  end
+
   describe 'empty match' do
-    context "doubles" do
+    context 'doubles' do
       let(:match) { FactoryGirl.create :doubles_match }
 
       subject do
         match_json(match)
       end
 
-      it_behaves_like "a doubles match"
+      it_behaves_like 'a doubles match'
 
       it 'equals match' do
         is_expected.to eql_match(match)
@@ -23,14 +24,14 @@ RSpec.describe MatchSerializer, ancestor: MatchSerializer do
 
     end
 
-    context "singles" do
+    context 'singles' do
       let(:match) { FactoryGirl.create :singles_match }
 
       subject do
         match_json(match)
       end
 
-      it_behaves_like "a singles match"
+      it_behaves_like 'a singles match'
 
       it 'equals match' do
         is_expected.to eql_match(match)
@@ -39,7 +40,7 @@ RSpec.describe MatchSerializer, ancestor: MatchSerializer do
   end
 
   describe 'complete match' do
-    context "doubles" do
+    context 'doubles' do
       let(:match) { FactoryGirl.create :play_doubles_match,
                                        scoring: :two_six_game_ten_point,
                                        scores: [[7, 6],[4, 6],[1, 0]]}
@@ -48,7 +49,7 @@ RSpec.describe MatchSerializer, ancestor: MatchSerializer do
         match_json(match)
       end
 
-      it_behaves_like "a doubles match"
+      it_behaves_like 'a doubles match'
 
       it 'equals match' do
         is_expected.to eql_match(match)
@@ -56,7 +57,7 @@ RSpec.describe MatchSerializer, ancestor: MatchSerializer do
 
     end
 
-    context "singles" do
+    context 'singles' do
       let(:match) { FactoryGirl.create :play_singles_match,
                                        scoring: :two_six_game_ten_point,
                                        scores: [[7, 6], [4, 6], [1, 0]]}
@@ -65,7 +66,7 @@ RSpec.describe MatchSerializer, ancestor: MatchSerializer do
         match_json(match)
       end
 
-      it_behaves_like "a singles match"
+      it_behaves_like 'a singles match'
 
       it 'equals match' do
         is_expected.to eql_match(match)

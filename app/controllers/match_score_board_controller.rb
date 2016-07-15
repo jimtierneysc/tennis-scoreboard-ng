@@ -19,19 +19,13 @@ class MatchScoreBoardController < ApplicationController
     param = nil
     if [:win_game, :win_match_tiebreaker, :win_tiebreaker].include?(action)
       team = params[:team]
-      player = params[:player]
-      param = if team
-                Team.find(team)
-              elsif player
-                # Model expects team rather than player
-                @match.team_of_player Player.find(player)
-              end
-    elsif [:start_next_game].include?(action)
+      param = Team.find(team) unless team.nil?
+    elsif [:start_game].include?(action)
       player = params[:player]
       param = Player.find(player) unless player.nil?
     end
-    change_score {
-      @match.change_score!(action, param)
+    play_match {
+      @match.play_match!(action, param)
     }
   end
 
@@ -51,16 +45,10 @@ class MatchScoreBoardController < ApplicationController
                                               :player)
   end
 
-  def change_score
-    # Prevent scoring unless logged in.  Exception handled by application_controller.
-    # TODO authentication
-    # check_login
+  def play_match
     begin
       yield
       # TODO: Notify clients
-      # update_version_and_notify
-      # TODO try to get rid of this query for better performance.  It is needed
-      # after delete a game or set.
       @match = self.class.eager_load_match params[:id]
     rescue ::Exceptions::UnknownOperation
       raise

@@ -187,7 +187,7 @@
         beforeEach(function () {
           var response = doublesResponse();
           response.state = 'in_progress';
-          response.actions = {start_next_game: true};
+          response.actions = {start_game: true};
           var vm = scoreboardController(response);
           sb = vm.scoreboard;
         });
@@ -207,7 +207,7 @@
         beforeEach(function () {
           var response = singlesResponse();
           response.state = 'in_progress';
-          response.actions = {start_next_set: true};
+          response.actions = {start_set: true};
           var vm = scoreboardController(response);
           sb = vm.scoreboard;
         });
@@ -262,7 +262,7 @@
         return {
           match_score_board: {
             player: id,
-            action: 'start_next_game'
+            action: 'start_game'
           }
         }
       }
@@ -299,9 +299,9 @@
           });
         });
 
-        it('valid params for start_next_game', function () {
+        it('valid params for start_game', function () {
           mockResource.params = null;
-          sb.update('start_next_game', 10, true);
+          sb.update('start_game', 10, true);
           expect(mockResource.params).toEqual(startNextGameParams(10));
         });
       });
@@ -534,7 +534,7 @@
         var confirmActions = {
           discard_play: true,
           restart_play: true,
-          start_next_set: false
+          start_set: false
         };
 
         describe('open modal', function () {

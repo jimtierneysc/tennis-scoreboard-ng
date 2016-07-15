@@ -23,7 +23,7 @@ class MatchesController < ApplicationController
 
   # POST /matches
   def create
-    @match = create_match(match_params)
+    @match = create_match match_params(match_params_doubles?)
     if @match.save
       render json: @match, status: :created, location: @match
     else
@@ -33,12 +33,13 @@ class MatchesController < ApplicationController
 
   # PATCH/PUT /matches/1
   def update
-    update_sym = if doubles_param? params
+    doubles = @match.doubles
+    update_sym = if doubles
                    :update_doubles_match
                  else
                    :update_singles_match
                  end
-    if send(update_sym, @match, match_params)
+    if send(update_sym, @match, match_params(doubles))
       render json: @match, status: :ok
     else
       render json: {errors: @match.errors}, status: :unprocessable_entity
@@ -47,30 +48,32 @@ class MatchesController < ApplicationController
 
   # DELETE /matches/1
   def destroy
-    if @match.destroy
-      head :no_content
-    else
-      render json: {errors: @match.errors}, status: :unprocessable_entity
-    end
+    @match.destroy
+    head :no_content
   end
 
   private
 
-  def doubles_param?(params_var)
-    params_var[:doubles].to_s == 'true'
-  end
-
   # Opponents for a doubles match and for a singles match are different.
   # Singles match has players.  Doubles match has teams.
-  def match_params
+  def match_params(doubles)
     params_var = params.require :match
     permit = [:title, :scoring, :doubles]
-    permit += if doubles_param? params_var
+    permit += if doubles
                 [:first_team_id, :second_team_id]
               else
                 [:first_player_id, :second_player_id]
               end
     params_var.permit(permit)
+  end
+
+  def match_params_doubles?
+    params_var = params.require :match
+    doubles_param? params_var
+  end
+
+  def doubles_param? params_var
+    params_var[:doubles].to_s == 'true'
   end
 
   def set_match

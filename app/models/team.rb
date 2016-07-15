@@ -20,7 +20,7 @@ class Team < ActiveRecord::Base
   before_destroy :that_can_destroy_team
 
   # If a name is not provided when match is created, generate name
-  before_create { self.name = next_team_name if self.name.blank? }
+  before_create { self.name = next_team_name  if self.doubles && self.name.blank? }
 
   # indicate whether team includes a set of players
   def include_players?(players)
@@ -29,16 +29,6 @@ class Team < ActiveRecord::Base
 
   def include_player?(player)
     include_players?([player])
-  end
-
-  def other_player(player)
-    if first_player && second_player
-      if first_player == player
-        second_player
-      elsif second_player == player
-        first_player
-      end
-    end
   end
 
   private

@@ -361,8 +361,8 @@
             win_tiebreaker: winTiebreakerActivity,
             win_match_tiebreaker: winTiebreakerActivity,
             start_tiebreaker: gameActivity,
-            start_next_game: gameActivity,
-            start_next_set: setActivity,
+            start_game: gameActivity,
+            start_set: setActivity,
             start_match_tiebreaker: setActivity,
             complete_match_tiebreaker: setActivity,
             complete_set_play: setActivity,
@@ -406,7 +406,7 @@
           };
 
           var actions = {
-            start_next_game: expectNewGame,
+            start_game: expectNewGame,
             start_tiebreaker: expectNewTiebreaker,
             win_game: null
           };
@@ -453,7 +453,7 @@
         describe('singles match', function () {
           var singles = {
             doubles: false,
-            actions: {start_next_game: true},
+            actions: {start_game: true},
             servers: [],
             sets: [
               {games: []}],
@@ -495,7 +495,7 @@
         describe('doubles match', function () {
           var doubles = {
             doubles: true,
-            actions: {start_next_game: true},
+            actions: {start_game: true},
             servers: [],
             sets: [
               {games: []}],
@@ -586,7 +586,7 @@
           };
 
           var actions = {
-            start_next_set: expectNewSet,
+            start_set: expectNewSet,
             start_match_tiebreaker: expectNewTiebreaker,
             win_game: null
           };

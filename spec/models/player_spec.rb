@@ -20,7 +20,7 @@ RSpec.describe Player, type: :model do
   end
 
   describe '#singles_team' do
-    before(:each) do
+    before do
       subject.singles_team!
     end
 
@@ -34,7 +34,7 @@ RSpec.describe Player, type: :model do
   end
 
   describe '#destroy!' do
-    before(:each) do
+    before do
       subject.save!
     end
 
@@ -43,7 +43,7 @@ RSpec.describe Player, type: :model do
     end
 
     context 'when referenced by team' do
-      before(:each) do
+      before do
         @team = FactoryGirl.build(:doubles_team, first_player_name: subject.name)
         @team.save!
       end
@@ -54,7 +54,7 @@ RSpec.describe Player, type: :model do
     end
 
     context 'when referenced by match' do
-      before(:each) do
+      before do
         @match = FactoryGirl.build(:singles_match, first_player_name: subject.name)
         @match.save!
       end

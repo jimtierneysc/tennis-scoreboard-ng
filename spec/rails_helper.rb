@@ -62,9 +62,9 @@ RSpec.configure do |config|
   config.global_fixtures = :all
 
   #Including to test requests
-  config.include Request::JsonHelpers, :type => :controller
-  config.include Request::HeadersHelpers, :type => :controller
-  config.include Devise::TestHelpers, :type => :controller
+  config.include Request::JsonHelpers, type: :controller
+  config.include Request::HeadersHelpers, type: :controller
+  config.include Devise::TestHelpers, type: :controller
 
   config.raise_errors_for_deprecations!
 

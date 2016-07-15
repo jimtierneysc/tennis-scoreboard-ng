@@ -7,7 +7,7 @@ class MatchScoreBoardSerializer < MatchSerializer
 
   def actions
     # TODO: Array rather than hash?
-    object.score_actions
+    object.play_actions
   end
 
   def winner

@@ -124,10 +124,10 @@
       };
 
       var show;
-      if (sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.start_next_game ||
+      if (sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.start_game ||
         sb.actions.start_tiebreaker || sb.actions.win_match_tiebreaker)
         show = 'showGame';
-      else if (sb.actions.start_next_set || sb.actions.complete_set_play || sb.actions.start_match_tiebreaker ||
+      else if (sb.actions.start_set || sb.actions.complete_set_play || sb.actions.start_match_tiebreaker ||
         sb.actions.complete_set_play || sb.actions.complete_match_tiebreaker || sb.actions.win_settiebreaker ||
         sb.actions.complete_set_tiebreaker)
         show = 'showSet';
@@ -141,7 +141,7 @@
     // Create newGame object  if a game is starting
     function newGame(sb) {
       var newGame = null;
-      if (sb.actions.start_tiebreaker || sb.actions.start_next_game) {
+      if (sb.actions.start_tiebreaker || sb.actions.start_game) {
         newGame = {};
         var set = sb.sets[sb.sets.length - 1];
         newGame.set = set;
@@ -160,7 +160,7 @@
     // Create newSet object if a set is starting
     function newSet(sb) {
       var newSet = null;
-      if (sb.actions.start_match_tiebreaker || sb.actions.start_next_set) {
+      if (sb.actions.start_match_tiebreaker || sb.actions.start_set) {
         newSet = {};
         if (sb.actions.start_match_tiebreaker)
           newSet.title = tieBreakTitle;
