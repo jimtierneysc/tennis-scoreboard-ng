@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 module ControllersShared
 
   def self.message_text(id)
@@ -31,117 +30,122 @@ module ControllersShared
   end
 
 
+  RSpec::Matchers.define :include_error do |message|
+    match do |json|
+      @text = ControllersShared::message_text(message)
+      json.key?(:errors) && json[:errors] == @text
+    end
+
+    failure_message do
+      "expect response to include error: #{@text}"
+    end
+
+    failure_message_when_negated do
+      "do not expect response to include error: #{@text}"
+    end
+  end
+
+  RSpec::Matchers.define :include_error_named do |name, message|
+    match do |json|
+      @text = ControllersShared::message_text(message)
+      json.key?(:errors) && json[:errors].key?(name) && json[:errors][name][0] == @text
+    end
+
+    description do
+      "include error :#{name} with value of \"#{ControllersShared::message_text(message)}\""
+    end
+
+    failure_message do
+      "expect response to include error: #{@text}"
+    end
+
+    failure_message_when_negated do
+      "do not expect response to include error: #{@text}"
+    end
+  end
+
+  RSpec::Matchers.define :have_errors do
+    match do |json|
+      json.key?(:errors) && !json[:errors].empty?
+    end
+
+    failure_message do
+      "expect to have errors"
+    end
+
+    failure_message_when_negated do
+      "do not expect to have errors"
+    end
+  end
+
+  RSpec.shared_examples 'a response with success code' do |code|
+    it { is_expected.to respond_with code }
+  end
+
+  RSpec.shared_examples 'a response with error code' do |code|
+    it { is_expected.to respond_with code }
+  end
+
   RSpec.shared_examples 'login required' do
+    it { expect(json_response).to include_error 'Login required' }
 
-    it 'renders an errors json' do
-      expect(json_response).to have_key(:errors)
-    end
-
-    it 'renders a json errors message' do
-      expect(json_response[:errors]).to include 'Login required'
-    end
-
-    it { is_expected.to respond_with 403 }
+    it_behaves_like 'a response with error code', 403
   end
 
   RSpec.shared_examples 'not found' do
-    it 'renders an errors json' do
-      expect(json_response).to have_key(:errors)
-    end
+    it { expect(json_response).to include_error 'Not found' }
 
-    it 'renders a json errors message' do
-      expect(json_response[:errors]).to include 'Not found'
-    end
-
-    it { is_expected.to respond_with 404 }
+    it_behaves_like 'a response with error code', 404
   end
 
   RSpec.shared_examples 'attribute error' do |name, message|
-    it 'renders an errors json' do
-      expect(json_response).to have_key(:errors)
-    end
+    it { expect(json_response).to include_error_named name, message }
 
-    it 'renders a json errors message' do
-      expect(json_response[:errors][name]).to include ControllersShared::message_text(message)
-    end
-
-    it { is_expected.to respond_with 422 }
+    it_behaves_like 'a response with error code', 422
   end
 
   RSpec.shared_examples 'general error' do |message|
-    it 'renders an errors json' do
-      expect(json_response).to have_key(:errors)
-    end
+    it { expect(json_response).to include_error message }
 
-    it 'renders a json errors message' do
-      expect(json_response[:errors]).to include ControllersShared::message_text(message)
-    end
-
-    it { is_expected.to respond_with 422 }
+    it_behaves_like 'a response with error code', 422
   end
 
-
-  RSpec.shared_examples 'delete error' do |message|
-    it 'renders an errors json' do
-      expect(json_response).to have_key(:errors)
-    end
-
-    it 'renders a json errors message' do
-      expect(json_response[:errors][:base]).to include ControllersShared::message_text(message)
-    end
+  RSpec.shared_examples 'an error when delete referenced entity' do |message|
+    it { expect(json_response).to include_error_named :base, message }
 
     it { is_expected.to respond_with 422 }
   end
 
   RSpec.shared_examples 'player response' do
-    it 'renders json properties' do
-      expect(json_response).to include :id, :name
-    end
+    it { expect(json_response).to include :id, :name }
   end
 
   RSpec.shared_examples 'player list response' do
-    it 'renders json properties' do
-      expect(json_response[0]).to include :id, :name
-    end
+    it { expect(json_response[0]).to include :id, :name }
   end
 
   RSpec.shared_examples 'team response' do
-
-    it 'renders json properties' do
-      expect(json_response).to include :id, :name, :first_player, :second_player
-    end
+    it { expect(json_response).to include :id, :name, :first_player, :second_player }
   end
 
   RSpec.shared_examples 'team list response' do
-
-    it 'renders json properties' do
-      expect(json_response[0]).to include :id, :name, :first_player, :second_player
-    end
+    it { expect(json_response[0]).to include :id, :name, :first_player, :second_player }
   end
 
   RSpec.shared_examples 'doubles match response' do
-
-    it 'renders json properties' do
-      expect(json_response).to include :id, :title, :first_team, :second_team, :doubles
-    end
+    it { expect(json_response).to include :id, :title, :first_team, :second_team, :doubles }
   end
 
   RSpec.shared_examples 'match list response' do
-
-    it 'renders json properties' do
-      expect(json_response[0]).to include :id, :title, :doubles
-    end
+    it { expect(json_response[0]).to include :id, :title, :doubles }
   end
 
   RSpec.shared_examples 'singles match response' do
-
-    it 'renders json properties' do
-      expect(json_response).to include :id, :title, :first_player, :second_player, :doubles
-    end
+    it { expect(json_response).to include :id, :title, :first_player, :second_player, :doubles }
   end
 
   RSpec.shared_examples 'action response' do
-    it 'has errors attribute' do
+    it do
       expect(json_response).to include :id, :title, :doubles,
                                        :actions, :errors, :sets, :state, :winner, :servers
     end
@@ -150,37 +154,22 @@ module ControllersShared
   end
 
   RSpec.shared_examples 'doubles match scoreboard response' do
-
     it_behaves_like 'action response'
-    it 'renders json properties' do
-      expect(json_response).to include :first_team, :second_team
-    end
+    it { expect(json_response).to include :first_team, :second_team }
   end
 
   RSpec.shared_examples 'singles match scoreboard response' do
     it_behaves_like 'action response'
-    it 'renders json properties' do
-      expect(json_response).to include :first_player, :second_player
-    end
+    it { expect(json_response).to include :first_player, :second_player }
   end
 
   RSpec.shared_examples 'accepted action' do
-    it_behaves_like 'action response'
-
-    it 'renders errors' do
-      expect(json_response[:errors]).to be_empty
-    end
-
+    it { expect(json_response).not_to have_errors }
   end
 
   RSpec.shared_examples 'denied action' do
-    it_behaves_like 'action response'
-
-    it 'renders errors' do
-      expect(json_response[:errors]).to_not be_empty
-    end
+    it { expect(json_response).to have_errors }
   end
-
 end
 
 RSpec.configure do |c|

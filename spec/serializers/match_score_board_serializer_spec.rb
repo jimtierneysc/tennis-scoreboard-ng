@@ -18,10 +18,7 @@ RSpec.describe MatchScoreBoardSerializer, { type: :serializer, match_serializer_
 
       it_behaves_like 'a doubles scoreboard'
 
-      it 'equals match' do
-        is_expected.to eql_match(match)
-      end
-
+      it { is_expected.to eql_match(match) }
     end
 
     context 'singles' do
@@ -33,9 +30,7 @@ RSpec.describe MatchScoreBoardSerializer, { type: :serializer, match_serializer_
 
       it_behaves_like 'a singles scoreboard'
 
-      it 'equals match' do
-        is_expected.to eql_match(match)
-      end
+      it { is_expected.to eql_match(match) }
     end
   end
 
@@ -51,10 +46,7 @@ RSpec.describe MatchScoreBoardSerializer, { type: :serializer, match_serializer_
 
       it_behaves_like 'a doubles scoreboard'
 
-      it 'equals match' do
-        is_expected.to eql_match(match)
-      end
-
+      it { is_expected.to eql_match(match) }
     end
 
     context 'singles' do
@@ -68,9 +60,7 @@ RSpec.describe MatchScoreBoardSerializer, { type: :serializer, match_serializer_
 
       it_behaves_like 'a singles scoreboard'
 
-      it 'equals match' do
-        is_expected.to eql_match(match)
-      end
+      it { is_expected.to eql_match(match) }
     end
   end
 

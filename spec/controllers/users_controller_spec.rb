@@ -1,45 +1,43 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe UsersController, type: :controller do
-  let(:username1) {'one'}
-  let(:username2) {'two'}
-  let(:password) {'12345768'}
+RSpec.describe UsersController, { type: :controller } do
+  let(:username1) { 'one' }
+  let(:username2) { 'two' }
+  let(:password) { '12345768' }
   let(:user1) { FactoryGirl.create :user, username: username1 }
   let(:user1_attributes) { FactoryGirl.attributes_for :user, username: username1 }
   let(:invalid_user1_attributes) do
     # missing username
-    {password: password, password_confirmation: password}
+    { password: password, password_confirmation: password }
   end
 
   describe 'GET #show' do
     before { get :show, id: user1.id }
 
-    it 'renders json' do
+    it 'should render the json representation' do
       expect(json_response[:username]).to eql user1.username
     end
 
-    it { is_expected.to respond_with 200 }
+    it_behaves_like 'a response with success code', 200
   end
 
   describe 'POST #create' do
-
     context 'when is successfully created' do
       before { post :create, { user: user1_attributes } }
 
-      it 'renders json' do
+      it 'should render the json representation' do
         expect(json_response[:username]).to eql user1_attributes[:username]
       end
 
-      it { is_expected.to respond_with 201 }
+      it_behaves_like 'a response with success code', 201
     end
 
     context 'when is not created' do
       before { post :create, { user: invalid_user1_attributes } }
 
       it_behaves_like 'attribute error', :username, :cant_be_blank
-
-      it { is_expected.to respond_with 422 }
+      it_behaves_like 'a response with error code', 422
     end
   end
 
@@ -51,11 +49,11 @@ RSpec.describe UsersController, type: :controller do
         patch :update, { id: user1.id, user: { username: username2 } }
       end
 
-      it 'renders json' do
+      it 'should render the json representation' do
         expect(json_response[:username]).to eql username2
       end
 
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when is not updated' do
@@ -64,8 +62,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it_behaves_like 'attribute error', :username, :cant_be_blank
-
-      it { is_expected.to respond_with 422 }
+      it_behaves_like 'a response with error code', 422
     end
   end
 
@@ -75,6 +72,6 @@ RSpec.describe UsersController, type: :controller do
       delete :destroy, { id: user1.id }
     end
 
-    it { is_expected.to respond_with 204 }
+    it_behaves_like 'a response with success code', 204
   end
 end

@@ -5,35 +5,13 @@ require 'rails_helper'
 module MatchSerializerShared
 
   RSpec.shared_examples "a match" do
-    it 'has id' do
-      is_expected.to include :id
-    end
-
-    it 'has title' do
-      is_expected.to include :title
-    end
-
-    it 'has doubles' do
-      is_expected.to include :doubles
-    end
-
-    it 'has state' do
-      is_expected.to include :state
-    end
-
-    it 'has scoring' do
-      is_expected.to include :scoring
-    end
-
-    it 'has winner' do
-      is_expected.to include :winner
-    end
+    it { is_expected.to include :id, :title, :doubles, :state, :scoring, :winner }
   end
 
   RSpec.shared_examples "a doubles match" do
     it_behaves_like "a match"
 
-    it 'has doubles' do
+    it 'should be doubles' do
       expect(subject[:doubles]).to eql(true)
     end
   end
@@ -41,27 +19,13 @@ module MatchSerializerShared
   RSpec.shared_examples "a singles match" do
     it_behaves_like "a match"
 
-    it 'has singles' do
+    it 'should be singles' do
       expect(subject[:doubles]).to eql(false)
     end
   end
 
   RSpec.shared_examples 'a scoreboard' do
-    it 'has sets' do
-      is_expected.to include :sets
-    end
-
-    it 'has actions' do
-      is_expected.to include :actions
-    end
-
-    it 'errors' do
-      is_expected.to include :errors
-    end
-
-    it 'has servers' do
-      is_expected.to include :servers
-    end
+    it { is_expected.to include :sets, :actions, :errors, :servers }
   end
 
   RSpec.shared_examples 'a doubles scoreboard' do
@@ -107,6 +71,10 @@ module MatchSerializerShared
         h.eql_team :second_player
       end
       !h.failures?
+    end
+
+    description do
+      'json response have values from match'
     end
 
     failure_message do

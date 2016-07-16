@@ -1,56 +1,48 @@
 require 'rails_helper'
+require 'controllers/controllers_shared'
 
-RSpec.describe SessionsController, type: :controller do
+RSpec.describe SessionsController, { type: :controller } do
+
+  let(:user) { FactoryGirl.create :user }
+  let(:password) { '12345678' }
+  let(:unknown_password) { '99999999' }
 
   describe "POST #create" do
-
-    before do
-      # TODO: Cleanup use let
-      @user = FactoryGirl.create :user
-    end
 
     context 'when the credentials are correct' do
 
       before do
-        credentials = { username: @user.username, password: '12345678' }
+        credentials = { username: user.username, password: password }
         post :create, { session: credentials }
       end
 
-      it 'returns the user record corresponding to the given credentials' do
-        @user.reload
-        expect(json_response[:auth_token]).to eql @user.auth_token
+      it 'should render the json representation' do
+        user.reload
+        expect(json_response[:auth_token]).to eql user.auth_token
       end
 
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when the credentials are incorrect' do
-
       before do
-        credentials = { username: @user.username, password: 'invalidpassword' }
+        credentials = { username: user.username, password: unknown_password }
         post :create, { session: credentials }
       end
 
-      it 'returns a json with an error' do
-        expect(json_response[:errors]).to eql "Invalid username or password"
-      end
+      it { expect(json_response).to include_error 'Invalid username or password' }
 
-      it { is_expected.to respond_with 422 }
+      it_behaves_like 'a response with error code', 422
     end
 
   end
 
   describe "DELETE #destroy" do
-
     before do
-      @user = FactoryGirl.create :user
-      sign_in @user
-      delete :destroy, id: @user.auth_token
+      sign_in user
+      delete :destroy, id: user.auth_token
     end
 
-    it { is_expected.to respond_with 204 }
-
+    it_behaves_like 'a response with success code', 204
   end
-
-
 end

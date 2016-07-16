@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe MatchesController, type: :controller do
+RSpec.describe MatchesController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_match_title) { 'doubles match' }
@@ -25,40 +25,29 @@ RSpec.describe MatchesController, type: :controller do
   end
 
   describe 'GET #index' do
-    before do
-      get :index
-    end
+    before { get :index }
 
     it_behaves_like 'match list response'
-
-    it { is_expected.to respond_with 200 }
+    it_behaves_like 'a response with success code', 200
   end
 
   describe 'GET #show' do
     context 'when doubles exists' do
-      before do
-        get :show, id: doubles_match.id
-      end
+      before { get :show, id: doubles_match.id }
 
       it_behaves_like 'doubles match response'
-
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when singles exists' do
-      before do
-        get :show, id: singles_match.id
-      end
+      before { get :show, id: singles_match.id }
 
       it_behaves_like 'singles match response'
-
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when does not exists' do
-      before do
-        get :show, id: not_found_match_id
-      end
+      before { get :show, id: not_found_match_id }
 
       it_behaves_like 'not found'
     end
@@ -66,36 +55,28 @@ RSpec.describe MatchesController, type: :controller do
 
   describe 'POST #create' do
     context 'when authorized' do
-      before do
-        api_authorization_header new_user.auth_token
-      end
+      before { api_authorization_header new_user.auth_token }
 
       context 'when doubles is successfully created' do
-        before do
-          post :create, { match: doubles_match_attributes }
-        end
+        before { post :create, { match: doubles_match_attributes } }
 
-        it 'renders the title' do
+        it 'should render title' do
           expect(json_response[:title]).to eql doubles_match_attributes[:title]
         end
 
         it_behaves_like 'doubles match response'
-
-        it { is_expected.to respond_with 201 }
+        it_behaves_like 'a response with success code', 201
       end
 
       context 'when singles is successfully created' do
-        before do
-          post :create, { match: singles_match_attributes }
-        end
+        before { post :create, { match: singles_match_attributes } }
 
-        it 'renders the title' do
+        it 'should render json representation' do
           expect(json_response[:title]).to eql singles_match_attributes[:title]
         end
 
         it_behaves_like 'singles match response'
-
-        it { is_expected.to respond_with 201 }
+        it_behaves_like 'a response with success code', 201
       end
 
       context 'when title is nil' do
@@ -103,7 +84,7 @@ RSpec.describe MatchesController, type: :controller do
           post :create, { match: change_doubles_attribute(:title, nil) }
         end
 
-        it 'generates a title' do
+        it 'should render json representation' do
           expect(json_response[:title]).to start_with('Match')
         end
       end
@@ -113,7 +94,7 @@ RSpec.describe MatchesController, type: :controller do
           post :create, { match: change_doubles_attribute(:title, '') }
         end
 
-        it 'generates a title' do
+        it 'should generate a title' do
           expect(json_response[:title]).to start_with('Match')
         end
       end
@@ -153,9 +134,7 @@ RSpec.describe MatchesController, type: :controller do
 
     context 'when not authorized' do
       context 'when is not created' do
-        before do
-          post :create, { match: {} }
-        end
+        before { post :create, { match: {} } }
 
         it_behaves_like 'login required'
       end
@@ -164,9 +143,7 @@ RSpec.describe MatchesController, type: :controller do
 
   describe 'PUT/PATCH #update' do
     context 'when authorized' do
-      before do
-        api_authorization_header new_user.auth_token
-      end
+      before { api_authorization_header new_user.auth_token }
 
       context 'when is successfully updated' do
 
@@ -175,13 +152,12 @@ RSpec.describe MatchesController, type: :controller do
             patch :update, { id: singles_match.id, match: { title: new_singles_match_title } }
           end
 
-          it 'renders the json representation' do
+          it 'should render json representation' do
             expect(json_response[:title]).to eql new_singles_match_title
           end
 
           it_behaves_like 'singles match response'
-
-          it { is_expected.to respond_with 200 }
+          it_behaves_like 'a response with success code', 200
         end
 
         context 'doubles' do
@@ -189,13 +165,12 @@ RSpec.describe MatchesController, type: :controller do
             patch :update, { id: doubles_match.id, match: { title: new_doubles_match_title } }
           end
 
-          it 'renders the json representation' do
+          it 'should render json representation' do
             expect(json_response[:title]).to eql new_doubles_match_title
           end
 
           it_behaves_like 'doubles match response'
-
-          it { is_expected.to respond_with 200 }
+          it_behaves_like 'a response with success code', 200
         end
       end
 
@@ -216,43 +191,31 @@ RSpec.describe MatchesController, type: :controller do
     end
 
     context 'when not authorized' do
-      before do
-        patch :update, { id: 1, match: { title: 'abc' } }
-      end
+      before { patch :update, { id: 1, match: { title: 'abc' } } }
 
       it_behaves_like 'login required'
     end
-
   end
 
   describe 'DELETE #destroy' do
     context 'when authorized' do
-
-      before do
-        api_authorization_header new_user.auth_token
-      end
+      before { api_authorization_header new_user.auth_token }
 
       context 'when exists' do
-        before do
-          delete :destroy, id: doubles_match.id
-        end
+        before { delete :destroy, id: doubles_match.id }
 
         it { is_expected.to respond_with 204 }
       end
 
       context 'when does not exists' do
-        before do
-          delete :destroy, id: not_found_match_id
-        end
+        before { delete :destroy, id: not_found_match_id }
 
         it_behaves_like 'not found'
       end
     end
 
     context 'when not authorized' do
-      before do
-        delete :destroy, id: 1
-      end
+      before { delete :destroy, id: 1 }
 
       it_behaves_like 'login required'
     end

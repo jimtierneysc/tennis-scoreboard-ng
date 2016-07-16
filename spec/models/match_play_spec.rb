@@ -1,29 +1,29 @@
 require 'rails_helper'
 require 'models/match_play_shared'
 
-# Test match scoring
+# Test start match, start set, win game, etc.
 
-RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actions: true } do
-  describe 'empty match' do
+RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: true } do
+  describe 'any match' do
     subject { FactoryGirl.build(:singles_match) }
 
     it_behaves_like 'a match not started'
 
-    it 'detects unknown action' do
+    it 'should detect unknown action' do
       expect { subject.play_match? :xxx }.to raise_error Exceptions::UnknownOperation
     end
 
-    it 'returns hash of valid actions' do
+    it 'should respond with valid actions' do
       expect(subject.play_actions).to eq({ start_play: true })
     end
 
-    context 'when many action are denied' do
+    context 'when attempt invalid actions' do
       actions = all_actions.reject do |a|
         first_actions.include?(a) or win_actions.include?(a)
       end
       actions.each do |action|
         context "when #{action}" do
-          it 'detects denied action' do
+          it 'should deny action' do
             expect { subject.play_match! action }.to raise_error Exceptions::InvalidOperation
           end
         end
@@ -47,20 +47,17 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
       it_behaves_like 'a match not started'
     end
 
-    it 'can\'t start when started' do
+    it 'should not start again' do
       expect { subject.play_match! :start_play }.to raise_error Exceptions::InvalidOperation
     end
 
     context 'when win actions are denied' do
-      # actions = all_actions.reject { |a| first_actions.include?(a) or win_actions.include?(a) }
-      # actions = all_actions.reject { |a| a == :start_play }
       win_actions.each do |action|
 
         context "when #{action}" do
-          it 'detects denied action' do
+          it 'should deny action' do
             expect { subject.play_match! action, subject.first_team }.to raise_error Exceptions::InvalidOperation
           end
-
         end
       end
     end
@@ -70,7 +67,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
     context 'singles match' do
       subject { FactoryGirl.build(:play_singles_match, start_play: true) }
 
-      context 'start game with first server' do
+      context 'with first server' do
         before do
           subject.play_match! :start_game, subject.first_player
         end
@@ -83,8 +80,8 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
         end
       end
 
-      context 'start game without server' do
-        it 'does not start' do
+      context 'without server' do
+        it 'should not start' do
           expect { subject.play_match! :start_game }.to raise_error Exceptions::InvalidOperation
         end
       end
@@ -128,26 +125,26 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
             end
           end
 
-          context 'start second game without server' do
-            it 'does not start' do
+          context 'second game without server' do
+            it 'should not start' do
               expect { subject.play_match! :start_game }.to raise_error Exceptions::InvalidOperation
             end
           end
 
-          context 'start second game with invalid server' do
-            it 'does not allow same server' do
+          context 'second game with invalid server' do
+            it 'should not allow same server' do
               expect { subject.play_match! :start_game, subject.first_team.first_player }.to raise_error ActiveRecord::RecordInvalid
             end
 
-            it 'does not allow server from same team' do
+            it 'should not allow server from same team' do
               expect { subject.play_match! :start_game, subject.first_team.second_player }.to raise_error ActiveRecord::RecordInvalid
             end
           end
         end
       end
 
-      context 'start first game without server' do
-        it 'does not start' do
+      context 'first game without server' do
+        it 'should not start' do
           expect { subject.play_match! :start_game }.to raise_error Exceptions::InvalidOperation
         end
       end
@@ -157,14 +154,14 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
   describe 'win game' do
     subject { FactoryGirl.build(:play_singles_match, start_first_game: true) }
 
-    context 'win game with player' do
+    context 'with player' do
       before { subject.play_match! :win_game, subject.first_team }
 
       it_behaves_like 'a match with game won'
     end
 
-    context 'win game without player' do
-      it 'does not win' do
+    context 'without player' do
+      it 'should not win' do
         expect { subject.play_match! :win_game }.to raise_error Exceptions::UnknownOperation
       end
     end
@@ -233,7 +230,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
           it_behaves_like 'a match in set tiebreaker'
         end
 
-        it 'can\'t win tiebreaker again' do
+        it 'should not win tiebreaker again' do
           expect {
             subject.play_match! :win_tiebreaker, subject.first_team
           }.to raise_error Exceptions::InvalidOperation
@@ -241,7 +238,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
       end
 
       context 'win tiebreaker without player' do
-        it 'does not win' do
+        it 'should not win' do
           expect { subject.play_match! :win_tiebreaker }.to raise_error Exceptions::UnknownOperation
         end
       end
@@ -288,12 +285,12 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
 
     it_behaves_like 'a match can start match tiebreaker'
 
-    context 'start match tiebreaker' do
+    context 'start ' do
       before { subject.play_match! :start_match_tiebreaker }
 
       it_behaves_like 'a match in match tiebreaker'
 
-      context 'win match tiebreaker with player' do
+      context 'win with player' do
         before do
           subject.play_match! :win_match_tiebreaker, subject.first_team
         end
@@ -313,18 +310,17 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
             before { subject.play_match! :remove_last_change }
             it_behaves_like 'a match with finished set'
           end
-
         end
 
-        it 'can\'t win tiebreaker again' do
+        it 'should not win again' do
           expect {
             subject.play_match! :win_match_tiebreaker, subject.first_team
           }.to raise_error Exceptions::InvalidOperation
         end
       end
 
-      context 'win match tiebreaker without player' do
-        it 'does not win' do
+      context 'win without player' do
+        it 'should not win' do
           expect { subject.play_match! :win_match_tiebreaker }.to raise_error Exceptions::UnknownOperation
         end
       end
@@ -382,7 +378,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
     end
   end
 
-  describe 'first set servers' do
+  describe 'players serving first set' do
     context 'singles' do
       context 'alternate order' do # needed for complete code coverage
         let(:winner) { subject.first_player }
@@ -390,13 +386,13 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game, start_play: true)
         end
 
-        context 'first game' do
+        context 'first' do
           before do
             subject.play_match! :start_game, subject.second_player
           end
           it_behaves_like 'a match with second player serving'
 
-          context 'second game' do
+          context 'second' do
             before do
               subject.play_match! :win_game, winner
               subject.play_match! :start_game
@@ -404,7 +400,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
 
             it_behaves_like 'a match with first player serving'
 
-            context 'third game' do
+            context 'third' do
               before do
                 subject.play_match! :win_game, winner
                 subject.play_match! :start_game
@@ -422,11 +418,11 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game, start_first_game: true)
         end
 
-        context 'first game' do
+        context 'first' do
           it_behaves_like 'a match with first player serving'
         end
 
-        context 'second game' do
+        context 'second' do
           before do
             subject.play_match! :win_game, winner
             subject.play_match! :start_game
@@ -434,7 +430,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
 
           it_behaves_like 'a match with second player serving'
 
-          context 'third game' do
+          context 'third' do
             before do
               subject.play_match! :win_game, winner
               subject.play_match! :start_game
@@ -444,8 +440,8 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
           end
         end
       end
-
     end
+
     context 'doubles' do
       context 'alternate order' do # needed for complete code coverage
         let(:winner) { subject.first_team.first_player }
@@ -453,34 +449,34 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
           FactoryGirl.build(:play_doubles_match, scoring: :three_six_game, start_play: true)
         end
 
-        context 'first game' do
+        context 'first' do
           before do
             subject.play_match! :start_game, subject.first_team.second_player
           end
           it_behaves_like 'a match with second player serving'
 
-          context 'second game' do
+          context 'second' do
             before do
               subject.play_match! :win_game, winner
               subject.play_match! :start_game, subject.second_team.first_player
             end
             it_behaves_like 'a match with third player serving'
 
-            context 'third game' do
+            context 'third' do
               before do
                 subject.play_match! :win_game, winner
                 subject.play_match! :start_game
               end
               it_behaves_like 'a match with first player serving'
 
-              context 'fourth game' do
+              context 'fourth' do
                 before do
                   subject.play_match! :win_game, winner
                   subject.play_match! :start_game
                 end
                 it_behaves_like 'a match with fourth player serving'
 
-                context 'fifth game' do
+                context 'fifth' do
                   before do
                     subject.play_match! :win_game, winner
                     subject.play_match! :start_game
@@ -499,11 +495,11 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
           FactoryGirl.build(:play_doubles_match, scoring: :three_six_game, start_first_game: true)
         end
 
-        context 'first game' do
+        context 'first' do
           it_behaves_like 'a match with first player serving'
         end
 
-        context 'second game' do
+        context 'second' do
           before do
             subject.play_match! :win_game, winner
             subject.play_match! :start_game, subject.second_team.first_player
@@ -511,7 +507,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
 
           it_behaves_like 'a match with third player serving'
 
-          context 'third game' do
+          context 'third' do
             before do
               subject.play_match! :win_game, winner
               subject.play_match! :start_game
@@ -519,7 +515,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
 
             it_behaves_like 'a match with second player serving'
 
-            context 'fourth game' do
+            context 'fourth' do
               before {
                 subject.play_match! :win_game, winner
                 subject.play_match! :start_game
@@ -527,7 +523,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
 
               it_behaves_like 'a match with fourth player serving'
 
-              context 'fifth game' do
+              context 'fifth' do
                 before do
                   subject.play_match! :win_game, winner
                   subject.play_match! :start_game
@@ -542,18 +538,15 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
     end
   end
 
-  describe 'second set servers' do
-    context 'odd' do
+  describe 'players serving second set' do
+    context 'odd number of games' do
       context 'singles' do
         subject do
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
                             scores: [[6, 3]], start_set_game: true)
         end
 
-        context 'first game' do
-          it_behaves_like 'a match with second player serving'
-        end
-
+        it_behaves_like 'a match with second player serving'
       end
       context 'doubles' do
         subject do
@@ -561,22 +554,18 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
                             scores: [[6, 3]], start_set_game: true)
         end
 
-        context 'first game' do
-          it_behaves_like 'a match with third player serving'
-        end
+        it_behaves_like 'a match with third player serving'
       end
 
     end
-    context 'even' do
+    context 'even number of games' do
       context 'singles' do
         subject do
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
                             scores: [[7, 5]], start_set_game: true)
         end
 
-        context 'first game' do
-          it_behaves_like 'a match with first player serving'
-        end
+        it_behaves_like 'a match with first player serving'
       end
 
       context 'doubles' do
@@ -585,9 +574,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
                             scores: [[6, 4]], start_set_game: true)
         end
 
-        context 'first game' do
-          it_behaves_like 'a match with second player serving'
-        end
+        it_behaves_like 'a match with second player serving'
       end
     end
 
@@ -598,9 +585,7 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
                             scores: [[6, 7]], start_set_game: true)
         end
 
-        context 'first game' do
-          it_behaves_like 'a match with first player serving'
-        end
+        it_behaves_like 'a match with first player serving'
       end
 
       context 'doubles' do
@@ -609,45 +594,39 @@ RSpec.describe 'Match Play', { type: :model, match_play_shared: true, play_actio
                             scores: [[7, 6]], start_set_game: true)
         end
 
-        context 'first game' do
-          it_behaves_like 'a match with first player serving'
-        end
+        it_behaves_like 'a match with first player serving'
       end
     end
   end
 
-  describe 'scoring' do
-    describe 'eight game' do
+  describe 'match scoring' do
+    describe :one_eight_game do
       subject do
         FactoryGirl.build(:play_singles_match, scoring: :one_eight_game,
                           scores: [[8, 9]])
       end
       it_behaves_like 'a match with one set'
-
       it_behaves_like 'a match with eight game sets'
-
     end
 
-    describe 'two set' do
+    describe :two_six_game_ten_point do
       subject do
         FactoryGirl.build(:play_singles_match, scoring: :two_six_game_ten_point,
                           scores: [[6, 3], [3, 6], [0, 1]])
       end
       it_behaves_like 'a match with two sets'
-
       it_behaves_like 'a match with match tiebreaker'
-
       it_behaves_like 'a match with six game sets'
     end
 
-    describe 'three set' do
+    describe :three_six_game do
       subject do
         FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
                           scores: [[6, 3], [3, 6], [7, 6]])
       end
       it_behaves_like 'a match with three sets'
-
       it_behaves_like 'a match with six game sets'
     end
   end
 end
+

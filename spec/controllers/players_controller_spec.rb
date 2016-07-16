@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe PlayersController, type: :controller do
+RSpec.describe PlayersController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:player_name) { 'player1'}
@@ -22,8 +22,7 @@ RSpec.describe PlayersController, type: :controller do
       end
 
       it_behaves_like 'player list response'
-
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
   end
 
@@ -35,11 +34,11 @@ RSpec.describe PlayersController, type: :controller do
 
       it_behaves_like 'player response'
 
-      it 'returns an item' do
+      it 'should render json representation' do
         expect(json_response[:name]).to eql player.name
       end
 
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when does not exists' do
@@ -64,11 +63,11 @@ RSpec.describe PlayersController, type: :controller do
 
         it_behaves_like 'player response'
 
-        it 'renders the player name' do
+        it 'should render json representation' do
           expect(json_response[:name]).to eql player_attributes[:name]
         end
 
-        it { is_expected.to respond_with 201 }
+        it_behaves_like 'a response with success code', 201
       end
 
       context 'when name is missing' do
@@ -114,13 +113,12 @@ RSpec.describe PlayersController, type: :controller do
 
         it_behaves_like 'player response'
 
-        it 'renders the player name' do
+        it 'should render json representation' do
           expect(json_response[:name]).to eql new_player_name
         end
 
-        it { is_expected.to respond_with 200 }
+        it_behaves_like 'a response with success code', 200
       end
-
 
       context 'when does not exists' do
         before do
@@ -169,7 +167,7 @@ RSpec.describe PlayersController, type: :controller do
           delete :destroy, id: player.id
         end
 
-        it { is_expected.to respond_with 204 }
+        it_behaves_like 'a response with success code', 204
       end
 
       context 'when does not exists' do
@@ -185,7 +183,7 @@ RSpec.describe PlayersController, type: :controller do
           delete :destroy, id: doubles_team.first_player_id
         end
 
-        it_behaves_like 'delete error', 'Cannot delete a player in a match or on a team'
+        it_behaves_like 'an error when delete referenced entity', 'Cannot delete a player in a match or on a team'
       end
 
       context 'when player in match' do
@@ -193,7 +191,7 @@ RSpec.describe PlayersController, type: :controller do
           delete :destroy, id: doubles_match.first_team.first_player_id
         end
 
-        it_behaves_like 'delete error', 'Cannot delete a player in a match or on a team'
+        it_behaves_like 'an error when delete referenced entity', 'Cannot delete a player in a match or on a team'
       end
     end
 

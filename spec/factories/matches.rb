@@ -1,9 +1,3 @@
-# TODO Move this
-def find_or_create_player(player_name)
-  (Player.find_by(name: player_name) || FactoryGirl.create(:player, name: player_name))
-end
-
-
 FactoryGirl.define do
 
   factory :doubles_match, class: Match do
@@ -45,23 +39,31 @@ FactoryGirl.define do
     doubles false
 
     first_player do
-      find_or_create_player(first_player_name)
+      MatchFactoryHelper::find_or_create_player(first_player_name)
     end
 
     second_player do
-      find_or_create_player(second_player_name)
+      MatchFactoryHelper::find_or_create_player(second_player_name)
     end
 
-    # support FactoryGirl.attributes_for
+    # used with FactoryGirl.attributes_for
     trait :player_ids do
       first_player_id do
-        p1 = find_or_create_player(first_player_name)
+        p1 = MatchFactoryHelper::find_or_create_player(first_player_name)
         p1.id
       end
       second_player_id do
-        p2 = find_or_create_player(second_player_name)
+        p2 = MatchFactoryHelper::find_or_create_player(second_player_name)
         p2.id
       end
     end
   end
 end
+
+module MatchFactoryHelper
+  def self.find_or_create_player(player_name)
+    (Player.find_by(name: player_name) || FactoryGirl.create(:player, name: player_name))
+  end
+end
+
+

@@ -11,5 +11,6 @@ FactoryGirl.define do
       (Match.find_by(title: match_title) || FactoryGirl.create(:singles_match, title: match_title)).id
     end
   end
+
 end
 

@@ -4,17 +4,21 @@ require 'rails_helper'
 
 module MatchPlayShared
 
-  RSpec::Matchers.define :allow_action do |action|
+  RSpec::Matchers.define :permit_action do |action|
     match do |m|
       m.play_match?(action)
     end
 
+    description do
+      "permit #{action} action"
+    end
+
     failure_message do
-      "expect to allow action :#{action}"
+      "expect to permit action #{action}"
     end
 
     failure_message_when_negated do
-      "expect to not allow action :#{action}"
+      "expect to not permit action #{action}"
     end
   end
 
@@ -60,17 +64,21 @@ module MatchPlayShared
     end
   end
 
-  RSpec::Matchers.define :allow_win_game do
+  RSpec::Matchers.define :permit_win_game do
     match do |m|
       m.play_match?(:win_game) || m.play_match?(:win_tiebreaker)
     end
 
+    description do
+      'permit win_game or win_tiebreaker actions'
+    end
+
     failure_message do
-      'expect to allow win_game or win_tiebreaker actions'
+      'expect to permit win_game or win_tiebreaker actions'
     end
 
     failure_message_when_negated do
-      'do not expect to allow win_game or win_tiebreaker actions'
+      'do not expect to permit win_game or win_tiebreaker actions'
     end
   end
 
@@ -79,12 +87,16 @@ module MatchPlayShared
       m.match_sets.count == 1 && m.match_sets[0].set_games.count == count
     end
 
+    description do
+      "have set with #{count} #{count > 1 ? 'games' : 'game'}"
+    end
+
     failure_message do
-      "expect to have #{count} games"
+      "expect to have set with #{count} game(s)"
     end
 
     failure_message_when_negated do
-      "do not expect to have #{count} games"
+      "do not expect to set with have #{count} games(s)"
     end
   end
 
@@ -100,12 +112,16 @@ module MatchPlayShared
       sets.empty? || @actual ? false : true
     end
 
+    description do
+      "have #{size} game set"
+    end
+
     failure_message do
-      "expect to have #{size} games, but have #{@actual}"
+      "expect to have #{size} game set, but have #{@actual} game set"
     end
 
     failure_message_when_negated do
-      "do not expect to have #{size} games"
+      "do not expect to have #{size} game set"
     end
   end
 
@@ -115,12 +131,16 @@ module MatchPlayShared
       @actual == count
     end
 
+    description do
+      "have #{count} #{count > 1 ? 'sets' : 'set'}"
+    end
+
     failure_message do
-      "expect to have #{count} sets, but have #{@actual}"
+      "expect to have #{count} set(s), but have #{@actual}"
     end
 
     failure_message_when_negated do
-      "do not expect to have #{count} sets"
+      "do not expect to have #{count} set(s)"
     end
   end
 
@@ -216,7 +236,7 @@ module MatchPlayShared
     end
   end
 
-  RSpec::Matchers.define :be_serving do |player_ordinal|
+  RSpec::Matchers.define :be_serving do |player_ordinal, doubles|
     match do |m|
       @expected = nil
       @actual = nil
@@ -234,6 +254,20 @@ module MatchPlayShared
       else
         false
       end
+    end
+
+    description do
+      player = case player_ordinal
+               when 0
+                 doubles ? 'first_team.first_player' : 'first_player'
+               when 1
+                 doubles ? 'first_team.second_player' : 'second_player'
+               when 2
+                 'second_team.first_player'
+               when 3
+                 'second_team.second_player'
+               end
+      "#{player} be serving"
     end
 
     failure_message do
@@ -256,15 +290,11 @@ module MatchPlayShared
   end
 
   RSpec.shared_examples 'a game not started' do
-    it 'game started' do
-      is_expected.not_to allow_win_game
-    end
+    it { is_expected.not_to permit_win_game }
   end
 
   RSpec.shared_examples 'a match not started' do
-    it 'does not have changes' do
-      is_expected.not_to have_changes
-    end
+    it { is_expected.not_to have_changes }
   end
 
   RSpec.shared_examples 'a match just started' do
@@ -273,93 +303,63 @@ module MatchPlayShared
   end
 
   RSpec.shared_examples 'a match set in progress' do
-    it 'has last set in progress' do
-      is_expected.to have_last_set_in_progress
-    end
+    it { is_expected.to have_last_set_in_progress }
   end
 
   RSpec.shared_examples 'a match with game in progress' do
-    it 'have game in progress' do
-      is_expected.to have_game_in_progress
-    end
+    it { is_expected.to have_game_in_progress }
   end
 
   RSpec.shared_examples 'a match with one game' do
-    it 'has one game' do
-      is_expected.to have_game_count(1)
-    end
+    it { is_expected.to have_game_count(1) }
   end
 
   RSpec.shared_examples 'a match with two games' do
-    it 'has two games' do
-      is_expected.to have_game_count(2)
-    end
+    it { is_expected.to have_game_count(2) }
   end
 
   RSpec.shared_examples 'a match with game won' do
-    it 'does have winner' do
-      is_expected.to have_game_with_winner
-    end
+    it { is_expected.to have_game_with_winner }
   end
 
   RSpec.shared_examples 'a match can start set tiebreaker' do
-    it 'can start set tiebreaker' do
-      is_expected.to allow_action :start_tiebreaker
-    end
+    it { is_expected.to permit_action :start_tiebreaker }
   end
 
   RSpec.shared_examples 'a match in set tiebreaker' do
-    it 'can win set tiebreaker' do
-      is_expected.to allow_action :win_tiebreaker
-    end
+    it { is_expected.to permit_action :win_tiebreaker }
   end
 
   RSpec.shared_examples 'a match with finished set' do
-    it 'has finished set' do
-      is_expected.to have_finished_set
-    end
+    it { is_expected.to have_finished_set }
   end
 
   RSpec.shared_examples 'a match can start match tiebreaker' do
-    it 'can start set tiebreaker' do
-      is_expected.to allow_action :start_match_tiebreaker
-    end
+    it { is_expected.to permit_action :start_match_tiebreaker }
   end
 
   RSpec.shared_examples 'a match in match tiebreaker' do
-    it 'can win set tiebreaker' do
-      is_expected.to allow_action :win_match_tiebreaker
-    end
+    it { is_expected.to permit_action :win_match_tiebreaker }
   end
 
   RSpec.shared_examples 'a match finished' do
-    it 'is finished' do
-      is_expected.to be_finished
-    end
+    it { is_expected.to be_finished }
   end
 
   RSpec.shared_examples 'a match set can be completed' do
-    it 'can complete set' do
-      is_expected.to allow_action :complete_set_play
-    end
+    it { is_expected.to permit_action :complete_set_play }
   end
 
   RSpec.shared_examples 'a match with complete set' do
-    it 'has completed set' do
-      is_expected.to have_complete_set
-    end
+    it { is_expected.to have_complete_set }
   end
 
   RSpec.shared_examples 'a match can be completed' do
-    it 'can be completed' do
-      is_expected.to allow_action :complete_play
-    end
+    it { is_expected.to permit_action :complete_play }
   end
 
   RSpec.shared_examples 'a match complete' do
-    it 'is completed' do
-      is_expected.to be_complete
-    end
+    it { is_expected.to be_complete }
   end
 
   RSpec.shared_examples 'a match with first game started' do
@@ -373,64 +373,78 @@ module MatchPlayShared
   end
 
   RSpec.shared_examples 'a match with first player serving' do
-    it 'serving' do
-      is_expected.to be_serving(0)
-    end
+    it { is_expected.to be_serving(0, subject.doubles) }
   end
 
   RSpec.shared_examples 'a match with second player serving' do
-    it 'serving' do
-      is_expected.to be_serving(1)
-    end
+    it { is_expected.to be_serving(1, subject.doubles) }
   end
 
   RSpec.shared_examples 'a match with third player serving' do
-    it 'serving' do
-      is_expected.to be_serving(2)
-    end
+    it { is_expected.to be_serving(2, subject.doubles) }
   end
 
   RSpec.shared_examples 'a match with fourth player serving' do
-    it 'serving' do
-      is_expected.to be_serving(3)
-    end
+    it { is_expected.to be_serving(3, subject.doubles) }
   end
 
   RSpec.shared_examples 'a match with three sets' do
-    it 'set count' do
-      is_expected.to have_set_count(3)
-    end
+    it { is_expected.to have_set_count(3) }
   end
 
   RSpec.shared_examples 'a match with two sets' do
-    it 'set count' do
-      is_expected.to have_set_count(2)
-    end
+    it { is_expected.to have_set_count(2) }
   end
 
   RSpec.shared_examples 'a match with match tiebreaker' do
-    it 'set count' do
-      is_expected.to have_match_tiebreaker
-    end
+    it { is_expected.to have_match_tiebreaker }
   end
 
   RSpec.shared_examples 'a match with one set' do
-    it 'set count' do
-      is_expected.to have_set_count(1)
-    end
+    it { is_expected.to have_set_count(1) }
   end
 
   RSpec.shared_examples 'a match with six game sets' do
-    it 'set size' do
-      is_expected.to have_set_size(6)
-    end
+    it { is_expected.to have_set_size(6) }
   end
 
   RSpec.shared_examples 'a match with eight game sets' do
-    it 'set size' do
-      is_expected.to have_set_size(8)
-    end
+    it { is_expected.to have_set_size(8) }
   end
+
+  def all_actions
+    [
+      :start_play,
+      :restart_play,
+      :discard_play,
+      :complete_play,
+      :start_set,
+      :complete_set_play,
+      :start_game,
+      :start_tiebreaker,
+      :remove_last_change,
+      :start_match_tiebreaker,
+      :complete_match_tiebreaker,
+      :win_game,
+      :win_tiebreaker,
+      :win_match_tiebreaker
+    ]
+  end
+
+  def first_actions
+    [
+      :start_play,
+    ]
+  end
+
+  def win_actions
+    [
+      :win_game,
+      :win_tiebreaker,
+      :win_match_tiebreaker
+    ]
+  end
+
 end
 
 RSpec.configure do |c|

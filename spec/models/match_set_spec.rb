@@ -1,33 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe MatchSet, type: :model do
+RSpec.describe MatchSet, { type: :model } do
   subject { FactoryGirl.build(:match_set) }
 
-  it 'has #ordinal' do
-    is_expected.to respond_to(:ordinal)
-  end
+  it { is_expected.to respond_to(:ordinal) }
 
-  it 'has #scoring' do
-    is_expected.to respond_to(:scoring)
-  end
+  it { is_expected.to respond_to(:scoring) }
 
-  it 'validates presence of #ordinal' do
-    is_expected.to validate_presence_of(:ordinal)
-  end
+  it { is_expected.to validate_presence_of(:ordinal) }
 
-  it 'validates presence of #scoring' do
-    is_expected.to validate_presence_of(:scoring)
-  end
+  it { is_expected.to validate_presence_of(:scoring) }
 
-  it 'validates presence of #match' do
-    is_expected.to validate_presence_of(:match)
-  end
+  it { is_expected.to validate_presence_of(:match) }
 
-  it 'has #match' do
-    is_expected.to respond_to(:match)
-  end
+  it { is_expected.to respond_to(:match) }
 
-  it 'validates known scoring' do
+  it 'should validate scoring value' do
     subject.scoring = 'abc'
     is_expected.to_not be_valid
   end
@@ -37,7 +25,7 @@ RSpec.describe MatchSet, type: :model do
       subject.save!
     end
 
-    it 'removes set' do
+    it 'should remove set' do
       expect { subject.destroy! }.to change { MatchSet.count }.by(-1)
     end
   end

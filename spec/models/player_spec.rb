@@ -1,44 +1,30 @@
 require 'rails_helper'
 
-RSpec.describe Player, type: :model do
+RSpec.describe Player, { type: :model } do
   subject { FactoryGirl.build :player  }
 
-  it 'has #name' do
-    is_expected.to respond_to(:name)
-  end
+  it { is_expected.to respond_to(:name) }
 
-  it 'is valid' do
-    is_expected.to be_valid
-  end
+  it { is_expected.to validate_presence_of(:name) }
 
-  it 'validates presence of #name' do
-    is_expected.to validate_presence_of(:name)
-  end
-
-  it 'validates unique #name' do
-    is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity
-  end
+  it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
 
   describe '#singles_team' do
-    before do
-      subject.singles_team!
-    end
+    before { subject.singles_team! }
 
-    it 'creates singles team' do
+    it 'should create singles team' do
       expect(subject.singles_team).not_to be_nil
     end
 
-    it 'destroys singles team' do
+    it 'should destroy singles team' do
       expect { subject.destroy! }.to change { Team.count }.by(-1)
     end
   end
 
   describe '#destroy!' do
-    before do
-      subject.save!
-    end
+    before { subject.save! }
 
-    it 'removes player' do
+    it 'should remove player' do
       expect { subject.destroy! }.to change { Player.count }.by(-1)
     end
 
@@ -48,7 +34,7 @@ RSpec.describe Player, type: :model do
         @team.save!
       end
 
-      it 'cannot remove player' do
+      it 'should not destroy player' do
         expect { subject.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
       end
     end
@@ -59,7 +45,7 @@ RSpec.describe Player, type: :model do
         @match.save!
       end
 
-      it 'cannot destroy player' do
+      it 'should not destroy player' do
         expect { subject.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
       end
     end

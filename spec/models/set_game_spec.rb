@@ -1,42 +1,26 @@
 require 'rails_helper'
 
-RSpec.describe SetGame, type: :model do
+RSpec.describe SetGame, { type: :model } do
   subject { FactoryGirl.build(:set_game) }
 
-  it 'has #ordinal' do
-    is_expected.to respond_to(:ordinal)
-  end
+  it { is_expected.to respond_to(:ordinal) }
 
-  it 'has #match_set' do
-    is_expected.to respond_to(:match_set)
-  end
+  it { is_expected.to respond_to(:match_set) }
 
-  it 'has #team_winner' do
-    is_expected.to respond_to(:team_winner)
-  end
+  it { is_expected.to respond_to(:team_winner) }
 
-  it 'has #tiebreaker' do
-    is_expected.to respond_to(:tiebreaker)
-  end
+  it { is_expected.to respond_to(:tiebreaker) }
 
-  it 'has #player_server' do
-    is_expected.to respond_to(:player_server)
-  end
+  it { is_expected.to respond_to(:player_server) }
 
-  it 'validates presence of #ordinal' do
-    is_expected.to validate_presence_of(:ordinal)
-  end
+  it { is_expected.to validate_presence_of(:ordinal) }
 
-  it 'validates presence of #match_set' do
-    is_expected.to validate_presence_of(:match_set)
-  end
+  it { is_expected.to validate_presence_of(:match_set) }
 
   describe '#destroy!' do
-    before do
-      subject.save!
-    end
+    before { subject.save! }
 
-    it 'removes set' do
+    it 'should remove set' do
       expect { subject.destroy! }.to change { SetGame.count }.by(-1)
     end
   end

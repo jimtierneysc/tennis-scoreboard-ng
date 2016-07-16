@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe TeamsController, type: :controller do
+RSpec.describe TeamsController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_team_name) {'doubles team'}
@@ -27,48 +27,39 @@ RSpec.describe TeamsController, type: :controller do
   end
 
   describe 'GET #index' do
-      before(:each) do
-        get :index
-      end
+      before { get :index }
 
       it_behaves_like 'team list response'
-
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
   end
 
   describe 'GET #show' do
     context 'when exists' do
-      before(:each) do
-        get :show, id: doubles_team.id
-      end
+      before { get :show, id: doubles_team.id }
 
       it_behaves_like 'team response'
 
-      it 'renders the json' do
+      it 'should render the json representation' do
         expect(json_response[:name]).to eql doubles_team.name
       end
 
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when exists doubles team' do
-      before(:each) do
-        get :show, id: doubles_team.id
-      end
+      before { get :show, id: doubles_team.id }
 
       it_behaves_like 'team response'
 
-      it 'renders the json' do
+      it 'should render the json representation' do
         expect(json_response[:name]).to eql doubles_team.name
       end
 
-      it { is_expected.to respond_with 200 }
+      it_behaves_like 'a response with success code', 200
     end
 
     context 'when does not exists' do
-      before(:each) do
-        get :show, id: not_found_team_id
-      end
+      before { get :show, id: not_found_team_id }
 
       it_behaves_like 'not found'
     end
@@ -76,57 +67,53 @@ RSpec.describe TeamsController, type: :controller do
 
   describe 'POST #create' do
     context 'when authorized' do
-      before(:each) do
-        api_authorization_header new_user.auth_token
-      end
+      before { api_authorization_header new_user.auth_token }
 
       context 'when is successfully created' do
-        before(:each) do
+        before do
           post :create, { team: doubles_team_attributes }
         end
 
-        it 'renders the json' do
+        it 'should render the json representation' do
           expect(json_response[:name]).to eql doubles_team_attributes[:name]
         end
 
-        it { is_expected.to respond_with 201 }
+        it_behaves_like 'a response with success code', 201
       end
 
       context 'when doubles team is successfully created' do
-        before(:each) do
-          post :create, { team: doubles_team_attributes }
-        end
+        before { post :create, { team: doubles_team_attributes } }
 
-        it 'renders the json' do
+        it 'should render the json representation' do
           expect(json_response[:name]).to eql doubles_team_attributes[:name]
         end
 
-        it { is_expected.to respond_with 201 }
+        it_behaves_like 'a response with success code', 201
       end
 
-      context 'when title is blank' do
-        before(:each) do
+      context 'when name is blank' do
+        before do
           post :create, { team: change_team_attribute(:name, '') }
         end
 
-        it 'generates a name' do
+        it 'should generate a name' do
           expect(json_response[:name]).to start_with('Team')
         end
 
       end
 
-      context 'when title is nil' do
-        before(:each) do
+      context 'when name is nil' do
+        before do
           post :create, { team: change_team_attribute(:name, nil) }
         end
 
-        it 'generates a name' do
+        it 'should generate a name' do
           expect(json_response[:name]).to start_with('Team')
         end
       end
 
       context 'when first player is missing' do
-        before(:each) do
+        before do
           post :create, { team: exclude_team_attribute(:first_player_id) }
         end
 
@@ -134,7 +121,7 @@ RSpec.describe TeamsController, type: :controller do
       end
 
       context 'when second player is missing' do
-        before(:each) do
+        before do
           post :create, { team: exclude_team_attribute(:second_player_id) }
         end
 
@@ -142,7 +129,7 @@ RSpec.describe TeamsController, type: :controller do
       end
 
       context 'when name is already taken' do
-        before(:each) do
+        before do
           doubles_team
           post :create, { team: doubles_team_attributes }
         end
@@ -151,7 +138,7 @@ RSpec.describe TeamsController, type: :controller do
       end
 
       context 'when first player not found' do
-        before(:each) do
+        before do
           post :create, { team: change_team_attribute(:first_player_id, not_found_player_id) }
         end
 
@@ -159,7 +146,7 @@ RSpec.describe TeamsController, type: :controller do
       end
 
       context 'when second player is not found' do
-        before(:each) do
+        before do
           post :create, { team: change_team_attribute(:second_player_id, not_found_player_id) }
         end
 
@@ -169,9 +156,7 @@ RSpec.describe TeamsController, type: :controller do
 
     context 'when not authorized' do
       context 'when is not created' do
-        before(:each) do
-          post :create, { team: {} }
-        end
+        before { post :create, { team: {} } }
 
         it_behaves_like 'login required'
       end
@@ -180,26 +165,23 @@ RSpec.describe TeamsController, type: :controller do
 
   describe 'PUT/PATCH #update' do
     context 'when authorized' do
-      before(:each) do
-        api_authorization_header new_user.auth_token
-      end
+      before { api_authorization_header new_user.auth_token }
 
       context 'when is successfully updated' do
         let(:team_name) { doubles_team.name + 'a'}
-        before(:each) do
+        before do
           patch :update, { id: doubles_team.id, team: { name: team_name } }
         end
 
-        it 'renders the json' do
+        it 'should render the json representation' do
           expect(json_response[:name]).to eql team_name
         end
 
-        it { is_expected.to respond_with 200 }
+        it_behaves_like 'a response with success code', 200
       end
 
-
       context 'when does not exists' do
-        before(:each) do
+        before do
           patch :update, { id: not_found_team_id, team: { name: team_name } }
         end
 
@@ -207,7 +189,7 @@ RSpec.describe TeamsController, type: :controller do
       end
 
       context 'when name is already taken' do
-        before(:each) do
+        before do
           patch :update, { id: doubles_team.id, team: { name: doubles_team2.name } }
         end
 
@@ -216,9 +198,7 @@ RSpec.describe TeamsController, type: :controller do
     end
 
     context 'when not authorized' do
-      before(:each) do
-        patch :update, { id: 1, team: { } }
-      end
+      before { patch :update, { id: 1, team: {} } }
 
       it_behaves_like 'login required'
     end
@@ -227,41 +207,29 @@ RSpec.describe TeamsController, type: :controller do
 
   describe 'DELETE #destroy' do
     context 'when authorized' do
-
-      before(:each) do
-        api_authorization_header new_user.auth_token
-      end
+      before { api_authorization_header new_user.auth_token }
 
       context 'when exists' do
-        before(:each) do
-          delete :destroy, id: doubles_team.id
-        end
+        before { delete :destroy, id: doubles_team.id }
 
         it { is_expected.to respond_with 204 }
       end
 
       context 'when does not exists' do
-        before(:each) do
-          delete :destroy, id: not_found_team_id
-        end
+        before { delete :destroy, id: not_found_team_id }
 
         it_behaves_like 'not found'
       end
 
-
       context 'when team in match' do
-        before(:each) do
-          delete :destroy, id: doubles_match.first_team_id
-        end
+        before { delete :destroy, id: doubles_match.first_team_id }
 
-        it_behaves_like 'delete error', 'Cannot delete a team in a match'
+        it_behaves_like 'an error when delete referenced entity', 'Cannot delete a team in a match'
       end
     end
 
     context 'when not authorized' do
-      before(:each) do
-        delete :destroy, id: 1
-      end
+      before { delete :destroy, id: 1 }
 
       it_behaves_like 'login required'
     end

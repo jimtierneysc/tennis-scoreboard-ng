@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PlayerSerializer, type: :serializer do
+RSpec.describe PlayerSerializer, { type: :serializer } do
   let(:resource) { FactoryGirl.create :player }
   let(:serializer) { PlayerSerializer.new(resource) }
 
@@ -8,11 +8,11 @@ RSpec.describe PlayerSerializer, type: :serializer do
     JSON.parse(serializer.to_json, symbolize_names: true)[:player]
   end
 
-  it 'has an id' do
+  it 'should have id' do
     expect(subject[:id]).to eql(resource.id)
   end
 
-  it 'has name' do
+  it 'should have name' do
     expect(subject[:name]).to eql(resource.name)
   end
 end
