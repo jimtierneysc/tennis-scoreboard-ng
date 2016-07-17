@@ -89,15 +89,7 @@
         resolve: {
           response: resolveScoreBoard()
         }
-      })
-      // .state('signin', {
-      //   templateUrl: 'app/user/new.html',
-      //   controller: 'UserController',
-      //   controllerAs: 'vm'
-      // })
-
-
-    ;
+      });
 
     $urlRouterProvider.otherwise('/');
 
@@ -138,27 +130,7 @@
       }
       return resolve;
     }
-
-    // function resolveResourceQuery(resourceName) {
-    //   /** @ngInject */
-    //   function resolve($q, $log, waitIndicator, crudResource) {
-    //     var resource = crudResource.getResource(resourceName);
-    //     var endWait = waitIndicator.beginWait();
-    //     return resource.query(
-    //       function (response) {
-    //         endWait();
-    //       },
-    //       function (response) {
-    //         $log.error('data error ' + response.status + " " + response.statusText);
-    //         endWait();
-    //       }
-    //     );
-    //     // return deferred.promise;
-    //   }
-    //   return resolve;
-    // }
-
-
+    
     function resolveResourceGet(resourceName) {
       /** @ngInject */
       function resolve($q, $log, waitIndicator, crudResource, $stateParams) {

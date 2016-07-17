@@ -77,6 +77,23 @@
       });
 
       describe('.submit()', function () {
+        var waitIndicator;
+        beforeEach(function () {
+          inject(function (_waitIndicator_) {
+            waitIndicator = _waitIndicator_;
+          });
+          spyOn(waitIndicator, 'beginWait').and.callThrough();
+        });
+
+        function expectWaitIndicator() {
+          it('should call .beginWait()', function () {
+            expect(waitIndicator.beginWait).toHaveBeenCalled();
+          });
+
+          it('should not be .waiting when finished', function () {
+            expect(waitIndicator.waiting()).toBeFalsy();
+          });
+        }
 
         beforeEach(function () {
           // username and password needed to make valid
@@ -90,11 +107,6 @@
           var btn = null;
 
           beforeEach(function () {
-            var $httpBackend;
-            inject(function (_$httpBackend_, sessionResource) {
-              $httpBackend = _$httpBackend_;
-              $httpBackend.expect('POST', sessionResource.path).respond(200, {auth_token: 'atoken'});
-            });
             btn = directiveElem.find('button');
           });
 
@@ -103,7 +115,7 @@
           });
 
           it('should call .submit() when click()', function () {
-            spyOn(vm, 'submit').and.callThrough();
+            spyOn(vm, 'submit');
             btn[0].click();
             expect(vm.submit).toHaveBeenCalled();
           })
@@ -121,13 +133,15 @@
               userCredentials = _userCredentials_;
             });
             userCredentials.clearCredentials();
+            vm.submit();
+            $httpBackend.flush();
           });
 
           it('should be logged in', function () {
-            vm.submit();
-            $httpBackend.flush();
             expect(userCredentials.loggedIn).toBeTruthy();
-          })
+          });
+
+          expectWaitIndicator();
         });
 
         describe('has password error', function () {
@@ -155,9 +169,10 @@
           it('should have expected .errors', function () {
             expect(vm.errors).toEqual(expected);
           });
+
+          expectWaitIndicator();
         });
       });
     })
-
   });
 })();

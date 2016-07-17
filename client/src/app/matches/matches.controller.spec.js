@@ -162,7 +162,7 @@
             function (value) {
               angular.merge(value, {
                 title: "title",
-                scoring: "two_six_game_ten_points",
+                scoring: "two_six_game_ten_points"
               })
             });
 

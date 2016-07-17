@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('ScoreboardController', function () {
+  fdescribe('ScoreboardController', function () {
     var $controller;
     var $scope;
     var $rootScope;
@@ -227,148 +227,173 @@
       });
     });
 
-
-    describe('save success', function () {
-      var vm;
+    describe('update', function () {
+      var waitIndicator;
       beforeEach(function () {
-        var response = singlesResponse();
-        vm = scoreboardController(response);
-        var sb = vm.scoreboard;
-        sb.update('fake_action', 0, true);
+        inject(function (_waitIndicator_) {
+          waitIndicator = _waitIndicator_;
+        });
+        spyOn(waitIndicator, 'beginWait').and.callThrough();
       });
 
-      it('should have saved', function () {
-        expect(vm.scoreboard.mockSaved).toBeTruthy();
-      });
-    });
+      function expectWaitIndicator() {
+        it('should call .beginWait()', function () {
+          expect(waitIndicator.beginWait).toHaveBeenCalled();
+        });
 
-    describe('save params', function () {
-
-      function startNextGameParams(id) {
-        return {
-          match_score_board: {
-            player: id,
-            action: 'start_game'
-          }
-        }
+        it('should not be .waiting when finished', function () {
+          expect(waitIndicator.waiting()).toBeFalsy();
+        });
       }
 
-      describe('singles', function () {
-
-        var params = {};
-        var playerId = 10;
-
-        function addParams(action) {
-          params[action] = {
-            match_score_board: {
-              player: playerId,
-              action: action
-            }
-          }
-        }
-
-        addParams('win_game');
-        addParams('win_match');
-        addParams('win_tiebreaker');
-
-        var sb;
+      describe('success', function () {
+        var vm;
         beforeEach(function () {
           var response = singlesResponse();
-          var vm = scoreboardController(response);
-          sb = vm.scoreboard;
+          vm = scoreboardController(response);
+          var sb = vm.scoreboard;
+          sb.update('fake_action', 0, true);
         });
 
-        angular.forEach(params, function (value, key) {
-          it('should have valid params for ' + key + ' action', function () {
-            mockResource.params = null;
-            sb.update(key, 0, true);
-            expect(mockResource.params).toEqual(params[key])
-          });
+        it('should have updated', function () {
+          expect(vm.scoreboard.mockSaved).toBeTruthy();
         });
 
-        it('should have valid params for start_game action', function () {
-          mockResource.params = null;
-          sb.update('start_game', playerId, true);
-          expect(mockResource.params).toEqual(startNextGameParams(10));
-        });
+        expectWaitIndicator();
       });
 
-      describe('doubles', function () {
+      describe('with param', function () {
 
-        var params = {};
-
-        function addParams(action) {
-          params[action] = {
+        function startNextGameParams(id) {
+          return {
             match_score_board: {
-              team: 200,
-              action: action
+              player: id,
+              action: 'start_game'
             }
           }
         }
 
-        addParams('win_game');
-        addParams('win_match');
-        addParams('win_tiebreaker');
+        describe('singles', function () {
 
-        var sb;
-        beforeEach(function () {
-          var response = doublesResponse();
-          var vm = scoreboardController(response);
-          sb = vm.scoreboard;
-        });
+          var params = {};
+          var playerId = 10;
 
-        angular.forEach(params, function (value, key) {
-          it('should have valid params for ' + key, function () {
-            mockResource.params = null;
-            sb.update(key, 1);
-            expect(mockResource.params).toEqual(params[key])
+          function addParams(action) {
+            params[action] = {
+              match_score_board: {
+                player: playerId,
+                action: action
+              }
+            }
+          }
+
+          addParams('win_game');
+          addParams('win_match');
+          addParams('win_tiebreaker');
+
+          var sb;
+          beforeEach(function () {
+            var response = singlesResponse();
+            var vm = scoreboardController(response);
+            sb = vm.scoreboard;
           });
 
+          angular.forEach(params, function (value, key) {
+            it('should have valid params for ' + key + ' action', function () {
+              mockResource.params = null;
+              sb.update(key, 0, true);
+              expect(mockResource.params).toEqual(params[key])
+            });
+          });
+
+          it('should have valid params for start_game action', function () {
+            mockResource.params = null;
+            sb.update('start_game', playerId, true);
+            expect(mockResource.params).toEqual(startNextGameParams(10));
+          });
+        });
+
+        describe('doubles', function () {
+
+          var params = {};
+
+          function addParams(action) {
+            params[action] = {
+              match_score_board: {
+                team: 200,
+                action: action
+              }
+            }
+          }
+
+          addParams('win_game');
+          addParams('win_match');
+          addParams('win_tiebreaker');
+
+          var sb;
+          beforeEach(function () {
+            var response = doublesResponse();
+            var vm = scoreboardController(response);
+            sb = vm.scoreboard;
+          });
+
+          angular.forEach(params, function (value, key) {
+            it('should have valid params for ' + key, function () {
+              mockResource.params = null;
+              sb.update(key, 1);
+              expect(mockResource.params).toEqual(params[key])
+            });
+          });
         });
       });
-    });
 
-    describe('save data error', function () {
-      var vm;
-      beforeEach(function () {
-        mockResource.respondWithDataError = true;
-        var response = angular.copy(singlesResponse());
-        vm = scoreboardController(response);
-        var sb = vm.scoreboard;
-        sb.update('fake_action', 0, true);
+      describe('data error', function () {
+        var vm;
+        beforeEach(function () {
+          mockResource.respondWithDataError = true;
+          var response = angular.copy(singlesResponse());
+          vm = scoreboardController(response);
+          var sb = vm.scoreboard;
+          sb.update('fake_action', 0, true);
+        });
+
+        it('should save with error', function () {
+          expect(vm.scoreboard.mockSavedWithError).toBeTruthy();
+        });
+
+        it('should show toast', function () {
+          expect(vm).toHaveToast();
+        });
+
+        it('should fail loading', function () {
+          expect(vm).not.toFailLoading();
+        });
+
+        expectWaitIndicator();
       });
 
-      it('should save with error', function () {
-        expect(vm.scoreboard.mockSavedWithError).toBeTruthy();
+      describe('HTTP error', function () {
+        var vm;
+        beforeEach(function () {
+          mockResource.respondWithHTTPError = true;
+          var response = singlesResponse();
+          vm = scoreboardController(response);
+          var sb = vm.scoreboard;
+          sb.update('fake_action', 0, true);
+        });
+
+        it('should not show toast', function () {
+          expect(vm).not.toHaveToast();
+        });
+
+        it('should show loading error', function () {
+          expect(vm).toFailLoading();
+        });
+        
+        expectWaitIndicator();
       });
 
-      it('should show toast', function () {
-        expect(vm).toHaveToast();
-      });
-
-      it('should fail loading', function () {
-        expect(vm).not.toFailLoading();
-      });
-    });
-
-    describe('save HTTP error', function () {
-      var vm;
-      beforeEach(function () {
-        mockResource.respondWithHTTPError = true;
-        var response = singlesResponse();
-        vm = scoreboardController(response);
-        var sb = vm.scoreboard;
-        sb.update('fake_action', 0, true);
-      });
-
-      it('should not show toast', function () {
-        expect(vm).not.toHaveToast();
-      });
-
-      it('should show loading error', function () {
-        expect(vm).toFailLoading();
-      });
-    });
+    }); // update
 
     describe('.view', function () {
 
