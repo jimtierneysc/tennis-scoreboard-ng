@@ -13,13 +13,15 @@ class SessionsController < ApplicationController
       render json: user, status: :ok
     else
       render json: { errors: "Invalid username or password" }, status: 422
-    end 
+    end
   end
 
   def destroy
-    user = User.find_by(auth_token: params[:id])    
-    user.generate_authentication_token!
-    user.save!
+    user = User.find_by(auth_token: params[:id])
+    if user
+      user.generate_authentication_token!
+      user.save!
+    end
     head :no_content
   end
 end

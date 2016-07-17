@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive loginForm', function () {
+  describe('feLoginForm directive', function () {
 
     var compile, scope, directiveElem;
 
@@ -27,7 +27,7 @@
       return compiledElement;
     }
 
-    it('has fe-credentials-form element', function () {
+    it('should have fe-credentials-form element', function () {
       expect(directiveElem.find('fe-credentials-form').length).toEqual(1);
     });
 
@@ -43,15 +43,15 @@
           expect(vm).not.toEqual(null);
         });
 
-        it('should have entity', function () {
+        it('should have .entity', function () {
           expect(vm.entity).toEqual(jasmine.any(Object));
         });
 
-        it('should have errors', function () {
+        it('should have .errors', function () {
           expect(vm.errors).toEqual(jasmine.any(Object));
         });
 
-        it('should have submit', function () {
+        it('should have .submit()', function () {
           expect(vm.submit).toEqual(jasmine.any(Function));
         })
       });
@@ -67,11 +67,11 @@
           scope.$digest();
         });
 
-        it('has user name', function () {
+        it('should have user name', function () {
           expect(inputs[0].value).toEqual(username)
         });
 
-        it('has password', function () {
+        it('should have password', function () {
           expect(inputs[1].value).toEqual(password)
         });
       });
@@ -91,46 +91,46 @@
 
           beforeEach(function () {
             var $httpBackend;
-            inject(function (_$httpBackend_, loginResource) {
+            inject(function (_$httpBackend_, sessionResource) {
               $httpBackend = _$httpBackend_;
-              $httpBackend.expect('POST', loginResource.path).respond(200, {auth_token: 'atoken'});
+              $httpBackend.expect('POST', sessionResource.path).respond(200, {auth_token: 'atoken'});
             });
             btn = directiveElem.find('button');
           });
 
-          it('has button', function () {
+          it('should have button', function () {
             expect(btn).not.toEqual(null);
           });
 
-          it('should call .submit()', function () {
+          it('should call .submit() when click()', function () {
             spyOn(vm, 'submit').and.callThrough();
             btn[0].click();
             expect(vm.submit).toHaveBeenCalled();
           })
         });
 
-        describe('sets credentials', function() {
+        describe('sets credentials', function () {
           var $httpBackend;
-          var authenticationService;
-          beforeEach(function() {
-            inject(function (_$httpBackend_, loginResource) {
+          var userCredentials;
+          beforeEach(function () {
+            inject(function (_$httpBackend_, sessionResource) {
               $httpBackend = _$httpBackend_;
-              $httpBackend.expect('POST', loginResource.path).respond(200, {auth_token: 'atoken'});
+              $httpBackend.expect('POST', sessionResource.path).respond(200, {auth_token: 'atoken'});
             });
-            inject(function (_authenticationService_) {
-              authenticationService = _authenticationService_;
+            inject(function (_userCredentials_) {
+              userCredentials = _userCredentials_;
             });
-            authenticationService.clearCredentials();
+            userCredentials.clearCredentials();
           });
 
-          it('should be loggedIn', function() {
+          it('should be logged in', function () {
             vm.submit();
             $httpBackend.flush();
-            expect(authenticationService.loggedIn).toBeTruthy();
+            expect(userCredentials.loggedIn).toBeTruthy();
           })
         });
 
-        describe('errors', function () {
+        describe('has password error', function () {
           var errors = {
             password: 'password error',
             username: 'username error',
@@ -142,21 +142,18 @@
             other: ['whatever']
           };
 
-          describe('password error', function () {
-            var $httpBackend;
-            beforeEach(function () {
-              inject(function (_$httpBackend_, loginResource) {
-                $httpBackend = _$httpBackend_;
-                $httpBackend.expect('POST', loginResource.path).respond(500, errors);
-              });
-              vm.submit();
-              $httpBackend.flush();
+          var $httpBackend;
+          beforeEach(function () {
+            inject(function (_$httpBackend_, sessionResource) {
+              $httpBackend = _$httpBackend_;
+              $httpBackend.expect('POST', sessionResource.path).respond(500, errors);
             });
+            vm.submit();
+            $httpBackend.flush();
+          });
 
-            it('has expected .errors', function () {
-              expect(vm.errors).toEqual(expected);
-            });
-
+          it('should have expected .errors', function () {
+            expect(vm.errors).toEqual(expected);
           });
         });
       });

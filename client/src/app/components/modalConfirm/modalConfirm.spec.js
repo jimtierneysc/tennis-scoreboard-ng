@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('service modalConfirm', function () {
+  describe('modalConfirm', function () {
 
     var labels = {
       text: 'text value',
@@ -24,15 +24,15 @@
         })
       });
 
-       it('has .confirm()', function () {
+      it('should have .confirm()', function () {
         expect(service.confirm).toEqual(jasmine.any(Function));
       });
 
-      it('has .open()', function () {
+      it('should have .open()', function () {
         expect(service.open).toEqual(jasmine.any(Function));
       });
 
-      it('calls $uibModal.open()', function () {
+      it('should call $uibModal.open()', function () {
         var fakeOpen = function (settings) {
           expect(settings.resolve.data).toEqual(labels);
           return {}
@@ -55,7 +55,7 @@
       //   destroyModal();
       // })
 
-      it('has <article>', function () {
+      it('should have <article>', function () {
         expect(form.find('article').length).toEqual(1);
       });
     });
@@ -73,11 +73,11 @@
         btns = modal.element.find('button');
       });
 
-      it('has buttons', function () {
+      it('should have buttons', function () {
         expect(btns.length).toBe(2);
       });
 
-      it('confirms when click', function () {
+      it('should confirm when click()', function () {
         var ok = false;
         modal.modal.result.then(function () {
           ok = true;
@@ -87,7 +87,7 @@
         expect(ok).toBeTruthy();
       });
 
-      it('cancels when click', function () {
+      it('should cancel when click()', function () {
         var cancel = false;
         modal.modal.result.then(
           function () {
@@ -103,7 +103,7 @@
 
     });
 
-    describe('form encode', function () {
+    describe('form encoding', function () {
       var form;
 
       var labels = {
@@ -114,7 +114,7 @@
         form = createModal(labels).element;
       });
 
-      it('html encodes text', function () {
+      it('should html encode text', function () {
         var el = form.find('article');
         expect(el.html().trim()).toEqual('&lt;hello&gt;&amp;hello')
       });
@@ -128,22 +128,20 @@
         vm = angular.element(form).scope().vm;
       });
 
-      describe('members', function () {
-        it('has .vm', function () {
-          expect(vm).not.toEqual(null);
-        });
+      it('should have .vm', function () {
+        expect(vm).not.toEqual(null);
+      });
 
-        it('has .data', function () {
-          expect(vm.data).toEqual(labels);
-        });
+      it('should have .data', function () {
+        expect(vm.data).toEqual(labels);
+      });
 
-        it('has .ok()', function () {
-          expect(vm.ok).toEqual(jasmine.any(Function));
-        });
+      it('should have .ok()', function () {
+        expect(vm.ok).toEqual(jasmine.any(Function));
+      });
 
-        it('has .cancel()', function () {
-          expect(vm.cancel).toEqual(jasmine.any(Function));
-        });
+      it('should have .cancel()', function () {
+        expect(vm.cancel).toEqual(jasmine.any(Function));
       });
     });
 

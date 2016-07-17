@@ -8,7 +8,6 @@
  <fe-score-table></fe-score-table>
  */
 
-
 (function () {
   'use strict';
 

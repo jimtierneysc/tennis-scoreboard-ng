@@ -42,36 +42,60 @@ RSpec.describe UsersController, { type: :controller } do
   end
 
   describe 'PUT/PATCH #update' do
-    before { api_authorization_header user1.auth_token }
+    context 'when authorized' do
+      before { api_authorization_header user1.auth_token }
 
-    context 'when is successfully updated' do
-      before do
-        patch :update, { id: user1.id, user: { username: username2 } }
+      context 'when is successfully updated' do
+        before do
+          patch :update, { id: user1.id, user: { username: username2 } }
+        end
+
+        it 'should render the json representation' do
+          expect(json_response[:username]).to eql username2
+        end
+
+        it_behaves_like 'a response with success code', 200
       end
 
-      it 'should render the json representation' do
-        expect(json_response[:username]).to eql username2
-      end
+      context 'when is not updated' do
+        before do
+          patch :update, { id: user1.id, user: { username: '' } }
+        end
 
-      it_behaves_like 'a response with success code', 200
+        it_behaves_like 'attribute error', :username, :cant_be_blank
+        it_behaves_like 'a response with error code', 422
+      end
     end
 
-    context 'when is not updated' do
-      before do
-        patch :update, { id: user1.id, user: { username: '' } }
-      end
+    context 'when not authorized' do
+      before { patch :update, { id: user1.id, user: {} } }
 
-      it_behaves_like 'attribute error', :username, :cant_be_blank
-      it_behaves_like 'a response with error code', 422
+      it_behaves_like 'not authenticated'
     end
   end
 
   describe 'DELETE #destroy' do
-    before do
-      api_authorization_header user1.auth_token
-      delete :destroy, { id: user1.id }
+    context 'when authorized' do
+      before { api_authorization_header user1.auth_token }
+
+      context 'when exists' do
+        before { delete :destroy, id: user1.id }
+
+        it_behaves_like 'a response with success code', 204
+      end
+
+      context 'when does not exists' do
+        before { delete :destroy, id: 0 }
+
+        it_behaves_like 'a response with success code', 204
+      end
     end
 
-    it_behaves_like 'a response with success code', 204
+    context 'when not authorized' do
+      before { delete :destroy, id: 1 }
+
+      it_behaves_like 'not authenticated'
+    end
   end
 end
+

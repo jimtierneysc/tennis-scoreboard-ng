@@ -6,8 +6,8 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($log, authenticationService) {
-    authenticationService.loadCredentials();
+  function runBlock($log, userCredentials) {
+    userCredentials.loadCredentials();
   }
 
 })();

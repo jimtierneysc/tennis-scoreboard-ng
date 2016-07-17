@@ -1,12 +1,11 @@
 (function () {
   'use strict';
 
-  describe('controller scoreboard', function () {
+  describe('ScoreboardController', function () {
     var $controller;
     var $scope;
     var $rootScope;
     var mockResource;
-
 
     var firstPlayer = {
       id: 10,
@@ -74,7 +73,6 @@
       mockResource = new MockResource();
     });
 
-
     function scoreboardController(response) {
       var locals = {
         $scope: $scope,
@@ -92,37 +90,37 @@
         vm = scoreboardController(singlesResponse());
       });
 
-      describe('supports', function () {
-
-        it('supports auth', function () {
-          expect(vm).toSupportAuth();
-        });
-
-        it('should support loading', function () {
-          expect(vm).toSupportLoading();
-        });
-
-        it('should support toastr', function () {
-          expect(vm).toSupportToastr();
-        });
-
+      it('should support auth', function () {
+        expect(vm).toSupportAuth();
       });
 
-      it('has id', function () {
+      it('should support loading', function () {
+        expect(vm).toSupportLoading();
+      });
+
+      it('should support toastr', function () {
+        expect(vm).toSupportToastr();
+      });
+
+      it('should have .id', function () {
         expect(vm.id).toEqual(scoresResponse.id);
       });
-      it('has #view', function () {
+
+      it('should have .view', function () {
         expect(vm.view).toEqual(jasmine.any(Object));
       });
 
+      it('should have .scoreboard', function () {
+        expect(vm.scoreboard).toEqual(jasmine.any(Object));
+      });
     });
 
     describe('loading', function () {
 
       it('should load', function () {
         var vm = scoreboardController(singlesResponse());
-          // custom matcher
-          expect(vm).not.toFailLoading();
+        // custom matcher
+        expect(vm).not.toFailLoading();
       });
 
       it('should fail', function () {
@@ -132,9 +130,9 @@
     });
 
 
-    describe('#scoreboard', function () {
+    describe('scoreboard', function () {
 
-      describe('prepare values', function () {
+      describe('prepare', function () {
         var sb;
 
         beforeEach(function () {
@@ -142,44 +140,33 @@
           sb = vm.scoreboard;
         });
 
-        it('has #opponents', function () {
+        it('should have .opponents', function () {
           expect(sb.opponents).toEqual(jasmine.any(Array));
         });
 
-        it('does not have #server', function () {
+        it('should not have .server', function () {
           expect(sb.server).toBe(null);
         });
 
-        it('has #btns', function () {
+        it('should have .btns', function () {
           expect(sb.btns).toEqual(jasmine.any(Object));
         });
 
-        it('does not have #newGame', function () {
+        it('should not have .newGame', function () {
           expect(sb.newGame).toBeUndefined();
         });
 
-        it('does not have #newSet', function () {
+        it('should not have .newSet', function () {
           expect(sb.newSet).toBeUndefined();
         });
 
-        it('does not have #firstServers', function () {
+        it('should not have .firstServers', function () {
           expect(sb.firstServers).toBeUndefined();
         });
 
-      });
-
-      describe('prepare methods', function () {
-        var sb;
-
-        beforeEach(function () {
-          var vm = scoreboardController(singlesResponse());
-          sb = vm.scoreboard;
-        });
-
-        it('has #update', function () {
+        it('should have .update()', function () {
           expect(sb.update).toEqual(jasmine.any(Function));
         });
-
       });
 
       describe('newGame', function () {
@@ -192,17 +179,16 @@
           sb = vm.scoreboard;
         });
 
-        it('has #newGame', function () {
+        it('should equal newGame', function () {
           expect(sb.newGame).toEqual(jasmine.any(Object));
         });
 
-        it('has #firstServers', function () {
+        it('should have .firstServers', function () {
           expect(sb.firstServers.list.length).toBe(4);
         });
-
       });
 
-      describe('#newSet', function () {
+      describe('newSet', function () {
         var sb;
         beforeEach(function () {
           var response = singlesResponse();
@@ -212,12 +198,12 @@
           sb = vm.scoreboard;
         });
 
-        it('has #newSet', function () {
+        it('should equal newSet', function () {
           expect(sb.newSet).toEqual(jasmine.any(Object));
         });
       });
 
-      describe('descending order', function () {
+      describe('sort order', function () {
         var sb;
         beforeEach(function () {
           var response = singlesResponse();
@@ -229,12 +215,12 @@
           sb = vm.scoreboard;
         });
 
-        it('ordered sets', function () {
+        it('should order sets descending', function () {
           expect(sb.sets[0].id).toEqual(1);
           expect(sb.sets[1].id).toEqual(0);
         });
 
-        it('ordered games', function () {
+        it('should order games descending', function () {
           expect(sb.sets[1].games[0].id).toEqual(1);
           expect(sb.sets[1].games[1].id).toEqual(0);
         });
@@ -248,10 +234,10 @@
         var response = singlesResponse();
         vm = scoreboardController(response);
         var sb = vm.scoreboard;
-        sb.update('fake', 0, true);
+        sb.update('fake_action', 0, true);
       });
 
-      it('should save', function () {
+      it('should have saved', function () {
         expect(vm.scoreboard.mockSaved).toBeTruthy();
       });
     });
@@ -270,11 +256,12 @@
       describe('singles', function () {
 
         var params = {};
+        var playerId = 10;
 
         function addParams(action) {
           params[action] = {
             match_score_board: {
-              player: 10,
+              player: playerId,
               action: action
             }
           }
@@ -292,16 +279,16 @@
         });
 
         angular.forEach(params, function (value, key) {
-          it('valid params for ' + key, function () {
+          it('should have valid params for ' + key + ' action', function () {
             mockResource.params = null;
             sb.update(key, 0, true);
             expect(mockResource.params).toEqual(params[key])
           });
         });
 
-        it('valid params for start_game', function () {
+        it('should have valid params for start_game action', function () {
           mockResource.params = null;
-          sb.update('start_game', 10, true);
+          sb.update('start_game', playerId, true);
           expect(mockResource.params).toEqual(startNextGameParams(10));
         });
       });
@@ -331,7 +318,7 @@
         });
 
         angular.forEach(params, function (value, key) {
-          it('valid params for ' + key, function () {
+          it('should have valid params for ' + key, function () {
             mockResource.params = null;
             sb.update(key, 1);
             expect(mockResource.params).toEqual(params[key])
@@ -339,8 +326,6 @@
 
         });
       });
-
-
     });
 
     describe('save data error', function () {
@@ -350,7 +335,7 @@
         var response = angular.copy(singlesResponse());
         vm = scoreboardController(response);
         var sb = vm.scoreboard;
-        sb.update('fake', 0, true);
+        sb.update('fake_action', 0, true);
       });
 
       it('should save with error', function () {
@@ -361,10 +346,9 @@
         expect(vm).toHaveToast();
       });
 
-      it('not show loading error', function () {
+      it('should fail loading', function () {
         expect(vm).not.toFailLoading();
       });
-
     });
 
     describe('save HTTP error', function () {
@@ -374,7 +358,7 @@
         var response = singlesResponse();
         vm = scoreboardController(response);
         var sb = vm.scoreboard;
-        sb.update('fake', 0, true);
+        sb.update('fake_action', 0, true);
       });
 
       it('should not show toast', function () {
@@ -386,7 +370,7 @@
       });
     });
 
-    describe('#view', function () {
+    describe('.view', function () {
 
       describe('members', function () {
         var view;
@@ -395,55 +379,53 @@
           view = vm.view;
         });
 
-        it('has #expand', function () {
+        it('should have .expand', function () {
           expect(view.expand).toEqual(jasmine.any(String));
         });
 
-        it('has #keepScore', function () {
+        it('should have .keepScore', function () {
           expect(view.keepScore).toEqual(jasmine.any(Boolean));
         });
 
-        it('has #keepingScore', function () {
+        it('should have .keepingScore()', function () {
           expect(view.keepingScore).toEqual(jasmine.any(Function));
         });
 
-        it('has #changed', function () {
+        it('should have .changed()', function () {
           expect(view.changed).toEqual(jasmine.any(Function));
         });
 
-        it('has #showGames', function () {
+        it('should have .showGames()', function () {
           expect(view.showGames).toEqual(jasmine.any(Function));
         });
-
       });
 
-      describe('#keepingScore', function () {
+      describe('.keepingScore', function () {
 
-        var authenticationService;
+        var userCredentials;
         var view;
         beforeEach(function () {
-          inject(function (_authenticationService_) {
-            authenticationService = _authenticationService_;
+          inject(function (_userCredentials_) {
+            userCredentials = _userCredentials_;
           });
           var vm = scoreboardController(singlesResponse());
           view = vm.view;
-          authenticationService.setCredentials('user', 'token');
+          userCredentials.setCredentials('user', 'token');
           view.keepScore = true;
         });
 
-        it('should be false when not logged in', function () {
-          authenticationService.clearCredentials();
+        it('should be false when clear credentials', function () {
+          userCredentials.clearCredentials();
           expect(view.keepingScore()).toBeFalsy();
         });
 
-        it('should be true when not logged in', function () {
+        it('should be true when set credentials', function () {
           expect(view.keepingScore()).toBeTruthy();
         });
-
       });
 
 
-      describe('#showGames', function () {
+      describe('.showGames()', function () {
         var vm;
         beforeEach(function () {
           vm = scoreboardController(singlesResponse());
@@ -457,14 +439,13 @@
 
         });
 
-        it('it should not show games when collapsed', function () {
+        it('should not show games when collapsed', function () {
           vm.view.expand = 'collapse';
           expect(vm.view.showGames(1)).toBeFalsy();
         })
-
       });
 
-      describe('storage of #expand and #keepingScore', function () {
+      describe('storage of .expand and .keepingScore', function () {
         var $localStorage;
         beforeEach(function () {
           inject(function (_$localStorage_) {
@@ -472,12 +453,12 @@
           })
         });
 
-        it('has data name', function () {
+        it('should have data name', function () {
           var vm = scoreboardController(singlesResponse());
           expect(vm.view.localDataName).toEqual(jasmine.any(String))
         });
 
-        describe('saves data', function () {
+        describe('save data', function () {
           var view;
           beforeEach(function () {
             var vm = scoreboardController(singlesResponse());
@@ -485,18 +466,17 @@
             $localStorage[view.localDataName] = undefined;
           });
 
-          it('has no data', function () {
+          it('should have no data when initialized', function () {
             expect($localStorage[view.localDataName]).toBeUndefined();
           });
 
-          it('has data after changed', function () {
+          it('should have data after view changed', function () {
             view.changed();
             expect($localStorage[view.localDataName]).not.toBeUndefined();
           });
-
         });
 
-        describe('loads data', function () {
+        describe('load data', function () {
           beforeEach(function () {
             var vm = scoreboardController(singlesResponse());
             vm.view.expand = 'xyz';
@@ -504,116 +484,122 @@
             vm.view.changed();
           });
 
-          it('has expand', function () {
+          it('should have .expand', function () {
             var vm = scoreboardController(singlesResponse());
             expect(vm.view.expand).toEqual('xyz');
           });
 
-          it('has keep score', function () {
+          it('should have .keepScore', function () {
             var vm = scoreboardController(singlesResponse());
             expect(vm.view.keepScore).toBe(true)
           });
-
         });
       });
 
+    });
 
-      describe('confirm change', function () {
-        var modalConfirm;
-        var $q;
-        var vm;
+    describe('confirm change', function () {
+      var modalConfirm;
+      var $q;
+      var vm;
 
+      beforeEach(function () {
+        inject(function (_modalConfirm_, _$q_) {
+          modalConfirm = _modalConfirm_;
+          $q = _$q_;
+        });
+        vm = scoreboardController(singlesResponse());
+      });
+
+      var confirmActions = {
+        discard_play: true,
+        restart_play: true,
+        start_set: false
+      };
+
+      describe('open modal', function () {
         beforeEach(function () {
-          inject(function (_modalConfirm_, _$q_) {
-            modalConfirm = _modalConfirm_;
-            $q = _$q_;
-          });
-          vm = scoreboardController(singlesResponse());
+          spyOn(modalConfirm, 'confirm').and.callThrough();
         });
 
-        var confirmActions = {
-          discard_play: true,
-          restart_play: true,
-          start_set: false
-        };
-
-        describe('open modal', function () {
-          beforeEach(function () {
-            spyOn(modalConfirm, 'confirm').and.callThrough();
-          });
-
-          angular.forEach(confirmActions, function (value, key) {
-            describe(key, function () {
-              beforeEach(function () {
-                vm.scoreboard.update(key, 0, true);
+        angular.forEach(confirmActions, function (value, key) {
+          describe(key, function () {
+            beforeEach(function () {
+              vm.scoreboard.update(key, 0, true);
+            });
+            var message = 'open modal for ' + key + ' action';
+            if (value) {
+              it('should ' + message, function () {
+                expect(modalConfirm.confirm).toHaveBeenCalled();
               });
-              if (value) {
-                it('should open modal', function () {
-                  expect(modalConfirm.confirm).toHaveBeenCalled();
-                });
-              }
-              else {
-                it('should not open modal', function () {
-                  expect(modalConfirm.confirm).not.toHaveBeenCalled();
-                });
-              }
-            })
+            }
+            else {
+              it('should not ' + message, function () {
+                expect(modalConfirm.confirm).not.toHaveBeenCalled();
+              });
+            }
+          })
+        })
+      });
+
+      function returnPromise(resolve) {
+        return function () {
+          var deferred = $q.defer();
+          if (resolve)
+            deferred.resolve();
+          else
+            deferred.reject();
+          return deferred.promise;
+        }
+      }
+
+      describe('confirm action', function () {
+        beforeEach(function () {
+          spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(true));
+        });
+
+        angular.forEach(confirmActions, function (value, key) {
+          describe(key, function () {
+            beforeEach(function () {
+              mockResource.params = null;
+              vm.scoreboard.update(key, 0, true);
+              $rootScope.$digest();
+            });
+            var message = 'confirm ' + key + ' action';
+            if (value) {
+              it('should ' + message, function () {
+                expect(mockResource.params).not.toBe(null);
+              });
+            } else {
+              // No spec needed here.
+            }
           })
         });
+      });
 
-        function returnPromise(resolve) {
-          return function () {
-            var deferred = $q.defer();
-            if (resolve)
-              deferred.resolve();
-            else
-              deferred.reject();
-            return deferred.promise;
-          }
-        }
-
-        describe('confirm action', function () {
-          beforeEach(function () {
-            spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(true));
-          });
-
-          angular.forEach(confirmActions, function (value, key) {
-            describe(key, function () {
-              beforeEach(function () {
-                mockResource.params = null;
-                vm.scoreboard.update(key, 0, true);
-                $rootScope.$digest();
-              });
-              if (value) {
-                it('should confirm change', function () {
-                  expect(mockResource.params).not.toBe(null);
-                });
-              }
-            })
-          });
+      describe('cancel action', function () {
+        beforeEach(function () {
+          spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(false));
         });
 
-        describe('cancel action', function () {
-          beforeEach(function () {
-            spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(false));
-          });
-
-          angular.forEach(confirmActions, function (value, key) {
-            describe(key, function () {
-              beforeEach(function () {
-                mockResource.params = null;
-                vm.scoreboard.update(key, 0, true);
-                $rootScope.$digest();
+        angular.forEach(confirmActions, function (value, key) {
+          describe(key, function () {
+            beforeEach(function () {
+              mockResource.params = null;
+              vm.scoreboard.update(key, 0, true);
+              $rootScope.$digest();
+            });
+            var message = 'cancel change for ' + key + ' action';
+            if (value) {
+              it('should ' + message, function () {
+                expect(mockResource.params).toBe(null);
               });
-              if (value) {
-                it('should cancel change', function () {
-                  expect(mockResource.params).toBe(null);
-                });
-              }
-            })
-          });
-
-
+            } else {
+              it('should not ' + message, function () {
+                expect(mockResource.params).not.toBe(null);
+              });
+            }
+          })
         });
       });
     });

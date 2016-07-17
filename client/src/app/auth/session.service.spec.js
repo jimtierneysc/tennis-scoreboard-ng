@@ -1,33 +1,33 @@
 (function() {
   'use strict';
 
-  describe('service Login', function() {
+  describe('sessionResource service', function() {
     var service;
     var $httpBackend;
 
     beforeEach(module('frontend'));
     beforeEach(function() {
-      inject(function(_loginResource_, _$httpBackend_) {
-        service = _loginResource_;
+      inject(function(_sessionResource_, _$httpBackend_) {
+        service = _sessionResource_;
         $httpBackend = _$httpBackend_;
       })
     });
 
     describe('.path', function() {
-      it('should exist', function() {
+      it('should have .path', function() {
         expect(service.path).not.toEqual(null);
       });
     });
 
-    describe('.getLogin()', function() {
-      it('exists', function() {
-        expect(service.getLogin).not.toEqual(null);
+    describe('.getSession()', function() {
+      it('should have .getSession()', function() {
+        expect(service.getSession).not.toEqual(null);
       });
 
-      it('returns data', function() {
+      it('should return data', function() {
         $httpBackend.expect('POST',  service.path).respond(200, {auth_token: 'atoken'});
         var data = null;
-        service.getLogin().login(function(response) {
+        service.getSession().login(function(response) {
           data = response;
         },
         function() {
@@ -37,10 +37,10 @@
         expect(data).toEqual(jasmine.any(Object));
       });
 
-      it('returns error', function() {
+      it('should return error', function() {
         $httpBackend.expect('POST',  service.path).respond(500);
         var error = false;
-        service.getLogin().login(function() {
+        service.getSession().login(function() {
           },
           function() {
             error = true;

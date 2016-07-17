@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive score commands', function () {
+  describe('feScoreCommands directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -32,23 +32,20 @@
     }));
 
     describe('isolated scope', function () {
-      it('should not be null', function () {
-        expect(isolatedScope).not.toBe(null);
+      it('should have .scores', function () {
+        expect(isolatedScope.scores).toBe(scope.ascores);
       });
 
-      describe('members', function () {
-        it('should have scores', function () {
-          expect(isolatedScope.scores).toBe(scope.ascores);
-        });
-        it('should have loggedin', function () {
-          expect(isolatedScope.loggedin).toEqual(scope.aloggedIn);
-        })
-        it('should have scores', function () {
-          expect(isolatedScope.scores).toBe(scope.ascores);
-        })
-        it('should have view', function () {
-          expect(isolatedScope.view).toBe(scope.aview);
-        })
+      it('should have .loggedin', function () {
+        expect(isolatedScope.loggedin).toEqual(scope.aloggedIn);
+      });
+
+      it('should have .scores', function () {
+        expect(isolatedScope.scores).toBe(scope.ascores);
+      });
+
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
       });
 
       // TODO: Test elements

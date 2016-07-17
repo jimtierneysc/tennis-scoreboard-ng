@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive match status', function () {
+  describe('feMatchStatus directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -28,14 +28,12 @@
 
 
     describe('isolated scope', function () {
-      it('has scope', function () {
+      it('should have scope', function () {
         expect(isolatedScope).not.toBe(null);
       });
 
-      describe('members', function () {
-        it('has .match', function () {
-          expect(isolatedScope.match).toBe(scope.amatch);
-        });
+      it('should have .match', function () {
+        expect(isolatedScope.match).toBe(scope.amatch);
       });
 
       // TODO: Test HTML elements

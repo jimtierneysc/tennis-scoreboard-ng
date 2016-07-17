@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('service crudResource', function () {
+  describe('crudResource service', function () {
     var $httpBackend;
     var sampleData = {name: 'somename'};
     var resourceName = 'aresource';
@@ -15,7 +15,7 @@
       $httpBackend = _$httpBackend_;
     }));
 
-    it('has path', function () {
+    it('should have path', function () {
       expect(path).toMatch(resourceName);
     });
     
@@ -49,12 +49,12 @@
         fn = $resource[fnName];
       });
 
-      it('returns data', function () {
+      it('should return data', function () {
         var data = backendExpectData(verb, id, fn, 200, [sampleData]);
         expect(data[0].name).toEqual(sampleData.name);
       });
 
-      it('returns an error', function () {
+      it('should return an error', function () {
         var status = backendExpectStatus(verb, id, fn, 500, [sampleData]);
         expect(status).toEqual(false);
       });
@@ -66,12 +66,12 @@
         fn = $resource[fnName];
       });
 
-      it('returns data', function () {
+      it('should return data', function () {
         var data = backendExpectData(verb, id, fn, 200, sampleData);
         expect(data.name).toEqual(sampleData.name);
       });
 
-      it('returns an error', function () {
+      it('should return an error', function () {
         var status = backendExpectStatus(verb, id, fn, 500, sampleData);
         expect(status).toEqual(false);
       });
@@ -83,12 +83,12 @@
         fn = $resource[fnName];
       });
 
-      it('returns data', function () {
+      it('should return data', function () {
         var status = backendExpectStatus(verb, id, fn, 200);
         expect(status).toEqual(true);
       });
 
-      it('returns an error', function () {
+      it('should return an error', function () {
         var status = backendExpectStatus(verb, id, fn, 500);
         expect(status).toEqual(false);
       });
@@ -139,7 +139,6 @@
       else
         return undefined;
     }
-
   });
 })();
 

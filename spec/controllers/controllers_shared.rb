@@ -92,6 +92,12 @@ module ControllersShared
     it_behaves_like 'a response with error code', 403
   end
 
+  RSpec.shared_examples 'not authenticated' do
+    it { expect(json_response).to include_error 'Not authenticated' }
+
+    it_behaves_like 'a response with error code', 401
+  end
+
   RSpec.shared_examples 'not found' do
     it { expect(json_response).to include_error 'Not found' }
 

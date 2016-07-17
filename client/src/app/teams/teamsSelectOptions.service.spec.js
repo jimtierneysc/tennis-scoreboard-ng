@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('teamsSelectOptions', function () {
+  describe('teamsSelectOptions service', function () {
 
     var path;
     var $httpBackend;

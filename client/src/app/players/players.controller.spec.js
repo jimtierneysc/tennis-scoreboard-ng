@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('controller players', function () {
+  describe('PlayersController', function () {
     var $controller;
     var $scope;
 
@@ -35,11 +35,11 @@
         vm = playerController(sampleResponse);
       });
 
-      it('supports Auth', function () {
+      it('should support Auth', function () {
         expect(vm).toSupportAuth();
       });
 
-      it('supports Crud', function () {
+      it('should support Crud', function () {
         expect(vm).toSupportCrud();
       });
 
@@ -47,31 +47,31 @@
 
     describe('loading', function () {
 
-      it('did not fail', function () {
+      it('should not fail', function () {
         var vm = playerController(sampleResponse);
         // custom matcher
         expect(vm).not.toFailLoading();
       });
 
-      it('did fail', function () {
+      it('should fail', function () {
         var vm = playerController({error: 'something'});
         // custom matcher
         expect(vm).toFailLoading();
       });
     });
 
-    describe('crud interface', function () {
+    describe('crud', function () {
       var crudMock;
       beforeEach(function () {
         crudMock = new CrudMock();
         playerController(sampleResponse, {crudHelper: crudMock.crudHelper})
       });
 
-      it('was activated', function () {
+      it('should be activated', function () {
         expect(crudMock.activated()).toBeTruthy();
       });
 
-      describe('crud options', function () {
+      describe('options', function () {
         var options;
         var resourceName;
         beforeEach(function () {
@@ -81,49 +81,49 @@
           options = crudMock.options;
         });
 
-        it('has options', function () {
+        it('should have options', function () {
           expect(options).toEqual(jasmine.any(Object));
         });
 
-        it('is crud options', function () {
+        it('should be crud options', function () {
           // custom matcher
           expect(options).toBeCrudOptions();
         });
 
-        it('has .resourceName', function () {
+        it('should have .resourceName', function () {
           expect(options.resourceName).toEqual(resourceName);
         });
 
         describe('.getEntityDisplayName()', function () {
 
-          it('returns name', function () {
+          it('should return name', function () {
             expect(options.getEntityDisplayName({name: 'aplayer'})).toEqual('aplayer');
           });
         });
 
         describe('.makeEntityBody()', function () {
 
-          it('returns object', function () {
+          it('should return object', function () {
             expect(options.makeEntityBody({})).toEqual({player: {}});
           });
         });
 
         describe('.prepareToCreateEntity()', function () {
 
-          it('prepares', function () {
+          it('should prepare', function () {
             expect(options.prepareToCreateEntity({name: 'aplayer', id: 1})).toEqual({name: 'aplayer'});
           });
         });
 
         describe('.prepareToUpdateEntity()', function () {
-          it('prepares', function () {
+          it('should prepare', function () {
             expect(options.prepareToUpdateEntity({name: 'aplayer', id: 1})).toEqual({id: 1, name: 'aplayer'});
           });
         });
       });
     });
   });
-  
+
   function CrudMock() {
 
     var _this = this;

@@ -212,7 +212,7 @@ RSpec.describe TeamsController, { type: :controller } do
       context 'when exists' do
         before { delete :destroy, id: doubles_team.id }
 
-        it { is_expected.to respond_with 204 }
+        it_behaves_like 'a response with success code', 204
       end
 
       context 'when does not exists' do

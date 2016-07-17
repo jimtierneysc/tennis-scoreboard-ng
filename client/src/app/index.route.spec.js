@@ -54,25 +54,25 @@
             state = $state.get(key);
           });
 
-          it('matches url', function () {
+          it('should match url', function () {
             expect(state.url).toEqual(value.url);
           });
 
-          it('matches templateUrl', function () {
+          it('should match templateUrl', function () {
             if (state.views)
               expect(state.views.content.templateUrl).toEqual(value.templateUrl);
             else
               expect(state.templateUrl).toEqual(value.templateUrl);
           });
 
-          it('matches controller', function () {
+          it('should match controller', function () {
             if (state.views)
               expect(state.views.content.controller).toEqual(value.controller);
             else
               expect(state.controller).toEqual(value.controller);
           });
 
-          it('resolves', function () {
+          it('should match resolve', function () {
             if (value.controller)
               if (state.views)
                 expect(state.views.content.resolve.response).toEqual(jasmine.any(Function));
@@ -102,23 +102,23 @@
 
       describe('response ok', function () {
         angular.forEach(stateExpectations, function (value, state) {
-          describe('state ' + state, function () {
+          describe('state "' + state + '"', function () {
             beforeEach(function () {
               mockResource.lastId = null;
               mockResource.lastResponse = null;
               goState(state, value.params);
             });
 
-            it('goes to', function () {
+            it('should change $state', function () {
               expect($state.current.name).toEqual(state);
             });
 
-            it('has id', function () {
+            it('should have id', function () {
               if (value.params)
                 expect(mockResource.lastParams).toEqual(value.params);
             });
 
-            it('passes success response', function () {
+            it('should pass success response', function () {
               if (value.controller)
                 expect($state.$current.locals['content@'].response).toEqual(mockResource.lastResponse)
             });
@@ -132,16 +132,16 @@
         });
 
         angular.forEach(stateExpectations, function (value, state) {
-          describe('state ' + state, function () {
+          describe('state "' + state + '"', function () {
             beforeEach(function () {
               goState(state, value);
             });
 
-            it('goes to', function () {
+            it('should change $state', function () {
               expect($state.current.name).toEqual(state);
             });
-            
-            it('passes error response', function () {
+
+            it('should pass error response', function () {
               if (value.controller)
                 expect($state.$current.locals['content@'].response).toEqual(mockResource.errors)
             });
@@ -203,6 +203,5 @@
     function getResourceError(id, fn1, fn2) { // eslint-disable-line
       fn2(_this.errors)
     }
-
   }
 })();

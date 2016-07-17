@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive autoFocus', function () {
+  describe('feAutoFocus directive', function () {
 
     var compile, scope, $rootScope, $timeout;
     beforeEach(module('frontend'));
@@ -12,11 +12,10 @@
         compile = $compile;
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
-        // special value that indicate name of element focused, if any
+        // by defining autoFocus, we can tell if autoFocus directive executed
         scope.autoFocused = null;
         $timeout = _$timeout_;
       });
-
     });
 
     function getCompiledElement(html) {
@@ -26,7 +25,7 @@
       return compiledElement;
     }
 
-    describe('attribute no value', function(){
+    describe('attribute with no value', function(){
       var directiveElem;
 
       beforeEach(function() {
@@ -34,18 +33,17 @@
         directiveElem = getCompiledElement(html);
       });
 
-      it('has input elements', function () {
+      it('should have input elements', function () {
         expect(directiveElem.find('input').length).toEqual(2);
       });
 
-      it('should set focus', function () {
+      it('should have focus', function () {
         $timeout.flush();  // Give directive time to set focus
         expect(scope.autoFocused).toEqual('edit2');
       });
-
     });
 
-    describe('attribute has value', function(){
+    describe('attribute with value', function(){
       var directiveElem;
 
       beforeEach(function() {
@@ -53,13 +51,13 @@
         directiveElem = getCompiledElement(html);
       });
 
-      it('has input elements', function () {
+      it('should have input elements', function () {
         expect(directiveElem.find('input').length).toEqual(2);
       });
 
       describe('initial state', function() {
 
-        it('does not have focus', function () {
+        it('should not have focus', function () {
           expect(scope.autoFocused).toEqual(null);
         });
       });
@@ -72,15 +70,12 @@
           });
         });
 
-        it('has focus', function () {
+        it('should have focus', function () {
           autoFocus('focusedit2');
           $timeout.flush();
           expect(scope.autoFocused).toEqual('edit2');
         });
       });
-
     })
-
-
   });
 })();

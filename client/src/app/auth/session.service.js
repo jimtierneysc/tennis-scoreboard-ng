@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name loginResource
+ * @name sessionResource
  * @description
  * Service to login a user
  *
@@ -10,20 +10,20 @@
 
   angular
     .module('frontend')
-    .factory('loginResource', resourceFunc);
+    .factory('sessionResource', factory);
 
   /** @ngInject */
-  function resourceFunc($log, $resource, baseURL) {
+  function factory($log, $resource, baseURL) {
     var path = baseURL + 'sessions';
 
     var service = {
       path: path,
-      getLogin: getLogin
+      getSession: getSession
     };
 
     return service;
 
-    function getLogin() {
+    function getSession() {
       return $resource(path, null, {'login': {method: 'POST', params: null}});
     }
   }

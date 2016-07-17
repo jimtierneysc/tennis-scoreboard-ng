@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive matches form', function () {
+  describe('feMatchesForm directive', function () {
     var compiledDirective;
     var scope;
     var okText;
@@ -54,40 +54,40 @@
       });
 
       describe('members', function () {
-        it('has .form', function () {
+        it('should have .form', function () {
           expect(isolatedScope.form).toEqual("aform");
         });
 
-        it('has .errors', function () {
+        it('should have .errors', function () {
           expect(isolatedScope.errors).toBe(scope.aerrors);
         });
 
-        it('has .entity entity', function () {
+        it('should have .entity', function () {
           expect(isolatedScope.entity).toBe(scope.aentity);
         });
 
-        it('has .playersList', function () {
+        it('should have .playerslist', function () {
           expect(isolatedScope.playerslist).toBe(scope.aplayers);
         });
 
-        it('has .teamsList', function () {
+        it('should have .teamslist', function () {
           expect(isolatedScope.teamslist).toBe(scope.ateams);
         });
 
-        it('called .cancel()', function () {
+        it('should call .cancel()', function () {
           isolatedScope.cancel();
           expect(scope.acancel).toHaveBeenCalled();
         });
 
-        it('called .submit()', function () {
+        it('should call .submit()', function () {
           isolatedScope.submit();
           expect(scope.asubmit).toHaveBeenCalled();
         });
 
-        it('has .ok text', function () {
+        it('should have ok text', function () {
           expect(isolatedScope.ok).toEqual(okText);
         });
-      })
+      });
 
       // TODO: validate HTML elements
     });

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('controller header', function () {
+  describe('HeaderController', function () {
     var vm;
     var $scope;
     var $timeout;
@@ -19,48 +19,48 @@
       });
     });
 
-    it('supports auth', function () {
+    it('should support auth', function () {
       expect(vm).toSupportAuth();
     });
 
     describe('members', function () {
-      it('has .isCollapsed', function () {
+      it('should have .isCollapsed', function () {
         expect(vm.isCollapsed).toEqual(jasmine.any(Boolean));
       });
 
-      it('has .createLoginForm()', function () {
+      it('should have .createLoginForm()', function () {
         expect(vm.createLoginForm).toEqual(jasmine.any(Boolean));
       });
 
-      it('has .showingLogin()', function () {
+      it('should have .showingLogin()', function () {
         expect(vm.showingLogin).toEqual(jasmine.any(Function));
       });
 
-      it('has .showLogin()', function () {
+      it('should have .showLogin()', function () {
         expect(vm.showLogin).toEqual(jasmine.any(Function));
       });
     });
 
-    it('creates login form at startup', function () {
+    it('should create login form initially', function () {
       expect(vm.createLoginForm).toEqual(true);
     });
 
-    it('collapse navbar at startup', function () {
+    it('should collapse navbar initially', function () {
       expect(vm.isCollapsed).toEqual(true);
     });
 
-    it('creates login form when showing', function () {
+    it('should create login form when showing', function () {
       vm.showLogin(false);
       vm.showingLogin(true);
       expect(vm.createLoginForm).toEqual(true);
     });
 
-    it('destroys login form when close', function () {
+    it('should destroy login form when close', function () {
       vm.showLogin(false);
       expect(vm.createLoginForm).toEqual(false);
     });
 
-    it('sets focus when login form show', function () {
+    it('should set focus when login form is shown', function () {
       var setFocus = false;
       $scope.$on('fe-autoFocus', function () {
         setFocus = true;

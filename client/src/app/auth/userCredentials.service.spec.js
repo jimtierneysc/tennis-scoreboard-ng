@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('service Authentication', function () {
+  describe('userCredentials service', function () {
     var USERNAME = 'username';
     var TOKEN = 'token';
 
@@ -9,13 +9,13 @@
 
     beforeEach(module('frontend'));
     beforeEach(function() {
-      inject(function (_authenticationService_) {
-        service = _authenticationService_;
+      inject(function (_userCredentials_) {
+        service = _userCredentials_;
         service.clearCredentials();
       })
     });
 
-    it('is logged out', function () {
+    it('should not be logged in initially', function () {
       expect(service.loggedIn).toBeFalsy();
     });
 
@@ -27,7 +27,7 @@
         })
       });
 
-      it('has .localDataName', function() {
+      it('should have .localDataName', function() {
         expect(service.localDataName).toEqual(jasmine.any(String))
       });
 
@@ -36,11 +36,11 @@
           service.setCredentials(USERNAME, TOKEN);
         });
 
-        it('is not null data', function () {
+        it('should not be null', function () {
           expect($localStorage[service.localDataName]).not.toBeNull();
         });
 
-        it('has object', function () {
+        it('should have data object', function () {
           expect($localStorage[service.localDataName]).toEqual(jasmine.any(Object))
         });
 
@@ -51,13 +51,13 @@
           service.clearCredentials();
         });
 
-        it('has no data', function () {
+        it('should have no data', function () {
           expect($localStorage[service.localDataName]).toBeUndefined();
         });
 
       });
 
-      describe('load data', function () {
+      describe('loads data', function () {
         var data;
         beforeEach(function () {
           service.setCredentials(USERNAME, TOKEN);
@@ -67,22 +67,22 @@
           service.loadCredentials();
         });
 
-        it('is not null', function () {
+        it('should not be null', function () {
           expect(data).not.toBeNull();
         });
 
-        it('has data', function () {
+        it('should have data object', function () {
           expect(data).toEqual(jasmine.any(Object));
         });
 
-        it('is logged in', function() {
+        it('should be logged in', function() {
           expect(service.loggedIn).toEqual(true);
         })
 
       });
     });
 
-    describe('logged in', function () {
+    describe('.setCredentials()', function () {
       var USERNAME = 'username';
       var TOKEN = 'token';
       var $http;
@@ -93,20 +93,20 @@
         })
       });
 
-      it('is logged in', function () {
+      it('should be logged in', function () {
         expect(service.loggedIn).toBeTruthy();
       });
 
-      it('has username', function () {
+      it('should be correct username', function () {
         expect(service.userName).toBe(USERNAME);
       });
 
-      it('sets http header', function () {
+      it('should set http header', function () {
         expect($http.defaults.headers.common[service.headerName]).toBe(TOKEN);
       });
     });
 
-    describe('log out', function () {
+    describe('.clearCredentials()', function () {
       var $http;
       beforeEach(function() {
         inject(function (_$http_) {
@@ -117,20 +117,20 @@
         })
       });
 
-      it('is logged out', function () {
+      it('should be logged out', function () {
         expect(service.loggedIn).toBeFalsy();
       });
 
-      it('has blank username', function () {
+      it('should have blank username', function () {
         expect(service.userName).toBe('');
       });
 
-      it('sets http header', function () {
+      it('should clear http header', function () {
         expect($http.defaults.headers.common[service.headerName]).toBeUndefined();
       });
     });
 
-    describe('subscribe changed', function () {
+    describe('.subscribeChanged()', function () {
       var scope;
       var changed;
 
@@ -143,21 +143,17 @@
         })
       });
 
-      it('should not be called', function () {
-        expect(changed).not.toHaveBeenCalled();
-      });
-
-      it('sets credentials', function () {
+      it('should call event when set credentials', function () {
         service.setCredentials('username', 'token');
         expect(changed).toHaveBeenCalled();
       });
 
-      it('clears credentials', function () {
+      it('should call event when clear credentials', function () {
         service.clearCredentials();
         expect(changed).toHaveBeenCalled();
       });
 
-      it('loads credentials', function () {
+      it('should call event when load credentials', function () {
         service.loadCredentials();
         expect(changed).toHaveBeenCalled();
       });

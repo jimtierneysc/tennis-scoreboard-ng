@@ -1,8 +1,7 @@
 (function () {
   'use strict';
 
-
-  describe('directive teams form', function () {
+  describe('feTeamsForm directive', function () {
     var errors;
     var entity;
     var compiledDirective;
@@ -20,7 +19,7 @@
         name: ['nameerror']
       };
       entity = {name: 'aname', doubles: true};
-      players = [{name: 'aname',  id: 1}];
+      players = [{name: 'aname', id: 1}];
       okText = 'clickme';
 
       scope = $rootScope.$new();
@@ -47,44 +46,38 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-
-
+    
     describe('isolated scope', function () {
-      it('should not be null', function () {
-        expect(isolatedScope).not.toBe(null);
+
+      it('should have .form', function () {
+        expect(isolatedScope.form).toEqual("aform");
       });
 
-      describe('members', function () {
-        it('should have form', function () {
-          expect(isolatedScope.form).toEqual("aform");
-        });
+      it('should have .errors', function () {
+        expect(isolatedScope.errors).toBe(scope.aerrors);
+      });
 
-        it('should have errors', function () {
-          expect(isolatedScope.errors).toBe(scope.aerrors);
-        });
+      it('should have .entity', function () {
+        expect(isolatedScope.entity).toBe(scope.aentity);
+      });
 
-        it('should have entity', function () {
-          expect(isolatedScope.entity).toBe(scope.aentity);
-        });
+      it('should have .cancel()', function () {
+        isolatedScope.cancel();
+        expect(scope.acancel).toHaveBeenCalled();
+      });
 
-        it('should have cancel', function () {
-          isolatedScope.cancel();
-          expect(scope.acancel).toHaveBeenCalled();
-        });
+      it('should have .submit()', function () {
+        isolatedScope.submit();
+        expect(scope.asubmit).toHaveBeenCalled();
+      });
 
-        it('should have submit', function () {
-          isolatedScope.submit();
-          expect(scope.asubmit).toHaveBeenCalled();
-        });
+      it('should have ok text', function () {
+        expect(isolatedScope.ok).toEqual(okText);
+      });
 
-        it('should have ok', function () {
-          expect(isolatedScope.ok).toEqual(okText);
-        });
-
-        it('should have players', function () {
-          expect(isolatedScope.playerslist).toBe(players);
-        });
-      })
+      it('should have .playerslist', function () {
+        expect(isolatedScope.playerslist).toBe(players);
+      });
 
 
       // TODO: Test form elements

@@ -1,13 +1,12 @@
 /**
  * @ngdoc directive
- * @name feScoreToolBar
+ * @name feScoreCommands
  * @description
- * Buttons to change view
+ * Commands to change view
  *
  * @example:
  <fe-score-commands></fe-score-commands>
  */
-
 
 (function () {
   'use strict';

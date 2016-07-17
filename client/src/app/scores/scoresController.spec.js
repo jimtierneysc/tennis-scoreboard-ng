@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('controller scores', function () {
+  describe('ScoresController', function () {
     var $controller;
     var $scope;
     var $state;
@@ -27,11 +27,8 @@
         $state: $state,
         response: response
       };
-      var vm = $controller('ScoresController', locals);
-
-      return vm;
+      return $controller('ScoresController', locals);
     }
-
 
     describe('supports', function () {
       var vm;
@@ -48,12 +45,11 @@
         // custom matcher
         expect(vm).toSupportLoading();
       });
-
     });
 
     describe('loading', function () {
 
-      it('should load', function () {
+      it('should not fail', function () {
         var vm = scoreController(sampleResponse);
         expect(vm).not.toFailLoading();
       });
@@ -76,7 +72,7 @@
           expect(vm.selectedMatch).toEqual(valid);
         });
 
-        it('should not set selectedMatch $state identifies not found match', function () {
+        it('should not set selectedMatch when $state identifies unknown match', function () {
           $state.params = invalid;
           var vm = scoreController(sampleResponse);
           expect(vm.selectedMatch).toBe(null);
@@ -84,7 +80,7 @@
       });
     });
 
-    describe('#selectMatchChange', function () {
+    describe('.selectMatchChange()', function () {
       var selected = {id: 10};
       var vm;
       beforeEach(function() {
@@ -104,7 +100,6 @@
       });
     });
 
-
     function MockState() {
       var _this = this;
 
@@ -115,8 +110,5 @@
       _this.current = {};
       _this.params = {};
    }
-
   });
-
-
 })();

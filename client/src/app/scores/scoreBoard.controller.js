@@ -36,6 +36,11 @@
     }
 
 
+    //
+    // Internal methods
+    //
+
+    
     function updateScore(action, params, confirm) {
 
       var confirmActions = {
@@ -59,11 +64,6 @@
         scoreboardResourceUpdate(action, params);
       }
     }
-
-    //
-    // Internal methods
-    //
-
 
     function getScoreBoardSucceeded(response) {
       vm.scoreboard = response;

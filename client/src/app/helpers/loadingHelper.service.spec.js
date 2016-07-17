@@ -1,9 +1,73 @@
 (function () {
   'use strict';
-  
+
+  describe('loadingHelper service', function () {
+    var service;
+
+    beforeEach(module('frontend'));
+
+    beforeEach(function () {
+      inject(function (_loadingHelper_) {
+        service = _loadingHelper_;
+      });
+    });
+
+    it('should be a function', function () {
+      expect(service).toEqual(jasmine.any(Function));
+    });
+
+    describe('activate', function () {
+      var vm;
+
+      beforeEach(function () {
+        vm = {};
+        service(vm);
+      });
+
+      it('should support loading', function () {
+        expect(vm).toSupportLoading();
+      });
+
+      it('should be loading initially', function () {
+        // custom matcher
+        expect(vm).toBeLoading();
+      });
+
+      describe('loading failed', function () {
+
+        beforeEach(function () {
+          var response = {statusText: STATUSTEXT};
+          vm.updateLoadingFailed(response);
+        });
+
+        var STATUSTEXT = 'abcd';
+
+        it('should have .loadingFailedMessage', function () {
+          expect(vm.loadingFailedMessage).toMatch(STATUSTEXT);
+        });
+
+        it('should have failed', function () {
+          // custom matcher
+          expect(vm).toFailLoading();
+        });
+      });
+
+      describe('loading completed', function () {
+        beforeEach(function () {
+          vm.updateLoadingCompleted();
+        });
+
+        it('should not have failed', function () {
+          // custom matcher
+          expect(vm).not.toFailLoading();
+        });
+      })
+    })
+  });
+
   beforeEach(function () {
     var matchers = {
-      toFailLoading: function() {
+      toFailLoading: function () {
         return {
           compare: function (vm) {
             var helper = new MatcherHelper(vm);
@@ -15,7 +79,7 @@
           }
         }
       },
-      toBeLoading: function() {
+      toBeLoading: function () {
         return {
           compare: function (vm) {
             var helper = new MatcherHelper(vm);
@@ -50,72 +114,5 @@
   });
 
 
-  describe('helper loading', function () {
-    var service;
-
-    beforeEach(module('frontend'));
-
-    beforeEach(function () {
-      inject(function (_loadingHelper_) {
-        service = _loadingHelper_;
-      });
-    });
-
-    describe('members', function () {
-      it('is function', function () {
-        expect(service).toEqual(jasmine.any(Function));
-      });
-    });
-
-    describe('activate', function () {
-      var vm;
-
-      beforeEach(function () {
-        vm = {};
-        service(vm);
-      });
-
-      describe('members', function () {
-        it('supports loading', function () {
-          expect(vm).toSupportLoading();
-        });
-
-        it('is loading', function() {
-          // custom matcher
-          expect(vm).toBeLoading();
-        });
-       });
-
-      describe('loading failed', function () {
-
-        beforeEach(function () {
-          var response = {statusText: STATUSTEXT};
-          vm.updateLoadingFailed(response);
-        });
-
-        var STATUSTEXT = 'abcd';
-
-        it('has .loadingFailedMessage', function () {
-          expect(vm.loadingFailedMessage).toMatch(STATUSTEXT);
-        });
-
-        it('failed', function() {
-          // custom matcher
-          expect(vm).toFailLoading();
-        });
-      });
-
-      describe('loading completed', function () {
-        beforeEach(function () {
-          vm.updateLoadingCompleted();
-        });
-
-        it('did not failed', function() {
-          // custom matcher
-          expect(vm).not.toFailLoading();
-        });
-      })
-    })
-  })
 })();
 

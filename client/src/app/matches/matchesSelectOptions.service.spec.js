@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('factory matchesSelectOptions', function () {
+  describe('matchesSelectOptions service', function () {
 
     var path;
     var $httpBackend;
@@ -39,7 +39,7 @@
         $rootScope.$digest();
       });
 
-      it('returns expected options list', function () {
+      it('should return expected options list', function () {
         expect(result).toEqual(expectedOptionsList);
       })
     });

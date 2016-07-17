@@ -30,7 +30,7 @@
 
 
   /** @ngInject */
-  function Controller(loginResource, authenticationService, errorsHelper, waitIndicator, $log) {
+  function Controller(sessionResource, userCredentials, errorsHelper, waitIndicator, $log) {
     var vm = this;
 
     activate();
@@ -59,7 +59,7 @@
         }
       };
       var endWait = waitIndicator.beginWait();
-      loginResource.getLogin().login(body,
+      sessionResource.getSession().login(body,
         function (response) {
           endWait();
           var updatedEntity = angular.copy(entity);
@@ -79,7 +79,7 @@
     }
 
     function entityUpdated(entity) {
-      authenticationService.setCredentials(entity.username, entity.auth_token);
+      userCredentials.setCredentials(entity.username, entity.auth_token);
     }
 
   }

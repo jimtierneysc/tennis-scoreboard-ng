@@ -40,9 +40,23 @@ RSpec.describe SessionsController, { type: :controller } do
   describe "DELETE #destroy" do
     before do
       sign_in user
-      delete :destroy, id: user.auth_token
     end
 
-    it_behaves_like 'a response with success code', 204
+    describe 'valid token' do
+      before do
+        delete :destroy, id: user.auth_token
+      end
+
+      it_behaves_like 'a response with success code', 204
+    end
+
+    describe 'invalid token' do
+      before do
+        delete :destroy, id: 'xxxxxxx'
+      end
+
+      # NoOp
+      it_behaves_like 'a response with success code', 204
+    end
   end
 end

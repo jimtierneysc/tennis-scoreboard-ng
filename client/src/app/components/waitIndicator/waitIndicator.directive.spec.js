@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive waitIndicator', function () {
+  describe('feWaitIndicator directive', function () {
 
     var compile, scope, directiveElem;
 
@@ -28,11 +28,11 @@
     }
 
     describe('elements', function () {
-      it('has div', function () {
+      it('should have div', function () {
         expect(directiveElem.find('div').length > 1).toBeTruthy();
       });
 
-      it('is centered', function () {
+      it('should be centered', function () {
         var div = directiveElem.find('div')[0];
         expect(div.className).toMatch('screen-center');
       });
@@ -45,16 +45,16 @@
         vm = scope.vm;
       });
 
-      it('has .vm', function () {
+      it('should have .vm', function () {
         expect(vm).not.toEqual(null);
       });
 
-      it('has .waiting', function () {
+      it('should have .waiting', function () {
         expect(vm.waiting).toBeFalsy();
       })
     });
 
-    describe('waitIndicator service', function () {
+    describe('using waitIndicator service', function () {
       var vm;
       var service;
       var $timeout;
@@ -67,13 +67,13 @@
         vm = scope.vm;
       });
 
-      it('set .waiting', function () {
+      it('should set .waiting', function () {
         service.beginWait();
         $timeout.flush();
         expect(vm.waiting).toBeTruthy();
       });
 
-      it('clears .waiting', function () {
+      it('should clear .waiting', function () {
         var callBack = service.beginWait();
         $timeout.flush();
         callBack();

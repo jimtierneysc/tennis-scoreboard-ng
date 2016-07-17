@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name fePlayer
+ * @name fePlayersForm
  * @description
- * Form for new player and editing player
+ * Form for new player and edit player
  *
  * @example:
  <fe-players-form></fe-players-form>

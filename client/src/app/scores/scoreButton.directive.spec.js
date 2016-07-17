@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('directive score commands', function () {
+  describe('feScoreButton directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -31,20 +31,17 @@
     }));
 
     describe('isolated scope', function () {
-      it('should not be null', function () {
-        expect(isolatedScope).not.toBe(null);
-      });
 
-      describe('members', function () {
-        it('should have scores', function () {
-          expect(isolatedScope.scores).toBe(scope.ascores);
-        });
-        it('should have param', function () {
-          expect(isolatedScope.param).toEqual(scope.aparam);
-        })
-        it('should have title', function () {
-          expect(isolatedScope.title).toEqual(scope.atitle);
-        })
+      it('should have .scores', function () {
+        expect(isolatedScope.scores).toBe(scope.ascores);
+      });
+      
+      it('should have .param', function () {
+        expect(isolatedScope.param).toEqual(scope.aparam);
+      });
+      
+      it('should have .title', function () {
+        expect(isolatedScope.title).toEqual(scope.atitle);
       });
 
       // TODO: Test elements

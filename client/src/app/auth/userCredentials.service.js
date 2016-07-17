@@ -3,7 +3,7 @@
 
   angular
     .module('frontend')
-    .service('authenticationService', Service);
+    .service('userCredentials', Service);
 
   /** @ngInject */
   function Service($http, $rootScope, $log, $localStorage) {

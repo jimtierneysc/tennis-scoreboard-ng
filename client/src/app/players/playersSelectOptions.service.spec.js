@@ -39,7 +39,7 @@
         $rootScope.$digest();
       });
 
-      it('has expected options', function () {
+      it('should have expected options', function () {
         expect(result).toEqual(expectedOptionsList);
       })
     });
@@ -58,7 +58,7 @@
         $rootScope.$digest();
       });
 
-      it('calls fail function', function () {
+      it('should call fail function', function () {
         expect(failed).toBeTruthy;
       })
     });

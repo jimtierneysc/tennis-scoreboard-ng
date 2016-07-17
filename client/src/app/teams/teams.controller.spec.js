@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('controller teams', function () {
+  describe('TeamsController', function () {
     var $controller;
     var $scope;
     var $q;
@@ -43,39 +43,34 @@
         vm = teamController(sampleResponse);
       });
 
-      describe('supports', function () {
-
-        it('supports auth', function () {
-          expect(vm).toSupportAuth();
-        });
-
-        it('supports crud', function () {
-          expect(vm).toSupportCrud();
-        });
+      it('should support auth', function () {
+        expect(vm).toSupportAuth();
       });
 
-      describe('options lists', function () {
-        it('has .playerOptionsList', function () {
-          expect(vm.playerOptionsList).toEqual(jasmine.any(Object));
-        });
+      it('should support crud', function () {
+        expect(vm).toSupportCrud();
+      });
+
+      it('should have .playerOptionsList', function () {
+        expect(vm.playerOptionsList).toEqual(jasmine.any(Object));
       });
 
     });
 
     describe('loading', function () {
 
-      it('is not .loadingFailed', function () {
+      it('should not .loadingFailed', function () {
         var vm = teamController(sampleResponse);
         expect(vm).not.toFailLoading();
       });
 
-      it('is .loadingFailed', function () {
+      it('should .loadingFailed', function () {
         var vm = teamController({error: 'something'});
         expect(vm).toFailLoading();
       });
     });
 
-    describe('mock crudHelper', function () {
+    describe('crudHelper', function () {
       var crudMock;
       var selectOptionsMock;
       var vm;
@@ -89,47 +84,47 @@
         })
       });
 
-      it('should activate mock', function () {
+      it('should activate', function () {
         expect(crudMock.activated()).toBeTruthy();
       });
 
-      describe('crud options', function () {
+      describe('options', function () {
         var options;
         var resourceName;
         beforeEach(function () {
-          inject(function(_teamsResource_) {
+          inject(function (_teamsResource_) {
             resourceName = _teamsResource_;
           });
           options = crudMock.options;
         });
 
-        it('is crud options', function() {
+        it('shold be crud options', function () {
           // custom matcher
           expect(options).toBeCrudOptions();
         });
-        
-        it('should have resource name', function () {
+
+        it('should have .resourceName', function () {
           expect(options.resourceName).toEqual(resourceName);
         });
-        
-        describe('getEntityDisplayName', function () {
 
-          it('should return title', function () {
-            expect(options.getEntityDisplayName({name: 'amatch'})).toEqual('amatch');
+        describe('.getEntityDisplayName()', function () {
+
+          it('should return name', function () {
+            expect(options.getEntityDisplayName({name: 'ateam'})).toEqual('ateam');
           });
 
-          it('should return untitled', function () {
+          it('should return (unnamed)', function () {
             expect(options.getEntityDisplayName({name: ''})).toEqual('(unnamed)');
           });
         });
 
-        describe('makeEntityBody', function () {
+        describe('.makeEntityBody()', function () {
           it('should return value', function () {
             expect(options.makeEntityBody({})).toEqual({team: {}});
           });
         });
 
-        describe('prepare to submit entities', function () {
+        describe('prepare', function () {
 
           var sampleEntity = {
             name: "title",
@@ -143,12 +138,12 @@
             second_player_id: 2
           };
 
-          describe('prepareToCreateEntity', function () {
+          describe('.prepareToCreateEntity()', function () {
             var prepared;
 
             beforeEach(function () {
               prepared = options.prepareToCreateEntity(sampleEntity);
-            })
+            });
 
             it('should prepare', function () {
               expect(prepared).toEqual(samplePrepared);
@@ -156,7 +151,7 @@
 
           });
 
-          describe('prepareToUpdateEntity', function () {
+          describe('.prepareToUpdateEntity()', function () {
 
             var prepared;
             var expected;
@@ -173,99 +168,94 @@
           });
         });
 
-        describe('beforeShowNewEntity', function () {
+        describe('.beforeShowNewEntity() not called', function () {
+          it('should not have player select options', function () {
+            expect(vm.playerOptionsList.list).toEqual(null);
+          });
+        });
 
-          describe('before call', function () {
-            it('should not have player select options', function () {
-              expect(vm.playerOptionsList.list).toEqual(null);
+        describe('.beforeShowNewEntity()', function () {
+
+          describe('select options filled', function () {
+            beforeEach(function () {
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should have player select options', function () {
+              expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
             });
           });
 
-          describe('after call', function () {
-            describe('select options filled', function () {
-              beforeEach(function () {
-                options.beforeShowNewEntity();
-                $rootScope.$digest(); // resolve player and team lists
-              });
-
-              it('should have player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
-              });
+          describe('memoize select options', function () {
+            beforeEach(function () {
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team list
+              vm.playerOptionsList.list = {};
+              // Should not refill lists
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team list
             });
 
-            describe('memoize select options', function () {
-              beforeEach(function () {
-                options.beforeShowNewEntity();
-                $rootScope.$digest(); // resolve player and team list
-                vm.playerOptionsList.list = {};
-                // Should not refill lists
-                options.beforeShowNewEntity();
-                $rootScope.$digest(); // resolve player and team list
-              });
+            it('should have player select options', function () {
+              expect(vm.playerOptionsList.list).toEqual({});
+            });
+          });
 
-              it('should have player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual({});
-              });
-
+          describe('select options empty', function () {
+            beforeEach(function () {
+              selectOptionsMock.reject();
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team lists
             });
 
-            describe('select options empty', function () {
-              beforeEach(function () {
-                selectOptionsMock.reject();
-                options.beforeShowNewEntity();
-                $rootScope.$digest(); // resolve player and team lists
-              });
-
-              it('should have player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual([]);
-              });
+            it('should have player select options', function () {
+              expect(vm.playerOptionsList.list).toEqual([]);
             });
           });
         });
 
-        describe('beforeShowEditEntity', function () {
-          describe('before call', function () {
-            it('should not have player select options', function () {
-              expect(vm.playerOptionsList.list).toEqual(null);
+        describe('.beforeShowEditEntity() not called', function () {
+          it('should not have player select options', function () {
+            expect(vm.playerOptionsList.list).toEqual(null);
+          });
+        });
+
+        describe('.beforeShowEditEntity()', function () {
+
+          describe('options lists', function () {
+
+            beforeEach(function () {
+              vm.editEntity = {};
+              options.beforeShowEditEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should have player select options', function () {
+              expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
             });
           });
 
-          describe('after call', function () {
+          describe('select players', function () {
+            var firstPlayer, secondPlayer;
 
-            describe('options lists', function () {
-
-              beforeEach(function () {
-                vm.editEntity = {};
-                options.beforeShowEditEntity();
-                $rootScope.$digest(); // resolve player and team lists
-              });
-
-              it('should player select options', function () {
-                expect(vm.playerOptionsList.list).toEqual(selectOptionsMock.playerList);
-              });
+            beforeEach(function () {
+              firstPlayer = selectOptionsMock.playerList[0];
+              secondPlayer = selectOptionsMock.playerList[1];
+              vm.editEntity = {
+                first_player: firstPlayer,
+                second_player: secondPlayer
+              };
+              options.beforeShowEditEntity();
+              $rootScope.$digest(); // resolve player and team lists
             });
 
-            describe('select players', function () {
-              var firstPlayer, secondPlayer;
+            it('should select first player', function () {
+              expect(vm.editEntity.select_first_player).toEqual(firstPlayer);
+            });
 
-              beforeEach(function () {
-                firstPlayer = selectOptionsMock.playerList[0];
-                secondPlayer = selectOptionsMock.playerList[1];
-                vm.editEntity = {
-                  first_player: firstPlayer,
-                  second_player: secondPlayer
-                };
-                options.beforeShowEditEntity();
-                $rootScope.$digest(); // resolve player and team lists
-              });
-
-              it('should select first player', function () {
-                expect(vm.editEntity.select_first_player).toEqual(firstPlayer);
-              });
-
-              it('should select second player', function () {
-                expect(vm.editEntity.select_second_player).toEqual(secondPlayer);
-              });
+            it('should select second player', function () {
+              expect(vm.editEntity.select_second_player).toEqual(secondPlayer);
             });
           });
         });
@@ -291,7 +281,6 @@
       vm.editEntity = {};
 
     }
-
   }
 
   function SelectOptionsMock(_$q_) {
