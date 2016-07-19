@@ -35,7 +35,7 @@ class Team < ActiveRecord::Base
 
   def that_can_destroy_team
     if team_in_match?
-      errors.add :base, 'Cannot delete a team in a match'
+      errors.add :base, 'Can\'t delete a team in a match'
       return false # discard destroy
     end
   end
