@@ -61,6 +61,7 @@
           compare: compare
         };
         function compare(vm) {
+          /*global MatcherHelper*/
           var helper = new MatcherHelper(vm);
 
           helper.checkFunction('logOut');

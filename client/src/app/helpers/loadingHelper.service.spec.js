@@ -65,6 +65,8 @@
     })
   });
 
+  /*global MatcherHelper*/
+
   beforeEach(function () {
     var matchers = {
       toFailLoading: function () {

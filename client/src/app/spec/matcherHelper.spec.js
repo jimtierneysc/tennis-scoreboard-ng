@@ -1,4 +1,5 @@
 
+/*exported MatcherHelper*/
 function MatcherHelper(_vm_) {
   'use strict';
   
