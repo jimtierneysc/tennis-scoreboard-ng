@@ -450,6 +450,7 @@ module MatchPlayHelpers
                      kind == :game
                    end
       raise Exceptions::InvalidOperation, 'Invalid kind' unless valid_kind
+      raise Exceptions::InvalidOperation, 'Invalid type' unless team.is_a? Team
       game.team_winner_id = team.id
       game
     end

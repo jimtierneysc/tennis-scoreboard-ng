@@ -18,11 +18,17 @@ class MatchScoreBoardController < ApplicationController
     action = params[:action].to_sym
     param = nil
     if [:win_game, :win_match_tiebreaker, :win_tiebreaker].include?(action)
-      team = params[:team]
-      param = Team.find(team) unless team.nil?
+      team_id = params[:team]
+      player_id = params[:player]
+      param = if team_id
+                Team.find(team_id)
+              elsif player_id
+                player = Player.find(player_id)
+                player.singles_team unless player.nil?
+              end
     elsif [:start_game].include?(action)
-      player = params[:player]
-      param = Player.find(player) unless player.nil?
+      player_id = params[:player]
+      param = Player.find(player_id) unless player_id.nil?
     end
     play_match {
       @match.play_match!(action, param)
@@ -49,14 +55,19 @@ class MatchScoreBoardController < ApplicationController
     begin
       yield
       # TODO: Notify clients
-      @match = self.class.eager_load_match params[:id]
+      reload_match
     rescue ::Exceptions::UnknownOperation
       raise
+    rescue ::ActiveRecord::RecordInvalid => e
+      reload_match e.record.errors
     rescue  => e
-      @match = self.class.eager_load_match params[:id]
-      @match.errors.add(:other, e.message)
+      reload_match ({other: e.message})
     end
     render json: MatchScoreBoardSerializer.new(@match, root: false)
   end
 
+  def reload_match errors=nil
+    @match = self.class.eager_load_match params[:id]
+    @match.errors.messages.merge! errors if errors
+  end
 end
