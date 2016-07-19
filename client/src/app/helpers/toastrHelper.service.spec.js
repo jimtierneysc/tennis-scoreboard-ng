@@ -32,7 +32,7 @@
 
       describe('members', function () {
         it('should have .showToastrError()', function () {
-          expect(vm.showToastrError).toEqual(jasmine.any(Function));
+          expect(vm.showToast).toEqual(jasmine.any(Function));
         });
 
         it('should have .lastToast', function () {
@@ -42,12 +42,12 @@
 
       describe('toast', function () {
         it('should show toast', function () {
-          vm.showToastrError('test');
+          vm.showToast('test');
           expect(vm.lastToast).not.toBeNull();
         });
 
         it('should close toast when scope destroyed', function () {
-          vm.showToastrError('test');
+          vm.showToast('test');
           scope.$destroy();
           $rootScope.$digest();
           expect(vm.lastToast).toBeNull();
@@ -55,6 +55,7 @@
       })
     })
   });
+  /*global MatcherHelper*/
 
   beforeEach(function () {
     var matchers = {
@@ -75,7 +76,7 @@
         function compare(vm) {
           var helper = new MatcherHelper(vm);
 
-          helper.checkFunction('showToastrError');
+          helper.checkFunction('showToast');
           helper.checkObject('lastToast', false);
           return helper.getResult();
         }

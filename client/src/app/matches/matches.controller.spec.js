@@ -231,7 +231,7 @@
         });
 
         describe('.beforeShowNewEntity()', function () {
-          
+
           describe('sets default values', function () {
             var entity;
 
@@ -397,6 +397,12 @@
       _this.options = options;
       vm.newEntity = {};
       vm.editEntity = {};
+      vm.showToast = function() {
+
+      };
+      vm.beginWait = function() {
+        return function() {}
+      }
     }
   }
 

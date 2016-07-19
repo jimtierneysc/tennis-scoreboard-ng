@@ -168,6 +168,33 @@
           });
         });
 
+        // describe('.canShowNewEntity()', function() {
+        //   describe('when allow', function() {
+        //     var message = {};
+        //     var result;
+        //     beforeEach(function () {
+        //       result = options.canShowNewEntity(message);
+        //     });
+        //
+        //     it('should return true', function () {
+        //       expect(result).toBeTruthy();
+        //     });
+        //   });
+        //
+        //   describe('when cancel', function() {
+        //     var message = {};
+        //     var result;
+        //     beforeEach(function() {
+        //       result = options.canShowNewEntity(message);
+        //     });
+        //
+        //     it('should return false', function () {
+        //       expect(result).toBeFalsy();
+        //     });
+        //
+        //   });
+        // });
+
         describe('.beforeShowNewEntity() not called', function () {
           it('should not have player select options', function () {
             expect(vm.playerOptionsList.list).toEqual(null);
@@ -279,6 +306,12 @@
       _this.options = options;
       vm.newEntity = {};
       vm.editEntity = {};
+      vm.showToast = function() {
+        
+      };
+      vm.beginWait = function() {
+        return function() {}
+      }
 
     }
   }

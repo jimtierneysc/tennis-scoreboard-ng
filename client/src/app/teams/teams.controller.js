@@ -34,10 +34,12 @@
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
-          errorCategories: {
-            'name': null,
-            'first': 'first_player',
-            'second': 'second_player'
+          errorsMap: {
+            names: [
+              'name',
+              'first_player',
+              'second_player'
+            ]
           }
         }
       );
@@ -61,15 +63,38 @@
     }
 
     function beforeShowNewEntity() {
-      prepareToShowPlayerOptions();
+      var deferredObject = $q.defer();
+      var players = prepareToShowPlayerOptions();
+      var endWait = vm.beginWait();
+      players.then(function() {
+        endWait();
+        var playerCount = vm.playerOptionsList.list.length;
+        if (playerCount < 2) {
+          // vm.hideNewEntity();
+          deferredObject.reject();
+          vm.showToast('Must have at least two players', 'Unable to Add Team', 'warning');
+        }
+        else {
+          if (playerCount == 2) {
+            vm.newEntity.select_first_player = vm.playerOptionsList.list[0];
+            vm.newEntity.select_second_player = vm.playerOptionsList.list[1];
+          }
+          deferredObject.resolve();
+        }
+      });
+      return deferredObject.promise;
     }
 
     function beforeShowEditEntity() {
-      prepareToShowPlayerOptions().then(
-        function () {
-          prepareToEditEntity();
-        }
-      )
+      var deferredObject = $q.defer();
+      var players = prepareToShowPlayerOptions();
+      var endWait = vm.beginWait();
+      players.then(function() {
+        endWait();
+        prepareToEditEntity();
+        deferredObject.resolve();
+      });
+      return deferredObject.promise;
     }
 
     function getEntityDisplayName(entity) {
@@ -94,7 +119,7 @@
           function () {
             vm.playerOptionsList.list = [];
             $log.error('playerOptionsList')
-            deferredObject.reject();
+            deferredObject.resolve();
           }
         );
       }

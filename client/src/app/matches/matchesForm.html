@@ -2,16 +2,18 @@
 <form name="form"
       ng-submit="submit()" novalidate>
   <div class="form-group" ng-class="{ 'has-error': errors.doubles }">
-    <!--Doubles-->
+    <!--Singles-->
     <div class="radio">
       <label>
-        <input type="radio" name="doubles" ng-value="false" ng-model="entity.doubles">
+        <input type="radio" name="singles" ng-value="false" ng-model="entity.doubles"
+               ng-disabled="playerslist.list.length < 2">
         Singles
       </label>
     </div>
     <div class="radio">
       <label>
-        <input type="radio" name="doubles" ng-value="true" ng-model="entity.doubles">
+        <input type="radio" name="doubles" ng-value="true" ng-model="entity.doubles"
+               ng-disabled="teamslist.list.length < 2">
         Doubles
       </label>
     </div>
@@ -145,7 +147,7 @@
       </label>
     </div>
     <!--Problems with scoring -->
-    <div ng-show="errors.scoring" ng-repeat="error in errors.scoreing">
+    <div ng-show="errors.scoring" ng-repeat="error in errors.scoring">
       <span class="help-block">Scoring {{error}}</span>
     </div>
 

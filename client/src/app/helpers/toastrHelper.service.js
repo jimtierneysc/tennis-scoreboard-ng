@@ -18,7 +18,7 @@
 
     function activate(_vm_, _scope_) {
       var vm = _vm_;
-      vm.showToastrError = new ShowToastError(vm).showToastrError;
+      vm.showToast = new ShowToast(vm).showToast;
       vm.lastToast = null;
 
       _scope_.$on('$destroy', function () {
@@ -28,16 +28,18 @@
       });
     }
 
-    function ShowToastError(_vm_) {
+    function ShowToast(_vm_) {
       var vm = _vm_;
-      this.showToastrError = showToastrError;
+      this.showToast = showToast;
 
-      function showToastrError(message, caption) {
+      // kinds: error, info, success, warning
+      function showToast(message, caption, kind) {
+        kind = kind || 'error';
         if (angular.isUndefined(caption))
-          caption = 'Error';
+          caption = kind.charAt(0).toUpperCase() + kind.slice(1);
 
         toastr.clear();
-        vm.lastToast = toastr.error(message, caption);
+        vm.lastToast = toastr[kind](message, caption);
       }
     }
   }

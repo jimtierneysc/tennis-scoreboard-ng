@@ -14,7 +14,7 @@
 
       inject(function (_crudHelper_) {
         service = _crudHelper_;
-      })
+      });
       mocks = mockFactories();
     });
 
@@ -300,8 +300,8 @@
         beforeEach(function () {
           service(vm, crudOptions);
           mockResource.respondWithError = true;
-          var fn = vm.showToastrError;
-          vm.showToastrError = function (_message_) {
+          var fn = vm.showToast;
+          vm.showToast = function (_message_) {
             message = _message_;
             fn(_message_);
           };
@@ -313,7 +313,7 @@
         });
 
         it('should have called .showToastrError() with error message', function () {
-          expect(message).toBe(mockResource.firstError);
+          expect(message).toBe(mockResource.firstErrorPrefix + ' ' + mockResource.firstErrorValue);
         });
 
         it('should have toast', function () {
@@ -397,7 +397,7 @@
       });
     });
   });
-  
+
   function mockFactories() {
 
     return {
@@ -413,7 +413,7 @@
       }
     };
 
-    function controllerOptions(scope, response, methods, errorCategories) {
+    function controllerOptions(scope, response, methods, errorsMap) {
       var options =
       {
         response: response,
@@ -425,7 +425,7 @@
         getEntityDisplayName: methods.getEntityDisplayName,
         makeEntityBody: methods.makeEntityBody,
         scope: scope,
-        errorCategories: errorCategories
+        errorsMap: errorsMap
       };
       return options;
     }
@@ -504,14 +504,13 @@
 
       };
 
-      _this.firstError = 'some error';
+      var firstErrorKey = 'an_error'
+      _this.firstErrorValue = 'blah blah';
+      _this.firstErrorPrefix = 'An error';
 
-      _this.errors = {
-        data: {
-          someerror: _this.firstError,
-          another: 'another error'
-        }
-      };
+      _this.errors = { data: {}};
+      _this.errors.data[firstErrorKey] = _this.firstErrorValue;
+      _this.errors.data['another'] = 'another error';
 
       var nextId = 999;
 
@@ -544,6 +543,7 @@
     }
   }
 
+  /*global MatcherHelper*/
   beforeEach(function () {
     var matchers = {
       // toBeCrudOptions matcher
@@ -561,7 +561,7 @@
           helper.checkFunction('beforeShowEditEntity', false);
           helper.checkFunction('getEntityDisplayName');
           helper.checkFunction('makeEntityBody');
-          helper.checkObject('errorCategories');
+          helper.checkObject('errorsMap');
           helper.checkObject('scope');
           helper.checkString('resourceName');
 
@@ -586,6 +586,7 @@
           helper.checkFunction('showEditEntity');
           helper.checkFunction('hideEditEntity');
           helper.checkFunction('showingEditEntity');
+          helper.checkFunction('beginWait');
           helper.checkBoolean('showingNewEntity');
           helper.checkObject('newEntity');
           helper.checkObject('editEntity', false);
@@ -601,8 +602,6 @@
 
     jasmine.addMatchers(matchers);
   });
-
-
 })
 ();
 

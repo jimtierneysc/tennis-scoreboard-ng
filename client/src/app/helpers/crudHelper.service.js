@@ -20,13 +20,13 @@
 
     function activate(vm, options) {
       var response = options.response;
-      var errorCategories = options.errorCategories;
+      var errorsMap = options.errorsMap;
       var scope = options.scope;
 
       // Aggregate functionality from other helpers
       loadingHelper(vm);
       toastrHelper(vm, scope);
-      errorsHelper(vm, errorCategories);
+      errorsHelper(vm, errorsMap);
 
       var operations = new Operations(vm, options);
 
@@ -39,6 +39,7 @@
       vm.showEditEntity = operations.showEditEntity;
       vm.hideEditEntity = operations.hideEditEntity;
       vm.showingEditEntity = operations.showingEditEntity;
+      vm.beginWait = waitIndicator.beginWait;
 
       vm.newEntity = {};
       vm.editEntity = null;
@@ -93,8 +94,18 @@
 
       helper.showNewEntity = function () {
         vm.newEntity = {};
-        if (beforeShowNewEntity) beforeShowNewEntity();
-        vm.showingNewEntity = true;
+        if (beforeShowNewEntity)
+          beforeShowNewEntity().then(
+            showEntity(),
+            function() {
+              // Do nothing when rejected
+            });
+        else
+          showEntity();
+
+        function showEntity() {
+          vm.showingNewEntity = true;
+        }
       };
 
       helper.hideNewEntity = function () {
@@ -114,7 +125,8 @@
       helper.showEditEntity = function (entity) {
         // Edit a copy, so can discard unless click Save
         vm.editEntity = angular.copy(entity);
-        if (beforeShowEditEntity) beforeShowEditEntity();
+        if (beforeShowEditEntity)
+          beforeShowEditEntity();
       };
 
       helper.hideEditEntity = function () {
@@ -145,7 +157,7 @@
 
       function createEntity(entity) {
         var body = makeEntityBody(entity);
-        var endWait = waitIndicator.beginWait();
+        var endWait = vm.beginWait();
         getResource().save(body,
           function (response) {
             endWait();
@@ -165,7 +177,7 @@
         var id = entity.id;
         var key = {id: id};
         var body = makeEntityBody(entity);
-        var endWait = waitIndicator.beginWait();
+        var endWait = vm.beginWait();
         getResource().update(key, body,
           function (response) {
             endWait();
@@ -184,7 +196,7 @@
       function removeEntity(entity) {
         var id = entity.id;
         var key = {id: id};
-        var endWait = waitIndicator.beginWait();
+        var endWait = vm.beginWait();
         getResource().remove(key,
           function () {
             endWait();
@@ -241,7 +253,7 @@
           if (angular.isDefined(errors.other[0]))
             message = errors.other[0];
         }
-        vm.showToastrError(message, "Delete Error");
+        vm.showToast(message, "Unable to Delete");
       }
     }
   }
