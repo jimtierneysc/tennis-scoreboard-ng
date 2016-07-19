@@ -13,36 +13,33 @@
     .factory('errorsHelper', factory);
 
   /** @ngInject */
-  function factory($log, categorizeProperties) {
+  function factory($log, errorsMapper) {
     return activate;
 
-    function activate(_vm_, errorCategories) {
+    function activate(_vm_, errorsMap) {
       // Initialize controller
       var vm = _vm_;
-      var helper = new Helper(errorCategories);
+      var helper = new Helper(errorsMap);
       vm.errorsOfResponse = helper.errorsOfResponse;
     }
-    
-    function Helper(_errorCategories_) {
-      
-      var errorCategories = _errorCategories_;
+
+    function Helper(_errorsMap_) {
+
+      var errorsMap = _errorsMap_;
       var helper = this;
-      
+
       helper.errorsOfResponse = function(response) {
         var result;
-        if (angular.isObject(response.data))
-          result = categorizeErrors(response.data);
+        if (angular.isObject(response.data)) {
+          var data = response.data;
+          if (angular.isObject(data.errors))
+            data = data.errors;
+          result = errorsMapper(data, errorsMap.names, errorsMap.map);
+        }
         else
-          result = categorizeErrors({'other': response.statusText});
+          result = errorsMapper({'Status': response.statusText ? response.statusText : 'unexpected error'});
         return result;
-      }
-
-      function categorizeErrors(data) {
-        if (angular.isObject(data.errors))
-          data = data.errors;
-        var errors = categorizeProperties(data, errorCategories);
-        return errors;
-      }
+      };
     }
   }
 })();

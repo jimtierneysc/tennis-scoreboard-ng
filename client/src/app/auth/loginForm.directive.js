@@ -42,8 +42,10 @@
 
       errorsHelper(vm,
         {
-          'username': null,
-          'password': null
+          names: [
+            'username',
+            'password'
+          ]
         });
     }
 

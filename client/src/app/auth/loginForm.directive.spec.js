@@ -153,7 +153,7 @@
           var expected = {
             password: ['password error'],
             username: ['username error'],
-            other: ['whatever']
+            other: ['Somethingelse whatever']
           };
 
           var $httpBackend;
