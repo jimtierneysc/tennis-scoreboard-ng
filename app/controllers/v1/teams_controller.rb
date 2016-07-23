@@ -4,7 +4,7 @@
 # Creates a new team.
 # Updates a team.
 # Deletes a team.
-class TeamsController < ApplicationController
+class V1::TeamsController < ApplicationController
   before_action :check_login!, only:
     [:update, :create, :destroy]
   before_action :set_team, only: [:show, :update, :destroy]

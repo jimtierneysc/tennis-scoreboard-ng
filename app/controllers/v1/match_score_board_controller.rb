@@ -1,7 +1,7 @@
 # Controller for  match scoreboard.
 # Renders the current state of the match.
 # Handles commands to change the state of the match.
-class MatchScoreBoardController < ApplicationController
+class V1::MatchScoreBoardController < ApplicationController
   include MatchLoader
 
   rescue_from ::Exceptions::UnknownOperation, with: :when_unknown_operation

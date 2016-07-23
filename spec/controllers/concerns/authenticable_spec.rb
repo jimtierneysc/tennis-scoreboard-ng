@@ -6,7 +6,7 @@ class Authentication
   attr_reader :request, :response;
 end
 
-RSpec.describe Authenticable, { type: :controller, focus: true } do
+RSpec.describe Authenticable, { type: :controller } do
   let(:authentication) { Authentication.new }
   let(:user) { FactoryGirl.create :user }
   subject { authentication }

@@ -142,12 +142,44 @@ module ControllersShared
     it { expect(json_response).to include :id, :title, :first_team, :second_team, :doubles }
   end
 
+  RSpec.shared_examples 'doubles teams' do
+    describe('first_team') do
+      subject { Team.find_by_id(json_response[:first_team][:id]) }
+
+      it { is_expected.not_to be_nil }
+
+      it { expect(subject.doubles).to be_truthy }
+    end
+
+    describe('second_team') do
+      subject { Team.find_by_id(json_response[:second_team][:id]) }
+
+      it { is_expected.not_to be_nil }
+
+      it { expect(subject.doubles).to be_truthy }
+    end
+  end
+
   RSpec.shared_examples 'match list response' do
     it { expect(json_response[0]).to include :id, :title, :doubles }
   end
 
   RSpec.shared_examples 'singles match response' do
     it { expect(json_response).to include :id, :title, :first_player, :second_player, :doubles }
+  end
+
+  RSpec.shared_examples 'singles players' do
+    describe('first_player') do
+      subject { Player.find_by_id(json_response[:first_player][:id]) }
+
+      it { is_expected.not_to be_nil }
+    end
+
+    describe('second_player') do
+      subject { Player.find_by_id(json_response[:second_player][:id]) }
+
+      it { is_expected.not_to be_nil }
+    end
   end
 
   RSpec.shared_examples 'action response' do

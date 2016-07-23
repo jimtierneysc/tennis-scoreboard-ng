@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe MatchScoreBoardController, { type: :controller} do
+RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_match) { FactoryGirl.create :doubles_match }
@@ -61,7 +61,7 @@ RSpec.describe MatchScoreBoardController, { type: :controller} do
         end
       end
 
-      describe 'is denied' do
+      context 'when is denied' do
         before { post_action doubles_match.id, :start_tiebreaker }
 
         it_behaves_like 'denied action'
@@ -74,7 +74,7 @@ RSpec.describe MatchScoreBoardController, { type: :controller} do
       end
 
       context 'when pass parameter' do
-        describe 'player' do
+        describe 'to start game' do
           let(:match) { FactoryGirl.build :play_singles_match, start_play: true }
           before do
             # identify first server
@@ -84,13 +84,25 @@ RSpec.describe MatchScoreBoardController, { type: :controller} do
           it_behaves_like 'accepted action'
         end
 
-        describe 'team' do
-          let(:match) { FactoryGirl.build :play_doubles_match, start_first_game: true }
-          before do
-            # identify winning team
-            post_action match.id, :win_game, { team: match.first_team.id }
+        describe 'to win' do
+          context 'doubles' do
+            let(:match) { FactoryGirl.build :play_doubles_match, start_first_game: true }
+            before do
+              # identify winning team
+              post_action match.id, :win_game, { team: match.first_team.id }
+            end
+            it_behaves_like 'doubles match scoreboard response'
+            it_behaves_like 'accepted action'
           end
-          it_behaves_like 'doubles match scoreboard response'
+        end
+
+        context 'singles' do
+          let(:match) { FactoryGirl.build :play_singles_match, start_first_game: true }
+          before do
+            # identify winning player
+            post_action match.id, :win_game, { player: match.first_player.id }
+          end
+          it_behaves_like 'singles match scoreboard response'
           it_behaves_like 'accepted action'
         end
       end

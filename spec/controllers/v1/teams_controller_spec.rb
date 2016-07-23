@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe TeamsController, { type: :controller } do
+RSpec.describe V1::TeamsController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_team_name) {'doubles team'}
@@ -224,7 +224,7 @@ RSpec.describe TeamsController, { type: :controller } do
       context 'when team in match' do
         before { delete :destroy, id: doubles_match.first_team_id }
 
-        it_behaves_like 'an error when delete referenced entity', 'Cannot delete a team in a match'
+        it_behaves_like 'an error when delete referenced entity', 'Can\'t delete a team in a match'
       end
     end
 

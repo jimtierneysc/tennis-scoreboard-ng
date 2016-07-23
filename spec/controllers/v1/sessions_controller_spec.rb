@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe SessionsController, { type: :controller } do
+RSpec.describe V1::SessionsController, { type: :controller } do
 
   let(:user) { FactoryGirl.create :user }
   let(:password) { '12345678' }

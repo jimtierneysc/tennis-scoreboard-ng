@@ -4,7 +4,7 @@
 # Creates new doubles matches and new singles matches.
 # Updates a match.
 # Deletes a match.
-class MatchesController < ApplicationController
+class V1::MatchesController < ApplicationController
   before_action :check_login!, only: [:create, :update, :destroy]
   before_action :set_match, only:
     [:show, :update, :destroy]
@@ -23,17 +23,17 @@ class MatchesController < ApplicationController
 
   # POST /matches
   def create
-    @match = create_match match_params(match_params_doubles?)
+    @match = create_match
     if @match.save
       render json: @match, status: :created, location: @match
     else
-      render json: {errors: @match.errors}, status: :unprocessable_entity
+      render json: { errors: @match.errors }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /matches/1
   def update
-    doubles = @match.doubles
+    doubles = match_params_doubles?(@match.doubles)
     update_sym = if doubles
                    :update_doubles_match
                  else
@@ -42,7 +42,7 @@ class MatchesController < ApplicationController
     if send(update_sym, @match, match_params(doubles))
       render json: @match, status: :ok
     else
-      render json: {errors: @match.errors}, status: :unprocessable_entity
+      render json: { errors: @match.errors }, status: :unprocessable_entity
     end
   end
 
@@ -57,7 +57,7 @@ class MatchesController < ApplicationController
   # Opponents for a doubles match and for a singles match are different.
   # Singles match has players.  Doubles match has teams.
   def match_params(doubles)
-    params_var = params.require :match
+    params_var = params_require
     permit = [:title, :scoring, :doubles]
     permit += if doubles
                 [:first_team_id, :second_team_id]
@@ -67,13 +67,20 @@ class MatchesController < ApplicationController
     params_var.permit(permit)
   end
 
-  def match_params_doubles?
-    params_var = params.require :match
-    doubles_param? params_var
+  def match_params_doubles?(default_value=false)
+    exists_doubles_param? ? doubles_param? : default_value
   end
 
-  def doubles_param? params_var
-    params_var[:doubles].to_s == 'true'
+  def params_require
+    params.require :match
+  end
+
+  def doubles_param?
+    params_require[:doubles].to_s == 'true'
+  end
+
+  def exists_doubles_param?
+    !params_require[:doubles].nil?
   end
 
   def set_match
@@ -85,20 +92,6 @@ class MatchesController < ApplicationController
     render json: { errors: 'Not found' }, status: :not_found
   end
 
-  # # when there are only two teams, set as default for new doubles match
-  # def assign_default_doubles_teams(match)
-  #   teams = Team.where(doubles: true).limit 2
-  #   match.first_team = teams[0]
-  #   match.second_team = teams[1]
-  # end
-  # 
-  # # when there are only two players, set as default for new singles match
-  # def assign_default_singles_players(match)
-  #   players = Player.all.limit(2)
-  #   match.first_singles_player = players[0]
-  #   match.second_singles_player = players[1]
-  # end
-  # 
   def create_doubles_match(params_var)
     Match.new params_var
   end
@@ -107,11 +100,13 @@ class MatchesController < ApplicationController
     match.update params_var
   end
 
-  def create_match(params_var)
-    if doubles_param? params_var
-      create_doubles_match(params_var)
+  def create_match
+    doubles = match_params_doubles?
+    params_var = match_params(doubles)
+    if doubles
+      create_doubles_match params_var
     else
-      create_singles_match(params_var)
+      create_singles_match params_var
     end
   end
 

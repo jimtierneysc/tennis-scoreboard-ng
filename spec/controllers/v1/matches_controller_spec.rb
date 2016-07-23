@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe MatchesController, { type: :controller } do
+RSpec.describe V1::MatchesController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_match_title) { 'doubles match' }
@@ -15,11 +15,13 @@ RSpec.describe MatchesController, { type: :controller } do
   let(:new_doubles_match_title) { 'new doubles' }
   let(:new_singles_match_title) { 'new singles' }
   let(:singles_match_attributes) { FactoryGirl.attributes_for :singles_match, :player_ids, title: singles_match_title }
+  let(:player1) { FactoryGirl.create :player, name: 'one' }
+  let(:player2) { FactoryGirl.create :player, name: 'two' }
 
   def exclude_doubles_attribute(exclude)
     ControllersShared::exclude_attribute(doubles_match_attributes, exclude)
   end
-  
+
   def change_doubles_attribute(name, value)
     ControllersShared::change_attribute(doubles_match_attributes, name, value)
   end
@@ -172,6 +174,26 @@ RSpec.describe MatchesController, { type: :controller } do
           it_behaves_like 'doubles match response'
           it_behaves_like 'a response with success code', 200
         end
+      end
+
+      context 'when change singles to doubles' do
+        before do
+          patch :update, { id: singles_match.id, match: doubles_match_attributes }
+        end
+        it_behaves_like 'doubles match response'
+        it_behaves_like 'doubles teams'
+        it_behaves_like 'a response with success code', 200
+
+      end
+
+      context 'when change doubles to singles' do
+        before do
+          patch :update, { id: doubles_match.id, match: singles_match_attributes }
+        end
+        it_behaves_like 'singles match response'
+        it_behaves_like 'singles players'
+        it_behaves_like 'a response with success code', 200
+
       end
 
       context 'when does not exists' do

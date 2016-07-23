@@ -4,7 +4,7 @@
 # Creates a new player.
 # Updates a player.
 # Deletes a player.
-class PlayersController < ApplicationController
+class V1::PlayersController < ApplicationController
   before_action :check_login!, only:
     [:update, :create, :destroy]
   before_action :set_player, only: [:show, :update, :destroy]

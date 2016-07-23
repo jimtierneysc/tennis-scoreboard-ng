@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe PlayersController, { type: :controller } do
+RSpec.describe V1::PlayersController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:player_name) { 'player1'}
@@ -183,7 +183,7 @@ RSpec.describe PlayersController, { type: :controller } do
           delete :destroy, id: doubles_team.first_player_id
         end
 
-        it_behaves_like 'an error when delete referenced entity', 'Cannot delete a player in a match or on a team'
+        it_behaves_like 'an error when delete referenced entity', 'Can\'t delete a player in a match or on a team'
       end
 
       context 'when player in match' do
@@ -191,7 +191,7 @@ RSpec.describe PlayersController, { type: :controller } do
           delete :destroy, id: doubles_match.first_team.first_player_id
         end
 
-        it_behaves_like 'an error when delete referenced entity', 'Cannot delete a player in a match or on a team'
+        it_behaves_like 'an error when delete referenced entity', 'Can\'t delete a player in a match or on a team'
       end
     end
 
