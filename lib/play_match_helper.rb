@@ -54,10 +54,10 @@ class PlayMatchHelper
 
   # Play a match
   def play(scores)
-    match.change_score! :start_play
-    apply_first_servers
+    match.play_match! :start_play
+    # apply_first_servers
     scores.each { |v| play_set(v) }
-    match.change_score! :complete_play if match.change_score?(:complete_play)
+    match.play_match! :complete_play if match.play_match?(:complete_play)
   end
 
   # Play a set
@@ -69,37 +69,37 @@ class PlayMatchHelper
 
   private
 
-  # Make sure the first servers are assigned
-  def apply_first_servers
-    apply_first_server
-    apply_second_server
-  end
-
-  def apply_first_server
-    if match.first_player_server.nil?
-      match.apply_first_or_second_player_server(match.first_team.first_player)
-    end
-  end
-
-  def apply_second_server
-    if match.doubles && match.second_player_server.nil?
-      match.apply_first_or_second_player_server(match.second_team.first_player)
-    end
-  end
+  # # Make sure the first servers are assigned
+  # def apply_first_servers
+  #   apply_first_server
+  #   apply_second_server
+  # end
+  #
+  # def apply_first_server
+  #   if match.first_player_server.nil?
+  #     match.apply_first_or_second_player_server(match.first_team.first_player)
+  #   end
+  # end
+  #
+  # def apply_second_server
+  #   if match.doubles && match.second_player_server.nil?
+  #     match.apply_first_or_second_player_server(match.second_team.first_player)
+  #   end
+  # end
 
   def start_set
-    if match.change_score? :start_match_tiebreaker
-      match.change_score! :start_match_tiebreaker
-    elsif match.change_score? :start_next_set
-      match.change_score! :start_next_set
+    if match.play_match? :start_match_tiebreaker
+      match.play_match! :start_match_tiebreaker
+    elsif match.play_match? :start_set
+      match.play_match! :start_set
     end
   end
 
   def complete_set
-    if match.change_score? :complete_set_play
-      match.change_score! :complete_set_play
-    elsif match.change_score? :complete_match_tiebreaker
-      match.change_score! :complete_match_tiebreaker
+    if match.play_match? :complete_set_play
+      match.play_match! :complete_set_play
+    elsif match.play_match? :complete_match_tiebreaker
+      match.play_match! :complete_match_tiebreaker
     end
   end
 
@@ -115,11 +115,11 @@ class PlayMatchHelper
   end
 
   def play_game(winner)
-    if match.change_score? :start_next_game
+    if match.play_match? :start_game
       play_normal_game winner
-    elsif match.change_score? :win_match_tiebreaker
-      match.change_score! :win_match_tiebreaker, winner
-    elsif match.change_score? :start_tiebreaker
+    elsif match.play_match? :win_match_tiebreaker
+      match.play_match! :win_match_tiebreaker, winner
+    elsif match.play_match? :start_tiebreaker
       play_tiebreaker winner
     else
       invalid_game
@@ -127,13 +127,25 @@ class PlayMatchHelper
   end
 
   def play_tiebreaker(winner)
-    match.change_score! :start_tiebreaker
-    match.change_score! :win_tiebreaker, winner
+    match.play_match! :start_tiebreaker
+    match.play_match! :win_tiebreaker, winner
   end
 
   def play_normal_game(winner)
-    match.change_score! :start_next_game
-    match.change_score! :win_game, winner
+    param = nil
+    if match.doubles
+      if match.first_player_server.nil?
+        param = match.first_team.first_player
+      elsif match.second_player_server.nil?
+        param = match.second_team.second_player
+      end
+    else
+      if match.first_player_server.nil?
+        param = match.first_player
+      end
+    end
+    match.play_match! :start_game, param
+    match.play_match! :win_game, winner
   end
 
   def invalid_game

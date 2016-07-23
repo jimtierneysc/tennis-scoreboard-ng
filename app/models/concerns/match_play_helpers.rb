@@ -177,6 +177,7 @@ module MatchPlayHelpers
     def that_first_and_second_opponents_different(errors)
       if match.doubles
         that_doubles_teams_different(errors)
+        that_doubles_players_different(errors)
       else
         that_singles_players_different(errors)
       end
@@ -185,6 +186,18 @@ module MatchPlayHelpers
     def that_doubles_teams_different(errors)
       unless match.first_team.nil? || match.first_team != match.second_team
         errors.add(:second_team, 'must not be the same as first team')
+      end
+    end
+
+    def that_doubles_players_different(errors)
+      unless match.first_team == match.second_team || match.first_team.nil? || match.second_team.nil?
+        arr = [match.first_team.first_player, match.first_team.second_player,
+               match.second_team.first_player, match.second_team.second_player]
+        arr = arr.compact.map(&:id)
+        # All id's unique?
+        if arr.uniq.length != arr.length
+          errors.add(:second_team, 'must not have players from the first team')
+        end
       end
     end
 
@@ -230,6 +243,9 @@ module MatchPlayHelpers
       fields.each do |sym|
         value = match.send(sym)
         errors.add sym, 'can\'t be blank' unless value
+        if value && sym.to_s.end_with?('team')
+          errors.add sym, 'must be doubles team' unless value.doubles
+        end
       end
     end
   end
