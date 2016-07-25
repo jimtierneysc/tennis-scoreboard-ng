@@ -136,7 +136,7 @@ class SampleData
     m.save!
     scores = match_data[:scores]
     PlayMatchHelper.play_match(m, scores) if scores
-    m.change_score! :complete_play if m.change_score? :complete_play
+    m.play_match! :complete_play if m.play_match? :complete_play
   end
 
   def add_opponents(match, match_data)
@@ -144,8 +144,8 @@ class SampleData
       match.first_team = Team.find_by!(name: match_data[:first_team])
       match.second_team = Team.find_by!(name: match_data[:second_team])
     else
-      match.first_singles_player = Player.find_by_name! match_data[:p1]
-      match.second_singles_player = Player.find_by_name! match_data[:p2]
+      match.first_player = Player.find_by_name! match_data[:p1]
+      match.second_player = Player.find_by_name! match_data[:p2]
     end
   end
 end
