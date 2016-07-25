@@ -1,13 +1,14 @@
 (function () {
   'use strict';
 
-  describe('feScoreStatus directive', function () {
+  fdescribe('feScoreStatus directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-scores'));
+
     beforeEach(inject(function ($compile, $rootScope) {
 
       var scores = {title: 'atitle', doubles: true};
@@ -30,7 +31,7 @@
     }));
 
     describe('isolated scope', function () {
-      
+
       it('should have .scores', function () {
         expect(isolatedScope.scores).toBe(scope.ascores);
       });

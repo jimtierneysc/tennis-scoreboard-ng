@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-scores')
     .service('scoreboardBuilder', ScoreboardBuilder);
 
 

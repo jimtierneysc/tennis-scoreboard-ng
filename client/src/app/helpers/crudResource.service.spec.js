@@ -1,14 +1,15 @@
 (function () {
   'use strict';
 
-  describe('crudResource service', function () {
+  fdescribe('crudResource service', function () {
     var $httpBackend;
     var sampleData = {name: 'somename'};
     var resourceName = 'aresource';
     var $resource = null;
     var path = null;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-helpers'));
+
     beforeEach(inject(function (crudResource, _$httpBackend_) {
       $resource = crudResource.getResource(resourceName);
       path = crudResource.getPath(resourceName);
@@ -18,7 +19,7 @@
     it('should have path', function () {
       expect(path).toMatch(resourceName);
     });
-    
+
     describe('query', function () {
       expectSampleDataArray('GET', null, 'query');
     });
@@ -42,7 +43,7 @@
     describe('update item', function () {
       expectSampleDataObject('PUT', 1, 'update');
     });
-    
+
     function expectSampleDataArray(verb, id, fnName) {
       var fn;
       beforeEach(function() {

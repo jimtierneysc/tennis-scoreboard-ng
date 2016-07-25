@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-teams')
     .controller('TeamsController', Controller);
 
   /** @ngInject */
@@ -33,6 +33,7 @@
           beforeShowEditEntity: beforeShowEditEntity,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
+          entityKind: 'Team',
           scope: $scope,
           errorsMap: {
             names: [
@@ -70,9 +71,9 @@
         endWait();
         var playerCount = vm.playerOptionsList.list.length;
         if (playerCount < 2) {
-          // vm.hideNewEntity();
           deferredObject.reject();
-          vm.showToast('Must have at least two players', 'Unable to Add Team', 'warning');
+          vm.showToast('There must be at least two players.  ' +
+            'Add players and try again.', 'Unable to Add Team', 'warning');
         }
         else {
           if (playerCount == 2) {
@@ -127,7 +128,6 @@
         deferredObject.resolve();
       }
       return deferredObject.promise;
-
     }
 
     function prepareToEditEntity() {

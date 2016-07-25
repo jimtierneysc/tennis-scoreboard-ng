@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-teams')
     .directive('feTeamsForm', directive);
 
   /** @ngInject */
@@ -21,13 +21,13 @@
       restrict: 'E',
       templateUrl: 'app/teams/teamsForm.html',
       scope: {
-        form: '@',
+        form: '=',
         errors: '=',
         cancel: '&',
         submit: '&',
         entity: '=',
         ok: '@',
-        playerslist: '='
+        playersList: '='
       }
     };
 

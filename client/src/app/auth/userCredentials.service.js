@@ -2,14 +2,13 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-auth')
     .service('userCredentials', Service);
 
   /** @ngInject */
-  function Service($http, $rootScope, $log, $localStorage) {
+  function Service($http, $rootScope, $log, $localStorage, validateCredentials, authHeaderName) {
     var service = this;
 
-    var HEADERNAME = 'Authorization';
     var DATANAME = 'credentials';
 
     service.setCredentials = setCredentials;
@@ -18,7 +17,7 @@
     service.subscribeChanged = subscribeChanged;
     service.loggedIn = false;
     service.userName = "";
-    service.headerName = HEADERNAME;
+    service.headerName = authHeaderName;
     service.localDataName = DATANAME;
 
     var data = null;
@@ -32,7 +31,7 @@
         }
       };
 
-      $http.defaults.headers.common[HEADERNAME] = token;
+      $http.defaults.headers.common[authHeaderName] = token;
       // $cookieStore.put('globals', data);
       $localStorage[DATANAME] = data;
       changed();
@@ -42,37 +41,47 @@
       data = {};
       // $cookieStore.remove('globals');
       $localStorage[DATANAME] = undefined;
-      delete $http.defaults.headers.common[HEADERNAME];
+      delete $http.defaults.headers.common[authHeaderName];
       changed();
     }
 
     function loadCredentials() {
-      // data = $cookieStore.get('globals') || {};
       data = $localStorage[DATANAME] || {};
-      if (data.currentUser) {
-        $http.defaults.headers.common[HEADERNAME] = data.currentUser.token;
-      }
-      changed();
-    }
-
-    var EVENT_NAME = 'auth-service:change';
-
-    function subscribeChanged(scope, callback) {
-      var handler = $rootScope.$on(EVENT_NAME, callback);
-      scope.$on('$destroy', handler);
-    }
-
-    function changed() {
-      service.loggedIn = angular.isDefined(data.currentUser);
-      if (service.loggedIn) {
-        service.userName = data.currentUser.username;
+      if (data && data.currentUser) {
+        validateCredentials(data.currentUser).then(
+          function (credentials) {
+            data.currentUser = angular.copy(credentials);
+            changed();
+          },
+          function () {
+            clearCredentials();
+          }
+        );
       }
       else
-        service.userName = "";
+        changed();
+     }
 
-      $rootScope.$emit(EVENT_NAME);
+      var EVENT_NAME = 'user-credentials:change';
+
+      function subscribeChanged(scope, callback) {
+        var handler = $rootScope.$on(EVENT_NAME, callback);
+        scope.$on('$destroy', handler);
+      }
+
+      function changed() {
+        service.loggedIn = angular.isDefined(data.currentUser);
+        if (service.loggedIn) {
+          service.userName = data.currentUser.username;
+        }
+        else
+          service.userName = "";
+
+        $rootScope.$emit(EVENT_NAME);
+      }
     }
+
+
   }
 
-
-})();
+  )();

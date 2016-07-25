@@ -9,13 +9,13 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-helpers')
     .factory('crudHelper', factory);
 
   /** @ngInject */
-  function factory($log, $q, modalConfirm, toastr,
+  function factory($log, modalConfirm,
                    $filter, loadingHelper, errorsHelper, toastrHelper,
-                   waitIndicator, crudResource) {
+                   waitIndicator, crudResource, editInProgress, autoFocus) {
     return activate;
 
     function activate(vm, options) {
@@ -41,7 +41,7 @@
       vm.showingEditEntity = operations.showingEditEntity;
       vm.beginWait = waitIndicator.beginWait;
 
-      vm.newEntity = {};
+      vm.newEntity =  null;
       vm.editEntity = null;
       vm.showingNewEntity = false;
       vm.newEntityForm = null;
@@ -50,17 +50,20 @@
       vm.entityCreateErrors = null;
       vm.entityUpdateErrors = null;
 
+      // Allow new and edit operations to be cancelled
+      editInProgress.registerOnQueryState(scope, operations.editorState);
+      editInProgress.registerOnClose(scope, operations.closeEditors);
+
       if (angular.isArray(response))
         operations.entityLoaded(response);
       else
         operations.entityLoadFailed(response);
     }
 
-    // Execute code in context of vm
     function Operations(_vm_, controllerOptions) {
-      var helper = this;
-      var vm = _vm_
-      var getResource = function() {
+      var _this = this;
+      var vm = _vm_;
+      var getResource = function () {
         return crudResource.getResource(controllerOptions.resourceName)
       };
       var prepareToCreateEntity = controllerOptions.prepareToCreateEntity;
@@ -69,8 +72,41 @@
       var beforeShowEditEntity = controllerOptions.beforeShowEditEntity;
       var getEntityDisplayName = controllerOptions.getEntityDisplayName;
       var makeEntityBody = controllerOptions.makeEntityBody;
+      var entityKind = controllerOptions.entityKind;
 
-      helper.trashEntity = function (entity, confirmDelete) {
+      var CRUD = 'crud';
+      var REFOCUS = 'refocus';
+
+      _this.editorState = function (event, data) {
+        var editing = false;
+        var message;
+        if (vm.editEntity && vm.editEntityForm && !vm.editEntityForm.$pristine) {
+          editing = true;
+          message = 'You have unsaved edits of ' + getEntityDisplayName(vm.editEntity) +
+            '. Do you want to discard your edits?';
+        } else if (vm.newEntity && vm.newEntityForm && !vm.newEntityForm.$pristine) {
+          editing = true;
+          message = 'You are adding a new ' + entityKind +
+            '. Do you want to discard your input?';
+        }
+        if (editing) {
+          data.labels.text = message;
+          data.labels.title = 'Confirm Discard Edits';
+          data.pristine = false;
+          data.autoFocus = REFOCUS;
+          data.name = CRUD;
+        }
+
+       };
+
+      _this.closeEditors = function (state) {
+        if (state.name == CRUD) {
+          hideNewEntity();
+          hideEditEntity();
+        }
+      };
+
+      _this.trashEntity = function (entity, confirmDelete) {
         if (angular.isUndefined(confirmDelete))
           confirmDelete = true;
         if (confirmDelete) {
@@ -87,28 +123,38 @@
         }
       };
 
-      helper.submitNewEntity = function () {
+      _this.submitNewEntity = function () {
         var submitEntity = prepareToCreateEntity(vm.newEntity);
         createEntity(submitEntity);
       };
 
-      helper.showNewEntity = function () {
-        vm.newEntity = {};
-        if (beforeShowNewEntity)
-          beforeShowNewEntity().then(
-            showEntity(),
-            function() {
-              // Do nothing when rejected
-            });
-        else
-          showEntity();
+      _this.showNewEntity = function () {
 
-        function showEntity() {
-          vm.showingNewEntity = true;
+        editInProgress.closeEditors().then(
+          show
+        );
+
+        function show() {
+          vm.newEntity = {};
+          if (beforeShowNewEntity)
+            beforeShowNewEntity().then(
+              showEntity,
+              function () {
+                // Do nothing when rejected
+              });
+          else
+            showEntity();
+
+          function showEntity() {
+            vm.showingNewEntity = true;
+            // new entity form should have an element with the following attribute.
+            // fe-auto-focus='refocus'
+            autoFocus(REFOCUS);
+          }
         }
       };
 
-      helper.hideNewEntity = function () {
+      _this.hideNewEntity = function () {
         if (vm.newEntityForm) {
           vm.newEntityForm.$setPristine();
         }
@@ -117,43 +163,64 @@
         vm.entityCreateErrors = null;
       };
 
-      helper.submitEditEntity = function () {
+      _this.submitEditEntity = function () {
         var submit = prepareToUpdateEntity(vm.editEntity);
         updateEntity(submit);
       };
 
-      helper.showEditEntity = function (entity) {
-        // Edit a copy, so can discard unless click Save
-        vm.editEntity = angular.copy(entity);
-        if (beforeShowEditEntity)
-          beforeShowEditEntity();
+      _this.showEditEntity = function (entity) {
+
+        editInProgress.closeEditors().then(
+          show
+        );
+
+        function show() {
+          // Edit a copy, so can discard unless click Save
+          vm.editEntity = angular.copy(entity);
+          if (beforeShowEditEntity)
+            beforeShowEditEntity();
+          // new entity form should have an element with the following attribute.
+          // fe-auto-focus='refocus'
+          autoFocus(REFOCUS);
+        }
       };
 
-      helper.hideEditEntity = function () {
+      _this.hideEditEntity = hideEditEntity;
+
+      _this.showingEditEntity = function (entity) {
+        return vm.editEntity && (vm.editEntity.id == entity.id);
+      };
+
+      _this.entityLoaded = function (response) {
+        vm.entitys = response;
+        vm.updateLoadingCompleted();
+      };
+
+      _this.entityLoadFailed = function (response) {
+        $log.error('data error ' + response.status + " " + response.statusText);
+        vm.updateLoadingFailed(response);
+      };
+
+      //
+      // Internal methods
+      //
+
+      function hideNewEntity() {
+        if (vm.newEntityForm) {
+          vm.newEntityForm.$setPristine();
+        }
+        vm.showingNewEntity = false;
+        vm.newEntity = null;
+        vm.entityCreateErrors = null;
+      }
+
+      function hideEditEntity() {
         if (vm.editEntityForm) {
           vm.editEntityForm.$setPristine();
         }
         vm.editEntity = null;
         vm.entityUpdateErrors = null;
-      };
-
-      helper.showingEditEntity = function (entity) {
-        return vm.editEntity && (vm.editEntity.id == entity.id);
-      };
-
-      helper.entityLoaded = function (response) {
-        vm.entitys = response;
-        vm.updateLoadingCompleted();
       }
-
-      helper.entityLoadFailed = function (response) {
-        $log.error('data error ' + response.status + " " + response.statusText);
-        vm.updateLoadingFailed(response);
-      }
-
-      //
-      // Internal methods
-      //
 
       function createEntity(entity) {
         var body = makeEntityBody(entity);
@@ -208,17 +275,16 @@
             entityRemoveError(entity, response);
           }
         );
-
       }
 
       function entityCreated(entity) {
-        helper.hideNewEntity();
+        _this.hideNewEntity();
         vm.entitys.splice(0, 0, entity);
         vm.entityCreateErrors = null;
       }
 
       function entityUpdated(entity) {
-        helper.hideEditEntity();
+        _this.hideEditEntity();
         var id = entity.id;
         var found = $filter('filter')(vm.entitys, function (o) {
           return o.id === id;
@@ -226,7 +292,7 @@
         if (found && found.length === 1) {
           angular.copy(entity, found[0]);
         }
-       }
+      }
 
       function entityCreateError(entity, response) {
         var errors = vm.errorsOfResponse(response);

@@ -1,14 +1,15 @@
 (function () {
   'use strict';
-  
-  describe('fePlayerForm directive', function () {
+
+  fdescribe('fePlayerForm directive', function () {
     var compiledDirective;
     var scope;
     var okText;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-players'));
+
     beforeEach(inject(function ($compile, $rootScope) {
 
       var errors = {
@@ -49,7 +50,7 @@
 
       describe('members', function () {
         it('should have .form', function () {
-          expect(isolatedScope.form).toEqual("aform");
+          expect(isolatedScope.form).toEqual(scope.aform);
         });
 
         it('should have .errors', function () {
@@ -74,7 +75,7 @@
           expect(isolatedScope.ok).toEqual(okText);
         });
       });
-      
+
       // TODO: Test HTML elements
 
     });

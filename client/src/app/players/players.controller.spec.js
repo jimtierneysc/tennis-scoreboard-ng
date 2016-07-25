@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('PlayersController', function () {
+  fdescribe('PlayersController', function () {
     var $controller;
     var $scope;
 
@@ -11,7 +11,8 @@
       }
     ];
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-players'));
+
     beforeEach(inject(function (_$controller_, $rootScope) {
       $controller = _$controller_;
       $scope = $rootScope.$new();
@@ -92,6 +93,10 @@
 
         it('should have .resourceName', function () {
           expect(options.resourceName).toEqual(resourceName);
+        });
+
+        it('should have .entityKind', function () {
+          expect(options.entityKind).toEqual('Player');
         });
 
         describe('.getEntityDisplayName()', function () {

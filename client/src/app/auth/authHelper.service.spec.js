@@ -1,16 +1,18 @@
 (function () {
   'use strict';
-  
-  describe('authHelper service', function () {
+
+  fdescribe('authHelper service', function () {
     var service;
     var scope;
+    var $rootScope;
     var vm = {};
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-auth'));
 
     beforeEach(function () {
       inject(function (_authHelper_, _$rootScope_) {
         service = _authHelper_;
+        $rootScope = _$rootScope_;
         scope = _$rootScope_.$new();
       });
       service(vm, scope);
@@ -24,7 +26,7 @@
 
     describe('authentication', function () {
       var service;
-      var USERNAME = 'someuser';
+      var USERNAME = 'authHelper username';
 
       beforeEach(function () {
 
@@ -49,11 +51,12 @@
 
       it('should not be .loggedIn after .logOut()', function () {
         vm.logOut();
+        $rootScope.$digest();
         expect(service.loggedIn).toEqual(false);
       });
     })
   });
-  
+
   beforeEach(function () {
     var matchers = {
       toSupportAuth: function () {

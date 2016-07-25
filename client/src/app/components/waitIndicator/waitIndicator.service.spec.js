@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  describe('service waitIndicator', function () {
+  fdescribe('service waitIndicator', function () {
 
     var service;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-components'));
 
     beforeEach(function () {
 
@@ -14,39 +14,32 @@
       });
     });
 
-    it('should be registered', function () {
-      expect(service).not.toEqual(null);
-    });
-
     it('should not be waiting initially', function () {
       expect(service.waiting()).toEqual(false);
     });
 
-    it('should set waiting', function () {
-      service.beginWait();
-      expect(service.waiting()).toBeTruthy();
+    describe('.beginWait()', function() {
+
+       it('should set .waiting', function () {
+        service.beginWait();
+        expect(service.waiting()).toBeTruthy();
+      });
+
+      it('should clear .waiting', function () {
+        var callBack = service.beginWait();
+        callBack();
+        expect(service.waiting()).toBeFalsy();
+      });
+
+      it('should ignore underflow', function () {
+        var callBack = service.beginWait();
+        callBack();
+        callBack();
+        expect(service.waiting()).toBeFalsy();
+      });
     });
 
-    it('should clear waiting', function () {
-      var callBack = service.beginWait();
-      callBack();
-      expect(service.waiting()).toBeFalsy();
-    });
-
-    it('should ignore underflow', function () {
-      var callBack = service.beginWait();
-      callBack();
-      callBack();
-      expect(service.waiting()).toBeFalsy();
-    });
-
-    it('should change when clear waiting', function () {
-      var callBack = service.beginWait();
-      callBack();
-      expect(service.waiting()).toBeFalsy();
-    });
-
-    describe('change notification', function() {
+   describe('change notification', function() {
       var scope;
       var spy;
       beforeEach(function () {
@@ -56,7 +49,7 @@
         spy = jasmine.createSpy('changed')
       });
 
-      it('should notify when set waiting', function () {
+      it('should notify when .beginWait()', function () {
         service.subscribeChanged(scope, spy);
         service.beginWait();
         expect(spy).toHaveBeenCalled();
@@ -69,14 +62,14 @@
         expect(spy).toHaveBeenCalled();
       });
 
-      it('should notify once when set waiting', function () {
+      it('should notify once when .beginWait twice', function () {
         service.subscribeChanged(scope, spy);
         service.beginWait();
         service.beginWait();
         expect(spy.calls.count()).toEqual(1);
       });
 
-      it('should notify once when clear waiting', function () {
+      it('should notify once when clear waiting twice', function () {
         var callback = service.beginWait();
         service.beginWait();
         service.subscribeChanged(scope, spy);
@@ -85,7 +78,7 @@
         expect(spy.calls.count()).toEqual(1);
       });
     });
-    
+
     describe('nested waiting', function () {
       var callBack1, callBack2;
       beforeEach(function () {

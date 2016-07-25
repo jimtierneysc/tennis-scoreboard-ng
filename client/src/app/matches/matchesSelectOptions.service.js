@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-matches')
     .factory('matchesSelectOptions', matchesFunc);
 
   /** @ngInject */

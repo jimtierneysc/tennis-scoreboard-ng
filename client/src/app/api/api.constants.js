@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module("frontend")
+    .module("frontend-api")
     .constant("baseURL","/api/")
     .constant("playersResource", "players")
     .constant("teamsResource", "teams")

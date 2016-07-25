@@ -62,7 +62,8 @@
       return result;
     }
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-scores'));
+
     beforeEach(function () {
 
       inject(function (_$controller_, _$rootScope_) {
@@ -389,7 +390,7 @@
         it('should show loading error', function () {
           expect(vm).toFailLoading();
         });
-        
+
         expectWaitIndicator();
       });
 
@@ -425,6 +426,9 @@
         });
       });
 
+      var USERNAME = 'scoreBoard username';
+      var TOKEN = 'scoreBoard token';
+
       describe('.keepingScore', function () {
 
         var userCredentials;
@@ -435,7 +439,7 @@
           });
           var vm = scoreboardController(singlesResponse());
           view = vm.view;
-          userCredentials.setCredentials('user', 'token');
+          userCredentials.setCredentials(USERNAME, TOKEN);
           view.keepScore = true;
         });
 

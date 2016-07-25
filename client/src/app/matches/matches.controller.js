@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-matches')
     .controller('MatchesController', Controller);
 
   /** @ngInject */
@@ -34,6 +34,7 @@
           beforeShowEditEntity: beforeShowEditEntity,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
+          entityKind: 'Match',
           scope: $scope,
           errorsMap: {
             names: [
@@ -74,14 +75,15 @@
       var players = prepareToShowPlayerOptions();
       var all = $q.all([teams, players]);
       var endWait = vm.beginWait();
-      all.then(function() {
+      all.then(function () {
         endWait();
         var playerCount = vm.playerOptionsList.list.length;
         var teamCount = vm.teamOptionsList.list.length;
         if (playerCount < 2 && teamCount < 2) {
           // vm.hideNewEntity();
           deferredObject.reject();
-          vm.showToast('Must have at least two teams or two players', 'Unable to Add Match', 'warning');
+          vm.showToast('There must be at least two teams or two players.  ' +
+            'Add teams or players and try again.', 'Unable to Add Match', 'warning');
         }
         else {
           if (playerCount < 2)
@@ -107,7 +109,7 @@
       var players = prepareToShowPlayerOptions();
       var all = $q.all([teams, players]);
       var endWait = vm.beginWait();
-      all.then(function() {
+      all.then(function () {
         endWait();
         prepareToEditTeams();
         prepareToEditPlayers();
@@ -188,22 +190,30 @@
     }
 
     function prepareToEditPlayers() {
-      var first_player = null;
-      var second_player = null;
-      var first_id = null;
-      var second_id = null;
-      if (vm.editEntity.first_player)
-        first_id = vm.editEntity.first_player.id;
-      if (vm.editEntity.second_player)
-        second_id = vm.editEntity.second_player.id;
-      $filter('filter')(vm.playerOptionsList.list,
-        function (o) {
-          if (o.id == first_id)  first_player = o;
-          if (o.id == second_id) second_player = o;
-          return first_player && second_player;
-        });
-      vm.editEntity.select_first_player = first_player;
-      vm.editEntity.select_second_player = second_player;
+      if (!vm.editEntity.doubles) {
+        var first_player = null;
+        var second_player = null;
+        var first_id = null;
+        var second_id = null;
+        if (vm.editEntity.first_player)
+          first_id = vm.editEntity.first_player.id;
+        if (vm.editEntity.second_player)
+          second_id = vm.editEntity.second_player.id;
+        $filter('filter')(vm.playerOptionsList.list,
+          function (o) {
+            if (o.id == first_id)  first_player = o;
+            if (o.id == second_id) second_player = o;
+            return first_player && second_player;
+          });
+        vm.editEntity.select_first_player = first_player;
+        vm.editEntity.select_second_player = second_player;
+      } else {
+        if (vm.playerOptionsList.list.length == 2) {
+          // If user selects doubles then default to only two teams
+          vm.editEntity.select_first_player = vm.playerOptionsList.list[0];
+          vm.editEntity.select_second_player = vm.playerOptionsList.list[1];
+        }
+      }
     }
 
     function prepareToSubmitPlayers(entity, result) {
@@ -214,22 +224,30 @@
     }
 
     function prepareToEditTeams() {
-      var first_team = null;
-      var second_team = null;
-      var first_id = null;
-      var second_id = null;
-      if (vm.editEntity.first_team)
-        first_id = vm.editEntity.first_team.id;
-      if (vm.editEntity.second_team)
-        second_id = vm.editEntity.second_team.id;
-      $filter('filter')(vm.teamOptionsList.list,
-        function (o) {
-          if (o.id == first_id)  first_team = o;
-          if (o.id == second_id) second_team = o;
-          return first_team && second_team;
-        });
-      vm.editEntity.select_first_team = first_team;
-      vm.editEntity.select_second_team = second_team;
+      if (vm.editEntity.doubles) {
+        var first_team = null;
+        var second_team = null;
+        var first_id = null;
+        var second_id = null;
+        if (vm.editEntity.first_team)
+          first_id = vm.editEntity.first_team.id;
+        if (vm.editEntity.second_team)
+          second_id = vm.editEntity.second_team.id;
+        $filter('filter')(vm.teamOptionsList.list,
+          function (o) {
+            if (o.id == first_id)  first_team = o;
+            if (o.id == second_id) second_team = o;
+            return first_team && second_team;
+          });
+        vm.editEntity.select_first_team = first_team;
+        vm.editEntity.select_second_team = second_team;
+      } else {
+        if (vm.teamOptionsList.list.length == 2) {
+          // If user unselects doubles then default to only two teams
+          vm.editEntity.select_first_team = vm.teamOptionsList.list[0];
+          vm.editEntity.select_second_team = vm.teamOptionsList.list[1];
+        }
+      }
     }
 
     function prepareToSubmitTeams(entity, result) {

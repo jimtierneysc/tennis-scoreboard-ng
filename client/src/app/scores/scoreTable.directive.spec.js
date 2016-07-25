@@ -1,13 +1,14 @@
 (function () {
   'use strict';
 
-  describe('feScoreTable directive', function () {
+  fdescribe('feScoreTable directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-scores'));
+
     beforeEach(inject(function ($compile, $rootScope) {
 
       var scores = {};

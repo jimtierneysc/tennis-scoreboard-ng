@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-players')
     .directive('fePlayersForm', directiveFunc);
 
   /** @ngInject */
@@ -22,7 +22,7 @@
       restrict: 'E',
       templateUrl: 'app/players/playersForm.html',
       scope: {
-        form: '@',
+        form: '=',
         errors: '=',
         cancel: '&',
         submit: '&',

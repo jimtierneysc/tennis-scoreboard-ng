@@ -6,8 +6,7 @@
     <!--Team Name-->
     <label for="name" class="sr-only control-label">Team Name</label>
     <div>
-      <input type="text" class="form-control" id="name" name="name"
-             fe-auto-focus
+      <input fe-auto-focus='refocus' type="text" class="form-control" id="name" name="name"
              placeholder="Team Name (optional)"
              ng-model="entity.name">
 
@@ -23,7 +22,7 @@
 
     <ui-select ng-model="entity.select_first_player" theme="bootstrap" id="first_player" name="first_player" ng-required="true">
       <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in playerslist.list | filter: $select.search">
+      <ui-select-choices repeat="item in playersList.list | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
         <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
       </ui-select-choices>
@@ -40,7 +39,7 @@
     <label for="second_player" class="control-label sr-only" >Second Player</label>
     <ui-select ng-model="entity.select_second_player" theme="bootstrap" id="second_player" name="second_player" ng-required="true">
       <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in playerslist.list | filter: $select.search">
+      <ui-select-choices repeat="item in playersList.list | filter: $select.search">
         <div ng-bind-html="item.name | highlight: $select.search"></div>
         <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
       </ui-select-choices>

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('routerConfig', function () {
+  fdescribe('routerConfig', function () {
 
     var $rootScope;
     var $state;
@@ -9,7 +9,7 @@
 
     (function () {
       var stateDescriptions = {
-        home: {url: '/', noController: true},
+        home: {url: '/', noResponse: true},
         players: {},
         teams: {},
         matches: {},
@@ -27,7 +27,8 @@
           url: value.url || '/' + key,
           templateUrl: value.templateUrl || 'app/' + key + '/' + key + '.html',
           controllerAs: 'vm',
-          controller: (value.noController) ? undefined :
+          response: !value.noResponse,
+          controller:
           value.controller || key.charAt(0).toUpperCase() + key.slice(1) + 'Controller'
         }
       }
@@ -37,7 +38,7 @@
       });
     })();
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-router'));
 
     beforeEach(function () {
       inject(function (_$rootScope_, _$state_) {
@@ -73,7 +74,7 @@
           });
 
           it('should match resolve', function () {
-            if (value.controller)
+            if (value.response)
               if (state.views)
                 expect(state.views.content.resolve.response).toEqual(jasmine.any(Function));
               else
@@ -119,7 +120,7 @@
             });
 
             it('should pass success response', function () {
-              if (value.controller)
+              if (value.response)
                 expect($state.$current.locals['content@'].response).toEqual(mockResource.lastResponse)
             });
           });
@@ -142,7 +143,7 @@
             });
 
             it('should pass error response', function () {
-              if (value.controller)
+              if (value.response)
                 expect($state.$current.locals['content@'].response).toEqual(mockResource.errors)
             });
           });

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('MatchesController', function () {
+  fdescribe('MatchesController', function () {
     var $controller;
     var $scope;
     var $q;
@@ -13,7 +13,8 @@
       }
     ];
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-matches'));
+
     beforeEach(function () {
 
       inject(function (_$controller_, _$q_, _$rootScope_) {
@@ -117,6 +118,10 @@
           expect(options.resourceName).toEqual(resourceName);
         });
 
+        it('should have .entityKind', function () {
+          expect(options.entityKind).toEqual('Match');
+
+        });
         describe('.getEntityDisplayName()', function () {
           it('should return title', function () {
             expect(options.getEntityDisplayName({title: 'atitle'})).toEqual('atitle');
@@ -276,12 +281,102 @@
 
           describe('select options empty if rejected', function () {
             beforeEach(function () {
-              selectOptionsMock.reject();
+              selectOptionsMock.reject = true;
               options.beforeShowNewEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
 
             expectEmptyOptionsLists();
+          });
+
+          describe('not enough players or teams', function () {
+            var rejected = false;
+            beforeEach(function () {
+              selectOptionsMock.setPlayerCount(1);
+              selectOptionsMock.setTeamCount(1);
+              options.beforeShowNewEntity().then(
+                function () {
+
+                },
+                function () {
+                  rejected = true;
+                }
+              );
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should reject', function () {
+              expect(rejected).toBeTruthy();
+            });
+          });
+
+          describe('enough players and teams', function () {
+            var resolved = false;
+            beforeEach(function () {
+              selectOptionsMock.setPlayerCount(3);
+              selectOptionsMock.setTeamCount(3);
+              options.beforeShowNewEntity().then(
+                function () {
+                  resolved = true;
+                },
+                function () {
+                }
+              );
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should resolve', function () {
+              expect(resolved).toBeTruthy();
+            });
+          });
+
+          describe('exactly two players', function () {
+            beforeEach(function () {
+              selectOptionsMock.setPlayerCount(2);
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should automatically select first player', function () {
+              expect(vm.newEntity.select_first_player).toEqual(
+                selectOptionsMock.playerList[0]);
+            });
+
+            it('should automatically select second player', function () {
+              expect(vm.newEntity.select_second_player).toEqual(
+                selectOptionsMock.playerList[1]);
+            });
+          });
+
+          describe('exactly two teams', function () {
+            beforeEach(function () {
+              selectOptionsMock.setTeamCount(2);
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should automatically select first team', function () {
+              expect(vm.newEntity.select_first_team).toEqual(
+                selectOptionsMock.teamList[0]);
+            });
+
+            it('should automatically select second team', function () {
+              expect(vm.newEntity.select_second_team).toEqual(
+                selectOptionsMock.teamList[1]);
+            });
+          });
+
+          describe('not enough players but enough teams', function () {
+            beforeEach(function () {
+              selectOptionsMock.setTeamCount(3);
+              selectOptionsMock.setPlayerCount(1);
+              options.beforeShowNewEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should automatically select doubles', function () {
+              expect(vm.newEntity.doubles).toBeTruthy();
+            });
           });
         });
 
@@ -309,6 +404,7 @@
               firstPlayer = selectOptionsMock.playerList[0];
               secondPlayer = selectOptionsMock.playerList[1];
               vm.editEntity = {
+                doubles: false,
                 first_player: firstPlayer,
                 second_player: secondPlayer
               };
@@ -332,6 +428,7 @@
               firstTeam = selectOptionsMock.teamList[0];
               secondTeam = selectOptionsMock.teamList[1];
               vm.editEntity = {
+                doubles: true,
                 first_team: firstTeam,
                 second_team: secondTeam
               };
@@ -347,6 +444,56 @@
               expect(vm.editEntity.select_second_team).toEqual(secondTeam);
             });
           });
+
+          describe('when only two singles players', function () {
+            beforeEach(function () {
+              selectOptionsMock.setPlayerCount(2);
+              vm.editEntity = {
+                doubles: true,
+                first_team: selectOptionsMock.teamList[0],
+                second_team: selectOptionsMock.teamList[1]
+              };
+              options.beforeShowEditEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should select first player', function () {
+              expect(vm.editEntity.select_first_player).toEqual(
+                selectOptionsMock.playerList[0]);
+            });
+
+            it('should select second player', function () {
+              expect(vm.editEntity.select_second_player).toEqual(
+                selectOptionsMock.playerList[1]);
+            });
+          });
+
+          describe('when only two doubles teams', function () {
+
+            beforeEach(function () {
+              selectOptionsMock.setTeamCount(2);
+              vm.editEntity = {
+                doubles: false,
+                first_player: selectOptionsMock.playerList[0],
+                second_player: selectOptionsMock.playerList[1]
+              };
+              options.beforeShowEditEntity();
+              $rootScope.$digest(); // resolve player and team lists
+            });
+
+            it('should select first team', function () {
+              expect(vm.editEntity.select_first_team).toEqual(
+                selectOptionsMock.teamList[0]
+              );
+            });
+
+            it('should select second team', function () {
+              expect(vm.editEntity.select_second_team).toEqual(
+                selectOptionsMock.teamList[1]
+              );
+            });
+          });
+
         });
 
         function expectOptionsLists() {
@@ -397,11 +544,12 @@
       _this.options = options;
       vm.newEntity = {};
       vm.editEntity = {};
-      vm.showToast = function() {
+      vm.showToast = function () {
 
       };
-      vm.beginWait = function() {
-        return function() {}
+      vm.beginWait = function () {
+        return function () {
+        }
       }
     }
   }
@@ -410,38 +558,42 @@
 
     var $q = _$q_;
     var _this = this;
-    var teamList = [
-      {name: 'team1', id: 1},
-      {name: 'team2', id: 2}
-    ];
 
-    var playerList = [
-      {name: 'player1', id: 1},
-      {name: 'player2', id: 2}
-    ];
-    var reject = false;
-
-    _this.teamList = teamList;
-
-    _this.playerList = playerList;
-
-    _this.reject = function () {
-      reject = true;
+    _this.setPlayerCount = function (count) {
+      _this.playerList = [];
+      for (var i = 0; i < count; i++) {
+        _this.playerList.push({name: 'player' + i, id: i + 1});
+      }
     };
+
+    _this.setTeamCount = function (count) {
+      _this.teamList = [];
+      for (var i = 0; i < count; i++) {
+        _this.teamList.push({name: 'team' + i, id: i + 1});
+      }
+    };
+
+    _this.reject = false;
+
+    _this.teamList = [];
+    _this.setTeamCount(3);
+
+    _this.playerList = [];
+    _this.setPlayerCount(3);
 
     // Return a promise
     _this.getTeamsSelectOptions = function () {
-      return getSelectOptions(teamList);
+      return getSelectOptions(_this.teamList);
     };
 
     // Return a promise
     _this.getPlayersSelectOptions = function () {
-      return getSelectOptions(playerList);
+      return getSelectOptions(_this.playerList);
     };
 
     function getSelectOptions(list) {
       var deferred = $q.defer();
-      if (reject)
+      if (_this.reject)
         deferred.reject()
       else
         deferred.resolve(list);

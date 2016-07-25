@@ -11,7 +11,7 @@
 
 
   angular
-    .module('frontend')
+    .module('frontend-components')
     .factory('modalConfirm', factory);
 
   var modalSettings = {

@@ -9,11 +9,11 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-header')
     .controller('HeaderController', Controller);
 
   /** @ngInject */
-  function Controller(authHelper, $scope, $log, autoFocus) {
+  function Controller(authHelper, $scope, autoFocus, editInProgress) {
     var vm = this;
 
     activate();
@@ -25,6 +25,12 @@
       vm.showLogin = showLogin;
 
       authHelper(vm, $scope);
+
+      editInProgress.registerOnCloseRejected($scope,
+        function() {
+          // e.g.; close responsive drop down if statechange or logout is cancelled
+          vm.isCollapsed = true;
+        });
     }
 
     function showLogin(open) {

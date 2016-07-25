@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-players')
     .factory('playersSelectOptions', playersFunc);
 
   /** @ngInject */

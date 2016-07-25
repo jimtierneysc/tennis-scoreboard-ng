@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  describe('feWaitIndicator directive', function () {
+  fdescribe('feWaitIndicator directive', function () {
 
     var compile, scope, directiveElem;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-components'));
 
     beforeEach(function () {
 

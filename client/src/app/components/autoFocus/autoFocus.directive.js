@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-components')
     .directive('feAutoFocus', directive)
     .factory('autoFocus', factory);
 

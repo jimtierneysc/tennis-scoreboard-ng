@@ -1,13 +1,14 @@
 (function () {
   'use strict';
 
-  describe('feMatchOpponents directive', function () {
+  fdescribe('feMatchOpponents directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-matches'));
+
     beforeEach(inject(function ($compile, $rootScope) {
 
       var match = {title: 'atitle', doubles: true};

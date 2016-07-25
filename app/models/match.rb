@@ -53,10 +53,12 @@ class Match < ActiveRecord::Base
   def play_match!(action, param = nil)
     method = lookup_exec_methods(action, param)
     if method
-      if param
-        method[:exec].call(param)
-      else
-        method[:exec].call
+      ActiveRecord::Base.transaction do
+        if param
+          method[:exec].call(param)
+        else
+          method[:exec].call
+        end
       end
     else
       raise Exceptions::UnknownOperation, "Unknown action: #{action}"
@@ -181,21 +183,15 @@ class Match < ActiveRecord::Base
 
   private
 
-  # Operations to change the score of a match.
+  # Operations to play a match.
   #
-  # Use these methods to start a match, start a set, start a game,
+  # These methods start a match, start a set, start a game,
   # win a game, etc. The methods operate on the match at the current point.
   # For example, win_game! applies to the current game in progress.  If a method
   # is called out of sequence, an exception is raised. Use the "?" methods
   # to determine if an operation is allowed.  For example, use win_game?
   # before calling win_game!.
   #
-  # To maintain the integrity of a match, do not use other models or methods to
-  # modify the score of a match. For example, do not use MatchSets to add a
-  # set. Instead use Match.#start_set!.
-  #
-  # These methods are responsible for changing and saving entities.
-  # An exception will be raised if any errors occur.
 
   # Starts the match.  Creates the first set.
   def start_play?
@@ -203,13 +199,10 @@ class Match < ActiveRecord::Base
   end
 
   def start_play!
-    ActiveRecord::Base.transaction do
-      unless start_play?
-        raise Exceptions::InvalidOperation, 'Can\'t start play'
-      end
-      update_start_play!
+    unless start_play?
+      raise Exceptions::InvalidOperation, 'Can\'t start play'
     end
-    self
+    update_start_play!
   end
 
   # Starts a new set.  NOP if called immediately after start_play
@@ -218,13 +211,11 @@ class Match < ActiveRecord::Base
   end
 
   def start_set!
-    ActiveRecord::Base.transaction do
-      unless start_set?
-        raise Exceptions::InvalidOperation,
-              "Can\'t start set #{match_sets.count}"
-      end
-      update_start_set!
+    unless start_set?
+      raise Exceptions::InvalidOperation,
+            "Can\'t start set #{match_sets.count}"
     end
+    update_start_set!
   end
 
   # Start a new game.  A game will be added to the current set.
@@ -234,12 +225,10 @@ class Match < ActiveRecord::Base
   end
 
   def start_game! player_server = nil
-    ActiveRecord::Base.transaction do
-      if player_server
-        update_first_or_second_player_server!(player_server)
-      end
-      update_start_game!
+    if player_server
+      update_first_or_second_player_server!(player_server)
     end
+    update_start_game!
   end
 
   def win_game?
@@ -247,15 +236,13 @@ class Match < ActiveRecord::Base
   end
 
   def win_game!(team)
-    ActiveRecord::Base.transaction do
-      unless win_game?
-        raise Exceptions::InvalidOperation,
-              "Can\'t win game #{last_set ? last_set.set_games.count : 0}"
-      end
-      game = complete_current_helper.win_game team
-      game.save!
-      game
+    unless win_game?
+      raise Exceptions::InvalidOperation,
+            "Can\'t win game #{last_set ? last_set.set_games.count : 0}"
     end
+    game = complete_current_helper.win_game team
+    game.save!
+    game
   end
 
   # Start a tiebreaker at the end of a set.
@@ -264,14 +251,12 @@ class Match < ActiveRecord::Base
   end
 
   def start_tiebreaker!
-    ActiveRecord::Base.transaction do
-      unless start_tiebreaker?
-        raise Exceptions::InvalidOperation, 'can\'t start tiebreaker'
-      end
-      game = start_next_helper.start_tiebreaker
-      game.save!
-      game
+    unless start_tiebreaker?
+      raise Exceptions::InvalidOperation, 'can\'t start tiebreaker'
     end
+    game = start_next_helper.start_tiebreaker
+    game.save!
+    game
   end
 
   # Win a tiebreaker.  The winning team must be provided.
@@ -280,14 +265,12 @@ class Match < ActiveRecord::Base
   end
 
   def win_tiebreaker!(team)
-    ActiveRecord::Base.transaction do
-      unless win_tiebreaker?
-        raise Exceptions::InvalidOperation, 'can\'t win tiebreaker'
-      end
-      game = complete_current_helper.win_tiebreaker team
-      game.save!
-      game
+    unless win_tiebreaker?
+      raise Exceptions::InvalidOperation, 'can\'t win tiebreaker'
     end
+    game = complete_current_helper.win_tiebreaker team
+    game.save!
+    game
   end
 
   # Complete a set.  A set can be completed once a player has won the set.
@@ -296,15 +279,13 @@ class Match < ActiveRecord::Base
   end
 
   def complete_set_play!
-    ActiveRecord::Base.transaction do
-      unless complete_set_play?
-        raise Exceptions::InvalidOperation,
-              "Can\'t complete set #{match_sets.count}"
-      end
-      last_set_var = last_set
-      last_set_var.team_winner = last_set_var.compute_team_winner
-      last_set_var.save!
+    unless complete_set_play?
+      raise Exceptions::InvalidOperation,
+            "Can\'t complete set #{match_sets.count}"
     end
+    last_set_var = last_set
+    last_set_var.team_winner = last_set_var.compute_team_winner
+    last_set_var.save!
   end
 
   # Start a match tiebreaker.  A match tiebreaker can be
@@ -314,15 +295,13 @@ class Match < ActiveRecord::Base
   end
 
   def start_match_tiebreaker!
-    ActiveRecord::Base.transaction do
-      unless start_match_tiebreaker?
-        raise Exceptions::InvalidOperation, 'Can\'t start match tiebreaker'
-      end
-      set = create_new_set
-      set.save!
-      game = start_next_helper.start_tiebreaker
-      game.save!
+    unless start_match_tiebreaker?
+      raise Exceptions::InvalidOperation, 'Can\'t start match tiebreaker'
     end
+    set = create_new_set
+    set.save!
+    game = start_next_helper.start_tiebreaker
+    game.save!
   end
 
   # Win the match tiebreaker.
@@ -331,14 +310,12 @@ class Match < ActiveRecord::Base
   end
 
   def win_match_tiebreaker!(team)
-    ActiveRecord::Base.transaction do
-      unless win_match_tiebreaker?
-        raise Exceptions::InvalidOperation, 'Can\'t win match tiebreaker'
-      end
-      game = complete_current_helper.win_match_tiebreaker team
-      game.save!
-      game
+    unless win_match_tiebreaker?
+      raise Exceptions::InvalidOperation, 'Can\'t win match tiebreaker'
     end
+    game = complete_current_helper.win_match_tiebreaker team
+    game.save!
+    game
   end
 
   # Complete match tiebreaker.
@@ -347,14 +324,12 @@ class Match < ActiveRecord::Base
   end
 
   def complete_match_tiebreaker!
-    ActiveRecord::Base.transaction do
-      unless complete_match_tiebreaker?
-        raise Exceptions::InvalidOperation, 'Can\'t complete match tiebreaker'
-      end
-      last_set_var = last_set
-      last_set_var.team_winner = last_set_var.compute_team_winner
-      last_set_var.save!
+    unless complete_match_tiebreaker?
+      raise Exceptions::InvalidOperation, 'Can\'t complete match tiebreaker'
     end
+    last_set_var = last_set
+    last_set_var.team_winner = last_set_var.compute_team_winner
+    last_set_var.save!
   end
 
   # Complete the match.
@@ -372,14 +347,10 @@ class Match < ActiveRecord::Base
   end
 
   def complete_play!
-    unless completed?
-      ActiveRecord::Base.transaction do
-        unless complete_play?
-          raise Exceptions::InvalidOperation, 'Can\'t complete play'
-        end
-        update_complete_play!
-      end
+    unless complete_play?
+      raise Exceptions::InvalidOperation, 'Can\'t complete play'
     end
+    update_complete_play!
   end
 
   # Discard all of the match scoring.
@@ -388,23 +359,19 @@ class Match < ActiveRecord::Base
   end
 
   def discard_play!
-    ActiveRecord::Base.transaction do
-      unless discard_play?
-        raise Exceptions::InvalidOperation, 'Can\'t discard play'
-      end
-      update_discard_play!
+    unless discard_play?
+      raise Exceptions::InvalidOperation, 'Can\'t discard play'
     end
+    update_discard_play!
   end
 
   # Return match to state after match started.
   def restart_play!
-    ActiveRecord::Base.transaction do
-      unless restart_play?
-        raise Exceptions::InvalidOperation, 'Can\'t restart play'
-      end
-      update_discard_play!
-      update_start_play!
+    unless restart_play?
+      raise Exceptions::InvalidOperation, 'Can\'t restart play'
     end
+    update_discard_play!
+    update_start_play!
   end
 
   def restart_play?
@@ -413,14 +380,12 @@ class Match < ActiveRecord::Base
 
   # Back out one scoring operation.
   def remove_last_change!
-    ActiveRecord::Base.transaction do
-      unless remove_last_change?
-        raise Exceptions::InvalidOperation, 'Can\'t remove last change'
-      end
-      helper = RemoveLastScoringChange.new(self)
-      helper.save_list.each(&:save!)
-      helper.destroy_list.each(&:destroy)
+    unless remove_last_change?
+      raise Exceptions::InvalidOperation, 'Can\'t remove last change'
     end
+    helper = RemoveLastScoringChange.new(self)
+    helper.save_list.each(&:save!)
+    helper.destroy_list.each(&:destroy)
   end
 
   def remove_last_change?
@@ -481,7 +446,7 @@ class Match < ActiveRecord::Base
 
   def singles_player_of_team(team)
     raise Exceptions::InvalidOperation, 'singles expected' if doubles
-    team.first_player if team
+    team.first_player if team && !team.doubles
   end
 
   def singles_player_team(player)

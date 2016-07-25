@@ -1,0 +1,58 @@
+<div ng-if="scores.doubles">
+
+  <!--First doubles player-->
+  <div ng-if="scores.server" class="col-xs-2">
+    <div ng-if="!leftmost">
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.first_player.id}"></span>
+    </div>
+
+  </div>
+  <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">
+    {{opponent.first_player.name}}
+  </div>
+  <div ng-if="scores.server" class="col-xs-2">
+    <div ng-if="leftmost">
+      <!--Need something in this cell to prevent second player from being mis-aligned -->
+      <span ng-if="scores.server == opponent.first_player.id" class="glyphicon glyphicon-star"></span>
+      <span ng-if="scores.server != opponent.first_player.id">&nbsp;</span>
+    </div>
+    <div ng-if="!leftmost">
+      <!--Need something in this cell to prevent second player from being mis-aligned -->
+      &nbsp;
+    </div>
+  </div>
+
+  <!--Second doubles player-->
+  <div ng-if="scores.server" class="col-xs-2">
+    <div ng-if="!leftmost">
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.second_player.id}"></span>
+    </div>
+
+  </div>
+  <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">
+    {{opponent.second_player.name}}
+  </div>
+  <div ng-if="scores.server" class="col-xs-2">
+    <div ng-if="leftmost">
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.second_player.id}"></span>
+    </div>
+  </div>
+
+</div>
+
+<div ng-if="!scores.doubles">
+  <!--Singles player-->
+  <div ng-if="scores.server" class="col-xs-2">
+    <div ng-if="!leftmost">
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_player.id}"></span>
+    </div>
+
+  </div>
+  <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{opponent.name}}</div>
+  <div ng-if="scores.server" class="col-xs-2">
+    <div ng-if="leftmost">
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.id}"></span>
+    </div>
+  </div>
+
+</div>

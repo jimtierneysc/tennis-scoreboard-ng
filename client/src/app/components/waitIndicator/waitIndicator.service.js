@@ -8,7 +8,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-components')
     .service('waitIndicator', Service);
 
   /** @ngInject */

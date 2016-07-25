@@ -9,11 +9,11 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-scores')
     .controller('ScoreboardController', Controller);
 
   /** @ngInject */
-  function Controller($log, $q, $scope, $stateParams, categorizeProperties, scoreboardResource,
+  function Controller($log, $q, $scope, $stateParams, errorsMapper, scoreboardResource,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, waitIndicator, toastrHelper,
                       scoreboardBuilder, response) {
@@ -40,7 +40,7 @@
     // Internal methods
     //
 
-    
+
     function updateScore(action, params, confirm) {
 
       var confirmActions = {
@@ -118,11 +118,11 @@
     function scoreUpdated(response) {
       angular.copy(response, vm.scoreboard);
       if (vm.scoreboard.errors && !angular.equals({}, vm.scoreboard.errors)) {
-        var errors = categorizeProperties(vm.scoreboard.errors, null);
+        var errors = errorsMapper(vm.scoreboard.errors, null);
         var message = 'Unable to update score';
         if (angular.isDefined(errors.other[0]))
           message = errors.other[0];
-        vm.showToastrError(message)
+        vm.showToast(message)
       }
       prepareScoreBoard(vm.scoreboard);
     }

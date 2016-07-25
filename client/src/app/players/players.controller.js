@@ -10,12 +10,12 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-players')
     .controller('PlayersController', Controller);
 
   /** @ngInject */
   function Controller($log, $scope, crudHelper, authHelper, playersResource, response) {
-    
+
     var vm = this;
 
     activate();
@@ -33,13 +33,16 @@
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
-          errorCategories: {
-            'name': null
+          entityKind: 'Player',
+          errorsMap: {
+            names: [
+              'name'
+            ]
           }
         }
       );
     }
-    
+
     function prepareToCreateEntity(entity) {
       return {name: entity.name};
     }
@@ -50,7 +53,7 @@
         name: entity.name
       };
     }
-    
+
     function getEntityDisplayName(entity) {
       return entity.name;
     }

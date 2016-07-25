@@ -1,14 +1,15 @@
 (function () {
   'use strict';
 
-  describe('feMatchesForm directive', function () {
+  fdescribe('feMatchesForm directive', function () {
     var compiledDirective;
     var scope;
     var okText;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-matches'));
+
     beforeEach(inject(function ($compile, $rootScope) {
 
       var errors = {
@@ -35,8 +36,8 @@
       'cancel="acancel()" ' +
       'submit="asubmit()" ' +
       'entity="aentity" ' +
-      'playerslist="aplayers" ' +
-      'teamslist="ateams" ' +
+      'players-list="aplayers" ' +
+      'teams-list="ateams" ' +
       'ok="' + okText + '"' +
       '></fe-matches-form>');
 
@@ -55,7 +56,7 @@
 
       describe('members', function () {
         it('should have .form', function () {
-          expect(isolatedScope.form).toEqual("aform");
+          expect(isolatedScope.form).toEqual(scope.aform);
         });
 
         it('should have .errors', function () {
@@ -66,12 +67,12 @@
           expect(isolatedScope.entity).toBe(scope.aentity);
         });
 
-        it('should have .playerslist', function () {
-          expect(isolatedScope.playerslist).toBe(scope.aplayers);
+        it('should have .playersList', function () {
+          expect(isolatedScope.playersList).toBe(scope.aplayers);
         });
 
-        it('should have .teamslist', function () {
-          expect(isolatedScope.teamslist).toBe(scope.ateams);
+        it('should have .teamsList', function () {
+          expect(isolatedScope.teamsList).toBe(scope.ateams);
         });
 
         it('should call .cancel()', function () {

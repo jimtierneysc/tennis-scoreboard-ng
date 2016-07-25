@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  describe('errorsHelper service', function () {
+  fdescribe('errorsHelper service', function () {
     var map = { names: ['aprefix']};
     var data = {aprefix: 'one', a_b: 'two', b: 'three'};
     var expected = {aprefix: ['one'], other: ['A b two', 'B three']};
     var STATUS = 'status message';
     var service;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-helpers'));
 
     beforeEach(function () {
       inject(function (_errorsHelper_) {

@@ -1,13 +1,18 @@
 (function () {
   'use strict';
 
-  describe('feScoreButton directive', function () {
+  fdescribe('feScoreButton directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-scores'));
+    beforeEach(module(function ($provide) {
+      $provide.factory('validateCredentials', function () {
+        return function() { return false };
+      });
+    }));
     beforeEach(inject(function ($compile, $rootScope) {
 
       var scores = {};
@@ -35,11 +40,11 @@
       it('should have .scores', function () {
         expect(isolatedScope.scores).toBe(scope.ascores);
       });
-      
+
       it('should have .param', function () {
         expect(isolatedScope.param).toEqual(scope.aparam);
       });
-      
+
       it('should have .title', function () {
         expect(isolatedScope.title).toEqual(scope.atitle);
       });

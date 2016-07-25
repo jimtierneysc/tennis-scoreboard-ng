@@ -9,12 +9,12 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-auth')
     .factory('authHelper', factory);
 
   /** @ngInject */
-  function factory($log, userCredentials) {
-    
+  function factory($log, userCredentials, editInProgress) {
+
     return activate;
 
     function activate(vm, scope) {
@@ -27,7 +27,10 @@
     }
 
     function logOut() {
-      userCredentials.clearCredentials();
+      // Cancel pending edits, if any
+      editInProgress.closeEditors().then(
+        userCredentials.clearCredentials
+      )
     }
 
     function AuthWatcher(_vm_) {

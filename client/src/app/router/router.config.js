@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-router')
     .config(routerConfig);
 
   /** @ngInject */
@@ -20,7 +20,12 @@
         views: {
           'header': header,
           'content': {
-            templateUrl: 'app/home/home.html'
+            templateUrl: 'app/home/home.html',
+            controller: 'HomeController',
+            controllerAs: 'vm',
+            resolve: {
+              response: resolveHome
+            }
           }
         }
       })
@@ -33,7 +38,7 @@
             controller: 'PlayersController',
             controllerAs: 'vm',
             resolve: {
-              response: resolvePlayers()
+              response: resolvePlayers
             }
           }
         }
@@ -47,7 +52,7 @@
             controller: 'TeamsController',
             controllerAs: 'vm',
             resolve: {
-              response: resolveTeams()
+              response: resolveTeams
             }
           }
         }
@@ -61,7 +66,7 @@
             controller: 'MatchesController',
             controllerAs: 'vm',
             resolve: {
-              response: resolveMatches()
+              response: resolveMatches
             }
           }
         }
@@ -76,7 +81,7 @@
             controllerAs: 'vm',
             resolve: {
               // parent view shows list of matches
-              response: resolveMatches()
+              response: resolveMatches
             }
           }
         }
@@ -87,35 +92,96 @@
         controller: 'ScoreboardController',
         controllerAs: 'vm',
         resolve: {
-          response: resolveScoreBoard()
+          response: resolveScoreBoard
         }
       });
 
     $urlRouterProvider.otherwise('/');
 
-    function resolvePlayers() {
-      return resolveResourceQuery(playersResource);
+
+    /** @ngInject */
+    function resolveHome($injector) {
+      return makeDiscardEditsPromise($injector);
     }
 
-    function resolveMatches() {
-      return resolveResourceQuery(matchesResource);
+    /** @ngInject */
+    function resolvePlayers($injector) {
+      return makeQueryPromise($injector, playersResource);
     }
 
-    function resolveTeams() {
-      return resolveResourceQuery(teamsResource);
+    /** @ngInject */
+    function resolveMatches($injector) {
+      return makeQueryPromise($injector, matchesResource);
     }
 
-    function resolveScoreBoard() {
-      return resolveResourceGet(scoreboardResource);
+    /** @ngInject */
+    function resolveTeams($injector) {
+      return makeQueryPromise($injector, teamsResource);
     }
 
-    function resolveResourceQuery(resourceName) {
+    /** @ngInject */
+    function resolveScoreBoard($injector, $stateParams) {
+      return makeGetPromise($injector, scoreboardResource, $stateParams.id);
+    }
+
+
+    // Return promise
+    function makeDiscardEditsPromise($injector, makeNestedPromise) {
+      return $injector.invoke(makePromise);
+
       /** @ngInject */
-      function resolve($q, $log, waitIndicator, crudResource) {
+      function makePromise($q, editInProgress) {
+        var confirm = editInProgress.closeEditors();
+        if (makeNestedPromise) {
+          return confirm.then(
+            function () {
+              return makeNestedPromise();
+            }
+          );
+        }
+        else
+          return confirm;
+      }
+    }
+
+    // Return promise
+    function makeQueryPromise($injector, resourceName) {
+      return makeDiscardEditsPromise($injector, function () {
+        return $injector.invoke(makeResourcePromise, null, {resourceName: resourceName})
+      });
+
+      /** @ngInject */
+      function makeResourcePromise($q, $log, waitIndicator, crudResource, resourceName) {
         var resource = crudResource.getResource(resourceName);
         var deferred = $q.defer();
         var endWait = waitIndicator.beginWait();
         resource.query(
+          function (response) {
+            endWait();
+            deferred.resolve(response);
+          },
+          function (response) {
+            $log.error('data error ' + response.status + " " + response.statusText);
+            endWait();
+            // Resolved even if error making http request
+            deferred.resolve(response);
+          }
+        );
+        return deferred.promise;
+      }
+    }
+
+    function makeGetPromise($injector, resourceName, id) {
+      return makeDiscardEditsPromise($injector, function () {
+        return $injector.invoke(makeResourcePromise, null);
+      });
+
+      /** @ngInject */
+      function makeResourcePromise($q, $log, waitIndicator, crudResource) {
+        var resource = crudResource.getResource(resourceName);
+        var deferred = $q.defer();
+        var endWait = waitIndicator.beginWait();
+        resource.get({id: id},
           function (response) {
             endWait();
             deferred.resolve(response);
@@ -128,31 +194,7 @@
         );
         return deferred.promise;
       }
-      return resolve;
     }
-    
-    function resolveResourceGet(resourceName) {
-      /** @ngInject */
-      function resolve($q, $log, waitIndicator, crudResource, $stateParams) {
-        var resource = crudResource.getResource(resourceName);
-        var deferred = $q.defer();
-        var endWait = waitIndicator.beginWait();
-        resource.get({id: $stateParams.id},
-          function (response) {
-            endWait();
-            deferred.resolve(response);
-          },
-          function (response) {
-            $log.error('data error ' + response.status + " " + response.statusText);
-            endWait();
-            deferred.resolve(response);
-          }
-        )
-        return deferred.promise;
-      }
-      return resolve;
-    }
-
   }
 
 })();

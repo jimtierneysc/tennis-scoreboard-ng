@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontend-scores')
     .directive('feScoreButton', directiveFunc);
 
   /** @ngInject */

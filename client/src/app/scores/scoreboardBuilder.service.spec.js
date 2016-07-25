@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  describe('service scoreboardBuilder', function () {
+  fdescribe('service scoreboardBuilder', function () {
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-scores'));
 
     var service = null;
 

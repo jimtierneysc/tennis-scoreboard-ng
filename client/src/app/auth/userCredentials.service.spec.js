@@ -1,16 +1,29 @@
 (function () {
   'use strict';
 
-  describe('userCredentials service', function () {
-    var USERNAME = 'username';
-    var TOKEN = 'token';
+  fdescribe('userCredentials service', function () {
+    var USERNAME = 'userCredentials username';
+    var USERNAME2 = 'userCredentials username2';
+    var TOKEN = 'userCredentials token';
 
     var service;
+    var $httpBackend;
+    var path;
 
-    beforeEach(module('frontend'));
-    beforeEach(function() {
-      inject(function (_userCredentials_) {
+    beforeEach(module('frontend-auth'));
+    afterEach(function () {
+      localStorage.clear();
+    });
+    // beforeEach(module(function ($provide) {
+    //   $provide.factory('validateCredentials', function () {
+    //     return function() { return true };
+    //   });
+    // }));
+    beforeEach(function () {
+      inject(function (_userCredentials_, _$rootScope_, _$httpBackend_, _userResource_) {
+        $httpBackend = _$httpBackend_;
         service = _userCredentials_;
+        path = _userResource_.path;
         service.clearCredentials();
       })
     });
@@ -21,13 +34,13 @@
 
     describe('storage', function () {
       var $localStorage;
-      beforeEach(function() {
+      beforeEach(function () {
         inject(function (_$localStorage_) {
           $localStorage = _$localStorage_;
         })
       });
 
-      it('should have .localDataName', function() {
+      it('should have .localDataName', function () {
         expect(service.localDataName).toEqual(jasmine.any(String))
       });
 
@@ -57,36 +70,57 @@
 
       });
 
-      describe('loads data', function () {
+      describe('loads', function () {
         var data;
         beforeEach(function () {
+          // Save to local storage
           service.setCredentials(USERNAME, TOKEN);
           data = $localStorage[service.localDataName];
           service.clearCredentials();
           $localStorage[service.localDataName] = data;
-          service.loadCredentials();
         });
 
-        it('should not be null', function () {
-          expect(data).not.toBeNull();
+        describe('valid credentials', function () {
+          beforeEach(function () {
+            $httpBackend.expect('GET', path).respond(200,
+              {
+                username: USERNAME2
+              }
+            );
+            service.loadCredentials();
+            $httpBackend.flush();
+          });
+
+          it('should have user name', function () {
+            expect(service.userName).toEqual(USERNAME2);
+          });
+
+          it('should be logged in', function () {
+            expect(service.loggedIn).toBeTruthy();
+          })
         });
 
-        it('should have data object', function () {
-          expect(data).toEqual(jasmine.any(Object));
+        describe('invalid credentials', function () {
+
+          beforeEach(function () {
+
+            $httpBackend.expect('GET', path).respond(401, {});
+            service.loadCredentials();
+            $httpBackend.flush();
+          });
+
+          it('should not be logged in', function () {
+            expect(service.loggedIn).toBeFalsy();
+          })
         });
-
-        it('should be logged in', function() {
-          expect(service.loggedIn).toEqual(true);
-        })
-
       });
     });
 
     describe('.setCredentials()', function () {
-      var USERNAME = 'username';
-      var TOKEN = 'token';
+      var USERNAME = USERNAME;
+      var TOKEN = TOKEN;
       var $http;
-      beforeEach(function() {
+      beforeEach(function () {
         inject(function (_$http_) {
           $http = _$http_;
           service.setCredentials(USERNAME, TOKEN);
@@ -108,7 +142,7 @@
 
     describe('.clearCredentials()', function () {
       var $http;
-      beforeEach(function() {
+      beforeEach(function () {
         inject(function (_$http_) {
           $http = _$http_;
           service.setCredentials(USERNAME, TOKEN);
@@ -134,7 +168,7 @@
       var scope;
       var changed;
 
-      beforeEach(function() {
+      beforeEach(function () {
 
         inject(function ($rootScope) {
           scope = $rootScope.$new();
@@ -144,7 +178,7 @@
       });
 
       it('should call event when set credentials', function () {
-        service.setCredentials('username', 'token');
+        service.setCredentials(USERNAME, TOKEN);
         expect(changed).toHaveBeenCalled();
       });
 

@@ -1,19 +1,21 @@
 (function () {
   'use strict';
 
-  describe('crudHelper service', function () {
+  fdescribe('crudHelper service', function () {
 
     var mocks;
     var service;
     var mockResource;
+    var $rootScope;
 
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-helpers'));
 
     beforeEach(function () {
 
-      inject(function (_crudHelper_) {
+      inject(function (_crudHelper_, _$rootScope_) {
         service = _crudHelper_;
+        $rootScope = _$rootScope_;
       });
       mocks = mockFactories();
     });
@@ -122,6 +124,7 @@
         describe('edit show', function () {
           beforeEach(function () {
             vm.showEditEntity(entities[0]);
+            $rootScope.$digest(); // process promise
           });
 
           it('should be .showingEditEntity()', function () {
@@ -136,6 +139,7 @@
         describe('edit hide', function () {
           beforeEach(function () {
             vm.showEditEntity(entities[0]);
+            $rootScope.$digest(); // process promise
             spyOn(editForm, '$setPristine').and.callThrough();
             vm.hideEditEntity();
           });
@@ -152,6 +156,7 @@
         describe('new show', function () {
           beforeEach(function () {
             vm.showNewEntity();
+            $rootScope.$digest(); // process promise
           });
 
           it('should be .showingNewEntity()', function () {
@@ -166,6 +171,7 @@
         describe('new hide', function () {
           beforeEach(function () {
             vm.showNewEntity();
+            $rootScope.$digest(); // process promise
             spyOn(newForm, '$setPristine').and.callThrough();
             vm.hideNewEntity();
           });
@@ -564,6 +570,7 @@
           helper.checkObject('errorsMap');
           helper.checkObject('scope');
           helper.checkString('resourceName');
+          helper.checkString('entityKind');
 
           return helper.getResult();
         }

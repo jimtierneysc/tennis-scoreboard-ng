@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  describe('loadingHelper service', function () {
+  fdescribe('loadingHelper service', function () {
     var service;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-helpers'));
 
     beforeEach(function () {
       inject(function (_loadingHelper_) {

@@ -10,7 +10,7 @@
 
   <div ng-show="!vm.loading && !vm.loadingFailed">
     <div ng-if="vm.loggedIn" class="col-xs-12">
-      <button class="btn btn-primary" ng-click="vm.showNewEntity()">
+      <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
         <span class="glyphicon glyphicon-plus"></span> Player
       </button>
     </div>
@@ -41,20 +41,24 @@
               </div>
             </div>
 
-            <div ng-if="vm.loggedIn" class="col-xs-2">
-              <!--Delete player button-->
+            <div class="col-xs-2">
+              <!--Delete button-->
               <div class="pull-right">
-                <button class="btn btn-link" ng-click="vm.trashEntity(entity)">
-                  <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <br>
-                <button class="btn btn-link" ng-click="vm.showEditEntity(entity)">
-                  <span class="glyphicon glyphicon-edit"></span>
-                </button>
+                <fe-delete-entity-button
+                  entity="entity"
+                  can-modify="vm.loggedIn"
+                  delete-entity="vm.trashEntity(entity)"
+                >
+                </fe-delete-entity-button>
+                <fe-edit-entity-button
+                  entity="entity"
+                  can-modify="vm.loggedIn"
+                  edit-entity="vm.showEditEntity(entity)"
+                >
+                </fe-edit-entity-button>
               </div>
             </div>
           </div>
-
 
           <!--Edit player-->
 

@@ -4,78 +4,26 @@
 
       <th class="score-col-1"></th>
       <th class="score-col-2">
+
         <div ng-if="scores.doubles">
-
-          <!--First doubles player-->
-          <div ng-if="scores.server" class="col-xs-2"></div>
-          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">
-            {{scores.first_team.first_player.name}}
-          </div>
-          <div ng-if="scores.server" class="col-xs-2">
-            <!--Need something in this cell to prevent second player from being mis-aligned -->
-            <span ng-if="scores.server == scores.first_team.first_player.id" class="glyphicon glyphicon-star"></span>
-            <span ng-if="scores.server != scores.first_team.first_player.id">&nbsp;</span>
-          </div>
-
-          <!--Second doubles player-->
-          <div ng-if="scores.server" class="col-xs-2"></div>
-          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">
-            {{scores.first_team.second_player.name}}
-          </div>
-          <div ng-if="scores.server" class="col-xs-2">
-            <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.first_team.second_player.id}"></span>
-          </div>
-
+          <fe-score-table-opponent scores="scores" opponent="scores.first_team" leftmost="1"></fe-score-table-opponent>
         </div>
-
         <div ng-if="!scores.doubles">
-          <!--Singles player-->
-          <div ng-if="scores.server" class="col-xs-2"></div>
-          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{scores.first_player.name}}</div>
-          <div ng-if="scores.server" class="col-xs-2">
-            <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.first_player.id}"></span>
-          </div>
-
+          <fe-score-table-opponent scores="scores" opponent="scores.first_player" leftmost="1"></fe-score-table-opponent>
         </div>
 
       </th>
       <th class="score-col-2">
+
         <div ng-if="scores.doubles">
-
-          <!--First doubles player-->
-          <div ng-if="scores.server" class="col-xs-2">
-            <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_team.first_player.id}"></span>
-          </div>
-          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">
-            {{scores.second_team.first_player.name}}
-          </div>
-          <div ng-if="scores.server" class="col-xs-2">
-            <!--Need something in this cell to prevent second player from being mis-aligned -->
-            &nbsp;
-          </div>
-
-          <!--Second doubles player-->
-          <div ng-if="scores.server" class="col-xs-2">
-            <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_team.second_player.id}"></span>
-          </div>
-          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">
-            {{scores.second_team.second_player.name}}
-          </div>
-          <div ng-if="scores.server" class="col-xs-2"></div>
-
+          <fe-score-table-opponent scores="scores" opponent="scores.second_team"></fe-score-table-opponent>
         </div>
-
         <div ng-if="!scores.doubles">
-          <!--Singles player-->
-          <div ng-if="scores.server" class="col-xs-2">
-            <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_player.id}"></span>
-          </div>
-          <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{scores.second_player.name}}</div>
-          <div ng-if="scores.server" class="col-xs-2"></div>
+          <fe-score-table-opponent scores="scores" opponent="scores.second_player"></fe-score-table-opponent>
         </div>
+
       </th>
     </tr>
-
 
     <tr>
       <th class="score-col-1"><span class="hidden-xs">Match </span>Score</th>
@@ -118,7 +66,7 @@
     </tr>
 
 
-    <tr ng-if="0" ng-repeat-start="set in scores.sets"></tr>
+    <tr ng-repeat-start="set in scores.sets"></tr>
 
     <tr>
       <th class="score-col-1">
@@ -277,9 +225,7 @@
       </th>
     </tr>
 
-
-    <tr ng-if="0" ng-repeat-end></tr>
-
+    <tr ng-repeat-end></tr>
 
   </table>
 

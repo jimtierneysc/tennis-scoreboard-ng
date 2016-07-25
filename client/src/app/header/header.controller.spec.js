@@ -1,16 +1,18 @@
 (function () {
   'use strict';
 
-  describe('HeaderController', function () {
+  fdescribe('HeaderController', function () {
     var vm;
     var $scope;
     var $timeout;
+    var $rootScope;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-header'));
+
     beforeEach(function () {
 
       inject(function (_$controller_, _$rootScope_, _$timeout_) {
-        var $rootScope = _$rootScope_;
+        $rootScope = _$rootScope_;
         $scope = $rootScope.$new();
         $timeout = _$timeout_;
         vm = _$controller_('HeaderController', {
@@ -68,6 +70,12 @@
       vm.showLogin(true);
       $timeout.flush();
       expect(setFocus).toBeTruthy();
+    });
+
+    it('should collapse when reject close edit', function () {
+      vm.isCollapsed = false;
+      $rootScope.$emit('editing-in-progress:rejected', {});
+      expect(vm.isCollapsed).toBeTruthy();
     });
   })
 })();

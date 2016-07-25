@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  describe('feAutoFocus directive', function () {
+  fdescribe('feAutoFocus directive', function () {
 
     var compile, scope, $rootScope, $timeout;
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-components'));
 
     beforeEach(function () {
 

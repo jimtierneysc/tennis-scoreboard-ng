@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feTeamsForm directive', function () {
+  fdescribe('feTeamsForm directive', function () {
     var errors;
     var entity;
     var compiledDirective;
@@ -11,7 +11,8 @@
     var element;
     var players;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-teams'));
+
     beforeEach(inject(function ($compile, $rootScope) {
 
       errors = {
@@ -36,7 +37,7 @@
       'cancel="acancel()" ' +
       'submit="asubmit()" ' +
       'entity="aentity" ' +
-      'playerslist="aplayers" ' +
+      'players-list="aplayers" ' +
       'ok="' + okText + '"' +
       '></fe-teams-form>');
 
@@ -46,11 +47,11 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-    
+
     describe('isolated scope', function () {
 
       it('should have .form', function () {
-        expect(isolatedScope.form).toEqual("aform");
+        expect(isolatedScope.form).toEqual(scope.aform);
       });
 
       it('should have .errors', function () {
@@ -75,8 +76,8 @@
         expect(isolatedScope.ok).toEqual(okText);
       });
 
-      it('should have .playerslist', function () {
-        expect(isolatedScope.playerslist).toBe(players);
+      it('should have .playersList', function () {
+        expect(isolatedScope.playersList).toBe(players);
       });
 
 

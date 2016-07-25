@@ -1,14 +1,30 @@
 (function () {
   'use strict';
 
-  describe('feLoginForm directive', function () {
+  fdescribe('feLoginForm directive', function () {
 
     var compile, scope, directiveElem;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-auth'));
+    // beforeEach(module(function ($provide) {
+    //   $provide.factory('validateCredentials', function () {
+    //     return function(data) {
+    //       // return $q.$defer().resolve(data);
+    //       inject(function(_$q_) {
+    //          $q = _$q_;
+    //       });
+    //       var deferred = $q.$defer();
+    //       deferred.resolve(data);
+    //       return deferred;
+    //     };
+    //   });
+    // }));
+    afterEach(function() {
+      localStorage.clear();
+    });
 
     beforeEach(function () {
-
+      localStorage.clear();
       inject(function ($compile, $rootScope) {
         compile = $compile;
         scope = $rootScope.$new();
@@ -58,8 +74,8 @@
 
       describe('input elements', function () {
         var inputs;
-        var username = 'someuser';
-        var password = 'somepassword';
+        var username = 'loginForm username';
+        var password = 'loginForm password';
         beforeEach(function () {
           vm.entity.username = username;
           vm.entity.password = password;
@@ -97,8 +113,8 @@
 
         beforeEach(function () {
           // username and password needed to make valid
-          vm.entity.username = 'someuser';
-          vm.entity.password = 'somepassword';
+          vm.entity.username = 'loginForm someuser';
+          vm.entity.password = 'loginForm somepassword';
           scope.$digest();
         });
 

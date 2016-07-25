@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  describe('errorsMapper service', function () {
+  fdescribe('errorsMapper service', function () {
     var service;
 
-    beforeEach(module('frontend'));
+    beforeEach(module('frontend-components'));
     beforeEach(function () {
       inject(function (_errorsMapper_) {
         service = _errorsMapper_;
