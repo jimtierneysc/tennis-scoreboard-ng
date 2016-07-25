@@ -2,12 +2,12 @@ FactoryGirl.define do
 
   factory :doubles_match, class: Match do
     transient do
-      first_player_name 'first'
-      second_player_name 'second'
-      third_player_name 'third'
-      fourth_player_name 'fourth'
-      first_team_name 'first'
-      second_team_name 'second'
+      first_player_name 'factory first player'
+      second_player_name 'factory second player'
+      third_player_name 'factory third player'
+      fourth_player_name 'factory fourth player'
+      first_team_name 'factory first team'
+      second_team_name 'factory second team'
     end
 
     title 'doubles match'

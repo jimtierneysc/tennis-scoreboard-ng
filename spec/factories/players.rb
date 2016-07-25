@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :player do
-    name 'player1'
+    name 'factory player'
   end
 end

@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :match_set, class: MatchSet do
     transient do
-      match_title 'match'
+      match_title 'factory match'
     end
 
     ordinal 1

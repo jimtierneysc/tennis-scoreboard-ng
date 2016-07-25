@@ -2,8 +2,8 @@ FactoryGirl.define do
 
   factory :doubles_team, class: Team do
     transient do
-      first_player_name 'first'
-      second_player_name 'second'
+      first_player_name 'factory first player'
+      second_player_name 'factory second player'
     end
 
     name 'doubles team'
