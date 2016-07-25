@@ -25,7 +25,7 @@ RSpec.describe Team, { type: :model } do
     is_expected.not_to be_valid
   end
 
-  it 'should validates existence of #second_player' do
+  it 'should validate existence of #second_player' do
     subject.second_player_id = 0
     is_expected.not_to be_valid
   end
@@ -48,10 +48,22 @@ RSpec.describe Team, { type: :model } do
     end
   end
 
-  it 'should generates a default name' do
-    subject.name = nil
-    subject.save!
-    expect(subject.name).to start_with('Team')
+  context 'when in a match' do
+    let(:player_name) {'all new player'}
+    let(:new_player) { FactoryGirl.create(:player, name: player_name) }
+    before do
+      FactoryGirl.build(:doubles_match, first_team_name: subject.name)
+    end
+
+    it 'should validate cannot change #second_player' do
+      subject.second_player = new_player
+      is_expected.to_not be_valid
+    end
+
+    it 'should validate cannot change #first_player' do
+      subject.first_player = new_player
+      is_expected.to_not be_valid
+    end
   end
 
   describe '#destroy!' do

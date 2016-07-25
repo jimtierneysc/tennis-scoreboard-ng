@@ -3,9 +3,12 @@ require 'rails_helper'
 RSpec.describe Match, { type: :model } do
 
   let(:player_name) {'player'}
+  let(:player2_name) {'player2'}
   let(:team_name) {'team'}
+  let(:team2_name) {'team2'}
   let(:new_player) { FactoryGirl.create(:player, name: player_name) }
   let(:new_team) { FactoryGirl.create(:doubles_team, name: team_name, first_player_name: player_name) }
+  let(:new_team_with_same_player) { FactoryGirl.create(:doubles_team, name: team2_name, first_player_name: player2_name) }
 
   shared_examples 'match' do
     it { is_expected.to respond_to(:title) }
@@ -78,6 +81,12 @@ RSpec.describe Match, { type: :model } do
       subject.second_player_server = subject.first_player_server
       is_expected.not_to be_valid
     end
+
+    it 'should validate that there are four different players' do
+      subject.second_team = new_team_with_same_player
+      is_expected.not_to be_valid
+    end
+
   end
 
   context 'singles match' do
@@ -101,6 +110,24 @@ RSpec.describe Match, { type: :model } do
 
     it 'should validate that players can\'t be the same' do
       subject.first_player = subject.second_player
+      is_expected.not_to be_valid
+    end
+  end
+
+  context 'doubles to singles' do
+    subject { FactoryGirl.build(:doubles_match) }
+
+    it 'validates that players are missing' do
+      subject.doubles = false
+      is_expected.not_to be_valid
+    end
+  end
+
+  context 'singles to doubles' do
+    subject { FactoryGirl.build(:singles_match) }
+
+    it 'validates that teams are missing' do
+      subject.doubles = true
       is_expected.not_to be_valid
     end
   end
@@ -137,7 +164,7 @@ RSpec.describe Match, { type: :model } do
       context 'start game' do
         before do
           subject.play_match! :start_game, subject.first_player
-          subject.play_match! :win_game, subject.first_player
+          subject.play_match! :win_game, subject.first_player.singles_team
         end
 
         it 'should validate cannot change server' do
@@ -173,7 +200,7 @@ RSpec.describe Match, { type: :model } do
       context 'win first game' do
         before do
           subject.play_match! :start_game, subject.first_team.first_player
-          subject.play_match! :win_game, subject.first_team.first_player
+          subject.play_match! :win_game, subject.first_team
         end
 
         it 'should validate cannot change first server' do
@@ -189,7 +216,7 @@ RSpec.describe Match, { type: :model } do
         context 'start second game' do
           before do
             subject.play_match! :start_game, subject.second_team.first_player
-            subject.play_match! :win_game, subject.first_team.first_player
+            subject.play_match! :win_game, subject.first_team
           end
 
           it 'should validate cannot change second server' do

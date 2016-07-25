@@ -154,10 +154,18 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
   describe 'win game' do
     subject { FactoryGirl.build(:play_singles_match, start_first_game: true) }
 
+    it_behaves_like 'a match with game in progress'
+
     context 'with player' do
       before { subject.play_match! :win_game, subject.first_team }
 
       it_behaves_like 'a match with game won'
+
+      context 'remove last change' do
+        before { subject.play_match! :remove_last_change }
+
+        it_behaves_like 'a match with game in progress'
+      end
     end
 
     context 'without player' do
@@ -381,7 +389,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
   describe 'players serving first set' do
     context 'singles' do
       context 'alternate order' do # needed for complete code coverage
-        let(:winner) { subject.first_player }
+        let(:winner) { subject.first_player.singles_team }
         subject do
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game, start_play: true)
         end
@@ -413,7 +421,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       end
 
       context 'sequential order' do
-        let(:winner) { subject.first_player }
+        let(:winner) { subject.first_player.singles_team }
         subject do
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game, start_first_game: true)
         end
@@ -444,7 +452,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
     context 'doubles' do
       context 'alternate order' do # needed for complete code coverage
-        let(:winner) { subject.first_team.first_player }
+        let(:winner) { subject.first_team }
         subject do
           FactoryGirl.build(:play_doubles_match, scoring: :three_six_game, start_play: true)
         end
@@ -490,7 +498,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       end
 
       context 'sequential order' do
-        let(:winner) { subject.first_team.first_player }
+        let(:winner) { subject.first_team }
         subject do
           FactoryGirl.build(:play_doubles_match, scoring: :three_six_game, start_first_game: true)
         end
