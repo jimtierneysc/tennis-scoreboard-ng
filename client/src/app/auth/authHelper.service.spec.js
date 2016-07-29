@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('authHelper service', function () {
+  describe('authHelper service', function () {
     var service;
     var scope;
     var $rootScope;
     var vm = {};
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
 
     beforeEach(function () {
       inject(function (_authHelper_, _$rootScope_) {

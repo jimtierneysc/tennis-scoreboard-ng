@@ -9,11 +9,11 @@
   'use strict';
 
   angular
-    .module('frontend-auth')
+    .module('frontendAuth')
     .factory('authHelper', factory);
 
   /** @ngInject */
-  function factory($log, userCredentials, editInProgress) {
+  function factory($log, userCredentials, editInProgress, authInterceptor) {
 
     return activate;
 
@@ -21,27 +21,20 @@
       // Initialize controller
       vm.loggedIn = userCredentials.loggedIn;
       vm.userName = userCredentials.userName;
-      vm.logOut = logOut;
-      var watcher = new AuthWatcher(vm);
-      userCredentials.subscribeChanged(scope, watcher.changed);
-    }
+      vm.logOut = function () {
+        // Cancel pending edits, if any
+        editInProgress.closeEditors().then(
+          userCredentials.clearCredentials)
+      };
+      userCredentials.subscribeChanged(scope, function () {
+        vm.loggedIn = userCredentials.loggedIn;
+        vm.userName = userCredentials.userName;
+      });
 
-    function logOut() {
-      // Cancel pending edits, if any
-      editInProgress.closeEditors().then(
-        userCredentials.clearCredentials
-      )
-    }
-
-    function AuthWatcher(_vm_) {
-      var watcher = this;
-      watcher.vm = _vm_;
-      watcher.changed = changed;
-
-      function changed() {
-        watcher.vm.loggedIn = userCredentials.loggedIn;
-        watcher.vm.userName = userCredentials.userName;
-      }
+      authInterceptor.subscribeUnauthorized(scope, function () {
+        $log.error('unauthorized');
+        userCredentials.clearCredentials();
+      });
     }
   }
 })();
