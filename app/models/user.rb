@@ -1,3 +1,7 @@
+# Model for a user.
+#
+# A user has a name, password and authentication token.
+#
 class User < ActiveRecord::Base
   validates :auth_token, uniqueness: true
   validates :username, uniqueness: true

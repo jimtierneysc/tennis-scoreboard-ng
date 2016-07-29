@@ -1,9 +1,15 @@
-# Model for a game in a set (in a match).
-# A game has a winning team (Note the each player in a singles match is
-# represented by a team).
+# Model for a game
+#
+# Every game is in a set.
+#
+# Every game has an ordinal.  The first game in the set has ordinal 1.
+#
+# A game may have a winning team
+#
 # A tiebreaker is a special kind of game that occurs at the end of a set.
+#
 # Normal games have a serving player.  Tiebreakers do not have a serving player.
-# A game has an ordinal.  The first game in the set is ordinal 1.
+#
 class SetGame < ActiveRecord::Base
   belongs_to :match_set
   belongs_to :team_winner, class_name: 'Team', foreign_key: :team_winner_id
