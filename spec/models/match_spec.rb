@@ -31,6 +31,10 @@ RSpec.describe Match, { type: :model } do
 
     it { is_expected.to validate_uniqueness_of(:title).ignoring_case_sensitivity }
 
+    it 'should be valid initially' do
+      is_expected.to be_valid
+    end
+
     it 'should validate scoring value' do
       subject.scoring = 'abc'
       is_expected.to_not be_valid
@@ -163,8 +167,8 @@ RSpec.describe Match, { type: :model } do
 
       context 'start game' do
         before do
-          subject.play_match! :start_game, subject.first_player
-          subject.play_match! :win_game, subject.first_player.singles_team
+          subject.play_match! :start_game, player: subject.first_player
+          subject.play_match! :win_game, team: subject.first_player.singles_team
         end
 
         it 'should validate cannot change server' do
@@ -199,8 +203,8 @@ RSpec.describe Match, { type: :model } do
 
       context 'win first game' do
         before do
-          subject.play_match! :start_game, subject.first_team.first_player
-          subject.play_match! :win_game, subject.first_team
+          subject.play_match! :start_game, player: subject.first_team.first_player
+          subject.play_match! :win_game, team: subject.first_team
         end
 
         it 'should validate cannot change first server' do
@@ -215,8 +219,8 @@ RSpec.describe Match, { type: :model } do
 
         context 'start second game' do
           before do
-            subject.play_match! :start_game, subject.second_team.first_player
-            subject.play_match! :win_game, subject.first_team
+            subject.play_match! :start_game, player: subject.second_team.first_player
+            subject.play_match! :win_game, team: subject.first_team
           end
 
           it 'should validate cannot change second server' do

@@ -1,26 +1,32 @@
 # Model for a team.
+#
 # A team may be an opponent in a match.
-# A team may be the winner of a game.
+#
+# A team may be the winner of a game, a match or a set.
+#
 # A doubles team has two players.
+#
 # A singles team has one player.
 # Singles teams are created as needed to allow a
 # player to be an opponent in a match.
-# Singles teams should not be visible to users.
+#
 class Team < ActiveRecord::Base
   belongs_to :first_player,
              class_name: 'Player', foreign_key: :first_player_id
   belongs_to :second_player,
              class_name: 'Player', foreign_key: :second_player_id
   before_validation { self.name = nil if self.name.blank? }
-  # validates :first_player_id, presence: true # redundant
+  # rundendant
+  # validates :first_player_id, presence: true
   validates_uniqueness_of :name, allow_nil: true
   validate :that_is_valid_first_player
   validate :that_is_valid_second_player
   validate :that_is_unique_player_pair
+  validate :that_can_change_player
   before_destroy :that_can_destroy_team
 
   # If a name is not provided when match is created, generate name
-  before_create { self.name = next_team_name  if self.doubles && self.name.blank? }
+  before_create { self.name = next_team_name if self.doubles && self.name.blank? }
 
   # indicate whether team includes a set of players
   def include_players?(players)
@@ -40,17 +46,35 @@ class Team < ActiveRecord::Base
     end
   end
 
+  def that_can_change_player
+    first_changed = first_player_id_changed?
+    second_changed = second_player_id_changed?
+    if (first_changed || second_changed) and team_playing_match?
+      message = 'can\'t be changed when in a match that has started'
+      errors.add :first_player, message if first_changed
+      errors.add :second_player, message if second_changed
+    end
+  end
+
+  def team_playing_match?
+    matches_of_team.where('started').exists?
+  end
+
   def team_in_match?
-    Match.where('first_team_id=? OR second_team_id=?', id, id).exists?
+    matches_of_team.exists?
+  end
+
+  def matches_of_team
+    Match.where('first_team_id=? OR second_team_id=?', id, id)
   end
 
   def that_is_valid_first_player
-      if first_player.nil?
-        errors.add(:first_player, if first_player_id.blank?
-                                     'can\'t be blank'
-                                   else
-                                     'not found'
-                                   end)
+    if first_player.nil?
+      errors.add(:first_player, if first_player_id.blank?
+                                  'can\'t be blank'
+                                else
+                                  'not found'
+                                end)
     end
   end
 

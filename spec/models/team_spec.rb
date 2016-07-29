@@ -15,6 +15,10 @@ RSpec.describe Team, { type: :model } do
 
   it { is_expected.to validate_presence_of(:first_player) }
 
+  it 'should be valid initially' do
+    is_expected.to be_valid
+  end
+
   it 'should validate presence of #second_player' do
     subject.second_player = nil
     is_expected.to_not be_valid
@@ -49,20 +53,39 @@ RSpec.describe Team, { type: :model } do
   end
 
   context 'when in a match' do
-    let(:player_name) {'all new player'}
+    let(:player_name) { 'all new player' }
     let(:new_player) { FactoryGirl.create(:player, name: player_name) }
+    let(:match) { FactoryGirl.build(:doubles_match, first_team_name: subject.name) }
     before do
-      FactoryGirl.build(:doubles_match, first_team_name: subject.name)
+      subject.save!
+      match.save!
     end
 
-    it 'should validate cannot change #second_player' do
-      subject.second_player = new_player
-      is_expected.to_not be_valid
+    context 'when started' do
+      before do
+        match.play_match! :start_play
+      end
+      it 'should validate cannot change #second_player' do
+        subject.second_player = new_player
+        is_expected.to_not be_valid
+      end
+
+      it 'should validate cannot change #first_player' do
+        subject.first_player = new_player
+        is_expected.to_not be_valid
+      end
     end
 
-    it 'should validate cannot change #first_player' do
-      subject.first_player = new_player
-      is_expected.to_not be_valid
+    context 'when not started' do
+      it 'should validate can change #second_player' do
+        subject.second_player = new_player
+        is_expected.to be_valid
+      end
+
+      it 'should validate can change #first_player' do
+        subject.first_player = new_player
+        is_expected.to be_valid
+      end
     end
   end
 

@@ -15,6 +15,10 @@ RSpec.describe MatchSet, { type: :model } do
 
   it { is_expected.to respond_to(:match) }
 
+  it 'should be valid initially' do
+    is_expected.to be_valid
+  end
+
   it 'should validate scoring value' do
     subject.scoring = 'abc'
     is_expected.to_not be_valid
