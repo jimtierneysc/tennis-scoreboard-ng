@@ -1,7 +1,6 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-  devise_for :user, skip: :sessions
 
   scope '/api', constraints: { format: 'json' } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
@@ -14,5 +13,6 @@ Rails.application.routes.draw do
       post 'match_score_board/:id' => 'match_score_board#update'
     end
   end
+
 end
 
