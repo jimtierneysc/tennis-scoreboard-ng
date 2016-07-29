@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629060140) do
+ActiveRecord::Schema.define(version: 20160727235543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(version: 20160629060140) do
     t.datetime "updated_at",                              null: false
     t.integer  "first_team_id",                           null: false
     t.integer  "second_team_id",                          null: false
-    t.integer  "match_group_id"
     t.string   "scoring",                                 null: false
     t.boolean  "started",                 default: false, null: false
     t.boolean  "doubles",                 default: false, null: false
@@ -40,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160629060140) do
     t.integer  "second_player_server_id"
     t.string   "title"
     t.integer  "team_winner_id"
+    t.integer  "play_version"
   end
 
   add_index "matches", ["title"], name: "match_title", unique: true, using: :btree
