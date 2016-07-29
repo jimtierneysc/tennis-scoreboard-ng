@@ -1,0 +1,10 @@
+<div class="form-group text-left">
+  <label class="control-label">Select a player to serve game {{scores.newGame.title}}</label>
+  <div class="radio" ng-repeat="player in scores.firstServers.list"
+       ng-init="scores.selectServer = scores.firstServers.list[0].id">
+    <label>
+      <input type="radio" name="player" value="{{player.id}}" ng-model="server">
+      {{player.name}}
+    </label>
+  </div>
+</div>

@@ -6,10 +6,12 @@
       <th class="score-col-2">
 
         <div ng-if="scores.doubles">
-          <fe-score-table-opponent scores="scores" opponent="scores.first_team" leftmost="1"></fe-score-table-opponent>
+          <fe-score-table-opponent scores="scores" opponent="scores.first_team"
+                                   leftmost="1"></fe-score-table-opponent>
         </div>
         <div ng-if="!scores.doubles">
-          <fe-score-table-opponent scores="scores" opponent="scores.first_player" leftmost="1"></fe-score-table-opponent>
+          <fe-score-table-opponent scores="scores" opponent="scores.first_player"
+                                   leftmost="1"></fe-score-table-opponent>
         </div>
 
       </th>
@@ -25,32 +27,40 @@
       </th>
     </tr>
 
-    <tr>
-      <th class="score-col-1"><span class="hidden-xs">Match </span>Score</th>
-      <th class="score-col-2">
-        <span class="circle-text" ng-class="{'winner-text': scores.winner === scores.opponents[0] }">
-          {{scores.scores[0]}}
-        </span>
-      </th>
-      <th class="score-col-2">
-        <span class="circle-text" ng-class="{'winner-text': scores.winner === scores.opponents[1]  }">
-          {{scores.scores[1]}}
-        </span>
-      </th>
-    </tr>
-
-    <!--match button-->
+    <!--Match button-->
     <tr ng-if="scores.btns.showMatch && view.keepingScore()">
-      <th class="score-col-1">
-      </th>
-      <th colspan=2 class="score-col-3">
+      <th colspan=3 class="score-col-3">
         <!--Match button-->
         <fe-score-button scores="scores"></fe-score-button>
       </th>
     </tr>
 
+    <!-- Match row -->
+    <tr>
+      <th class="score-col-1"><span class="hidden-xs">Match </span>Score</th>
+      <th class="score-col-2">
+        <!--Match result displayed the same as set result-->
+        <fe-score-table-set-result
+          winner="scores.winner === scores.opponents[0]"
+          count="scores.scores[0]"
+        ></fe-score-table-set-result>
+
+      </th>
+      <th class="score-col-2">
+        <fe-score-table-set-result
+          winner="scores.winner === scores.opponents[1]"
+          count="scores.scores[1]"
+        ></fe-score-table-set-result>
+
+      </th>
+    </tr>
+
+    <!--New set row-->
     <tr ng-if="scores.newSet">
       <th class="score-col-1">
+        <fe-score-table-set-title
+          title="scores.newSet.title"
+        ></fe-score-table-set-title>
       </th>
       <th colspan=2 class="score-col-3">
         <div ng-if="view.keepingScore()">
@@ -60,70 +70,68 @@
         <div ng-if="!view.keepingScore()">
           <!--New set status-->
           <fe-score-status scores="scores" title="scores.newSet.title"></fe-score-status>
-
         </div>
       </th>
     </tr>
 
-
+    <!--Sets loop-->
     <tr ng-repeat-start="set in scores.sets"></tr>
 
-    <tr>
-      <th class="score-col-1">
-        {{set.title}}<span class="hidden-xs"> Set</span>
-      </th>
-      <th class="score-col-2">
-        <span class="circle-text" ng-class="{'winner-text': set.winner === scores.opponents[0] }">
-          {{set.scores[0]}}
-        </span>
-      </th>
-      <th class="score-col-2">
-        <span class="circle-text" ng-class="{'winner-text': set.winner === scores.opponents[1] }">
-          {{set.scores[1]}}
-        </span>
-      </th>
-    </tr>
-
     <tr ng-if="!set.winner && scores.btns.showSet">
-      <th class="score-col-1">
-      </th>
-      <th colspan=2 class="score-col-3">
+      <th colspan=3 class="score-col-3">
         <div ng-if="!view.keepingScore()">
           <!--Set status-->
           <fe-score-status scores="scores" title="set.title"></fe-score-status>
-
         </div>
         <div ng-if="view.keepingScore()">
           <!--Set button-->
-          <fe-score-button scores="scores" title="newSet.title"></fe-score-button>
-
+          <fe-score-button scores="scores" title="set.title"></fe-score-button>
         </div>
+      </th>
+    </tr>
+
+    <tr>
+      <th class="score-col-1">
+        <fe-score-table-set-title
+          title="set.title"
+        ></fe-score-table-set-title>
+      </th>
+      <th class="score-col-2">
+        <fe-score-table-set-result
+          winner="set.winner === scores.opponents[0]"
+          count="set.scores[0]"
+        ></fe-score-table-set-result>
+      </th>
+      <th class="score-col-2">
+        <fe-score-table-set-result
+          winner="set.winner === scores.opponents[1]"
+          count="set.scores[1]"
+        ></fe-score-table-set-result>
       </th>
     </tr>
 
     <!--New game buttons-->
     <tr ng-if="scores.newGame && scores.newGame.set == set">
       <th class="score-col-1">
+        <fe-score-table-game-title
+          title="scores.newGame.title"
+          tiebreaker="scores.newGame.tiebreaker"
+          verbose="true"
+        ></fe-score-table-game-title>
       </th>
       <th colspan=2 class="score-col-3" ng-if="view.keepingScore()">
 
-        <!--Select next server when starting 1st or 2nd game-->
+        <!--select next server when starting 1st or 2nd game-->
         <form ng-if="scores.firstServers" name="scores.firstServers.Form" novalidate>
-
-          <div class="form-group text-left">
-            <!--Doubles-->
-            <label class="control-label">Select a player to serve game {{scores.newGame.title}}</label>
-            <div class="radio" ng-repeat="player in scores.firstServers.list">
-              <label>
-                <input type="radio" name="player" value="{{player.id}}" ng-model="scores.firstServers.id">
-                {{player.name}}
-              </label>
-            </div>
-          </div>
+          <fe-score-table-select-server
+            scores="scores"
+            server="scores.selectServer"
+          ></fe-score-table-select-server>
           <fe-score-button scores="scores" title="scores.newGame.title"
-                           param="scores.firstServers.id"></fe-score-button>
+                           param="scores.selectServer"></fe-score-button>
         </form>
 
+        <!--don't need to select servers-->
         <div ng-if="!scores.firstServers">
           <fe-score-button scores="scores" title="scores.newGame.title"></fe-score-button>
         </div>
@@ -136,27 +144,21 @@
 
     <!-- Game button when collapsed -->
     <tr ng-if="!view.showGames(set) && scores.btns.showWin && set == scores.sets[0]"
-        ng-init="title = set.games.length">
+        ng-init="game = set.games[0]">
       <th class="score-col-1">
 
-        <span ng-if="scores.btns.customTitle">
-          {{scores.btns.customTitle}}
-        </span>
-        <!--Display "Game" prefix sometimes-->
-        <div ng-if="!scores.btns.customTitle">
-        <span class="hidden-xs">
-          Game
-        </span>
-        <span>{{title}}
-        </span>
-        </div>
-      </th>
+        <fe-score-table-game-title
+          title="game.title"
+          tiebreaker="game.tiebreaker"
+          verbose="true"
+        ></fe-score-table-game-title>
+
       <th class="score-col-3" colspan="2" ng-if="!view.keepingScore()">
         <!--Game status-->
         <fe-score-status scores="scores" title="title"></fe-score-status>
       </th>
 
-      <th class="score-col-2" ng-if="view.keepingScore()" ng-init="win1 = game.winner === scores.opponents[0]">
+      <th class="score-col-2" ng-if="view.keepingScore()">
         <div>
           <!--Game Button-->
           <fe-score-button scores="scores" param="0" title="title"></fe-score-button>
@@ -173,28 +175,29 @@
       </th>
     </tr>
 
+    <!--Games loop-->
+
     <tr ng-repeat="game in set.games" ng-init="break = game.winner != game.server" ng-if="view.showGames(set)">
       <th class="score-col-1">
-        <!--Display "Game" prefix sometimes-->
-        <span><span class="hidden-xs"
-                    ng-if="!game.tiebreaker && game == set.games[0] && !(scores.newGame && scores.newGame.set == set)">
-          Game </span>{{game.title}}
-        </span>
+
+        <fe-score-table-game-title
+          title="game.title"
+          tiebreaker="game.tiebreaker"
+          verbose="game.recentGame && (!scores.newGame || scores.newGame.tiebreaker || scores.newGame.set != set)"
+        ></fe-score-table-game-title>
+
       </th>
       <th class="score-col-3" colspan="2" ng-if="!game.winner && !view.keepingScore()">
         <fe-score-status scores="scores" title="game.title"></fe-score-status>
       </th>
-      <th class="score-col-2" ng-if="game.winner || view.keepingScore()"
-          ng-init="win1 = game.winner === scores.opponents[0]">
+      <th class="score-col-2" ng-if="game.winner || view.keepingScore()">
         <div ng-if="game.winner">
-          <div class="col-xs-4 game-col-1">
-            <!--TODO: Display something if break-->
-          </div>
-          <div class="col-xs-4 game-col-2">
-            <span ng-if="win1" class="glyphicon glyphicon-ok"></span>
-          </div>
-          <div class="col-xs-4 game-col-3">
-          </div>
+          <fe-score-table-game-result
+            winner="game.winner === scores.opponents[0]"
+            service-break="false"
+            leftmost="true"
+          >
+          </fe-score-table-game-result>
         </div>
 
         <div ng-if="!game.winner && scores.btns.showGame">
@@ -203,18 +206,16 @@
         </div>
 
       </th>
-      <th class="score-col-2" ng-if="game.winner || view.keepingScore()"
-          ng-init="win2 = game.winner === scores.opponents[1]">
+      <th class="score-col-2" ng-if="game.winner || view.keepingScore()">
 
         <div ng-if="game.winner">
-          <div class="col-xs-4 game-col-1">
-            <!--TODO: Display something if break-->
-          </div>
-          <div class="col-xs-4 game-col-2">
-            <span ng-if="win2" class="glyphicon glyphicon-ok"></span>
-          </div>
-          <div class="col-xs-4 game-col-3">
-          </div>
+
+          <fe-score-table-game-result
+            winner="game.winner === scores.opponents[1]"
+            service-break="false"
+            leftmost="false"
+          >
+          </fe-score-table-game-result>
         </div>
 
         <div ng-if="!game.winner && scores.btns.showGame">
