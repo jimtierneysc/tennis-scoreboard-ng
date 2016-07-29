@@ -69,24 +69,6 @@ class PlayMatchHelper
 
   private
 
-  # # Make sure the first servers are assigned
-  # def apply_first_servers
-  #   apply_first_server
-  #   apply_second_server
-  # end
-  #
-  # def apply_first_server
-  #   if match.first_player_server.nil?
-  #     match.apply_first_or_second_player_server(match.first_team.first_player)
-  #   end
-  # end
-  #
-  # def apply_second_server
-  #   if match.doubles && match.second_player_server.nil?
-  #     match.apply_first_or_second_player_server(match.second_team.first_player)
-  #   end
-  # end
-
   def start_set
     if match.play_match? :start_match_tiebreaker
       match.play_match! :start_match_tiebreaker
@@ -128,7 +110,7 @@ class PlayMatchHelper
 
   def play_tiebreaker(winner)
     match.play_match! :start_tiebreaker
-    match.play_match! :win_tiebreaker, winner
+    match.play_match! :win_tiebreaker, opponent: winner
   end
 
   def play_normal_game(winner)
@@ -144,8 +126,8 @@ class PlayMatchHelper
         param = match.first_player
       end
     end
-    match.play_match! :start_game, param
-    match.play_match! :win_game, winner
+    match.play_match! :start_game, player: param
+    match.play_match! :win_game, opponent: winner
   end
 
   def invalid_game

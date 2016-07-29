@@ -65,9 +65,9 @@ class MatchPlayHelper
     start_play!
     if subject.play_match?(:start_game) && no_games?
       if subject.doubles
-        subject.play_match! :start_game, subject.first_team.first_player
+        subject.play_match! :start_game, player: subject.first_team.first_player
       else
-        subject.play_match! :start_game, subject.first_player
+        subject.play_match! :start_game, player: subject.first_player
       end
     end
   end
@@ -102,7 +102,7 @@ class MatchPlayHelper
 
   def score_match_tiebreaker(set, scores, first_opponent, second_opponent)
     subject.play_match! :win_match_tiebreaker,
-                          scores[0] == 1 ? first_opponent : second_opponent
+                          opponent: (scores[0] == 1 ? first_opponent : second_opponent)
   end
 
   def score_set!(set, scores, first_opponent, second_opponent)
@@ -119,7 +119,7 @@ class MatchPlayHelper
           end
       if counters[i] > 0
         start_game!
-        subject.play_match! :win_game, opponents[i]
+        subject.play_match! :win_game, opponent: opponents[i]
         counters[i] -= 1
       else
         break
@@ -127,7 +127,7 @@ class MatchPlayHelper
     end
     if counters.max == 1
       subject.play_match! :start_tiebreaker
-      subject.play_match! :win_tiebreaker, opponents[counters.rindex(1)]
+      subject.play_match! :win_tiebreaker, opponent: opponents[counters.rindex(1)]
     end
   end
 
@@ -151,7 +151,7 @@ class MatchPlayHelper
 
   def start_second_game!
     if subject.doubles
-      subject.play_match! :start_game, subject.second_team.first_player
+      subject.play_match! :start_game, player: subject.second_team.first_player
     else
       subject.play_match! :start_game
     end

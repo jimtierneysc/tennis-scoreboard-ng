@@ -57,7 +57,7 @@ RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
         describe 'requires a parameter' do
           before { post_action doubles_match.id, :win_game }
 
-          it_behaves_like 'general error', "Unknown action: #{:win_game}"
+          it_behaves_like 'general error', "Unknown team for action: #{:win_game}"
         end
       end
 
@@ -78,7 +78,7 @@ RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
           let(:match) { FactoryGirl.build :play_singles_match, start_play: true }
           before do
             # identify first server
-            post_action match.id, :start_game, { player: match.first_player.id }
+            post_action match.id, :start_game, { player: match.first_player.id, version: match.play_version }
           end
           it_behaves_like 'singles match scoreboard response'
           it_behaves_like 'accepted action'
@@ -105,6 +105,33 @@ RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
           it_behaves_like 'singles match scoreboard response'
           it_behaves_like 'accepted action'
         end
+      end
+
+      context 'when pass scoreboard version' do
+        let(:match) { FactoryGirl.build :play_singles_match, start_play: true }
+
+        describe 'that is behind' do
+          before do
+            post_action match.id, :start_game, { player: match.first_player.id, version: match.play_version - 1 }
+          end
+          it_behaves_like 'denied action'
+        end
+
+        describe 'that is ahead' do
+          before do
+            post_action match.id, :start_game, { player: match.first_player.id, version: match.play_version + 1 }
+          end
+          it_behaves_like 'denied action'
+        end
+
+        describe 'that is correct' do
+          before do
+            post_action match.id, :start_game, { player: match.first_player.id, version: match.play_version }
+          end
+          it_behaves_like 'singles match scoreboard response'
+          it_behaves_like 'accepted action'
+        end
+
       end
     end
 

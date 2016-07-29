@@ -9,29 +9,24 @@ class V1::MatchScoreBoardController < ApplicationController
   before_action :set_match_eager_load, only: [:show, :update]
 
   def show
-    render json: MatchScoreBoardSerializer.new(@match, root: false)
+    render json: V1::MatchScoreBoardSerializer.new(@match, root: false)
   end
 
   # POST change to score /match_score_board/1
   def update
-    params = match_score_board_params
-    action = params[:action].to_sym
-    param = nil
-    if [:win_game, :win_match_tiebreaker, :win_tiebreaker].include?(action)
-      team_id = params[:team]
-      player_id = params[:player]
-      param = if team_id
-                Team.find(team_id)
-              elsif player_id
-                player = Player.find(player_id)
-                player.singles_team unless player.nil?
-              end
-    elsif [:start_game].include?(action)
-      player_id = params[:player]
-      param = Player.find(player_id) unless player_id.nil?
-    end
+    request_params = match_score_board_params
+    action = request_params[:action].to_sym
+    version = request_params[:version]
+    team_id = request_params[:team]
+    player_id = request_params[:player] unless team_id
+
+    play_params = {}
+    play_params[:version] = version if version
+    play_params[:team] = Team.find(team_id) if team_id
+    play_params[:player] = Player.find(player_id) if player_id
+
     play_match {
-      @match.play_match!(action, param)
+      @match.play_match!(action, play_params)
     }
   end
 
@@ -48,7 +43,8 @@ class V1::MatchScoreBoardController < ApplicationController
   def match_score_board_params
     params.require(:match_score_board).permit(:action,
                                               :team,
-                                              :player)
+                                              :player,
+                                              :version)
   end
 
   def play_match
@@ -58,12 +54,13 @@ class V1::MatchScoreBoardController < ApplicationController
       reload_match
     rescue ::Exceptions::UnknownOperation
       raise
-    rescue ::ActiveRecord::RecordInvalid => e
-      reload_match e.record.errors
-    rescue  => e
-      reload_match ({other: e.message})
+        # redundant
+        # rescue ::ActiveRecord::RecordInvalid => e
+        #   reload_match e.record.errors
+    rescue => e
+      reload_match ({ other: e.message })
     end
-    render json: MatchScoreBoardSerializer.new(@match, root: false)
+    render json: V1::MatchScoreBoardSerializer.new(@match, root: false)
   end
 
   def reload_match errors=nil

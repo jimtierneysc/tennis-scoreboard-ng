@@ -56,7 +56,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context "when #{action}" do
           it 'should deny action' do
-            expect { subject.play_match! action, subject.first_team }.to raise_error Exceptions::InvalidOperation
+            expect { subject.play_match! action, opponent: subject.first_team }.to raise_error Exceptions::InvalidOperation
           end
         end
       end
@@ -69,7 +69,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
       context 'with first server' do
         before do
-          subject.play_match! :start_game, subject.first_player
+          subject.play_match! :start_game, player: subject.first_player
         end
 
         it_behaves_like 'a match with first game started'
@@ -97,7 +97,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
       context 'start first game with first server' do
         before do
-          subject.play_match! :start_game, subject.first_team.first_player
+          subject.play_match! :start_game, player: subject.first_team.first_player
         end
 
         it_behaves_like 'a match with first game started'
@@ -108,11 +108,11 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
         end
 
         context 'start second game' do
-          before { subject.play_match! :win_game, subject.first_team }
+          before { subject.play_match! :win_game, opponent: subject.first_team }
 
           context 'start second game with second server' do
             before do
-              subject.play_match! :start_game, subject.second_team.first_player
+              subject.play_match! :start_game, player: subject.second_team.first_player
             end
 
             it_behaves_like 'a match with second game started'
@@ -133,11 +133,11 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
           context 'second game with invalid server' do
             it 'should not allow same server' do
-              expect { subject.play_match! :start_game, subject.first_team.first_player }.to raise_error ActiveRecord::RecordInvalid
+              expect { subject.play_match! :start_game, player: subject.first_team.first_player }.to raise_error ActiveRecord::RecordInvalid
             end
 
             it 'should not allow server from same team' do
-              expect { subject.play_match! :start_game, subject.first_team.second_player }.to raise_error ActiveRecord::RecordInvalid
+              expect { subject.play_match! :start_game, player: subject.first_team.second_player }.to raise_error ActiveRecord::RecordInvalid
             end
           end
         end
@@ -157,7 +157,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
     it_behaves_like 'a match with game in progress'
 
     context 'with player' do
-      before { subject.play_match! :win_game, subject.first_team }
+      before { subject.play_match! :win_game, opponent: subject.first_team.first_player }
 
       it_behaves_like 'a match with game won'
 
@@ -229,7 +229,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       it_behaves_like 'a match in set tiebreaker'
 
       context 'win tiebreaker with player' do
-        before { subject.play_match! :win_tiebreaker, subject.first_team }
+        before { subject.play_match! :win_tiebreaker, opponent: subject.first_team }
 
         it_behaves_like 'a match with finished set'
 
@@ -240,7 +240,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         it 'should not win tiebreaker again' do
           expect {
-            subject.play_match! :win_tiebreaker, subject.first_team
+            subject.play_match! :win_tiebreaker, opponent: subject.first_team
           }.to raise_error Exceptions::InvalidOperation
         end
       end
@@ -300,7 +300,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
       context 'win with player' do
         before do
-          subject.play_match! :win_match_tiebreaker, subject.first_team
+          subject.play_match! :win_match_tiebreaker, opponent: subject.first_team
         end
 
         it_behaves_like 'a match finished'
@@ -322,7 +322,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         it 'should not win again' do
           expect {
-            subject.play_match! :win_match_tiebreaker, subject.first_team
+            subject.play_match! :win_match_tiebreaker, opponent: subject.first_team
           }.to raise_error Exceptions::InvalidOperation
         end
       end
@@ -396,13 +396,13 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context 'first' do
           before do
-            subject.play_match! :start_game, subject.second_player
+            subject.play_match! :start_game, player: subject.second_player
           end
           it_behaves_like 'a match with second player serving'
 
           context 'second' do
             before do
-              subject.play_match! :win_game, winner
+              subject.play_match! :win_game, opponent: winner
               subject.play_match! :start_game
             end
 
@@ -410,7 +410,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
             context 'third' do
               before do
-                subject.play_match! :win_game, winner
+                subject.play_match! :win_game, opponent: winner
                 subject.play_match! :start_game
               end
 
@@ -432,7 +432,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context 'second' do
           before do
-            subject.play_match! :win_game, winner
+            subject.play_match! :win_game, opponent: winner
             subject.play_match! :start_game
           end
 
@@ -440,7 +440,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
           context 'third' do
             before do
-              subject.play_match! :win_game, winner
+              subject.play_match! :win_game, opponent: winner
               subject.play_match! :start_game
             end
 
@@ -459,34 +459,34 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context 'first' do
           before do
-            subject.play_match! :start_game, subject.first_team.second_player
+            subject.play_match! :start_game, player: subject.first_team.second_player
           end
           it_behaves_like 'a match with second player serving'
 
           context 'second' do
             before do
-              subject.play_match! :win_game, winner
-              subject.play_match! :start_game, subject.second_team.first_player
+              subject.play_match! :win_game, opponent: winner
+              subject.play_match! :start_game, player: subject.second_team.first_player
             end
             it_behaves_like 'a match with third player serving'
 
             context 'third' do
               before do
-                subject.play_match! :win_game, winner
+                subject.play_match! :win_game, opponent: winner
                 subject.play_match! :start_game
               end
               it_behaves_like 'a match with first player serving'
 
               context 'fourth' do
                 before do
-                  subject.play_match! :win_game, winner
+                  subject.play_match! :win_game, opponent: winner
                   subject.play_match! :start_game
                 end
                 it_behaves_like 'a match with fourth player serving'
 
                 context 'fifth' do
                   before do
-                    subject.play_match! :win_game, winner
+                    subject.play_match! :win_game, opponent: winner
                     subject.play_match! :start_game
                   end
                   it_behaves_like 'a match with second player serving'
@@ -509,15 +509,15 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context 'second' do
           before do
-            subject.play_match! :win_game, winner
-            subject.play_match! :start_game, subject.second_team.first_player
+            subject.play_match! :win_game, opponent: winner
+            subject.play_match! :start_game, player: subject.second_team.first_player
           end
 
           it_behaves_like 'a match with third player serving'
 
           context 'third' do
             before do
-              subject.play_match! :win_game, winner
+              subject.play_match! :win_game, opponent: winner
               subject.play_match! :start_game
             end
 
@@ -525,7 +525,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
             context 'fourth' do
               before {
-                subject.play_match! :win_game, winner
+                subject.play_match! :win_game, opponent: winner
                 subject.play_match! :start_game
               }
 
@@ -533,7 +533,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
               context 'fifth' do
                 before do
-                  subject.play_match! :win_game, winner
+                  subject.play_match! :win_game, opponent: winner
                   subject.play_match! :start_game
                 end
 
@@ -635,6 +635,45 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       it_behaves_like 'a match with three sets'
       it_behaves_like 'a match with six game sets'
     end
+  end
+
+  describe 'match version' do
+
+    context 'initial value' do
+      subject { FactoryGirl.create(:play_singles_match) }
+
+      it 'should have nil version initially' do
+        expect(subject.play_version).to be_nil
+      end
+    end
+
+    context 'after match started' do
+      subject { FactoryGirl.build(:play_singles_match, start_play: true) }
+
+      it 'should have number' do
+        expect(subject.play_version).not_to be_nil
+      end
+
+      context 'when use valid version' do
+        before { subject.play_match! :start_game, { player: subject.first_player, version: subject.play_version } }
+
+        it_behaves_like 'a match with game in progress'
+      end
+
+      it 'should raise exception when version is behind' do
+        expect do
+          subject.play_match! :start_game, { player: subject.first_player, version: subject.play_version - 1 }
+        end.to raise_error Exceptions::InvalidOperation
+      end
+
+      it 'should raise exception when version is ahead' do
+        expect do
+          subject.play_match! :start_game, { player: subject.first_player, version: subject.play_version + 1 }
+        end.to raise_error Exceptions::InvalidOperation
+      end
+
+    end
+
   end
 end
 
