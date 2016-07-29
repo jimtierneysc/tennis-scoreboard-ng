@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe PlayerSerializer, { type: :serializer } do
+RSpec.describe V1::PlayerSerializer, { type: :serializer } do
   let(:resource) { FactoryGirl.create :player }
-  let(:serializer) { PlayerSerializer.new(resource) }
+  let(:serializer) { V1::PlayerSerializer.new(resource) }
 
   subject do
     JSON.parse(serializer.to_json, symbolize_names: true)[:player]

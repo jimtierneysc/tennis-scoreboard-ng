@@ -1,10 +1,10 @@
 require 'rails_helper'
-require 'serializers/match_serializer_shared'
+require 'serializers/v1/match_serializer_shared'
 
-RSpec.describe MatchScoreBoardSerializer, { type: :serializer, match_serializer_shared: true } do
+RSpec.describe V1::MatchScoreBoardSerializer, { type: :serializer, match_serializer_shared: true } do
 
   def scoreboard_json(match)
-    serializer = MatchScoreBoardSerializer.new(match)
+    serializer = V1::MatchScoreBoardSerializer.new(match)
     JSON.parse(serializer.to_json, symbolize_names: true)[:match_score_board]
   end
 

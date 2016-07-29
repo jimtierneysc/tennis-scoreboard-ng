@@ -1,10 +1,10 @@
 require 'rails_helper'
-require 'serializers/match_serializer_shared'
+require 'serializers/v1/match_serializer_shared'
 
-RSpec.describe MatchSerializer, { type: :serializer, match_serializer_shared: true } do
+RSpec.describe V1::MatchSerializer, { type: :serializer, match_serializer_shared: true } do
 
   def match_json(match)
-    serializer = MatchSerializer.new(match)
+    serializer = V1::MatchSerializer.new(match)
     JSON.parse(serializer.to_json, symbolize_names: true)[:match]
   end
 

@@ -7,10 +7,9 @@ class V1::SessionsController < ApplicationController
     user = user_username.present? && User.find_by(username: user_username)
 
     if user && user.valid_password?(user_password)
-      sign_in user, store: false
       user.generate_authentication_token!
       user.save!
-      render json: user, status: :ok
+      render json: V1::SessionSerializer.new(user, root: false)
     else
       render json: { errors: "Invalid username or password" }, status: 422
     end

@@ -16,11 +16,6 @@ RSpec.describe V1::SessionsController, { type: :controller } do
         post :create, { session: credentials }
       end
 
-      it 'should render the json representation' do
-        user.reload
-        expect(json_response[:auth_token]).to eql user.auth_token
-      end
-
       it_behaves_like 'a response with success code', 200
     end
 
@@ -39,7 +34,7 @@ RSpec.describe V1::SessionsController, { type: :controller } do
 
   describe "DELETE #destroy" do
     before do
-      sign_in user
+      # sign_in user
     end
 
     describe 'valid token' do

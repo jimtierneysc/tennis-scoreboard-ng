@@ -1,4 +1,4 @@
-class SetGameSerializer < ActiveModel::Serializer
+class V1::SetGameSerializer < ActiveModel::Serializer
   attributes :winner, :server
 
   def winner

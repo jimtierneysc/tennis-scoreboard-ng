@@ -1,8 +1,8 @@
-class MatchScoreBoardSerializer < MatchSerializer
-  attributes :id, :title, :scoring, :doubles, :state, :winner, :sets, :actions, :errors, :servers
+class V1::MatchScoreBoardSerializer < V1::MatchSerializer
+  attributes :id, :title, :scoring, :doubles, :state, :winner, :sets, :actions, :errors, :servers,
 
   def sets
-    ActiveModel::ArraySerializer.new(object.match_sets, each_serializer: MatchSetSerializer)
+    ActiveModel::ArraySerializer.new(object.match_sets, each_serializer: V1::MatchSetSerializer)
   end
 
   def actions
@@ -31,23 +31,24 @@ class MatchScoreBoardSerializer < MatchSerializer
       data[:first_player] = first_player
       data[:second_player] = second_player
     end
+    data[:version] = object.play_version
     data
   end
 
   def first_player
-    PlayerSerializer.new(object.first_team.first_player, root: false)
+    V1::PlayerSerializer.new(object.first_team.first_player, root: false)
   end
 
   def first_team
-    OpponentTeamSerializer.new(object.first_team, root: false)
+    V1::OpponentTeamSerializer.new(object.first_team, root: false)
   end
 
   def second_player
-    PlayerSerializer.new(object.second_team.first_player, root: false)
+    V1::PlayerSerializer.new(object.second_team.first_player, root: false)
   end
 
   def second_team
-    OpponentTeamSerializer.new(object.second_team, root: false)
+    V1::OpponentTeamSerializer.new(object.second_team, root: false)
   end
 
   def servers

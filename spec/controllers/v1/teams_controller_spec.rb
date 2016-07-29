@@ -27,7 +27,10 @@ RSpec.describe V1::TeamsController, { type: :controller } do
   end
 
   describe 'GET #index' do
-      before { get :index }
+      before do
+        doubles_team
+        get :index
+      end
 
       it_behaves_like 'team list response'
       it_behaves_like 'a response with success code', 200

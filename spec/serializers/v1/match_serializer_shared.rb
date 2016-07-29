@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # Shared examples for testing match serialization
 
-module MatchSerializerShared
+module V1::MatchSerializerShared
 
   RSpec.shared_examples "a match" do
     it { is_expected.to include :id, :title, :doubles, :state, :scoring, :winner }
@@ -25,7 +25,7 @@ module MatchSerializerShared
   end
 
   RSpec.shared_examples 'a scoreboard' do
-    it { is_expected.to include :sets, :actions, :errors, :servers }
+    it { is_expected.to include :sets, :actions, :errors, :servers, :version }
   end
 
   RSpec.shared_examples 'a doubles scoreboard' do
@@ -126,5 +126,5 @@ module MatchSerializerShared
 end
 
 RSpec.configure do |c|
-  c.extend MatchSerializerShared, match_serializer_shared: true
+  c.extend V1::MatchSerializerShared, match_serializer_shared: true
 end

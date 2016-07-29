@@ -27,7 +27,10 @@ RSpec.describe V1::MatchesController, { type: :controller } do
   end
 
   describe 'GET #index' do
-    before { get :index }
+    before do
+      doubles_match
+      get :index 
+    end
 
     it_behaves_like 'match list response'
     it_behaves_like 'a response with success code', 200

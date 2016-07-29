@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe TeamSerializer, { type: :serializer } do
+RSpec.describe V1::TeamSerializer, { type: :serializer } do
   let(:resource) { FactoryGirl.create :doubles_team }
-  let(:serializer) { TeamSerializer.new(resource) }
+  let(:serializer) { V1::TeamSerializer.new(resource) }
 
   subject do
     JSON.parse(serializer.to_json, symbolize_names: true)[:team]

@@ -1,4 +1,4 @@
-class MatchSerializer < ActiveModel::Serializer
+class V1::MatchSerializer < ActiveModel::Serializer
   attributes :id, :title, :scoring, :doubles, :state, :winner
 
   def winner
@@ -26,19 +26,19 @@ class MatchSerializer < ActiveModel::Serializer
   end
 
   def first_player
-    PlayerSerializer.new(object.first_team.first_player, root: false)
+    V1::PlayerSerializer.new(object.first_team.first_player, root: false)
   end
 
   def first_team
-    OpponentTeamSerializer.new(object.first_team, root: false)
+    V1::OpponentTeamSerializer.new(object.first_team, root: false)
   end
 
   def second_player
-    PlayerSerializer.new(object.second_team.first_player, root: false)
+    V1::PlayerSerializer.new(object.second_team.first_player, root: false)
   end
 
   def second_team
-    OpponentTeamSerializer.new(object.second_team, root: false)
+    V1::OpponentTeamSerializer.new(object.second_team, root: false)
   end
 
 end

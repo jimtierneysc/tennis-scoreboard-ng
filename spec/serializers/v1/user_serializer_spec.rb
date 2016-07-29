@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe UserSerializer, { type: :serializer } do
+RSpec.describe V1::UserSerializer, { type: :serializer } do
   let(:resource) { FactoryGirl.create :user }
-  let(:serializer) { UserSerializer.new(resource) }
+  let(:serializer) { V1::UserSerializer.new(resource) }
 
   subject do
     JSON.parse(serializer.to_json, symbolize_names: true)[:user]
@@ -16,7 +16,7 @@ RSpec.describe UserSerializer, { type: :serializer } do
     expect(subject[:username]).to eql(resource.username)
   end
 
-  it 'should have token' do
-    is_expected.to include :auth_token
+  it 'should not have token' do
+    is_expected.not_to include :auth_token
   end
 end

@@ -7,10 +7,6 @@ RSpec.describe V1::UserController, { type: :controller } do
   let(:password) { '12345768' }
   let(:user1) { FactoryGirl.create :user, username: username1 }
   let(:user1_attributes) { FactoryGirl.attributes_for :user, username: username1 }
-  let(:invalid_user1_attributes) do
-    # missing username
-    { password: password, password_confirmation: password }
-  end
 
   describe 'GET #show' do
     context 'when is authorized' do
