@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  fdescribe('feLoginForm directive', function () {
+  describe('feLoginForm directive', function () {
 
     var compile, scope, directiveElem;
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
     // beforeEach(module(function ($provide) {
     //   $provide.factory('validateCredentials', function () {
     //     return function(data) {
@@ -24,7 +24,6 @@
     });
 
     beforeEach(function () {
-      localStorage.clear();
       inject(function ($compile, $rootScope) {
         compile = $compile;
         scope = $rootScope.$new();

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('MatchesController', function () {
+  describe('MatchesController', function () {
     var $controller;
     var $scope;
     var $q;
@@ -13,7 +13,7 @@
       }
     ];
 
-    beforeEach(module('frontend-matches'));
+    beforeEach(module('frontendMatches'));
 
     beforeEach(function () {
 

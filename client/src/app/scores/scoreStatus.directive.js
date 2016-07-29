@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend-scores')
+    .module('frontendScores')
     .directive('feScoreStatus', directive);
 
   /** @ngInject */

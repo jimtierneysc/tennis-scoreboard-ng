@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  fdescribe('editInProgress service', function () {
+  describe('editInProgress service', function () {
     var service;
     var modalConfirm;
     var $rootScope;
     var $q;
     var $timeout;
 
-    beforeEach(module('frontend-components'));
+    beforeEach(module('frontendComponents'));
 
     beforeEach(function () {
       inject(function (_editInProgress_, _modalConfirm_, _$rootScope_, _$q_,
@@ -33,8 +33,8 @@
       expect(service.registerOnQueryState).toEqual(jasmine.any(Function));
     });
 
-    it('should have .registerOnCloseRejected()', function () {
-      expect(service.registerOnCloseRejected).toEqual(jasmine.any(Function));
+    it('should have .registerOnConfirmed()', function () {
+      expect(service.registerOnConfirmed).toEqual(jasmine.any(Function));
     });
 
     it('should have .registerOnClose()', function () {
@@ -44,7 +44,7 @@
 
     describe('closeEditors', function () {
       var resolvePromise = false;
-      var rejected;
+      var confirmed;
       var close;
       var onFocus;
       var pristine = false;
@@ -53,8 +53,8 @@
       beforeEach(function () {
         spyOn(modalConfirm, 'confirm').and.callFake(returnPromise());
         service.registerOnQueryState($rootScope, queryState);
-        rejected = jasmine.createSpy('rejected');
-        service.registerOnCloseRejected($rootScope, rejected);
+        confirmed = jasmine.createSpy('confirmed');
+        service.registerOnConfirmed($rootScope, confirmed);
         close = jasmine.createSpy('close');
         service.registerOnClose($rootScope, close);
         // Capture event sent by autoFocus service
@@ -77,6 +77,7 @@
       function queryState(event, state) {
         state.pristine = pristine;
         state.autoFocus = 'abc';  // related to fe-auto-focus directive
+        state.autoFocusScope = $rootScope.$new();
         state.labels.title = title;
         state.labels.text = text;
       }
@@ -95,8 +96,8 @@
             expect(close).toHaveBeenCalled();
           });
 
-          it('should not send rejected event', function () {
-            expect(rejected).not.toHaveBeenCalled();
+          it('should send confirmed event', function () {
+            expect(confirmed).toHaveBeenCalled();
           });
 
           it('should not set focus after close', function () {
@@ -118,8 +119,8 @@
             expect(close).not.toHaveBeenCalled();
           });
 
-          it('should send rejected event', function () {
-            expect(rejected).toHaveBeenCalled();
+          it('should send confirmed event', function () {
+            expect(confirmed).toHaveBeenCalled();
           });
 
           it('should set focus after reject', function () {
@@ -139,8 +140,8 @@
           expect(close).toHaveBeenCalled();
         });
 
-        it('should  send rejected event', function () {
-          expect(rejected).not.toHaveBeenCalled();
+        it('should  send confirmed event', function () {
+          expect(confirmed).not.toHaveBeenCalled();
         });
       })
     });

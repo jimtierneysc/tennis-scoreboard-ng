@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-auth')
+    .module('frontendAuth')
     .factory('userResource', factory);
 
   /** @ngInject */

@@ -1,11 +1,11 @@
 (function() {
   'use strict';
 
-  fdescribe('sessionResource service', function() {
+  describe('sessionResource service', function() {
     var service;
     var $httpBackend;
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
     beforeEach(function() {
       inject(function(_sessionResource_, _$httpBackend_) {
         service = _sessionResource_;

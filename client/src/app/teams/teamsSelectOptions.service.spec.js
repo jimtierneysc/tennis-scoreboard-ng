@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('teamsSelectOptions service', function () {
+  describe('teamsSelectOptions service', function () {
 
     var path;
     var $httpBackend;
@@ -16,7 +16,7 @@
       {name: 'team2', id: 2}
     ];
 
-    beforeEach(module('frontend-teams'));
+    beforeEach(module('frontendTeams'));
 
     beforeEach(function () {
       inject(function (_crudResource_, _teamsResource_,

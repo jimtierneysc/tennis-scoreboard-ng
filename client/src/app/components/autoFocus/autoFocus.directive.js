@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontend-components')
+    .module('frontendComponents')
     .directive('feAutoFocus', directive)
     .factory('autoFocus', factory);
 
@@ -31,9 +31,13 @@
         }
         else {
           // fe-auto-focus does not have a value.  Focus when linked.
-          $timeout(function () {
+          var timer = $timeout(function () {
             setFocus();
           }, 1);
+          scope.$on('$destroy', function () {
+              $timeout.cancel(timer);
+            }
+          );
         }
 
         function setFocus() {
@@ -48,12 +52,17 @@
 
   /** @ngInject */
   function factory($timeout, $rootScope) {
-    return broadcast;
+    return focus;
 
-    function broadcast(name) {
-      $timeout(function () {
+    function focus(scope, name) {
+      var timer = $timeout(function () {
         $rootScope.$broadcast('fe-autoFocus', name);
-      });
+      }, 100);
+      scope.$on('$destroy', function () {
+          $timeout.cancel(timer);
+        }
+      );
+
     }
   }
 

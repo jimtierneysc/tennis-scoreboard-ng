@@ -1,10 +1,11 @@
 <div class="container-fluid">
-  <div class="col-xs-12" ng-if="vm.loading">
-    {{vm.loadingMessage}}
-  </div>
 
-  <div class="col-xs-12" ng-if="vm.loadingFailed">
-    {{vm.loadingFailedMessage}}
+  <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+    <fe-loading-messages
+      error="vm.loadingError"
+      loading="vm.loading"
+      failed="vm.loadingFailed"
+    ></fe-loading-messages>
   </div>
 
   <div class="col-xs-12" ng-if="!vm.loading && !vm.loadingFailed">

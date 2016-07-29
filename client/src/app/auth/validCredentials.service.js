@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend-auth')
+    .module('frontendAuth')
     .factory('validateCredentials', factory);
 
   /** @ngInject */
@@ -18,7 +18,7 @@
           function(response) {
             deferred.resolve(
             { username: response.username,
-            token: response.auth_token
+            token: currentUser.token
             });
           },
           function (response) {

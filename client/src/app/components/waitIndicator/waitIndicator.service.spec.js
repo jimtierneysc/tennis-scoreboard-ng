@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  fdescribe('service waitIndicator', function () {
+  describe('service waitIndicator', function () {
 
     var service;
 
-    beforeEach(module('frontend-components'));
+    beforeEach(module('frontendComponents'));
 
     beforeEach(function () {
 

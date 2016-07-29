@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend-helpers')
+    .module('frontendHelpers')
     .config(config);
 
   /** @ngInject */

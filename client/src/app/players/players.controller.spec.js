@@ -1,9 +1,10 @@
 (function () {
   'use strict';
 
-  fdescribe('PlayersController', function () {
+  describe('PlayersController', function () {
     var $controller;
     var $scope;
+    var $rootScope;
 
     var sampleResponse = [
       {
@@ -11,10 +12,11 @@
       }
     ];
 
-    beforeEach(module('frontend-players'));
+    beforeEach(module('frontendPlayers'));
 
-    beforeEach(inject(function (_$controller_, $rootScope) {
+    beforeEach(inject(function (_$controller_, _$rootScope_) {
       $controller = _$controller_;
+      $rootScope = _$rootScope_;
       $scope = $rootScope.$new();
     }));
 
@@ -112,11 +114,37 @@
             expect(options.makeEntityBody({})).toEqual({player: {}});
           });
         });
-
+        
         describe('.prepareToCreateEntity()', function () {
 
           it('should prepare', function () {
             expect(options.prepareToCreateEntity({name: 'aplayer', id: 1})).toEqual({name: 'aplayer'});
+          });
+        });
+
+        describe('.beforeShowNewEntity()', function () {
+          var resolved = false;
+          beforeEach(function () {
+            options.beforeShowNewEntity().then(function () {
+              resolved = true;
+            });
+            $rootScope.$digest();
+          });
+          it('should return resolved promise', function () {
+            expect(resolved).toBeTruthy();
+          });
+        });
+
+        describe('.beforeShowEditEntity()', function () {
+          var resolved = false;
+          beforeEach(function () {
+            options.beforeShowEditEntity().then(function () {
+              resolved = true;
+            });
+            $rootScope.$digest();
+          });
+          it('should return resolved promise', function () {
+            expect(resolved).toBeTruthy();
           });
         });
 

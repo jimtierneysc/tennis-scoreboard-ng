@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-home')
+    .module('frontendHome')
     .controller('HomeController', Controller);
 
   /** @ngInject */

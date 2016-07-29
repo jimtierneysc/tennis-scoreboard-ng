@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontend-teams')
+    .module('frontendTeams')
     .directive('feTeamsForm', directive);
 
   /** @ngInject */

@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('validateCredentials service', function () {
+  describe('validateCredentials service', function () {
     var service;
     var $httpBackend;
     var path;
     var $rootScope;
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
     beforeEach(function () {
       inject(function (_validateCredentials_) {
         service = _validateCredentials_;
@@ -19,9 +19,6 @@
         $httpBackend = _$httpBackend_;
         $rootScope = _$rootScope_;
       })
-    });
-    afterEach(function() {
-      localStorage.clear();
     });
 
     it('should be a function', function () {

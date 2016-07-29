@@ -2,11 +2,11 @@
   'use strict';
 
   angular
-    .module('frontend-run')
-    .run(runBlock);
+    .module('frontendRun')
+    .run(loadCredentials);
 
   /** @ngInject */
-  function runBlock(userCredentials) {
+  function loadCredentials(userCredentials) {
     userCredentials.loadCredentials();
   }
 

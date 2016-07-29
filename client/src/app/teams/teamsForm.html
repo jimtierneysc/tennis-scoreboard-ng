@@ -20,6 +20,8 @@
 
     <label for="first_player" class="control-label sr-only" >First Player</label>
 
+    first: {{entity.select_first_player}}
+    entity: {{entity}}
     <ui-select ng-model="entity.select_first_player" theme="bootstrap" id="first_player" name="first_player" ng-required="true">
       <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="item in playersList.list | filter: $select.search">

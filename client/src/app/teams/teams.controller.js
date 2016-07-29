@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-teams')
+    .module('frontendTeams')
     .controller('TeamsController', Controller);
 
   /** @ngInject */

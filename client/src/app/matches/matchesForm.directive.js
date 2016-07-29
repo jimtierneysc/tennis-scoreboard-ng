@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend-matches')
+    .module('frontendMatches')
     .directive('feMatchesForm', directiveFunc);
 
   /** @ngInject */

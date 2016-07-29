@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  fdescribe('crudResource service', function () {
+  describe('crudResource service', function () {
     var $httpBackend;
     var sampleData = {name: 'somename'};
     var resourceName = 'aresource';
     var $resource = null;
     var path = null;
 
-    beforeEach(module('frontend-helpers'));
+    beforeEach(module('frontendHelpers'));
 
     beforeEach(inject(function (crudResource, _$httpBackend_) {
       $resource = crudResource.getResource(resourceName);

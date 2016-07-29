@@ -1,13 +1,10 @@
 (function () {
   'use strict';
 
-  fdescribe('HomeController', function () {
+  describe('HomeController', function () {
     var vm;
-    var $scope;
-    var $timeout;
-    var $rootScope;
 
-    beforeEach(module('frontend-home'));
+    beforeEach(module('frontendHome'));
 
     beforeEach(function () {
 

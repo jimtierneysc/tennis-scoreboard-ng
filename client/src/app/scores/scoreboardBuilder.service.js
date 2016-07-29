@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontend-scores')
+    .module('frontendScores')
     .service('scoreboardBuilder', ScoreboardBuilder);
 
 
@@ -87,6 +87,8 @@
 
         // Add a scores property to a set
         set.scores = setScore;
+        if (set.scoring == 'ten_point')
+          set.tiebreaker = true;
       });
       // Add a scores property to a match
       sb.scores = matchScore;
@@ -97,22 +99,26 @@
     function insertTitles(sb) {
       var setsCount = 0;
 
-      // var tieBreakTitle = 'Tiebreak'
       // set titles and game titles properties
       angular.forEach(sb.sets, function (set) {
         setsCount++;
         if (set.tiebreaker)
-          set.title = 'Tiebreak';
+          set.title = tieBreakTitle;
         else
-          set.title = setsTitles[setsCount-1];
+          set.title = setsTitles[setsCount - 1];
         var gameCount = 0;
+        var lastGame = null;
         angular.forEach(set.games, function (game) {
           gameCount++;
           if (game.tiebreaker)
             game.title = tieBreakTitle;
-          else
+          else {
+            lastGame = game;
             game.title = gameCount.toString();
+          }
         });
+        if (lastGame)
+          lastGame.recentGame = true;
       });
     }
 
@@ -145,8 +151,10 @@
         newGame = {};
         var set = sb.sets[sb.sets.length - 1];
         newGame.set = set;
-        if (sb.actions.start_tiebreaker)
+        if (sb.actions.start_tiebreaker) {
           newGame.title = tieBreakTitle;
+          newGame.tiebreaker = true;
+        }
         else {
           var nextGame = set.games.length + 1;
           newGame.title = nextGame.toString();
@@ -166,12 +174,11 @@
           newSet.title = tieBreakTitle;
         else {
           var nextSet = sb.sets.length + 1;
-          newSet.title = setsTitles[nextSet-1];
+          newSet.title = setsTitles[nextSet - 1];
         }
       }
       return newSet;
     }
-
 
     // List players to serve next game
     function firstServers(sb) {

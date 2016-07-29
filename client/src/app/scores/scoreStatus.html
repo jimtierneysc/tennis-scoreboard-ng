@@ -1,34 +1,34 @@
 <!--Read only indication of match status-->
 <div ng-if="scores.actions.win_game">
-  game {{title}} in progress
+  Game {{title}} in progress
 </div>
 <div ng-if="scores.actions.win_tiebreaker">
-  tiebreaker in progress
+  Tiebreak in progress
 </div>
 <div ng-if="scores.actions.win_match_tiebreaker">
-  tiebreaker in progress
+  Tiebreak in progress
 </div>
 <div ng-if="scores.actions.start_set">
   {{title}} set starting
 </div>
 <div ng-if="scores.actions.start_game">
-  game {{title}} starting
+  Game {{title}} starting
 </div>
 <div ng-if="scores.actions.start_tiebreaker">
-  tiebreaker starting
+  Tiebreak starting
 </div>
 <div ng-if="scores.actions.start_match_tiebreaker">
-  match tiebreaker starting
+  Tiebreak set starting
 </div>
 <div ng-if="scores.actions.start_set_tiebreaker">
-  set tiebreaker starting
+  Tiebreak starting
 </div>
 <div ng-if="scores.actions.complete_set_play">
-  completing {{title}} set
+  Completing {{title}} set
 </div>
 <div ng-if="scores.actions.complete_match_tiebreaker">
-  completing tiebreaker
+  Completing tiebreak set
 </div>
 <div ng-if="scores.state == 'finished' && scores.actions.complete_play">
-  completing match
+  Completing match
 </div>

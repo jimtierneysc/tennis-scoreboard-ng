@@ -1,16 +1,17 @@
 (function () {
   'use strict';
 
-  fdescribe('api constants', function () {
+  describe('api constants', function () {
 
     var baseURL, playersResource, teamsResource, matchesResource,
-      scoreboardResource;
+      scoreboardResource, authHeaderName;
 
-    beforeEach(module('frontend-api'));
+    beforeEach(module('frontendApi'));
 
-    beforeEach(inject(function (_baseURL_, _playersResource_,
+    beforeEach(inject(function (_baseURL_, _authHeaderName_, _playersResource_,
                                 _teamsResource_, _matchesResource_, _scoreboardResource_) {
       baseURL = _baseURL_;
+      authHeaderName = _authHeaderName_;
       teamsResource = _teamsResource_;
       playersResource = _playersResource_;
       matchesResource = _matchesResource_;
@@ -35,6 +36,10 @@
 
     it('should have .scoreboardResource', function () {
       expect(scoreboardResource).toEqual('match_score_board');
+    });
+
+    it('should have .authHeaderName', function () {
+      expect(authHeaderName).toEqual('Authorization');
     });
 
   });

@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  fdescribe('feAutoFocus directive', function () {
+  describe('feAutoFocus directive', function () {
 
     var compile, scope, $rootScope, $timeout;
-    beforeEach(module('frontend-components'));
+    beforeEach(module('frontendComponents'));
 
     beforeEach(function () {
 
@@ -71,7 +71,7 @@
         });
 
         it('should have focus', function () {
-          autoFocus('focusedit2');
+          autoFocus(scope, 'focusedit2');
           $timeout.flush();
           expect(scope.autoFocused).toEqual('edit2');
         });

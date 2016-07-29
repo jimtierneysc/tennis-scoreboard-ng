@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend-auth')
+    .module('frontendAuth')
     .service('userCredentials', Service);
 
   /** @ngInject */
@@ -15,6 +15,7 @@
     service.clearCredentials = clearCredentials;
     service.loadCredentials = loadCredentials;
     service.subscribeChanged = subscribeChanged;
+    service.unauthorized = unauthorized;
     service.loggedIn = false;
     service.userName = "";
     service.headerName = authHeaderName;
@@ -35,6 +36,10 @@
       // $cookieStore.put('globals', data);
       $localStorage[DATANAME] = data;
       changed();
+    }
+    
+    function unauthorized() {
+      clearCredentials();
     }
 
     function clearCredentials() {

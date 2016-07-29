@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend-view', ['ngSanitize', 'ngAria']);
+    .module('frontendView', ['ngSanitize', 'ngAria']);
 
 
 })();

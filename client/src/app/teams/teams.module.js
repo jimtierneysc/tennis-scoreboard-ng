@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend-teams', ['frontend-players', 'ui.select']);
+    .module('frontendTeams', ['frontendPlayers', 'ui.select']);
 
 
 })();

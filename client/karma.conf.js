@@ -55,7 +55,13 @@ module.exports = function (config) {
       // moduleName: 'frontend-comp'
       moduleName: function (htmlPath, originalPath) {
         var paths = htmlPath.split('/');
-        return 'frontend-' + paths[1];
+        if (paths.length > 1) {
+          var suffix = paths[1]; //.charAt(0).toUpperCase(); // + paths[1].slice(1);
+          return 'frontend' +
+            suffix.charAt(0).toUpperCase() + suffix.slice(1);
+        }
+        else
+          return 'frontend';
       }
     },
 

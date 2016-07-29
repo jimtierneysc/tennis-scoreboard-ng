@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-teams')
+    .module('frontendTeams')
     .factory('teamsSelectOptions', factory);
 
   /** @ngInject */

@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  fdescribe('service scoreboardBuilder', function () {
+  describe('service scoreboardBuilder', function () {
 
-    beforeEach(module('frontend-scores'));
+    beforeEach(module('frontendScores'));
 
     var service = null;
 
@@ -446,27 +446,17 @@
       describe('singles match', function () {
         var singles = {
           doubles: false,
-          actions: {start_game: true},
           servers: [],
           sets: [
             {games: []}],
           first_player: {
-            id: 1,
-            name: "One"
+            id: 10
           },
           second_player: {
-            id: 2,
-            name: "Two"
+            id: 20
           }
         };
-        var startSingles = [{
-          id: 1,
-          name: "One"
-        },
-          {
-            id: 2,
-            name: "Two"
-          }];
+        var allServerIds = [10, 20];
 
         var scores;
         beforeEach(function () {
@@ -475,7 +465,7 @@
 
         it('should have list when no server', function () {
           var firstServers = service.firstServers(scores)
-          expect(firstServers).toEqual(startSingles)
+          expect(firstServers.length).toEqual(allServerIds.length)
         });
 
         it('should not have list when server', function () {
@@ -488,47 +478,25 @@
       describe('doubles match', function () {
         var doubles = {
           doubles: true,
-          actions: {start_game: true},
           servers: [],
-          sets: [
-            {games: []}],
           first_team: {
             first_player: {
-              id: 1,
-              name: "One"
+              id: 10
             },
             second_player: {
-              id: 2,
-              name: "Two"
+              id: 20
             }
           },
           second_team: {
             first_player: {
-              id: 3,
-              name: "Three"
+              id: 30
             },
             second_player: {
-              id: 4,
-              name: "Four"
+              id: 40
             }
           }
         };
-        var allServers = [
-          {
-            id: 1,
-            name: "One"
-          }, {
-            id: 2,
-            name: "Two"
-          },
-          {
-            id: 3,
-            name: "Three"
-          }, {
-            id: 4,
-            name: "Four"
-          }
-        ];
+        var allServerIds = [10, 20, 30, 40];
 
         var scores;
         beforeEach(function () {
@@ -537,25 +505,39 @@
 
         it('should list all when no server', function () {
           var firstServers = service.firstServers(scores)
-          expect(firstServers).toEqual(allServers)
+          expect(firstServers.length).toEqual(allServerIds.length)
         });
 
-        it('should list first team when one server', function () {
-          scores.servers = [3];
-          var servers = allServers.slice(0, 2);
-          var firstServers = service.firstServers(scores);
-          expect(firstServers).toEqual(servers);
+        describe('when one server', function () {
+          var firstTeamServers;
+          var secondTeamServers;
+          beforeEach(function () {
+            firstTeamServers = allServerIds.slice(0, 2);
+            secondTeamServers = allServerIds.slice(2, 4);
+          });
+
+          for (var i = 0; i < 4; i++) {
+            describe('is player ' + (i + 1), function () {
+              var firstServers;
+              beforeEach(function () {
+                scores.servers = [allServerIds[i]];
+                firstServers = service.firstServers(scores);
+              });
+
+              it('should list two servers', function () {
+                expect(firstServers.length).toBe(2);
+              });
+
+              it('should list correct servers', function () {
+                var expected = i <= 1 ? firstTeamServers : secondTeamServers;
+                expect([firstServers[0].id, firstServers[1].id]).toEqual(expected);
+              });
+            });
+          }
         });
 
-        it('should list second team when one server', function () {
-          scores.servers = [1];
-          var servers = allServers.slice(2, 4);
-          var firstServers = service.firstServers(scores);
-          expect(firstServers).toEqual(servers);
-        });
-
-        it('should not list when two servers', function () {
-          scores.servers = [1, 3];
+        it('should list none when two servers', function () {
+          scores.servers = [0, 0];
           var firstServers = service.firstServers(scores);
           expect(firstServers).toBe(null);
         });

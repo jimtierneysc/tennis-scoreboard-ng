@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontend-scores')
+    .module('frontendScores')
     .directive('feScoreTableOpponent', directive);
 
   /** @ngInject */

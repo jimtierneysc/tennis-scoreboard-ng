@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  fdescribe('feMatchesForm directive', function () {
+  describe('feMatchesForm directive', function () {
     var compiledDirective;
     var scope;
     var okText;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend-matches'));
+    beforeEach(module('frontendMatches'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

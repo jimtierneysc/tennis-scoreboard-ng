@@ -10,11 +10,11 @@
   'use strict';
 
   angular
-    .module('frontend-players')
+    .module('frontendPlayers')
     .controller('PlayersController', Controller);
 
   /** @ngInject */
-  function Controller($log, $scope, crudHelper, authHelper, playersResource, response) {
+  function Controller($log, $scope, crudHelper, authHelper, playersResource, response, $q) {
 
     var vm = this;
 
@@ -28,8 +28,8 @@
           resourceName: playersResource,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
-          beforeShowNewEntity: null,
-          beforeShowEditEntity: null,
+          beforeShowNewEntity: resolvedPromise,
+          beforeShowEditEntity: resolvedPromise,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
@@ -41,6 +41,10 @@
           }
         }
       );
+    }
+
+    function resolvedPromise() {
+      return $q.when(0);
     }
 
     function prepareToCreateEntity(entity) {

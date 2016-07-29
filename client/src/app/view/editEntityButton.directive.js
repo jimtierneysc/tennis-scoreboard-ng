@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontend-view')
+    .module('frontendView')
     .directive('feEditEntityButton', directive);
 
   /** @ngInject */

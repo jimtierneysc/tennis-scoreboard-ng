@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontend-router')
+    .module('frontendRouter')
     .config(routerConfig);
 
   /** @ngInject */

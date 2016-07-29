@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-helpers')
+    .module('frontendHelpers')
     .factory('crudHelper', factory);
 
   /** @ngInject */
@@ -41,7 +41,7 @@
       vm.showingEditEntity = operations.showingEditEntity;
       vm.beginWait = waitIndicator.beginWait;
 
-      vm.newEntity =  null;
+      vm.newEntity = null;
       vm.editEntity = null;
       vm.showingNewEntity = false;
       vm.newEntityForm = null;
@@ -51,7 +51,7 @@
       vm.entityUpdateErrors = null;
 
       // Allow new and edit operations to be cancelled
-      editInProgress.registerOnQueryState(scope, operations.editorState);
+      editInProgress.registerOnQueryState(scope, operations.getEditorState);
       editInProgress.registerOnClose(scope, operations.closeEditors);
 
       if (angular.isArray(response))
@@ -61,7 +61,6 @@
     }
 
     function Operations(_vm_, controllerOptions) {
-      var _this = this;
       var vm = _vm_;
       var getResource = function () {
         return crudResource.getResource(controllerOptions.resourceName)
@@ -73,11 +72,12 @@
       var getEntityDisplayName = controllerOptions.getEntityDisplayName;
       var makeEntityBody = controllerOptions.makeEntityBody;
       var entityKind = controllerOptions.entityKind;
+      var scope = controllerOptions.scope;
 
       var CRUD = 'crud';
       var REFOCUS = 'refocus';
 
-      _this.editorState = function (event, data) {
+      this.getEditorState = function (event, data) {
         var editing = false;
         var message;
         if (vm.editEntity && vm.editEntityForm && !vm.editEntityForm.$pristine) {
@@ -89,24 +89,29 @@
           message = 'You are adding a new ' + entityKind +
             '. Do you want to discard your input?';
         }
+        data.name = CRUD;
         if (editing) {
           data.labels.text = message;
           data.labels.title = 'Confirm Discard Edits';
           data.pristine = false;
           data.autoFocus = REFOCUS;
-          data.name = CRUD;
+          data.autoFocusScope = scope;
         }
 
-       };
+      };
 
-      _this.closeEditors = function (state) {
+      this.unauthorized = function (event) {
+        vm.showToast('Please login again.', "Authentication no longer valid");
+      };
+
+      this.closeEditors = function (event, state) {
         if (state.name == CRUD) {
           hideNewEntity();
           hideEditEntity();
         }
       };
 
-      _this.trashEntity = function (entity, confirmDelete) {
+      this.trashEntity = function (entity, confirmDelete) {
         if (angular.isUndefined(confirmDelete))
           confirmDelete = true;
         if (confirmDelete) {
@@ -123,12 +128,12 @@
         }
       };
 
-      _this.submitNewEntity = function () {
+      this.submitNewEntity = function () {
         var submitEntity = prepareToCreateEntity(vm.newEntity);
         createEntity(submitEntity);
       };
 
-      _this.showNewEntity = function () {
+      this.showNewEntity = function () {
 
         editInProgress.closeEditors().then(
           show
@@ -136,39 +141,25 @@
 
         function show() {
           vm.newEntity = {};
-          if (beforeShowNewEntity)
-            beforeShowNewEntity().then(
-              showEntity,
-              function () {
-                // Do nothing when rejected
-              });
-          else
-            showEntity();
+          beforeShowNewEntity().then(showEntity);
 
           function showEntity() {
             vm.showingNewEntity = true;
             // new entity form should have an element with the following attribute.
             // fe-auto-focus='refocus'
-            autoFocus(REFOCUS);
+            autoFocus(scope, REFOCUS);
           }
         }
       };
 
-      _this.hideNewEntity = function () {
-        if (vm.newEntityForm) {
-          vm.newEntityForm.$setPristine();
-        }
-        vm.showingNewEntity = false;
-        vm.newEntity = null;
-        vm.entityCreateErrors = null;
-      };
+      this.hideNewEntity = hideNewEntity;
 
-      _this.submitEditEntity = function () {
+      this.submitEditEntity = function () {
         var submit = prepareToUpdateEntity(vm.editEntity);
         updateEntity(submit);
       };
 
-      _this.showEditEntity = function (entity) {
+      this.showEditEntity = function (entity) {
 
         editInProgress.closeEditors().then(
           show
@@ -177,26 +168,28 @@
         function show() {
           // Edit a copy, so can discard unless click Save
           vm.editEntity = angular.copy(entity);
-          if (beforeShowEditEntity)
-            beforeShowEditEntity();
-          // new entity form should have an element with the following attribute.
-          // fe-auto-focus='refocus'
-          autoFocus(REFOCUS);
+          beforeShowEditEntity().then(showEntity);
+
+          function showEntity() {
+            // new entity form should have an element with the following attribute.
+            // fe-auto-focus='refocus'
+            autoFocus(scope, REFOCUS);
+          }
         }
       };
 
-      _this.hideEditEntity = hideEditEntity;
+      this.hideEditEntity = hideEditEntity;
 
-      _this.showingEditEntity = function (entity) {
+      this.showingEditEntity = function (entity) {
         return vm.editEntity && (vm.editEntity.id == entity.id);
       };
 
-      _this.entityLoaded = function (response) {
+      this.entityLoaded = function (response) {
         vm.entitys = response;
         vm.updateLoadingCompleted();
       };
 
-      _this.entityLoadFailed = function (response) {
+      this.entityLoadFailed = function (response) {
         $log.error('data error ' + response.status + " " + response.statusText);
         vm.updateLoadingFailed(response);
       };
@@ -278,13 +271,13 @@
       }
 
       function entityCreated(entity) {
-        _this.hideNewEntity();
+        hideNewEntity();
         vm.entitys.splice(0, 0, entity);
         vm.entityCreateErrors = null;
       }
 
       function entityUpdated(entity) {
-        _this.hideEditEntity();
+        hideEditEntity();
         var id = entity.id;
         var found = $filter('filter')(vm.entitys, function (o) {
           return o.id === id;
@@ -295,11 +288,13 @@
       }
 
       function entityCreateError(entity, response) {
+        vm.showHttpErrorToast(response.status);
         var errors = vm.errorsOfResponse(response);
         vm.entityCreateErrors = errors;
       }
 
       function entityUpdateError(entity, response) {
+        vm.showHttpErrorToast(response.status);
         var errors = vm.errorsOfResponse(response);
         vm.entityUpdateErrors = errors;
       }
@@ -312,14 +307,25 @@
         }
       }
 
+      function showUnauthorizedErrorToast(response) {
+        var result = response.status == 403;
+        if (result)
+          vm.showToast('Please login again.', "Authentication no longer valid");
+        return result;
+      }
+
       function entityRemoveError(entity, response) {
-        var message = "";
-        if (angular.isObject(response.data)) {
-          var errors = vm.errorsOfResponse(response);
-          if (angular.isDefined(errors.other[0]))
-            message = errors.other[0];
+        if (!showUnauthorizedErrorToast(response)) {
+          showErrorToast()
         }
-        vm.showToast(message, "Unable to Delete");
+
+        function showErrorToast() {
+          var message = "";
+          var errors = vm.errorsOfResponse(response);
+          if (errors && errors.other && errors.other[0])
+            message = errors.other[0];
+          vm.showToast(message, "Unable to Delete");
+        }
       }
     }
   }

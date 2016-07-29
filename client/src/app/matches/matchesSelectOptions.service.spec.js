@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('matchesSelectOptions service', function () {
+  describe('matchesSelectOptions service', function () {
 
     var path;
     var $httpBackend;
@@ -16,7 +16,7 @@
       {title: '(untitled)', id: 2}
     ];
 
-    beforeEach(module('frontend-matches'));
+    beforeEach(module('frontendMatches'));
 
     beforeEach(function () {
       inject(function (_crudResource_, _matchesResource_,

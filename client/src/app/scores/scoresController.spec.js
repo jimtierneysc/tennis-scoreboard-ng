@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('ScoresController', function () {
+  describe('ScoresController', function () {
     var $controller;
     var $scope;
     var $state;
@@ -13,7 +13,7 @@
       }
     ];
 
-    beforeEach(module('frontend-scores'));
+    beforeEach(module('frontendScores'));
 
     beforeEach(inject(function (_$controller_, $rootScope) {
       $controller = _$controller_;

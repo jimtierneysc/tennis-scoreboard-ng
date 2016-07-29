@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('modalConfirm', function () {
+  describe('modalConfirm', function () {
 
     var labels = {
       text: 'text value',
@@ -10,7 +10,7 @@
       cancel: 'cancel value'
     };
 
-    beforeEach(module('frontend-components'));
+    beforeEach(module('frontendComponents'));
 
     describe('service', function () {
       var service;

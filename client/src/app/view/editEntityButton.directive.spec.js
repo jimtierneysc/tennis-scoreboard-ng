@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('feEditEntityButton directive', function () {
+  describe('feEditEntityButton directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend-view'));
+    beforeEach(module('frontendView'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('routerConfig', function () {
+  describe('routerConfig', function () {
 
     var $rootScope;
     var $state;
@@ -38,7 +38,7 @@
       });
     })();
 
-    beforeEach(module('frontend-router'));
+    beforeEach(module('frontendRouter'));
 
     beforeEach(function () {
       inject(function (_$rootScope_, _$state_) {

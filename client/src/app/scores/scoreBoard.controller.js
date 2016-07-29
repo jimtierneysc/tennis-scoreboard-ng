@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-scores')
+    .module('frontendScores')
     .controller('ScoreboardController', Controller);
 
   /** @ngInject */
@@ -128,7 +128,8 @@
     }
 
     function scoreUpdateError(body, response) {
-      vm.updateLoadingFailed(response);
+      if (!vm.showHttpErrorToast(response.status))
+        vm.updateLoadingFailed(response);
     }
 
     function View() {
@@ -183,9 +184,8 @@
     // prepare scoreboard for viewing
     function prepareScoreBoard(sb) {
 
-      // Add some values to the score board object
+      // Add some properties to the score board object
       prepareValues();
-      // Add some methods to the score board object
       prepareMethods();
       // Reverse order of sets and games to
       // display most recent games at top of view.

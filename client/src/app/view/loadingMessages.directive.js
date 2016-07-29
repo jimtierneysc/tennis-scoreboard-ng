@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name feDeleteEntityButton
+ * @name feLoadingMessage
  * @description
- * Button to delete player, match or team
+ * Displays message about loading
  *
  */
 
@@ -11,17 +11,17 @@
 
   angular
     .module('frontendView')
-    .directive('feDeleteEntityButton', directive);
+    .directive('feLoadingMessages', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/view/deleteEntityButton.html',
+      templateUrl: 'app/view/loadingMessages.html',
       scope: {
-        entity: '=',
-        canModify: '=',
-        deleteEntity: '&'
+        loading: '=',
+        error: '=',
+        failed: '='
       }
     };
 

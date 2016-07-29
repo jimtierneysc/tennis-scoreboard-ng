@@ -1,14 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('feCredentialsForm directive', function () {
+  describe('feCredentialsForm directive', function () {
 
     var compile, scope, directiveElem, okText;
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
 
     beforeEach(function () {
-      localStorage.clear();
       inject(function ($compile, $rootScope) {
         compile = $compile;
         scope = $rootScope.$new();

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('playersSelectOptions', function () {
+  describe('playersSelectOptions', function () {
 
     var path;
     var $httpBackend;
@@ -16,7 +16,7 @@
       {name: 'player2', id: 2}
     ];
 
-    beforeEach(module('frontend-players'));
+    beforeEach(module('frontendPlayers'));
 
     beforeEach(function () {
       inject(function (_crudResource_, _playersResource_,

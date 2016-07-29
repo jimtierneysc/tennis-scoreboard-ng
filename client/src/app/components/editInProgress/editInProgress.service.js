@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-components')
+    .module('frontendComponents')
     .service('editInProgress', Service);
 
   /** @ngInject */
@@ -19,7 +19,7 @@
 
     service.closeEditors = closeEditors;
     service.registerOnQueryState = registerOnQueryState;
-    service.registerOnCloseRejected = registerOnCloseRejected;
+    service.registerOnConfirmed = registerOnConfirmed;
     service.registerOnClose = registerOnClose;
 
     // Return a promise.  The promise will be rejected when there is an edit in-
@@ -35,10 +35,11 @@
         modalConfirm.confirm(state.labels).then(
           function () {
             emitClose(state);
+            emitConfirmed(state, true);
             deferredObject.resolve();
           },
           function () {
-            emitRejected(state);
+            emitConfirmed(state, false);
             deferredObject.reject();
           });
       else {
@@ -61,10 +62,11 @@
         return data;
       }
 
-      function emitRejected(state) {
-        $rootScope.$emit(REJECTED_EVENT, state);
-        if (state.autoFocus) {
-          autoFocus(state.autoFocus);
+      function emitConfirmed(state, resolved) {
+        $rootScope.$emit(CONFIRMED_EVENT, state, resolved);
+        if (!resolved && state.autoFocus && state.autoFocusScope) {
+          // Restore focus
+          autoFocus(state.autoFocusScope, state.autoFocus);
         }
       }
 
@@ -80,10 +82,10 @@
       registerEvent(scope, QUERY_EVENT, queryCallback);
     }
 
-    // Register a callback to inform a controller that a the prompt to
-    // close the current editor was rejected by the user.
-    function registerOnCloseRejected(scope, callback) {
-      registerEvent(scope, REJECTED_EVENT, callback);
+    // Register a callback to inform a controller that the user was prompted to 
+    // close the current editor.
+    function registerOnConfirmed(scope, callback) {
+      registerEvent(scope, CONFIRMED_EVENT, callback);
     }
 
     // Register a callback to inform a controller that it's editors should be closed.
@@ -97,7 +99,7 @@
     }
 
     var QUERY_EVENT = 'editing-in-progress:query';
-    var REJECTED_EVENT = 'editing-in-progress:rejected';
+    var CONFIRMED_EVENT = 'editing-in-progress:confirmed';
     var CLOSE_EVENT = 'editing-in-progress:close';
   }
 

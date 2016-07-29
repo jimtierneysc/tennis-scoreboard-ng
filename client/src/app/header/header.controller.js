@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-header')
+    .module('frontendHeader')
     .controller('HeaderController', Controller);
 
   /** @ngInject */
@@ -26,9 +26,9 @@
 
       authHelper(vm, $scope);
 
-      editInProgress.registerOnCloseRejected($scope,
-        function() {
-          // e.g.; close responsive drop down if statechange or logout is cancelled
+      // close responsive drop down if the user is prompted close editor
+      editInProgress.registerOnConfirmed($scope,
+        function () {
           vm.isCollapsed = true;
         });
     }
@@ -36,7 +36,7 @@
     function showLogin(open) {
       vm.createLoginForm = open;
       if (open)
-        autoFocus('username')
+        autoFocus($scope, 'username')
     }
 
     function showingLogin(showing) {

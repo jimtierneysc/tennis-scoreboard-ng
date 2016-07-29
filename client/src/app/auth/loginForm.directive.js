@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend-auth')
+    .module('frontendAuth')
     .directive('feLoginForm', directive);
 
   /** @ngInject */
@@ -64,24 +64,16 @@
       sessionResource.getSession().login(body,
         function (response) {
           endWait();
-          var updatedEntity = angular.copy(entity);
-          angular.merge(updatedEntity, response);
-          entityUpdated(updatedEntity);
+          
+          userCredentials.setCredentials(response.username, response.auth_token);
         },
         function (response) {
           $log.error('auth error ' + response.status + " " + response.statusText);
           endWait();
-          entityUpdateError(entity, response);
+          
+          vm.errors = vm.errorsOfResponse(response);
         }
       );
-    }
-
-    function entityUpdateError(entity, response) {
-      vm.errors = vm.errorsOfResponse(response);
-    }
-
-    function entityUpdated(entity) {
-      userCredentials.setCredentials(entity.username, entity.auth_token);
     }
 
   }

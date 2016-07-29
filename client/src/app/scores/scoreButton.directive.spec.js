@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('feScoreButton directive', function () {
+  describe('feScoreButton directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend-scores'));
+    beforeEach(module('frontendScores'));
     beforeEach(module(function ($provide) {
       $provide.factory('validateCredentials', function () {
         return function() { return false };

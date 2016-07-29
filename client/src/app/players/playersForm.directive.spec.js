@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  fdescribe('fePlayerForm directive', function () {
+  describe('fePlayerForm directive', function () {
     var compiledDirective;
     var scope;
     var okText;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend-players'));
+    beforeEach(module('frontendPlayers'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

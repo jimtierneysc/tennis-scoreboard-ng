@@ -1,21 +1,38 @@
 (function () {
   'use strict';
 
-  fdescribe('crudHelper service', function () {
+  describe('crudHelper service', function () {
 
     var mocks;
     var service;
     var mockResource;
+    var $q;
     var $rootScope;
+    var modalConfirm;
+    var $timeout;
+    var autoFocus;
 
+    beforeEach(module('frontendHelpers'));
 
-    beforeEach(module('frontend-helpers'));
+    beforeEach(function () {
+      module(function ($provide) {
+        autoFocus = jasmine.createSpy('autoFocus');
+        // Mock autoFocus service
+        $provide.factory('autoFocus', function () {
+          return autoFocus;
+        });
+      });
+    });
 
     beforeEach(function () {
 
-      inject(function (_crudHelper_, _$rootScope_) {
+      inject(function (_crudHelper_, _$rootScope_, _$q_, _modalConfirm_, _$timeout_) {
         service = _crudHelper_;
         $rootScope = _$rootScope_;
+        $q = _$q_;
+        modalConfirm = _modalConfirm_;
+        $timeout = _$timeout_;
+
       });
       mocks = mockFactories();
     });
@@ -32,6 +49,17 @@
       spyOn(crudResource, 'getResource').and.callFake(mockResource.getResource)
     });
 
+
+    function spyOnModalConfirm(resolve) {
+      spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(resolve));
+
+      function returnPromise(resolve) {
+        return function () {
+          return makePromise($q, resolve);
+        }
+      }
+    }
+
     describe('activate with error', function () {
       var scope;
       var vm = {};
@@ -44,7 +72,7 @@
           scope = $rootScope.$new();
         });
 
-        crudMethods = mocks.controllerMethods();
+        crudMethods = mocks.controllerMethods($q);
         crudOptions = mocks.controllerOptions(scope, {error: 'error'}, crudMethods, {});
 
         service(vm, crudOptions);
@@ -79,7 +107,7 @@
         ];
 
         originalEntities = angular.copy(entities);
-        crudMethods = mocks.controllerMethods();
+        crudMethods = mocks.controllerMethods($q);
         crudOptions = mocks.controllerOptions(scope, entities, crudMethods, {});
       });
 
@@ -110,7 +138,7 @@
         });
       });
 
-      describe('form', function () {
+      describe('forms', function () {
         var editForm;
         var newForm;
         beforeEach(function () {
@@ -123,6 +151,7 @@
 
         describe('edit show', function () {
           beforeEach(function () {
+            autoFocus.calls.reset();
             vm.showEditEntity(entities[0]);
             $rootScope.$digest(); // process promise
           });
@@ -133,6 +162,10 @@
 
           it('should set .editEntity', function () {
             expect(vm.editEntity).toEqual(entities[0]);
+          });
+
+          it('should have set focus', function () {
+            expect(autoFocus).toHaveBeenCalled();
           });
         });
 
@@ -155,16 +188,21 @@
 
         describe('new show', function () {
           beforeEach(function () {
+            autoFocus.calls.reset();
             vm.showNewEntity();
             $rootScope.$digest(); // process promise
           });
 
-          it('should be .showingNewEntity()', function () {
+          it('should be .showingNewEntity', function () {
             expect(vm.showingNewEntity).toBeTruthy;
           });
 
           it('should set .newEntity', function () {
             expect(vm.newEntity).toEqual({});
+          });
+
+          it('should have set focus', function () {
+            expect(autoFocus).toHaveBeenCalled();
           });
         });
 
@@ -182,6 +220,144 @@
 
           it('should call $setPristine()', function () {
             expect(newForm.$setPristine).toHaveBeenCalled();
+          });
+        });
+
+        function checkShowingNewForm() {
+
+          it('should be .showingNewEntity', function () {
+            expect(vm.showingNewEntity).toBeTruthy();
+          });
+
+          it('should not be .showingEditEntity()', function () {
+            expect(vm.showingEditEntity(entities[0])).toBeFalsy();
+          });
+        }
+
+        function checkShowingEditForm() {
+
+          it('should not be .showingNewEntity', function () {
+            expect(vm.showingNewEntity).toBeFalsy();
+          });
+
+          it('should be .showingEditEntity()', function () {
+            expect(vm.showingEditEntity(entities[0])).toBeTruthy();
+          });
+        }
+
+        describe('new close', function () {
+          beforeEach(function () {
+            vm.showNewEntity();
+            newForm.$pristine = true;
+            $rootScope.$digest(); // process promise
+          });
+
+          describe('pristine', function () {
+            beforeEach(function () {
+              spyOnModalConfirm(true);
+              vm.showEditEntity(entities[0]);
+              $rootScope.$digest(); // process promise
+            });
+
+            it('should not have confirmed close', function () {
+              expect(modalConfirm.confirm).not.toHaveBeenCalled();
+            });
+
+            checkShowingEditForm();
+          });
+
+          describe('not pristine resolve', function () {
+            beforeEach(function () {
+              spyOnModalConfirm(true);
+              newForm.$pristine = false;
+              vm.showEditEntity(entities[0]);
+              $rootScope.$digest(); // process promise
+            });
+
+            it('should have confirmed close', function () {
+              expect(modalConfirm.confirm).toHaveBeenCalled();
+            });
+
+            checkShowingEditForm();
+          });
+
+          describe('not pristine reject', function () {
+            beforeEach(function () {
+              spyOnModalConfirm(false);
+              newForm.$pristine = false;
+              autoFocus.calls.reset();
+              vm.showEditEntity(entities[0]);
+              $rootScope.$digest(); // process promise
+            });
+
+            it('should have confirmed close', function () {
+              expect(modalConfirm.confirm).toHaveBeenCalled();
+            });
+
+            it('should have restored focus', function () {
+              expect(autoFocus).toHaveBeenCalled();
+            });
+
+            checkShowingNewForm();
+          });
+        });
+
+
+        describe('edit close', function () {
+          beforeEach(function () {
+            vm.showEditEntity(entities[0]);
+            editForm.$pristine = true;
+            $rootScope.$digest(); // process promise
+          });
+
+          describe('pristine', function () {
+            beforeEach(function () {
+              spyOnModalConfirm(true);
+              vm.showNewEntity();
+              $rootScope.$digest(); // process promise
+            });
+
+            it('should not have confirmed close', function () {
+              expect(modalConfirm.confirm).not.toHaveBeenCalled();
+            });
+
+            checkShowingNewForm();
+          });
+
+          describe('not pristine resolve', function () {
+            beforeEach(function () {
+              spyOnModalConfirm(true);
+              editForm.$pristine = false;
+              vm.showNewEntity();
+              $rootScope.$digest(); // process promise
+            });
+
+            it('should have confirmed close', function () {
+              expect(modalConfirm.confirm).toHaveBeenCalled();
+            });
+
+            checkShowingNewForm();
+
+          });
+
+          describe('not pristine reject', function () {
+            beforeEach(function () {
+              spyOnModalConfirm(false);
+              editForm.$pristine = false;
+              autoFocus.calls.reset();
+              vm.showNewEntity();
+              $rootScope.$digest(); // process promise
+            });
+
+            it('should have confirmed close', function () {
+              expect(modalConfirm.confirm).toHaveBeenCalled();
+            });
+
+            checkShowingEditForm();
+
+            it('should have restored focus', function () {
+              expect(autoFocus).toHaveBeenCalled();
+            });
           });
         });
       });
@@ -330,15 +506,7 @@
       });
 
       describe('confirm delete', function () {
-        var modalConfirm;
-        var $q;
-        var $rootScope;
         beforeEach(function () {
-          inject(function (_modalConfirm_, _$q_, _$rootScope_) {
-            modalConfirm = _modalConfirm_;
-            $q = _$q_;
-            $rootScope = _$rootScope_;
-          });
           service(vm, crudOptions);
         });
 
@@ -358,20 +526,9 @@
           });
         });
 
-        function returnPromise(resolve) {
-          return function () {
-            var deferred = $q.defer();
-            if (resolve)
-              deferred.resolve();
-            else
-              deferred.reject();
-            return deferred.promise;
-          }
-        }
-
         describe('confirm delete', function () {
           beforeEach(function () {
-            spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(true));
+            spyOnModalConfirm(true);
             vm.trashEntity(entities[2], true);
             $rootScope.$digest(); // process promise
           });
@@ -387,7 +544,7 @@
 
         describe('confirm cancel', function () {
           beforeEach(function () {
-            spyOn(modalConfirm, 'confirm').and.callFake(returnPromise(false));
+            spyOnModalConfirm(false);
             vm.trashEntity(entities[2], true);
             $rootScope.$digest(); // process promise
           });
@@ -408,8 +565,8 @@
 
     return {
       controllerOptions: controllerOptions,
-      controllerMethods: function () {
-        return new ControllerMethods()
+      controllerMethods: function ($q) {
+        return new ControllerMethods($q)
       },
       mockResource: function () {
         return new MockResource();
@@ -437,49 +594,54 @@
     }
 
 
-    function ControllerMethods() {
+    function ControllerMethods(_$q_) {
 
       var _this = this;
+      var $q = _$q_;
 
-      _this.makeEntityBody = function (entity) {
+      this.makeEntityBody = function (entity) {
         return entity;
       };
 
-      _this.getEntityDisplayName = function (entity) {
+      this.getEntityDisplayName = function (entity) {
         return _this.getEntityDisplayNameImpl(entity);
       };
 
       // can spyOn
-      _this.getEntityDisplayNameImpl = function (entity) {
+      this.getEntityDisplayNameImpl = function (entity) {
         return entity.name;
       };
 
-      _this.beforeShowEntityForm = function () {
+      this.beforeShowNewEntity = function () {
+        return makePromise($q, true);
       };
 
-      _this.prepareToCreateEntity = function (entity) {
+      this.beforeShowEditEntity = function () {
+        return makePromise($q, true);
+      };
+
+      this.prepareToCreateEntity = function (entity) {
         return _this.prepareToCreateEntityImpl(entity);
       };
 
       // Can spyOn
-      _this.prepareToCreateEntityImpl = function (entity) {
+      this.prepareToCreateEntityImpl = function (entity) {
         return entity;
       };
 
-      _this.prepareToUpdateEntity = function (entity) {
+      this.prepareToUpdateEntity = function (entity) {
         return _this.prepareToUpdateEntityImpl(entity);
       };
 
       // Can spyOn
-      _this.prepareToUpdateEntityImpl = function (entity) {
+      this.prepareToUpdateEntityImpl = function (entity) {
         return entity;
       };
     }
 
     function MockForm() {
-      var _this = this;
 
-      _this.$setPristine = function () {
+      this.$setPristine = function () {
 
       }
     }
@@ -488,9 +650,9 @@
 
       var _this = this;
 
-      _this.respondWithError = false;
+      this.respondWithError = false;
 
-      _this.getResource = function () {
+      this.getResource = function () {
         var methods;
 
         if (!_this.respondWithError)
@@ -498,25 +660,25 @@
             save: saveResource,
             remove: removeResource,
             update: updateResource
-          }
+          };
         else
           methods = {
             save: saveResourceError,
             remove: removeResourceError,
             update: updateResourceError
-          }
+          };
 
         return methods;
 
       };
 
-      var firstErrorKey = 'an_error'
-      _this.firstErrorValue = 'blah blah';
-      _this.firstErrorPrefix = 'An error';
+      var firstErrorKey = 'an_error';
+      this.firstErrorValue = 'blah blah';
+      this.firstErrorPrefix = 'An error';
 
-      _this.errors = { data: {}};
-      _this.errors.data[firstErrorKey] = _this.firstErrorValue;
-      _this.errors.data['another'] = 'another error';
+      this.errors = {data: {}};
+      this.errors.data[firstErrorKey] = this.firstErrorValue;
+      this.errors.data['another'] = 'another error';
 
       var nextId = 999;
 
@@ -563,8 +725,8 @@
           var helper = new MatcherHelper(options);
           helper.checkFunction('prepareToCreateEntity');
           helper.checkFunction('prepareToUpdateEntity');
-          helper.checkFunction('beforeShowNewEntity', false);
-          helper.checkFunction('beforeShowEditEntity', false);
+          helper.checkFunction('beforeShowNewEntity');
+          helper.checkFunction('beforeShowEditEntity');
           helper.checkFunction('getEntityDisplayName');
           helper.checkFunction('makeEntityBody');
           helper.checkObject('errorsMap');
@@ -609,6 +771,13 @@
 
     jasmine.addMatchers(matchers);
   });
+
+  function makePromise($q, resolve) {
+    if (resolve)
+      return $q.when(0);
+    else
+      return $q.reject();
+  }
 })
 ();
 

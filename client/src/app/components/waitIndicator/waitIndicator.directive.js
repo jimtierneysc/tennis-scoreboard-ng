@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontend-components')
+    .module('frontendComponents')
     .directive('feWaitIndicator', directive);
 
   /** @ngInject */
@@ -40,11 +40,15 @@
 
     function changed() {
       if (waitIndicator.waiting()) {
-        $timeout(function () {
+        var timer = $timeout(function () {
             // Wait a second before showing wait indicator
             vm.waiting = waitIndicator.waiting();
           },
           1000);
+        $scope.$on('$destroy', function() {
+          $timeout.cancel(timer);}
+        );
+
       }
       else
         vm.waiting = false;

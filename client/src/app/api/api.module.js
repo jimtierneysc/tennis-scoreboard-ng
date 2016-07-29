@@ -1,6 +1,6 @@
 (function() {
   'use strict';
 
-  angular.module('frontend-api', []);
+  angular.module('frontendApi', []);
 
 })();

@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  fdescribe('loadingHelper service', function () {
+  describe('loadingHelper service', function () {
     var service;
 
-    beforeEach(module('frontend-helpers'));
+    beforeEach(module('frontendHelpers'));
 
     beforeEach(function () {
       inject(function (_loadingHelper_) {
@@ -35,15 +35,14 @@
 
       describe('loading failed', function () {
 
+        var response;
         beforeEach(function () {
-          var response = {statusText: STATUSTEXT};
+          response = {statusText: 'text', status: 500, data: 'message'};
           vm.updateLoadingFailed(response);
         });
 
-        var STATUSTEXT = 'abcd';
-
-        it('should have .loadingFailedMessage', function () {
-          expect(vm.loadingFailedMessage).toMatch(STATUSTEXT);
+        it('should have .loadingError', function () {
+          expect(vm.loadingError).toEqual(response);
         });
 
         it('should have failed', function () {
@@ -105,7 +104,7 @@
           helper.checkFunction('updateLoadingFailed');
           helper.checkBoolean('loading');
           helper.checkBoolean('loadingFailed');
-          helper.checkString('loadingFailedMessage', false);
+          helper.checkObject('loadingError');
 
           return helper.getResult();
         }

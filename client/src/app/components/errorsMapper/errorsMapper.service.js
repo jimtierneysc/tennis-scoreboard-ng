@@ -19,7 +19,7 @@
   'use strict';
 
   angular
-    .module('frontend-components')
+    .module('frontendComponents')
     .factory('errorsMapper', factory);
 
   /** @ngInject */

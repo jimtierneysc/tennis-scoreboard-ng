@@ -1,14 +1,15 @@
 <div class="container-fluid">
 
-  <div class="col-xs-12" ng-if="vm.loading">
-    {{vm.loadingMessage}}
+  <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+    <fe-loading-messages
+      error="vm.loadingError"
+      loading="vm.loading"
+      failed="vm.loadingFailed"
+    ></fe-loading-messages>
   </div>
 
-  <div class="col-xs-12" ng-if="vm.loadingFailed">
-    {{vm.loadingFailedMessage}}
-  </div>
 
-  <div ng-show="!vm.loading && !vm.loadingFailed">
+  <div ng-if="!vm.loading && !vm.loadingFailed">
     <div ng-if="vm.loggedIn" class="col-xs-12">
       <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
         <span class="glyphicon glyphicon-plus"></span> Player

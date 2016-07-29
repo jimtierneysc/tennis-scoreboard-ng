@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('ScoreboardController', function () {
+  describe('ScoreboardController', function () {
     var $controller;
     var $scope;
     var $rootScope;
@@ -62,7 +62,7 @@
       return result;
     }
 
-    beforeEach(module('frontend-scores'));
+    beforeEach(module('frontendScores'));
 
     beforeEach(function () {
 

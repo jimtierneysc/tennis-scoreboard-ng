@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-helpers')
+    .module('frontendHelpers')
     .factory('errorsHelper', factory);
 
   /** @ngInject */
@@ -19,16 +19,7 @@
     function activate(_vm_, errorsMap) {
       // Initialize controller
       var vm = _vm_;
-      var helper = new Helper(errorsMap);
-      vm.errorsOfResponse = helper.errorsOfResponse;
-    }
-
-    function Helper(_errorsMap_) {
-
-      var errorsMap = _errorsMap_;
-      var helper = this;
-
-      helper.errorsOfResponse = function(response) {
+      vm.errorsOfResponse = function (response) {
         var result;
         if (angular.isObject(response.data)) {
           var data = response.data;
@@ -41,6 +32,7 @@
         return result;
       };
     }
+
   }
 })();
 

@@ -1,11 +1,11 @@
 (function() {
   'use strict';
 
-  fdescribe('userResource service', function() {
+  describe('userResource service', function() {
     var service;
     var $httpBackend;
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
     // beforeEach(module(function (_$provide_) {
     //   _$provide_.value('userCredentials', {
     //     loadCredentials: jasmine.createSpy()

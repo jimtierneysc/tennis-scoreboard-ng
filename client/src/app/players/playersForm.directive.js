@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend-players')
+    .module('frontendPlayers')
     .directive('fePlayersForm', directiveFunc);
 
   /** @ngInject */

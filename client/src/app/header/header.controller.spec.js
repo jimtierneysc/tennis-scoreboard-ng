@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('HeaderController', function () {
+  describe('HeaderController', function () {
     var vm;
     var $scope;
     var $timeout;
     var $rootScope;
 
-    beforeEach(module('frontend-header'));
+    beforeEach(module('frontendHeader'));
 
     beforeEach(function () {
 
@@ -72,10 +72,17 @@
       expect(setFocus).toBeTruthy();
     });
 
-    it('should collapse when reject close edit', function () {
+    it('should collapse when resolve close edit in progress', function () {
       vm.isCollapsed = false;
-      $rootScope.$emit('editing-in-progress:rejected', {});
+      $rootScope.$emit('editing-in-progress:confirmed', {}, true);
       expect(vm.isCollapsed).toBeTruthy();
     });
+
+    it('should collapse when reject close edit in progress', function () {
+      vm.isCollapsed = false;
+      $rootScope.$emit('editing-in-progress:confirmed', {}, false);
+      expect(vm.isCollapsed).toBeTruthy();
+    });
+
   })
 })();

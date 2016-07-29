@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('userCredentials service', function () {
+  describe('userCredentials service', function () {
     var USERNAME = 'userCredentials username';
     var USERNAME2 = 'userCredentials username2';
     var TOKEN = 'userCredentials token';
@@ -10,7 +10,7 @@
     var $httpBackend;
     var path;
 
-    beforeEach(module('frontend-auth'));
+    beforeEach(module('frontendAuth'));
     afterEach(function () {
       localStorage.clear();
     });

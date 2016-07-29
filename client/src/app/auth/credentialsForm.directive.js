@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontend-auth')
+    .module('frontendAuth')
     .directive('feCredentialsForm', directiveFunc);
 
   /** @ngInject */

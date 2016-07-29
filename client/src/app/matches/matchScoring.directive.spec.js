@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  fdescribe('feMatchScoring directive', function () {
+  describe('feMatchScoring directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontend-matches'));
+    beforeEach(module('frontendMatches'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

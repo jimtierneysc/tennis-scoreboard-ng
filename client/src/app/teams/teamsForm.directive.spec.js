@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('feTeamsForm directive', function () {
+  describe('feTeamsForm directive', function () {
     var errors;
     var entity;
     var compiledDirective;
@@ -11,7 +11,7 @@
     var element;
     var players;
 
-    beforeEach(module('frontend-teams'));
+    beforeEach(module('frontendTeams'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

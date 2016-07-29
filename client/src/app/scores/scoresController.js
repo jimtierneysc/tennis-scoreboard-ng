@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontend-scores')
+    .module('frontendScores')
     .controller('ScoresController', Controller);
 
   /** @ngInject */

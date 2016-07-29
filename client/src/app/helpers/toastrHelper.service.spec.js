@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  fdescribe('toastrHelper service', function () {
+  describe('toastrHelper service', function () {
 
-    beforeEach(module('frontend-helpers'));
+    beforeEach(module('frontendHelpers'));
 
     var service;
 

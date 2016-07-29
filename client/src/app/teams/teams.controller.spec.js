@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('TeamsController', function () {
+  describe('TeamsController', function () {
     var $controller;
     var $scope;
     var $q;
@@ -14,7 +14,7 @@
       }
     ];
 
-    beforeEach(module('frontend-teams'));
+    beforeEach(module('frontendTeams'));
     beforeEach(function () {
 
       inject(function (_$controller_, _$q_, _$rootScope_) {
