@@ -1,4 +1,4 @@
-require 'play_match_helper'
+require 'match_player'
 
 # Tasks to manage tennis sample data
 namespace :db do
@@ -16,8 +16,8 @@ end
 # Create and clear tennis sample data, including
 # players, doubles teams, and matches
 class SampleData
-  ONE_TO_ZERO = PlayMatchHelper::FIRST_PLAYER_WIN
-  ZERO_TO_ONE = PlayMatchHelper::SECOND_PLAYER_WIN
+  ONE_TO_ZERO = MatchPlayer::FIRST_PLAYER_WIN
+  ZERO_TO_ONE = MatchPlayer::SECOND_PLAYER_WIN
   TWO_TO_TWO = ONE_TO_ZERO + ZERO_TO_ONE + ONE_TO_ZERO + ZERO_TO_ONE
   SIX_TO_SIX = TWO_TO_TWO * 3
   SEVEN_TO_SIX = SIX_TO_SIX + ONE_TO_ZERO
@@ -135,7 +135,7 @@ class SampleData
     add_opponents(m, match_data)
     m.save!
     scores = match_data[:scores]
-    PlayMatchHelper.play_match(m, scores) if scores
+    MatchPlayer.play_match(m, scores) if scores
     m.play_match! :complete_play if m.play_match? :complete_play
   end
 

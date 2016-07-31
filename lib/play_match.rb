@@ -1,7 +1,7 @@
-# PlayMatchHelper is used to generate sample scores into a match.
+# PlayMatch is used to play a match.
 # An array like this: %w(w l) indicate a one game win for the first opponent
 # and a one game loss for the second opponent.
-class PlayMatchHelper
+class PlayMatch
   FIRST_PLAYER_WIN = %w(w).freeze
   SECOND_PLAYER_WIN = %w(l).freeze
 
@@ -11,28 +11,70 @@ class PlayMatchHelper
 
   attr_reader :match
 
-  # Class method to play a match.
-  # The scores parameter is an array of an array of characters.
-  # Each element in the array represents a set.
-  def self.play_match(match, scores)
-    PlayMatchHelper.new(match).play(scores)
+  # Play a match.
+  def self.play_match(match, scores, options={})
+    PlayMatch.new(match).play(scores, options)
   end
 
-  # Class method to play a set.
-  # The scores parameter is an array of characters.
-  # examples:
-  # %w(w w w w w w)  # complete set
-  # %w(w l l w)  # incomplete set
-  def self.play_match_set(match, scores)
-    PlayMatchHelper.new(match).play_set(scores)
+  # Create an array of set scores that may be passed to #play
+  def self.convert_scores(set_scores)
+    set_scores.map { |pair| convert_set_score(pair[0], pair[1]) }
   end
+
+  # Play a match
+  # === options
+  # [complete_set: true]
+  # [complete_match: true]
+  def play(scores, options={})
+    match.play_match! :start_play
+    # apply_first_servers
+    scores.each { |v| play_set(v, options) }
+    unless options[:complete_match] == false
+      match.play_match! :complete_play if match.play_match?(:complete_play)
+    end
+  end
+
+  # Play a set
+  # === options
+  # [complete_set: true]
+  #
+  def play_set(scores, options={})
+    start_set
+    play_games(scores)
+    complete_set unless options[:complete_set] == false
+  end
+
+  def start_play
+    match.save!
+    if match.play_match? :start_play
+      match.play_match! :start_play
+    end
+  end
+
+  def start_first_game
+    start_play
+    if match.play_match?(:start_game) && no_games?
+      if match.doubles
+        match.play_match! :start_game, player: match.first_team.first_player
+      else
+        match.play_match! :start_game, player: match.first_player
+      end
+    end
+  end
+
+  def start_set_game
+    match.play_match! :start_set
+    match.play_match! :start_game
+  end
+
+  private
 
   # Create an array of "w" and "l" that may be passed to #play_set
   # Parameter values first_wins: 6, second_wins: 1 would return
   # %w(w l w w w w w).
   # This method is convenient for creating a score when the
   # exact order of wins and losses in not important.
-  def self.make_set_score(first_wins, second_wins)
+  def self.convert_set_score(first_wins, second_wins)
     score = []
     # mix wins and losses so that set is not won prematurely
     min = [first_wins, second_wins].min
@@ -47,27 +89,9 @@ class PlayMatchHelper
     score.flatten
   end
 
-  # Create an array of set scores that may be passed to #play
-  def self.make_match_score(set_scores)
-    set_scores.map { |pair| make_set_score(pair[0], pair[1]) }
+  def no_games?
+    match.match_sets.count == 1 && match.match_sets[0].set_games.count == 0
   end
-
-  # Play a match
-  def play(scores)
-    match.play_match! :start_play
-    # apply_first_servers
-    scores.each { |v| play_set(v) }
-    match.play_match! :complete_play if match.play_match?(:complete_play)
-  end
-
-  # Play a set
-  def play_set(scores)
-    start_set
-    play_games(scores)
-    complete_set
-  end
-
-  private
 
   def start_set
     if match.play_match? :start_match_tiebreaker
@@ -100,7 +124,7 @@ class PlayMatchHelper
     if match.play_match? :start_game
       play_normal_game winner
     elsif match.play_match? :win_match_tiebreaker
-      match.play_match! :win_match_tiebreaker, winner
+      match.play_match! :win_match_tiebreaker, opponent: winner
     elsif match.play_match? :start_tiebreaker
       play_tiebreaker winner
     else
@@ -119,7 +143,7 @@ class PlayMatchHelper
       if match.first_player_server.nil?
         param = match.first_team.first_player
       elsif match.second_player_server.nil?
-        param = match.second_team.second_player
+        param = match.second_team.first_player
       end
     else
       if match.first_player_server.nil?
