@@ -17,11 +17,13 @@
       scope = $rootScope.$new();
       scope.ascores = scores;
       scope.aloggedIn = true;
+      scope.aupdating = true;
       scope.aview = view;
 
       var html = ('<fe-score-table ' +
       'scores="ascores" ' +
-      'loggedin="aloggedIn" ' +
+      'updating="aupdating" ' +
+      'logged-in="aloggedIn" ' +
       'view="aview" ' +
       '></fe-score-table>');
 
@@ -34,17 +36,21 @@
 
     describe('isolated scope', function () {
 
-        it('should have .scores', function () {
-          expect(isolatedScope.scores).toBe(scope.ascores);
-        });
-      
-        it('should have .loggedin', function () {
-          expect(isolatedScope.loggedin).toEqual(scope.aloggedIn);
-        });
-      
-        it('should have .view', function () {
-          expect(isolatedScope.view).toBe(scope.aview);
-        });
+      it('should have .scores', function () {
+        expect(isolatedScope.scores).toBe(scope.ascores);
+      });
+
+      it('should have .loggedIn', function () {
+        expect(isolatedScope.loggedIn).toEqual(scope.aloggedIn);
+      });
+
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
+      });
+
+      it('should have .updating', function () {
+        expect(isolatedScope.updating).toBe(scope.aupdating);
+      });
 
       // TODO: Test elements
 

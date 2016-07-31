@@ -21,9 +21,8 @@
       restrict: 'E',
       templateUrl: 'app/scores/scoreCommands.html',
       scope: {
-        scores: '=',
-        view: '=',
-        loggedin: '='
+        vm: '=',
+        loggedIn: '='
       }
 
     };

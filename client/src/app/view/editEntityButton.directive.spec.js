@@ -12,14 +12,16 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.acanmodify = true;
+      scope.ashow = true;
+      scope.adisable = true;
       scope.aedit = jasmine.createSpy('onSubmit');
       scope.aentity = {name: 'abc'};
 
       var html = ('<fe-edit-entity-button ' +
       'edit-entity="aedit()" ' +
       'entity="aentity" ' +
-      'can-modify="acanmodify" '  +
+      'disable="adisable" ' +
+      'show="ashow" '  +
       '></fe-edit-entity-button>');
 
       element = angular.element(html);
@@ -36,8 +38,12 @@
         expect(scope.aedit).toHaveBeenCalled();
       });
 
-      it('should have .canModify', function () {
-        expect(isolatedScope.canModify).toBe(true);
+      it('should have .disable', function () {
+        expect(isolatedScope.disable).toBe(scope.adisable);
+      });
+
+      it('should have .show', function () {
+        expect(isolatedScope.disable).toBe(scope.ashow);
       });
 
       it('should have .entity', function () {

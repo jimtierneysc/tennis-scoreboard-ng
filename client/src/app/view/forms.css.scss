@@ -1,0 +1,53 @@
+//Animate ng-if toggle of forms
+
+.form-animate-in-if.ng-enter,
+.form-animate-if.ng-enter
+{
+  //ease in
+  transition:all cubic-bezier(0.42, 0.0, 1.0, 1.0) .5s;
+}
+
+.form-animate-if.ng-leave {
+  // ease out
+  transition:all cubic-bezier(0.0, 0.0, 0.58, 1.0) .2s;
+}
+
+.form-animate-in-if.ng-enter,
+.form-animate-if.ng-enter,
+.form-animate-if.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.form-animate-in-if.ng-enter.ng-enter-active,
+.form-animate-if.ng-enter.ng-enter-active,
+.form-animate-if.ng-leave {
+  opacity:1;
+}
+
+// Animate insert and delete of list item
+.item-animate-repeat.ng-enter {
+  //ease in
+  transition:0.5s linear all;
+}
+
+//.repeat-item.ng-enter,
+.item-animate-repeat.ng-leave {
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+}
+
+//.repeat-item.ng-enter,
+.item-animate-repeat.ng-enter,
+.item-animate-repeat.ng-leave.ng-leave-active {
+  opacity:0;
+  //height: 0px;
+}
+
+.item-animate-repeat.ng-enter.ng-enter-active,
+.item-animate-repeat.ng-leave {
+  opacity:1;
+  //height: 30px;
+}
+
+
+

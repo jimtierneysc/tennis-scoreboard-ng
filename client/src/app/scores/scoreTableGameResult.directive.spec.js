@@ -11,9 +11,6 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var game = {
-      };
-
       scope = $rootScope.$new();
       scope.awinner = true;
       scope.aleftmost = true;

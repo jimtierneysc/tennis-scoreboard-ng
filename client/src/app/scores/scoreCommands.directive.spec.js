@@ -11,18 +11,18 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var scores = {};
-      var view = {};
+      var scores = {sets:[]};
+      var view = {show: true};
 
       scope = $rootScope.$new();
-      scope.ascores = scores;
+      scope.scores = scores;
+      scope.view = view;
+      scope.avm = {scores: scope.scores, view: scope.view};
       scope.aloggedIn = true;
-      scope.aview = view;
 
       var html = ('<fe-score-commands ' +
-      'scores="ascores" ' +
-      'view="aview" ' +
-      'loggedin="aloggedIn" ' +
+      'vm="avm" ' +
+      'logged-in="aloggedIn" ' +
       '></fe-score-commands>');
 
       element = angular.element(html);
@@ -33,20 +33,20 @@
     }));
 
     describe('isolated scope', function () {
-      it('should have .scores', function () {
-        expect(isolatedScope.scores).toBe(scope.ascores);
+      it('should have .vm', function () {
+        expect(isolatedScope.vm).not.toBeNull();
       });
 
-      it('should have .loggedin', function () {
-        expect(isolatedScope.loggedin).toEqual(scope.aloggedIn);
+      it('should have .vm.scores', function () {
+        expect(isolatedScope.vm.scores).toBe(scope.scores);
       });
 
-      it('should have .scores', function () {
-        expect(isolatedScope.scores).toBe(scope.ascores);
+      it('should have .loggedIn', function () {
+        expect(isolatedScope.loggedIn).toBe(scope.aloggedIn);
       });
 
-      it('should have .view', function () {
-        expect(isolatedScope.view).toBe(scope.aview);
+      it('should have .vm.view', function () {
+        expect(isolatedScope.vm.view).toBe(scope.view);
       });
 
       // TODO: Test elements

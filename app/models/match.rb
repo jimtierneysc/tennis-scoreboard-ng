@@ -94,11 +94,15 @@ class Match < ActiveRecord::Base
         version = version.to_i if version
         if version && version != self.play_version
           raise Exceptions::InvalidOperation,
-                version > self.play_version ? 'Client version is ahead' : 'Client version is behind'
+                "Unable to #{action.to_s.tr('_', ' ')}. " +
+                  if version < self.play_version
+                    'Client is out of sync.'
+                  else
+                    'Unexpected match version number.'
+                  end
         end
         method[:exec].call options
-        # Version number detects when client has stale score
-        self.play_version = next_version_number
+        # Version number is used to detect when client has is out of sync
         self.save!
       end
     else
@@ -266,5 +270,5 @@ class Match < ActiveRecord::Base
     @play_methods ||= PlayMethods.new(self)
   end
 
-   include MatchPlayHelpers
+  include MatchPlayHelpers
 end

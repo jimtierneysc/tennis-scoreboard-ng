@@ -1,6 +1,6 @@
 <!-- "form" is member of controller-->
 <form name="form"
-      ng-submit="submit()" novalidate>
+      ng-submit="submit()" novalidate ng-keyup="$event.keyCode == 27 && cancel()">
   <div class="form-group" ng-class="{ 'has-error': errors.doubles }">
     <!--Singles-->
     <div class="radio">
@@ -40,7 +40,8 @@
   </div>
   <div ng-if="!entity.doubles">
     <!--First Player-->
-    <div class="form-group" ng-class="{ 'has-error': errors.first_player}">
+    <div class="form-group" ng-class="{ 'has-error': errors.first_player}"
+         ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
 
       <label for="first_player" class="control-label sr-only">First Player</label>
 
@@ -60,7 +61,8 @@
 
     </div>
     <!--Second player-->
-    <div class="form-group" ng-class="{ 'has-error': errors.second_player }">
+    <div class="form-group" ng-class="{ 'has-error': errors.second_player }"
+         ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_player" class="control-label sr-only">Second Player</label>
       <ui-select ng-model="entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
                  ng-required="true">
@@ -84,7 +86,8 @@
   <!--TODO: Team select lists should display player names-->
   <div ng-if="entity.doubles">
     <!--First Team-->
-    <div class="form-group" ng-class="{ 'has-error': errors.first_team }">
+    <div class="form-group" ng-class="{ 'has-error': errors.first_team }"
+         ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
 
       <label for="first_team" class="control-label sr-only">First Team</label>
 
@@ -105,7 +108,8 @@
     </div>
 
     <!--Second team-->
-    <div class="form-group" ng-class="{ 'has-error': errors.second_team }">
+    <div class="form-group" ng-class="{ 'has-error': errors.second_team }"
+         ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_team" class="control-label sr-only">Second Player</label>
       <ui-select ng-model="entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
                  ng-required="true">

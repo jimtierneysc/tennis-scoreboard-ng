@@ -21,10 +21,12 @@
       scope.ascores = scores;
       scope.aparam = 'foo';
       scope.atitle = 'bar';
+      scope.aupdating = true;
 
       var html = ('<fe-score-button ' +
       'scores="ascores" ' +
       'param="aparam" ' +
+      'updating="aupdating" ' +
       'title="atitle" ' +
       '></fe-score-button>');
 
@@ -47,6 +49,10 @@
 
       it('should have .title', function () {
         expect(isolatedScope.title).toEqual(scope.atitle);
+      });
+
+      it('should have .updating', function () {
+        expect(isolatedScope.updating).toEqual(scope.aupdating);
       });
 
       // TODO: Test elements

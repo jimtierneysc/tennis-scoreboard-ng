@@ -23,7 +23,8 @@
       scope: {
         scores: '=',
         view: '=',
-        loggedin: '='
+        updating: '=',
+        loggedIn: '='
       }
     };
 

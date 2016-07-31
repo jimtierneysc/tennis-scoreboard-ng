@@ -1,6 +1,6 @@
 <!-- form is member of controller-->
 <form name="form"
-      ng-submit="submit()" novalidate>
+      ng-submit="submit()" novalidate ng-keyup="$event.keyCode == 27 && cancel()">
   <div class="form-group" ng-class="{ 'has-error': errors.name }">
 
     <!--Team Name-->
@@ -16,12 +16,11 @@
       </div>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error': errors.first_player }">
+  <div class="form-group" ng-class="{ 'has-error': errors.first_player }"
+       ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
 
     <label for="first_player" class="control-label sr-only" >First Player</label>
 
-    first: {{entity.select_first_player}}
-    entity: {{entity}}
     <ui-select ng-model="entity.select_first_player" theme="bootstrap" id="first_player" name="first_player" ng-required="true">
       <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="item in playersList.list | filter: $select.search">
@@ -36,7 +35,8 @@
 
 
   </div>
-  <div class="form-group" ng-class="{ 'has-error': errors.second_player }">
+  <div class="form-group" ng-class="{ 'has-error': errors.second_player }"
+       ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
     <!--Second player-->
     <label for="second_player" class="control-label sr-only" >Second Player</label>
     <ui-select ng-model="entity.select_second_player" theme="bootstrap" id="second_player" name="second_player" ng-required="true">

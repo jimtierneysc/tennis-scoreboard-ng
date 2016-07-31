@@ -1,60 +1,82 @@
 <div class="container-fluid">
 
-  <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
-    <fe-loading-messages
-      error="vm.loadingError"
-      loading="vm.loading"
-      failed="vm.loadingFailed"
-    ></fe-loading-messages>
-  </div>
-
-  <div ng-if="!vm.loading && !vm.loadingFailed">
-    <div ng-if="vm.loggedIn" class="col-xs-12">
-      <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
-        <span class="glyphicon glyphicon-plus"></span> Match
-      </button>
+  <div class="row">
+    <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+      <fe-loading-messages
+        error="vm.loadingError"
+        loading="vm.loading"
+        failed="vm.loadingFailed"
+      ></fe-loading-messages>
     </div>
 
-    <div class="col-xs-12">
-      <ol class="list-group">
-        <li class="list-group-item" ng-if="vm.showingNewEntity">
-          <fe-matches-form
-            form="vm.newEntityForm"
-            errors="vm.entityCreateErrors"
-            cancel="vm.hideNewEntity()"
-            submit="vm.submitNewEntity()"
-            entity="vm.newEntity"
-            ok="Add"
-            players-list="vm.playerOptionsList"
-            teams-list="vm.teamOptionsList"
-          >
-          </fe-matches-form>
+    <div ng-if="!vm.loading && !vm.loadingFailed">
+      <div ng-if="vm.loggedIn" class="col-xs-12">
+        <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
+          <span class="glyphicon glyphicon-plus"></span> Match
+        </button>
+      </div>
+
+      <div class="col-xs-12" ng-if="vm.entitys.length == 0 && !vm.showingNewEntity">
+        <fe-empty-list-message
+          logged-in="vm.loggedIn"
+          kind="matches"
+        ></fe-empty-list-message>
+      </div>
+
+      <div class="col-xs-12">
+        <ol class="list-group">
+          <!--New match-->
+          <li class="list-group-item form-animate-if" ng-if="vm.showingNewEntity">
+            <div class="row">
+              <div class="col-xs-10 ">
+                <fe-matches-form
+                  form="vm.newEntityForm"
+                  errors="vm.entityCreateErrors"
+                  cancel="vm.hideNewEntity()"
+                  submit="vm.submitNewEntity()"
+                  entity="vm.newEntity"
+                  ok="Add"
+                  players-list="vm.playerOptionsList"
+                  teams-list="vm.teamOptionsList"
+                >
+                </fe-matches-form>
+              </div>
+            </div>
+          </li>
 
 
-        </li>
-
-        <!--Team details-->
-        <li class="list-group-item clearfix" ng-repeat="entity in vm.entitys">
+          <!--Team details-->
+          <li class="list-group-item clearfix item-animate-repeat" ng-repeat="entity in vm.entitys">
 
 
-          <div ng-hide="vm.showingEditEntity(entity)">
             <div class="col-xs-10">
-              <div class="h4">
+              <div ng-hide="vm.showingEditEntity(entity)">
+                <div class="h4">
                 <span ng-if="entity.title">
                 {{ entity.title}}
                   </span>
                <span ng-if="!entity.title">
                  (untitled)
                   </span>
+                </div>
+                <fe-match-details
+                  match="entity"
+                ></fe-match-details>
               </div>
-              <div class="match-detail">
-                <fe-match-opponents match="entity"></fe-match-opponents>
-              </div>
-              <div class="match-detail">
-                <fe-match-scoring match="entity"></fe-match-scoring>
-              </div>
-              <div class="match-detail">
-                <fe-match-status match="entity"></fe-match-status>
+
+              <!--Use ng-if so there won't be bunch of forms in the DOM-->
+              <div ng-if="vm.showingEditEntity(entity)" class="form-animate-if">
+                <fe-matches-form
+                  form="vm.editEntityForm"
+                  errors="vm.entityUpdateErrors"
+                  cancel="vm.hideEditEntity()"
+                  submit="vm.submitEditEntity()"
+                  entity="vm.editEntity"
+                  ok="Save"
+                  players-list="vm.playerOptionsList"
+                  teams-list="vm.teamOptionsList"
+                >
+                </fe-matches-form>
               </div>
             </div>
 
@@ -63,13 +85,14 @@
               <div class="pull-right">
                 <fe-delete-entity-button
                   entity="entity"
-                  can-modify="vm.loggedIn"
+                  show="vm.loggedIn"
                   delete-entity="vm.trashEntity(entity)"
                 >
                 </fe-delete-entity-button>
                 <fe-edit-entity-button
                   entity="entity"
-                  can-modify="vm.loggedIn"
+                  show="vm.loggedIn"
+                  disable="vm.showingEditEntity(entity)"
                   edit-entity="vm.showEditEntity(entity)"
                 >
                 </fe-edit-entity-button>
@@ -79,23 +102,9 @@
 
               </div>
             </div>
-          </div>
+      </div>
 
-          <!--Use ng-if so there won't be bunch of forms in the DOM-->
-          <div ng-if="vm.showingEditEntity(entity)">
-            <fe-matches-form
-              form="vm.editEntityForm"
-              errors="vm.entityUpdateErrors"
-              cancel="vm.hideEditEntity()"
-              submit="vm.submitEditEntity()"
-              entity="vm.editEntity"
-              ok="Save"
-              players-list="vm.playerOptionsList"
-              teams-list="vm.teamOptionsList"
-            >
-            </fe-matches-form>
-          </div>
-        </li>
+      </li>
       </ol>
 
     </div>

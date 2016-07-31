@@ -24,6 +24,7 @@
       scope: {
         scores: '=',
         param: '=',
+        updating: '=',
         title: '='
       }
     };

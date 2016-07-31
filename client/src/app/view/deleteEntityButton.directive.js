@@ -20,7 +20,7 @@
       templateUrl: 'app/view/deleteEntityButton.html',
       scope: {
         entity: '=',
-        canModify: '=',
+        show: '=',
         deleteEntity: '&'
       }
     };

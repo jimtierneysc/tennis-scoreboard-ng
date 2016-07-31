@@ -1,40 +1,48 @@
 <!--Buttons to update match score-->
-<div ng-if="scores.actions.win_game">
-  <button class="btn btn-success match-btn" ng-click="scores.update('win_game', param)">Win Game {{title}}</button>
+<div ng-if="scores.actions.win_game" ng-disable="true">
+  <button ng-disabled="updating" class="btn btn-success match-btn" ng-click="scores.update('win_game', param)">Win Game
+    {{title}}
+  </button>
 </div>
 <div ng-if="scores.actions.win_tiebreaker">
-  <button class="btn btn-success match-btn" ng-click="scores.update('win_tiebreaker', param)">Win Tiebreak</button>
+  <button ng-disabled="updating"  class="btn btn-success match-btn" ng-click="scores.update('win_tiebreaker', param)">Win Tiebreak</button>
 </div>
 <div ng-if="scores.actions.win_match_tiebreaker">
-  <button class="btn btn-success match-btn" ng-click="scores.update('win_match_tiebreaker', param)">Win Tiebreak</button>
+  <button ng-disabled="updating"  class="btn btn-success match-btn" ng-click="scores.update('win_match_tiebreaker', param)">Win Tiebreak
+  </button>
 </div>
 <div ng-if="scores.actions.complete_set_play">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('complete_set_play')">Complete {{title}} Set</button>
+  <button ng-disabled="updating"  ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('complete_set_play')">Complete {{title}} Set
+  </button>
 </div>
 <div ng-if="scores.actions.complete_match_tiebreaker">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('complete_match_tiebreaker')">Complete Tiebreak Set</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('complete_match_tiebreaker')">Complete Tiebreak
+    Set
+  </button>
 </div>
 <div ng-if="scores.actions.start_set">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('start_set')">Start {{title}} Set</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_set')">Start {{title}} Set</button>
 </div>
 <div ng-if="scores.actions.start_game">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('start_game', param)">Start Game {{title}}</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_game', param)">Start Game {{title}}
+  </button>
 </div>
 <div ng-if="scores.actions.start_tiebreaker">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('start_tiebreaker')">Start Tiebreak</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_tiebreaker')">Start Tiebreak</button>
 </div>
 <div ng-if="scores.actions.start_match_tiebreaker">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('start_match_tiebreaker')">Start Tiebreak Set</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_match_tiebreaker')">Start Tiebreak Set
+  </button>
 </div>
 <div ng-if="scores.actions.start_set_tiebreaker">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('start_set_tiebreaker')">Start Tiebreak</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_set_tiebreaker')">Start Tiebreak</button>
 </div>
 <div ng-if="scores.state == 'complete' && scores.actions.restart_play">
-  <button class="btn btn-danger match-btn" ng-click="scores.update('restart_play')">Start Over</button>
+  <button ng-disabled="updating"  class="btn btn-danger match-btn" ng-click="scores.update('restart_play')">Start Over</button>
 </div>
 <div ng-if="scores.state == 'not_started' && scores.actions.start_play">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('start_play')">Start Playing</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_play')">Start Playing</button>
 </div>
 <div ng-if="scores.state == 'finished' && scores.actions.complete_play">
-  <button class="btn btn-primary match-btn" ng-click="scores.update('complete_play')">Complete Match</button>
+  <button ng-disabled="updating"  class="btn btn-primary match-btn" ng-click="scores.update('complete_play')">Complete Match</button>
 </div>

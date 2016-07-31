@@ -9,24 +9,29 @@
   </div>
 
   <div ng-if="!vm.loading && !vm.loadingFailed">
-    <div class="play-table">
-      <div ng-if="vm.scoreboard.doubles && vm.scoreboard.first_team.name != null && vm.scoreboard.second_team.name != null" class="match-detail">
-        "{{vm.scoreboard.first_team.name}}" vs. "{{vm.scoreboard.second_team.name}}"
-      </div>
-      <div class="match-detail">
-        <fe-match-scoring match="vm.scoreboard"></fe-match-scoring>
-      </div>
-      <div class="match-detail">
-        <fe-match-status match="vm.scoreboard"></fe-match-status>
-      </div>
+
+    <div class="crow ccol-xs-12" ng-if="vm.view.showDetails">
+      <div class="panel panel-default play-table">
+          <!--<div class="col-xs-10">-->
+
+          <div class="panel-body">
+            <fe-match-details
+              match="vm.scoreboard"
+            ></fe-match-details>
+          </div>
+
+        </div>
+
     </div>
 
-    <div class="play-table">
-      <fe-score-commands scores="vm.scoreboard" view="vm.view" loggedin="vm.loggedIn"></fe-score-commands>
-    </div>
 
-    <div>
-      <fe-score-table scores="vm.scoreboard" view="vm.view" loggedin="vm.loggedIn"></fe-score-table>
+    <div class="crow ccol-xs-12">
+      <fe-score-table
+        scores="vm.scoreboard"
+        view="vm.view"
+        logged-in="vm.loggedIn"
+        updating="vm.updatingScore"
+      ></fe-score-table>
     </div>
 
   </div>

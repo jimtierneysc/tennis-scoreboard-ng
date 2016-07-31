@@ -25,6 +25,16 @@
       vm.id = $stateParams.id;
       vm.scoreboard = {};
       vm.view = new View();
+      vm.updatingScore = false;
+
+      // Set ScoresController.vmScoreboard.  Needed by <fe-score-commands>.
+      var scoresController = $scope.$parent;
+      var vmScoreboard = {view: vm.view, scores: vm.scoreboard};
+      scoresController.vmScoreboard = vmScoreboard;
+      $scope.$on('$destroy', function() {
+        if (scoresController.vmScoreboard == vmScoreboard)
+          scoresController.vmScoreboard = null
+      });
 
       authHelper(vm, $scope);
       loadingHelper(vm);
@@ -66,8 +76,11 @@
     }
 
     function getScoreBoardSucceeded(response) {
-      vm.scoreboard = response;
-      prepareScoreBoard(vm.scoreboard);
+      var scoreboard = {};
+      angular.copy(response, scoreboard);
+      // vm.scoreboard = response;
+      prepareScoreBoard(scoreboard);
+      angular.copy(scoreboard, vm.scoreboard);
       vm.updateLoadingCompleted();
     }
 
@@ -80,14 +93,17 @@
       var key = {id: vm.id};
       var body = makeUpdateBody(action, params);
       var endWait = waitIndicator.beginWait();
+      vm.updatingScore = true;
       crudResource.getResource(scoreboardResource).save(key, body,
         function (response) {
           endWait();
+          vm.updatingScore = false;
           scoreUpdated(response);
         },
         function (response) {
           $log.error('update error ' + response.status + " " + response.statusText);
           endWait();
+          vm.updatingScore = false;
           scoreUpdateError(body, response);
         }
       );
@@ -95,6 +111,8 @@
 
     function makeUpdateBody(action, id) {
       var params = {};
+      if (vm.scoreboard.version)
+        params.version = vm.scoreboard.version;
       if (action == 'start_game') {
         if (id) {
           // player to serve next
@@ -116,15 +134,18 @@
     }
 
     function scoreUpdated(response) {
-      angular.copy(response, vm.scoreboard);
-      if (vm.scoreboard.errors && !angular.equals({}, vm.scoreboard.errors)) {
-        var errors = errorsMapper(vm.scoreboard.errors, null);
+      var scoreboard = {}
+      angular.copy(response, scoreboard);
+      // angular.copy(response, vm.scoreboard);
+      if (scoreboard.errors && !angular.equals({}, scoreboard.errors)) {
+        var errors = errorsMapper(scoreboard.errors, null);
         var message = 'Unable to update score';
         if (angular.isDefined(errors.other[0]))
           message = errors.other[0];
         vm.showToast(message)
       }
-      prepareScoreBoard(vm.scoreboard);
+      prepareScoreBoard(scoreboard);
+      angular.copy(scoreboard, vm.scoreboard);
     }
 
     function scoreUpdateError(body, response) {
@@ -140,9 +161,11 @@
       _this.changed = storeView;
       _this.showGames = showGames;
       _this.keepingScore = keepingScore;
+      _this.toggleShowDetails = toggleShowDetails;
       _this.localDataName = DATANAME;
       _this.expand = "collapse";
       _this.keepScore = false;
+      _this.showDetails = false;
       loadView();
 
       function showGames(set) {  // eslint-disable-line
@@ -159,11 +182,16 @@
         return vm.loggedIn && _this.keepScore;
       }
 
-       function viewData() {
+      function toggleShowDetails() {
+        _this.showDetails = !_this.showDetails
+      }
+
+      function viewData() {
         return {
           view: {
             expand: _this.expand,
-            keepScore: _this.keepScore
+            keepScore: _this.keepScore,
+            showDetails: _this.showDetails
           }
         }
       }
@@ -177,6 +205,7 @@
         if (data.view) {
           _this.expand = data.view.expand;
           _this.keepScore = data.view.keepScore;
+          _this.showDetails = data.view.showDetails;
         }
       }
     }
