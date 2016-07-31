@@ -1,0 +1,7 @@
+<span ng-if="team.name != null">
+  <strong>{{team.name}}</strong>
+</span>
+<span ng-if="team.name == null">
+  <strong>{{team.first_player.name}}</strong> and
+  <strong>{{team.second_player.name}}</strong>
+</span>
