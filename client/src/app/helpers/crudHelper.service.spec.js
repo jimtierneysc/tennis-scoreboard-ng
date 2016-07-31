@@ -9,7 +9,6 @@
     var $q;
     var $rootScope;
     var modalConfirm;
-    var $timeout;
     var autoFocus;
 
     beforeEach(module('frontendHelpers'));
@@ -26,12 +25,11 @@
 
     beforeEach(function () {
 
-      inject(function (_crudHelper_, _$rootScope_, _$q_, _modalConfirm_, _$timeout_) {
+      inject(function (_crudHelper_, _$rootScope_, _$q_, _modalConfirm_) {
         service = _crudHelper_;
         $rootScope = _$rootScope_;
         $q = _$q_;
         modalConfirm = _modalConfirm_;
-        $timeout = _$timeout_;
 
       });
       mocks = mockFactories();

@@ -100,7 +100,7 @@
 
       };
 
-      this.unauthorized = function (event) {
+      this.unauthorized = function () {
         vm.showToast('Please login again.', "Authentication no longer valid");
       };
 

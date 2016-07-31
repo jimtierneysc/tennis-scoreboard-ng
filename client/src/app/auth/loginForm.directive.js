@@ -50,10 +50,10 @@
     }
 
     function submit() {
-      updateEntity(vm.entity);
+      updateEntity();
     }
 
-    function updateEntity(entity) {
+    function updateEntity() {
       var body = {
         session: {
           username: vm.entity.username,

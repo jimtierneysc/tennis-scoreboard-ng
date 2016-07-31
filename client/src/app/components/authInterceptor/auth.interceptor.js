@@ -25,7 +25,7 @@
         unauthorized();
       }
       return $q.reject(response);
-    };
+    }
 
     var EVENT_NAME = 'auth-interceptor:unauthorized';
 
