@@ -1,6 +1,5 @@
 module MatchPlayHelpers
 
-
   class PlayMethods
 
     def initialize(match)
@@ -809,16 +808,18 @@ module MatchPlayHelpers
 
     # Once the match has started, some attributes must not be changed.
     def find_invalid_changes
-      doubles_var = match.doubles
-      if match.first_team.id != match.first_team_id_was
-        yield doubles_var ? :first_team : :first_player
+      if match.started && !match.started_changed?
+        doubles_var = match.doubles
+        if match.first_team_id_changed?
+          yield doubles_var ? :first_team : :first_player
+        end
+        if match.second_team_id_changed?
+          yield doubles_var ? :second_team : :second_player
+        end
+        yield :doubles if match.doubles_changed?
+        yield :scoring if match.scoring_changed?
+        find_invalid_change_servers { |sym| yield sym }
       end
-      if match.second_team.id != match.second_team_id_was
-        yield doubles_var ? :second_team : :second_player
-      end
-      yield :doubles if match.doubles_changed?
-      yield :scoring if match.scoring_changed?
-      find_invalid_change_servers { |sym| yield sym }
     end
 
     def find_invalid_change_servers

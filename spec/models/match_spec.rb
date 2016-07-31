@@ -187,7 +187,7 @@ RSpec.describe Match, { type: :model } do
       end
 
       it 'should validate cannot change #second_team' do
-        subject.second_team.id = new_team.id
+        subject.second_team = new_team
         is_expected.to_not be_valid
       end
 
