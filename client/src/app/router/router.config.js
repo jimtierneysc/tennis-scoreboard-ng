@@ -130,7 +130,7 @@
       return $injector.invoke(makePromise);
 
       /** @ngInject */
-      function makePromise($q, editInProgress) {
+      function makePromise(editInProgress) {
         var confirm = editInProgress.closeEditors();
         if (makeNestedPromise) {
           return confirm.then(
@@ -172,9 +172,8 @@
     }
 
     function makeGetPromise($injector, resourceName, id) {
-      return makeDiscardEditsPromise($injector, function () {
-        return $injector.invoke(makeResourcePromise, null);
-      });
+      // Child view does not need to cancel edit
+      return $injector.invoke(makeResourcePromise, null);
 
       /** @ngInject */
       function makeResourcePromise($q, $log, waitIndicator, crudResource) {
