@@ -1,11 +1,13 @@
 # Model for a set in a match.
+# #
 # A set may has a state: in progress, finished and complete.
-# Finished and complete sets both have a winner.  Complete mean that
-# the scorer has confirmed the finished score.
-# Sets are contained within a match.
-# Games are contained within a set.
+# Finished and complete sets both have a winner.  Set completion is a final
+# step after an opponent has won the set.
+#
 # A match tiebreaker is a special kind of set with only one game.
+#
 # A set has an ordinal.  The first set in the match has ordinal 1.
+#
 class MatchSet < ActiveRecord::Base
   has_many :set_games, dependent: :destroy
   belongs_to :first_player_server,
@@ -18,21 +20,6 @@ class MatchSet < ActiveRecord::Base
   validates :ordinal, :scoring, :match, presence: true
   validate :that_scoring_is_known
   default_scope { order('ordinal ASC') }
-
-  def games_won(team)
-    raise Exceptions::InvalidOperation, 'Use #tiebreaker_won?' if tiebreaker?
-    lookup_games_won[team.id][0]
-  end
-
-  def games_won_ordinal(team, game_ordinal)
-    raise Exceptions::InvalidOperation, 'Use #tiebreaker_won?' if tiebreaker?
-    lookup_games_won[team.id][game_ordinal]
-  end
-
-  def tiebreaker_won?(team)
-    raise Exceptions::InvalidOperation, 'Use #games_won.' unless tiebreaker?
-    lookup_games_won[team.id][0] > 0
-  end
 
   def completed?
     team_winner_id
@@ -55,21 +42,6 @@ class MatchSet < ActiveRecord::Base
                      lookup[match.second_team_id][0])
   end
 
-  def scores
-    lookup = lookup_games_won
-    [lookup[match.first_team_id][0], lookup[match.second_team_id][0]]
-  end
-
-  def winner_score
-    raise Exceptions::InvalidOperation, 'No winner' unless compute_team_winner
-    scores.max
-  end
-
-  def loser_score
-    raise Exceptions::InvalidOperation, 'No loser' unless compute_team_winner
-    scores.min
-  end
-
   def last_game
     set_games.last
   end
@@ -82,8 +54,6 @@ class MatchSet < ActiveRecord::Base
       8
     when :ten_point
       1
-    else
-      raise ArgumentError, "Unknown scoring: #{scoring}"
     end
   end
 

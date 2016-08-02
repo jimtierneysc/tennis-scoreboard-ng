@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name TeamController
+ * @name TeamsController
  * @description
  * Controller for displaying and editing teams
  *
@@ -9,80 +9,110 @@
   'use strict';
 
   angular
-    .module('frontend')
-    .controller('TeamController', MainController);
+    .module('frontendTeams')
+    .controller('TeamsController', Controller);
 
   /** @ngInject */
-  function MainController(teamsResource, $q, $filter, $log, $scope, playersResource, crudHelper, playersSelectOptions, response) {
+  function Controller($q, $filter, $log, $scope, crudHelper, authHelper, teamsResource, playersSelectOptions, response) {
     var vm = this;
-    vm.playerOptionsList = {list: null};
 
-    crudHelper.activate(vm,
-      {
-        response: response,
-        getResources: teamsResource.getTeams,
-        beforeSubmitNewEntity: beforeSubmitNewEntity,
-        beforeSubmitEditEntity: beforeSubmitEditEntity,
-        beforeShowNewEntityForm: beforeShowNewEntityForm,
-        beforeShowEditEntityForm: beforeShowEditEntityForm,
-        getEntityDisplayName: getEntityDisplayName,
-        makeEntityBody: makeEntityBody,
-        scope: $scope,
-        errorCategories: {
-          'name': null,
-          'first': 'first_player',
-          'second': 'second_player'
+    activate();
+
+    function activate() {
+      vm.playerOptionsList = {list: null};
+
+      authHelper(vm, $scope);
+      crudHelper(vm,
+        {
+          response: response,
+          resourceName: teamsResource,
+          // getResources: teamsResource.getTeams,
+          prepareToCreateEntity: prepareToCreateEntity,
+          prepareToUpdateEntity: prepareToUpdateEntity,
+          beforeShowNewEntity: beforeShowNewEntity,
+          beforeShowEditEntity: beforeShowEditEntity,
+          getEntityDisplayName: getEntityDisplayName,
+          makeEntityBody: makeEntityBody,
+          entityKind: 'Team',
+          scope: $scope,
+          errorsMap: {
+            names: [
+              'name',
+              'first_player',
+              'second_player'
+            ]
+          }
         }
-      }
-    );
+      );
+    }
 
-    return vm;
-
-
-    function beforeSubmitNewEntity(entity) {
+    function prepareToCreateEntity(entity) {
       var result = {
         name: entity.name
       };
-      prepareToSubmitPlayers(entity, result);
+      prepareToApplyEntity(entity, result);
       return result;
     }
 
-    function beforeSubmitEditEntity(entity) {
+    function prepareToUpdateEntity(entity) {
       var result = {
         id: entity.id,
         name: entity.name
       };
-      prepareToSubmitPlayers(entity, result);
+      prepareToApplyEntity(entity, result);
       return result;
     }
 
-    function beforeShowNewEntityForm() {
-      prepareToShowPlayerOptions();
+    function beforeShowNewEntity() {
+      var deferredObject = $q.defer();
+      var players = prepareToShowPlayerOptions();
+      var endWait = vm.beginWait();
+      players.then(function() {
+        endWait();
+        var playerCount = vm.playerOptionsList.list.length;
+        if (playerCount < 2) {
+          deferredObject.reject();
+          vm.showToast('There must be at least two players.  ' +
+            'Add players and try again.', 'Unable to Add Team', 'warning');
+        }
+        else {
+          if (playerCount == 2) {
+            vm.newEntity.select_first_player = vm.playerOptionsList.list[0];
+            vm.newEntity.select_second_player = vm.playerOptionsList.list[1];
+          }
+          deferredObject.resolve();
+        }
+      });
+      return deferredObject.promise;
     }
 
-    function beforeShowEditEntityForm() {
-      prepareToShowPlayerOptions().then(
-        function () {
-          prepareToEditEntity();
-        }
-      )
+    function beforeShowEditEntity() {
+      var deferredObject = $q.defer();
+      var players = prepareToShowPlayerOptions();
+      var endWait = vm.beginWait();
+      players.then(function() {
+        endWait();
+        prepareToEditEntity();
+        deferredObject.resolve();
+      });
+      return deferredObject.promise;
     }
 
     function getEntityDisplayName(entity) {
       // TODO: build team name
-      return entity.displayName;
+      return entity.name || '(unnamed)'
     }
 
     function makeEntityBody(entity) {
       return {team: entity};
     }
 
-    // "Private" methods
+    // internal methods
 
     function prepareToShowPlayerOptions() {
       var deferredObject = $q.defer();
       if (vm.playerOptionsList.list == null) {
-        playersSelectOptions.getSelectOptions().then(
+        playersSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
             deferredObject.resolve();
@@ -90,7 +120,7 @@
           function () {
             vm.playerOptionsList.list = [];
             $log.error('playerOptionsList')
-            deferredObject.reject();
+            deferredObject.resolve();
           }
         );
       }
@@ -98,9 +128,8 @@
         deferredObject.resolve();
       }
       return deferredObject.promise;
-
     }
-    
+
     function prepareToEditEntity() {
       var first_player = null;
       var second_player = null;
@@ -120,7 +149,7 @@
       vm.editEntity.select_second_player = second_player;
     }
 
-    function prepareToSubmitPlayers(entity, result) {
+    function prepareToApplyEntity(entity, result) {
       if (angular.isDefined(entity.select_first_player))
         result.first_player_id = entity.select_first_player.id;
       if (angular.isDefined(entity.select_second_player))

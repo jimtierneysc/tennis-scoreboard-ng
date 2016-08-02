@@ -1,12 +1,10 @@
 <form name="form"
-      ng-submit="submit()" novalidate>
+      ng-submit="submit()" novalidate ng-keyup="$event.keyCode == 27 && cancel()">
   <div class="form-group"
        ng-class="{ 'has-error' : (errors || form.name.$error.required) && !form.name.$pristine }">
     <label for="name" class="sr-only control-label">Entity Name</label>
     <div>
-      <!--angular directive focusOnShow watches ng-show -->
-      <input type="text" ng-show="true" class="form-control" id="name" name="name"
-             fe-focus-on-show
+      <input fe-auto-focus='refocus' type="text" class="form-control" id="name" name="name"
              placeholder="Player Name"
              ng-model="entity.name" required>
             <span ng-show="form.name.$error.required && !form.name.$pristine"

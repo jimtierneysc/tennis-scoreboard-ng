@@ -2,13 +2,12 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendHelpers')
     .config(config);
 
   /** @ngInject */
   function config(toastrConfig) {
-    // toasts are closed by the user
-    toastrConfig.allowHtml = true;
+    toastrConfig.allowHtml = false;  // escape '<', etc.
     toastrConfig.timeOut = 0;
     toastrConfig.extendedTimeOut = 0;
     toastrConfig.closeButton = true;

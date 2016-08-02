@@ -1,20 +1,17 @@
 <nav class="navbar navbar-default" ng-controller="HeaderController as vm">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed"
-              aria-expanded="false" ng-click="vm.isCollapsed = !vm.isCollapsed" ng-init="vm.isCollapsed = true">
+              aria-expanded="false" ng-click="header.isCollapsed = !header.isCollapsed" ng-init="header.isCollapsed = true">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Tennis Scoreboard</a>
+      <a id="navbar-brand" class="navbar-brand" href="#">Tennis Scoreboard</a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" ng-class="!vm.isCollapsed && 'in'">
-      <!--uib-collapse="vm.isCollapsed">-->
+    <div class="collapse navbar-collapse" ng-class="!header.isCollapsed && 'in'">
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
         <li ui-sref-active="active"><a ui-sref="players">Players</a></li>
@@ -23,55 +20,38 @@
         <li ui-sref-active="active"><a ui-sref="scores">Scores</a></li>
       </ul>
 
-
-      <div ng-if="loggedIn"> <!-- unless @logging_in || !logged_in? -->
-        <form class="navbar-form navbar-right">
+      <div ng-if="header.loggedIn">
+        <div class="navbar-form navbar-right">
           <div class="form-group">
-            <p class="control-label xnavbar-text">
-              Logged in as {{username}}
+            <p class="control-label">
+              {{header.userName}}
             </p>
           </div>
           <div class="form-group">
-            link here
-            <!--<%= link_to "Logout", logout_path, method: :delete, remote: true, class: 'btn btn-link' %>-->
+            <a class="btn btn-link" ng-click="vm.logOut()">Logout</a>
           </div>
-        </form>
+        </div>
       </div>
 
-      <div ng-if="!loggedIn"> <!-- <% unless @logging_in || logged_in?" -->
-
+      <div ng-if="!header.loggedIn">
         <ul class="nav navbar-nav navbar-right">
           <!--auto-close="outsideClick" not working so use ng-click-->
-          <li uib-dropdown xauto-close="outsideClick" ng-click="$event.preventDefault(); $event.stopPropagation();">
-            <a href uib-dropdown-toggle >Login<span class="caret"></span></a>
+          <li uib-dropdown on-toggle="header.showLogin(open)" xauto-close="outsideClick"
+              ng-click="header.showingLogin(!is_open);$event.preventDefault(); $event.stopPropagation();">
+            <a href uib-dropdown-toggle>Login<span class="caret"></span></a>
             <ul id="login-dropdown" class="dropdown-menu">
               <li>
-                <form novalidate>
-                  <div class="form-group">
-                    <label class="control-label sr-only" for="username">User Name</label>
-                    <input class="form-control" required="required" placeholder="User Name" type="text"
-                           name="username" id="username"/>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label sr-only" for="password">Password</label>
-                    <input class="form-control" required="required" placeholder="Password" type="password"
-                           name="password" id="password"/>
-                  </div>
-                  <div class="form-group">
-                    <!--TODO implement login-->
-                    <!--Not implemented, so always disabled-->
-                    <input type="submit" name="commit" value="Login" ng-disabled="true" class="btn btn-primary btn-block"/>
-                  </div>
-                </form>
-
+                <!--ng-if to recreate login form when shown-->
+                <fe-login-form ng-if="header.createLoginForm"></fe-login-form>
               </li>
             </ul>
           </li>
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div>
+
     </div>
 
-  </div><!-- /.container-fluid -->
+  </div>
 </nav>
 
 

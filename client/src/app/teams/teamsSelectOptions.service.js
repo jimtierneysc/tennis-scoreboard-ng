@@ -5,32 +5,27 @@
  * Provide list of teams for select list
  *
  */
-(function() {
+(function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .factory('teamsSelectOptions', teamsFunc);
+    .module('frontendTeams')
+    .factory('teamsSelectOptions', factory);
 
   /** @ngInject */
-  function teamsFunc($log, $q, teamsResource) {
+  function factory($log, $q, crudResource, teamsResource) {
 
-    var service = {
-      getSelectOptions: getSelectOptions
-    };
-
-    return service;
+    return getSelectOptions;
 
     // Return a promise
     function getSelectOptions() {
       var deferredObject = $q.defer();
-      teamsResource.getTeams().query(
+      crudResource.getResource(teamsResource).query(
         function (response) {
-          $log.info('received data');
           var options = [];
           angular.forEach(response, function (value) {
-            options.push({name: value.displayName, id: value.id});
-          }, options);
+            options.push({name: value.name || '(unnamed)', id: value.id});
+          });
           deferredObject.resolve(options);
         },
         function (response) {

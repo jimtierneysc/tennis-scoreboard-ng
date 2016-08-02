@@ -20,12 +20,13 @@ function listFiles() {
     .concat([
       path.join(conf.paths.src, '/app/**/*.module.js'),
       path.join(conf.paths.src, '/app/**/*.js'),
+      path.join(conf.paths.src, '/app/spec/*.js'),
       path.join(conf.paths.src, '/**/*.spec.js'),
       path.join(conf.paths.src, '/**/*.mock.js'),
     ])
     .concat(pathSrcHtml);
 
-  var files = patterns.map(function(pattern) {
+  var files = patterns.map(function (pattern) {
     return {
       pattern: pattern
     };
@@ -39,9 +40,10 @@ function listFiles() {
   return files;
 }
 
-module.exports = function(config) {
+module.exports = function (config) {
 
-  var configuration = {
+  var configuration;
+  configuration = {
     files: listFiles(),
 
     singleRun: true,
@@ -50,7 +52,17 @@ module.exports = function(config) {
 
     ngHtml2JsPreprocessor: {
       stripPrefix: conf.paths.src + '/',
-      moduleName: 'frontend'
+      // moduleName: 'frontend-comp'
+      moduleName: function (htmlPath, originalPath) {
+        var paths = htmlPath.split('/');
+        if (paths.length > 1) {
+          var suffix = paths[1]; //.charAt(0).toUpperCase(); // + paths[1].slice(1);
+          return 'frontend' +
+            suffix.charAt(0).toUpperCase() + suffix.slice(1);
+        }
+        else
+          return 'frontend';
+      }
     },
 
     logLevel: 'WARN',
@@ -61,35 +73,54 @@ module.exports = function(config) {
       whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
     },
 
-    browsers : ['PhantomJS'],
+    browsers: ['PhantomJS'],
 
-    plugins : [
+    plugins: [
       'karma-phantomjs-launcher',
       'karma-angular-filesort',
       'karma-phantomjs-shim',
       'karma-coverage',
       'karma-jasmine',
-      'karma-ng-html2js-preprocessor'
+      'karma-ng-html2js-preprocessor',
+      'karma-html-reporter'
     ],
 
     coverageReporter: {
-      type : 'html',
-      dir : 'coverage/'
+      type: 'html',
+      dir: 'coverage/'
     },
 
-    reporters: ['progress'],
+    reporters: ['progress', 'html'],
 
     proxies: {
       '/assets/': path.join('/base/', conf.paths.src, '/assets/')
+    },
+
+
+    // the default configuration
+    htmlReporter: {
+      outputDir: 'karma_html', // where to put the reports
+      templatePath: null, // set if you moved jasmine_template.html
+      focusOnFailures: true, // reports show failures on start
+      namedFiles: false, // name files instead of creating sub-directories
+      pageTitle: null, // page title for reports; browser info by default
+      urlFriendlyName: false, // simply replaces spaces with _ for files/dirs
+      reportName: 'report-summary-filename', // report summary filename; browser info by default
+
+
+      // experimental
+      preserveDescribeNesting: false, // folded suites stay folded
+      foldAll: false, // reports start folded (only with preserveDescribeNesting)
     }
+
   };
 
   // This is the default preprocessors configuration for a usage with Karma cli
   // The coverage preprocessor is added in gulp/unit-test.js only for single tests
   // It was not possible to do it there because karma doesn't let us now if we are
   // running a single test or not
-  configuration.preprocessors = {};
-  pathSrcHtml.forEach(function(path) {
+  configuration.preprocessors = {'src/app/**/!(*.html|*.spec|*.mock).js': ['coverage']};
+  pathSrcHtml.forEach(function (path) {
     configuration.preprocessors[path] = ['ng-html2js'];
   });
 
@@ -97,7 +128,7 @@ module.exports = function(config) {
   // If you ever plan to use Chrome and Travis, you can keep it
   // If not, you can safely remove it
   // https://github.com/karma-runner/karma/issues/1144#issuecomment-53633076
-  if(configuration.browsers[0] === 'Chrome' && process.env.TRAVIS) {
+  if (configuration.browsers[0] === 'Chrome' && process.env.TRAVIS) {
     configuration.customLaunchers = {
       'chrome-travis-ci': {
         base: 'Chrome',

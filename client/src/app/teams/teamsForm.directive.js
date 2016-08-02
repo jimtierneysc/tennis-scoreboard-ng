@@ -8,18 +8,17 @@
  <fe-teams-form></fe-teams-form>
  */
 
-
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .directive('feTeamsForm', directiveFunc);
+    .module('frontendTeams')
+    .directive('feTeamsForm', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/teams/teamsForm.html',
       scope: {
         form: '=',
@@ -28,11 +27,10 @@
         submit: '&',
         entity: '=',
         ok: '@',
-        playerslist: '='
+        playersList: '='
       }
     };
 
     return directive;
   }
-
 })();

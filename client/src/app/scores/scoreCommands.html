@@ -1,0 +1,71 @@
+<div uib-dropdown>
+  <a href uib-dropdown-toggle>Menu<span class="caret"></span></a>
+  <!--<button type="button" class="btn pull-right" uib-dropdown-toggle>-->
+    <!--X<span class="caret"></span>-->
+  <!--</button>-->
+  <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
+    <li role="menuitem" class="disabled-menu-item">
+      <!--Undo-->
+      <a href ng-click="vm.scores.update('remove_last_change')"
+         ng-class="{'disabled-link' : !loggedIn || !vm.view.keepingScore() || !vm.scores.actions.remove_last_change}">
+        <span class="glyphicon glyphicon-repeat flip-horizontal"></span> Undo
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li role="menuitem">
+      <!--Toggle keepscore-->
+      <a href ng-click="vm.view.changed()" ng-model="vm.view.keepScore"
+         ng-class="{'disabled-link' : !loggedIn}"
+         uib-btn-radio="true">
+        <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !loggedIn || (vm.view.keepScore == false)}">
+          </span>
+        Keep Score
+      </a>
+    </li>
+    <li role="menuitem">
+      <!--Toggle keepscore-->
+      <a href ng-click="vm.view.changed()" ng-model="vm.view.keepScore"
+         uib-btn-radio="false">
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': loggedIn && (vm.view.keepScore == true)}">
+          </span>
+        Follow Score
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li role="menuitem">
+      <!--Collapsed view-->
+      <a href ng-click="vm.view.changed()" ng-model="vm.view.expand" uib-btn-radio="'collapse'">
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': vm.view.expand != 'collapse'}">
+          </span>
+        Show Sets Only
+      </a>
+    </li>
+    <li role="menuitem">
+      <!--Expand all-->
+      <a href ng-click="vm.view.changed()" ng-model="vm.view.expand" uib-btn-radio="'expand_all'">
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': vm.view.expand != 'expand_all'}">
+          </span>
+        Show Sets and Games
+      </a>
+    </li>
+    <li role="menuitem">
+      <!--Expand all-->
+      <a href ng-click="vm.view.changed()" ng-model="vm.view.showDetails" uib-btn-checkbox>
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.showDetails }">
+          </span>
+        Show Match Details
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li role="menuitem">
+      <!--Clear score board-->
+      <a href ng-click="vm.scores.update('discard_play')"
+         ng-class="{'disabled-link' : !loggedIn || !vm.view.keepingScore() || !vm.scores.actions.discard_play}">
+        <span class="glyphicon glyphicon-remove"></span> Clear Score Board
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+

@@ -1,0 +1,185 @@
+// Styling for scoreboard table
+
+$border: 1px solid black;
+$table_width: 550px;
+$col_1_width: 110px;
+$col_2_width: 220px;
+$col_3_width: 440px;
+
+$table_min_width: 300px;
+$col_1_min_width: 60px;
+$col_2_min_width: 120px;
+$col_3_min_width: 240px;
+
+$score_color: green;
+$side_margin: 60px;
+
+@mixin center-cell {
+  text-align: center;
+}
+
+// Default to maximum size
+.score-col-1 {
+  width: $col_1_width;
+  vertical-align: middle  !important;
+  @include center-cell;
+}
+
+.score-col-2 {
+  width: $col_2_width;
+  @include center-cell;
+}
+
+.score-col-3 {
+  width: $col_3_width;
+  @include center-cell;
+}
+
+table.play-table {
+  width: $table_width;
+  table-layout: fixed;
+}
+
+div.play-table {
+  //border: 1px solid black;
+  width: $table_width;
+}
+
+// override with proportional sizing
+@media only screen and (max-width: $table_width + $side_margin) {
+  table.play-table, div.play-table {
+    width: 100%;
+  }
+  .score-col-1 {
+    width: 20%;
+  }
+
+  .score-col-2 {
+    width: 40%;
+  }
+
+  .score-col-3 {
+    width: 80%;
+  }
+
+}
+
+// override with minumum size
+@media only screen and (max-width: $table_min_width + $side_margin) {
+  div.play-table, table.play-table {
+    width: $table_min_width;
+  }
+  .score-col-1 {
+    width: $col_1_min_width;
+  }
+
+  .score-col-2 {
+    width: $col_2_min_width;
+  }
+
+  .score-col-3 {
+    width: $col_3_min_width;
+  }
+
+}
+
+.match-btn {
+  width: 100%;
+}
+
+@mixin hide-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+@mixin hide-overflow-padding {
+  @include hide-overflow;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.hide-overflow {
+  @include hide-overflow;
+}
+
+div.game-col-3 {
+  @include hide-overflow-padding;
+  color: $score_color;
+  text-align: left;
+}
+
+div.game-col-1 {
+  @include hide-overflow-padding;
+  color: $score_color;
+  text-align: right;
+}
+
+div.game-col-2 {
+  @include hide-overflow-padding;
+  color: $score_color;
+}
+
+div.player-col-3 {
+  @include hide-overflow-padding;
+  text-align: left;
+}
+
+div.player-col-1 {
+  @include hide-overflow-padding;
+  text-align: right;
+}
+
+div.player-col-2 {
+  @include hide-overflow-padding;
+}
+
+// css to flip glyph icon
+.flip-horizontal {
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  -ms-filter: fliph; /*IE*/
+  filter: fliph; /*IE*/
+}
+
+// Draw text within green ellipse
+.winner-text {
+  display: inline-block;
+  padding: 4px;
+  line-height: 100%;
+
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+
+  background-color: green;
+  color: white;
+}
+
+// Disable links in bootstrap drop down menu
+.dropdown-menu > li > a.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: grey;
+}
+
+//Take up space but don't show
+.glyphicon-none:before {
+  content: "\2122";
+  color: transparent !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+

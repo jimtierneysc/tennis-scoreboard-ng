@@ -1,0 +1,18 @@
+<div ng-if="loading">
+  <h4>'Loading...'</h4>
+</div>
+
+<div ng-if="failed">
+  <h4>
+    An error occurred when retrieving data
+  </h4>
+  <dl>
+    <dt>Code</dt>
+    <dd>{{error.status}}</dd>
+    <dt>Status</dt>
+    <dd>{{error.statusText}}</dd>
+    <dt>Message</dt>
+    <dd>{{error.data}}</dd>
+  </dl>
+</div>
+

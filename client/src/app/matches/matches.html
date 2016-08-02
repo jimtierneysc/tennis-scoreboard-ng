@@ -1,74 +1,102 @@
 <div class="container-fluid">
 
-  <div class="col-xs-12" ng-if="main.loading">
-    {{main.loadingMessage}}
-  </div>
-
-  <div class="col-xs-12" ng-if="main.loadingFailed">
-    {{main.loadingFailedMessage}}
-  </div>
-
-  <div ng-if="!main.loading && !main.loadingFailed">
-    <div class="col-xs-12">
-      <button class="btn btn-primary" ng-click="main.showNewEntityForm()">
-        <span class="glyphicon glyphicon-plus"></span>Match
-      </button>
+  <div class="row col-xs-12 col-md-8">
+    <div ng-if="vm.loading || vm.loadingFailed">
+      <fe-loading-messages
+        error="vm.loadingError"
+        loading="vm.loading"
+        failed="vm.loadingFailed"
+      ></fe-loading-messages>
     </div>
 
-    <div class="col-xs-12">
-      <ol class="list-group">
-        <li class="list-group-item" ng-if="main.showingNewEntityForm">
-          <fe-matches-form
-            form="main.newEntityForm"
-            errors="main.entityCreateErrors"
-            cancel="main.hideNewEntityForm()"
-            submit="main.submitNewEntityForm()"
-            entity="main.newEntity"
-            ok="Add"
-            playerslist="main.playerOptionsList"
-            teamslist="main.teamOptionsList"
-          >
-          </fe-matches-form>
+    <div ng-if="!vm.loading && !vm.loadingFailed">
+      <div ng-if="vm.loggedIn">
+        <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
+          <span class="glyphicon glyphicon-plus"></span> Match
+        </button>
+      </div>
+
+      <div ng-if="vm.entitys.length == 0 && !vm.showingNewEntity">
+        <fe-empty-list-message
+          logged-in="vm.loggedIn"
+          kind="matches"
+        ></fe-empty-list-message>
+      </div>
+
+      <div>
+        <ol class="list-group">
+          <!--New match-->
+          <li class="list-group-item form-animate-if" ng-if="vm.showingNewEntity">
+            <div class="row">
+              <div class="col-xs-10 ">
+                <fe-matches-form
+                  form="vm.newEntityForm"
+                  errors="vm.entityCreateErrors"
+                  cancel="vm.hideNewEntity()"
+                  submit="vm.submitNewEntity()"
+                  entity="vm.newEntity"
+                  ok="Add"
+                  players-list="vm.playerOptionsList"
+                  teams-list="vm.teamOptionsList"
+                >
+                </fe-matches-form>
+              </div>
+            </div>
+          </li>
 
 
-        </li>
-
-        <!--Team details-->
-        <li class="list-group-item clearfix" ng-repeat="entity in main.entitys">
+          <!--Team details-->
+          <li class="list-group-item clearfix item-animate-repeat" ng-repeat="entity in vm.entitys">
 
 
-          <div ng-hide="main.showingEditEntityForm(entity)">
-            <div class="col-xs-10">
-              <div class="h4">
+            <div class="row">
+              <div class="col-xs-10">
+                <div ng-hide="vm.showingEditEntity(entity)">
+                  <div class="h4">
                 <span ng-if="entity.title">
                 {{ entity.title}}
                   </span>
                <span ng-if="!entity.title">
                  (untitled)
                   </span>
-              </div>
-              <div class="match-detail">
-                <fe-match-opponents match="entity"></fe-match-opponents>
-              </div>
-              <div class="match-detail">
-                <fe-match-scoring match="entity"></fe-match-scoring>
-              </div>
-              <div class="match-detail">
-                <fe-match-status match="entity"></fe-match-status>
-              </div>
-            </div>
+                  </div>
+                  <fe-match-details
+                    match="entity"
+                  ></fe-match-details>
+                </div>
 
-            <div class="col-xs-2">
-              <!--Delete button-->
-              <div class="pull-right">
-                <button class="btn btn-link" ng-click="main.trashEntity(entity)">
-                  <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <br>
-                <button class="btn btn-link" ng-click="main.showEditEntityForm(entity)">
-                  <span class="glyphicon glyphicon-edit"></span>
-                </button>
-                <div>
+                <!--Use ng-if so there won't be bunch of forms in the DOM-->
+                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-if">
+                  <fe-matches-form
+                    form="vm.editEntityForm"
+                    errors="vm.entityUpdateErrors"
+                    cancel="vm.hideEditEntity()"
+                    submit="vm.submitEditEntity()"
+                    entity="vm.editEntity"
+                    ok="Save"
+                    players-list="vm.playerOptionsList"
+                    teams-list="vm.teamOptionsList"
+                  >
+                  </fe-matches-form>
+                </div>
+              </div>
+
+              <div class="col-xs-2">
+                <!--Delete button-->
+                <div class="pull-right">
+                  <fe-delete-entity-button
+                    entity="entity"
+                    show="vm.loggedIn"
+                    delete-entity="vm.trashEntity(entity)"
+                  >
+                  </fe-delete-entity-button>
+                  <fe-edit-entity-button
+                    entity="entity"
+                    show="vm.loggedIn"
+                    disable="vm.showingEditEntity(entity)"
+                    edit-entity="vm.showEditEntity(entity)"
+                  >
+                  </fe-edit-entity-button>
                   <a
                     ui-sref="scores.board({ id: entity.id })">Score
                   </a>
@@ -76,29 +104,11 @@
                 </div>
               </div>
             </div>
-          </div>
 
+          </li>
+        </ol>
 
-          <!--Use ng-if so there won't be bunch of forms in the DOM-->
-          <div ng-if="main.showingEditEntityForm(entity)">
-            <fe-matches-form
-              form="main.editEntityForm"
-              errors="main.entityUpdateErrors"
-              cancel="main.hideEditEntityForm()"
-              submit="main.submitEditEntityForm()"
-              entity="main.editEntity"
-              ok="Save"
-              playerslist="main.playerOptionsList"
-              teamslist="main.teamOptionsList"
-            >
-            </fe-matches-form>
-          </div>
-
-
-        </li>
-
-      </ol>
-
+      </div>
     </div>
   </div>
 </div>

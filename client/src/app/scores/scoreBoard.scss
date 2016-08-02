@@ -1,4 +1,4 @@
-// Styling for score board table
+// Styling for scoreboard table
 @import '../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 
 $border: 1px solid black;
@@ -11,6 +11,8 @@ $table_min_width: 300px;
 $col_1_min_width: 60px;
 $col_2_min_width: 120px;
 $col_3_min_width: 240px;
+
+$score_color: green;
 
 @mixin center-cell {
   text-align: center;
@@ -83,15 +85,7 @@ div.play-table {
 
 .match-btn {
   width: 100%;
-  // btn-sm
-  //@include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
-  // Custom
-  //@include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-base, $line-height-small, $btn-border-radius-small);
 }
-
-//.invisible-link, .invisible-text {
-//  display: none;
-//}
 
 @mixin hide-overflow {
   overflow: hidden;
@@ -112,22 +106,19 @@ div.play-table {
 
 div.game-col-3 {
   @include hide-overflow-padding;
-  //color: $table-border-color; // bootstrap variable
-  color: green;
+  color: $score_color;
   text-align: left;
 }
 
 div.game-col-1 {
   @include hide-overflow-padding;
-  //color: $table-border-color; // bootstrap variable
-  color: green;
+  color: $score_color;
   text-align: right;
-  z-index: 1;
 }
 
 div.game-col-2 {
   @include hide-overflow-padding;
-  color: green;
+  color: $score_color;
 }
 
 div.player-col-3 {
@@ -143,11 +134,6 @@ div.player-col-1 {
 div.player-col-2 {
   @include hide-overflow-padding;
 }
-
-//.dim-text {
-//  color: $table-border-color; // bootstrap variable
-//  font-weight: normal;
-//}
 
 // css to flip glyph icon
 .flip-horizontal {
@@ -171,25 +157,6 @@ div.player-col-2 {
   background-color: green;
   color: white;
 }
-
-// icon bar button but outside of navbar
-//.dropdown-toggle {
-//
-//  .icon-bars-button {
-//    display: inline-block;
-//    vertical-align: middle;
-//  }
-//
-//  .icon-bar {
-//    margin-bottom: 2px;
-//    display: block;
-//    width: 22px;
-//    height: 2px;
-//    background-color: #cccccc;
-//    border-radius: 1px;
-//  }
-//
-//}
 
 // Disable links in bootstrap drop down menu
 .dropdown-menu > li > a.disabled-link {

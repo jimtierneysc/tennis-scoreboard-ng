@@ -2,33 +2,26 @@
  * @ngdoc service
  * @name waitIndicator
  * @description
- * Service to track state of a wait indicator
- *
- * var endWait = waitIndicator.beginWait();
- * endWait();
- *
- * waitIndicator.subscribeChanged(scope, function() { // do something } );
- *
+ * Service to manage state of a wait indicator
  */
 (function() {
   'use strict';
 
   angular
-    .module('frontend')
-    .service('waitIndicator', serviceFunc);
+    .module('frontendComponents')
+    .service('waitIndicator', Service);
 
   /** @ngInject */
-  function serviceFunc($log, $rootScope) {
+  function Service($log, $rootScope) {
 
-    var service = this;
-    service.beginWait = beginWait;
-    service.waiting = waiting;
-    service.subscribeChanged = subscribeChanged;
+    var vm = this;
+    vm.beginWait = beginWait;
+    vm.waiting = waiting;
+    vm.subscribeChanged = subscribeChanged;
 
     var waitingCount = 0;
 
     function beginWait() {
-      $log.info("beginWait");
       var last = waiting();
       waitingCount++;
       if (last != waiting())
@@ -37,7 +30,6 @@
     }
 
     function endWait() {
-      $log.info("endWait");
       var last = waiting();
       waitingCount--;
       if (waitingCount < 0) {
@@ -59,8 +51,6 @@
     }
 
     function changed() {
-      $log.info('changed');
-      $log.info('waitingCount: ' + waitingCount);
       $rootScope.$emit(EVENT_NAME);
     }
 

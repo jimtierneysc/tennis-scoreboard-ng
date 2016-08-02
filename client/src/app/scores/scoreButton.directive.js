@@ -13,17 +13,18 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendScores')
     .directive('feScoreButton', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/scores/scoreButton.html',
       scope: {
         scores: '=',
         param: '=',
+        view: '=',
         title: '='
       }
     };

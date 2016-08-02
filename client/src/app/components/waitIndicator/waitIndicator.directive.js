@@ -8,20 +8,19 @@
  <fe-wait-indicator></fe-wait-indicator>
  */
 
-
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .directive('feWaitIndicator', directiveFunc);
+    .module('frontendComponents')
+    .directive('feWaitIndicator', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/components/waitIndicator/waitIndicator.html',
-      controller: controllerFunc,
+      controller: Controller,
       controllerAs: 'vm'
     };
 
@@ -29,7 +28,7 @@
   }
 
   /** @ngInject */
-  function controllerFunc(waitIndicator, $scope, $timeout) {
+  function Controller(waitIndicator, $scope, $timeout) {
     var vm = this;
     vm.waiting = false;
 
@@ -41,11 +40,15 @@
 
     function changed() {
       if (waitIndicator.waiting()) {
-        $timeout(function () {
+        var timer = $timeout(function () {
             // Wait a second before showing wait indicator
             vm.waiting = waitIndicator.waiting();
           },
           1000);
+        $scope.$on('$destroy', function() {
+          $timeout.cancel(timer);}
+        );
+
       }
       else
         vm.waiting = false;

@@ -1,61 +1,61 @@
 /**
  * @ngdoc controller
- * @name PlayerController
+ * @name PlayersController
  * @description
  * Controller for displaying and editing players
  *
  */
+
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .controller('PlayerController', MainController);
+    .module('frontendPlayers')
+    .controller('PlayersController', Controller);
 
   /** @ngInject */
-  function MainController(playersResource, $log, $timeout, $scope, crudHelper, response) {
-
+  function Controller($log, $scope, crudHelper, authHelper, playersResource, response, $q) {
 
     var vm = this;
 
     activate();
 
     function activate() {
-      crudHelper.activate(vm,
+      authHelper(vm, $scope);
+      crudHelper(vm,
         {
           response: response,
-          getResources: playersResource.getPlayers,
-          beforeSubmitNewEntity: beforeSubmitNewEntity,
-          beforeSubmitEditEntity: beforeSubmitEditEntity,
-          beforeShowNewEntityForm: beforeShowNewEntityForm,
-          beforeShowEditEntityForm: beforeShowEditEntityForm,
+          resourceName: playersResource,
+          prepareToCreateEntity: prepareToCreateEntity,
+          prepareToUpdateEntity: prepareToUpdateEntity,
+          beforeShowNewEntity: resolvedPromise,
+          beforeShowEditEntity: resolvedPromise,
           getEntityDisplayName: getEntityDisplayName,
           makeEntityBody: makeEntityBody,
           scope: $scope,
-          errorCategories: {
-            'name': null
+          entityKind: 'Player',
+          errorsMap: {
+            names: [
+              'name'
+            ]
           }
         }
       );
     }
-    
-    function beforeSubmitNewEntity(entity) {
+
+    function resolvedPromise() {
+      return $q.when(0);
+    }
+
+    function prepareToCreateEntity(entity) {
       return {name: entity.name};
     }
 
-    function beforeSubmitEditEntity(entity) {
+    function prepareToUpdateEntity(entity) {
       return {
         id: entity.id,
         name: entity.name
       };
-    }
-
-    function beforeShowNewEntityForm() {
-      // Nothing to do.
-    }
-
-    function beforeShowEditEntityForm() {
-      // Nothing to do.
     }
 
     function getEntityDisplayName(entity) {
@@ -65,8 +65,6 @@
     function makeEntityBody(entity) {
       return {player: entity};
     }
-
-
   }
 })();
 

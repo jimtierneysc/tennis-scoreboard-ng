@@ -8,18 +8,17 @@
  * <fe-match_status></fe-match_status>
  */
 
-
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendMatches')
     .directive('feMatchStatus', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/matches/matchStatus.html',
       scope: {
         match: '='
@@ -28,5 +27,4 @@
 
     return directive;
   }
-
 })();

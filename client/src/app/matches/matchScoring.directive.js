@@ -8,24 +8,22 @@
  * <fe-match-scoring></fe-match-scoring>
  */
 
-
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendMatches')
     .directive('feMatchScoring', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/matches/matchScoring.html',
       scope: {
         match: '='
       }
     };
-
     return directive;
   }
 

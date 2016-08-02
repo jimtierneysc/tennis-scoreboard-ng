@@ -1,7 +1,9 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "karma-html-reporter": "^0.2.7"
+  },
   "scripts": {
     "test": "gulp test",
     "build.prod": "gulp build",

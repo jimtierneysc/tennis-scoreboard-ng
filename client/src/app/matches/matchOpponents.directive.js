@@ -8,18 +8,17 @@
  * <fe-match_opponents></fe-match_opponents>
  */
 
-
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendMatches')
     .directive('feMatchOpponents', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/matches/matchOpponents.html',
       scope: {
         match: '='

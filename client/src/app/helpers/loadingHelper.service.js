@@ -2,48 +2,61 @@
  * @ngdoc factory
  * @name loadingHelper
  * @description
- * Common controller functionality shared by controllers
+ * Adds loading functionality to a controller
  *
  */
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .factory('loadingHelper', helperFunc);
+    .module('frontendHelpers')
+    .factory('loadingHelper', factory);
 
   /** @ngInject */
-  function helperFunc() {
-    var service = {
-      activate: activateFunc
-    };
+  function factory() {
+    return activate;
 
-    var vm = null;
-    return service;
-
-    function activateFunc(_vm_) {
-      vm = _vm_;
-      vm.loadingHasCompleted = loadingHasCompleted;
-      vm.loadingHasFailed = loadingHasFailed;
+    function activate(vm) {
+      // var helper = new Helper(vm);
       vm.loading = true;
-      vm.loadingMessage = 'Loading...';
       vm.loadingFailed = false;
-      vm.loadingFailedMessage = null;
-    }
-    
-    function loadingHasFailed(response, message) {
-      vm.loading = false;
-      vm.loadingFailed = true;
-      if (angular.isUndefined(message))
-        vm.loadingFailedMessage = 'Page cannot be displayed because the data could not be retrieved (' + response.statusText + ').  Please check your internet connection.';
-      else
-        vm.loadingFailedMessage = message;
+      vm.loadingError = null;
+      vm.updateLoadingCompleted =  function () {
+        vm.loading = false;
+        vm.loadingFailed = false;
+        vm.loadingError = null;
+      };
+      vm.updateLoadingFailed = function (response) {
+        vm.loading = false;
+        vm.loadingFailed = true;
+        vm.loadingError = {
+          statusText: response.statusText,
+          status: response.status,
+          data: response.data
+        };
+      };
     }
 
-    function loadingHasCompleted() {
-      vm.loading = false;
-      vm.loadingFailed = false;
-    }
+    // function Helper(_vm_) {
+    //   var helper = this;
+    //   var vm = _vm_;
+    //
+    //   helper.failed = function (response) {
+    //     vm.loading = false;
+    //     vm.loadingFailed = true;
+    //     vm.loadingError = {
+    //       statusText: response.statusText,
+    //       status: response.status,
+    //       data: response.data
+    //     };
+    //   };
+    //
+    //   helper.completed = function () {
+    //     vm.loading = false;
+    //     vm.loadingFailed = false;
+    //     vm.loadingError = null;
+    //   }
+    // }
   }
 })();
 

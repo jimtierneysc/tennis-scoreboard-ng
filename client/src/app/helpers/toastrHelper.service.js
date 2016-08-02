@@ -2,45 +2,54 @@
  * @ngdoc factory
  * @name toastrHelper
  * @description
- * Common controller functionality shared controllers
+ * Adds popup message functionality to a controller
  *
  */
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .factory('toastrHelper', helperFunc);
+    .module('frontendHelpers')
+    .factory('toastrHelper', factory);
 
   /** @ngInject */
-  function helperFunc($log, toastr, feUtils) {
-    var service = {
-      activate: activateFunc
-    };
+  function factory($log, toastr) {
+    return activate;
 
-    var vm = null;
-    return service;
-
-    function activateFunc(_vm_, _scope_) {
-      vm = _vm_;
-      vm.showToastrError = showToastrError;
+    function activate(_vm_, _scope_) {
+      var vm = _vm_;
+      vm.showToast = showToast;
+      vm.showHttpErrorToast = showHttpErrorToast;
+      vm.clearToast = clearToast;
       vm.lastToast = null;
 
       _scope_.$on('$destroy', function () {
-        $log.log('destroying controller');
         // Remove current toasts when switch views
-        toastr.clear();
+        clearToast();
       });
-    }
-    
-    function showToastrError(message, caption) {
-      if (angular.isUndefined(caption))
-        caption = 'Error';
 
-      toastr.clear();
-      vm.lastToast = toastr.error(feUtils.escapeHtml(message), caption);
-    }
+      function showToast(message, caption, kind) {
+        kind = kind || 'info';
+        if (angular.isUndefined(caption))
+          caption = kind.charAt(0).toUpperCase() + kind.slice(1);
 
+        toastr.clear();
+        vm.lastToast = toastr[kind](message, caption);
+      }
+
+      function showHttpErrorToast(status) {
+        var result = status == 403;
+        if (result)
+          vm.showToast('Please login again.', "Authentication no longer valid");
+        return result;
+      }
+
+      function clearToast() {
+        toastr.clear();
+        vm.lastToast = null;
+      }
+
+    }
 
   }
 })();

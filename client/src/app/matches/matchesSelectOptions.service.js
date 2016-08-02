@@ -9,36 +9,30 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendMatches')
     .factory('matchesSelectOptions', matchesFunc);
 
   /** @ngInject */
-  function matchesFunc($log, $q, matchesResource) {
+  function matchesFunc($log, $q, matchesResource, crudResource) {
 
-    var service = {
-      getSelectOptions: getSelectOptions
-    };
+    return getSelectOptions;
 
-    return service;
-
-    // Return a promise
     function getSelectOptions() {
-      var deferredObject = $q.defer();
-      matchesResource.getMatches().query(
+      var deferred = $q.defer();
+      crudResource.getResource(matchesResource).query(
         function (response) {
-          $log.info('received data');
           var options = [];
           angular.forEach(response, function (value) {
-            options.push({name: value.title, id: value.id});
-          }, options);
-          deferredObject.resolve(options);
+            options.push({title: value.title || '(untitled)', id: value.id});
+          });
+          deferred.resolve(options);
         },
         function (response) {
           $log.error('data error ' + response.status + " " + response.statusText);
-          deferredObject.reject();
+          deferred.reject();
         }
       );
-      return deferredObject.promise;
+      return deferred.promise;
     }
 
   }

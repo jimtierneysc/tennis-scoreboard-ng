@@ -13,13 +13,13 @@
   'use strict';
 
   angular
-    .module('frontend')
-    .directive('feScoreStatus', directiveFunc);
+    .module('frontendScores')
+    .directive('feScoreStatus', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/scores/scoreStatus.html',
       scope: {
         scores: '=',

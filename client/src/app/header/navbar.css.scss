@@ -4,10 +4,15 @@
   overflow: hidden; //background-color:rgba(255,255,255,.8);
 }
 
-#navbar_brand {
-  font-size: 150%;
-}
-
 #navbar {
   margin-bottom: 0;
+}
+
+#navbar-brand {
+  color: green;
+}
+
+#jumbotron-brand {
+  background-color: green;
+  color: white;
 }

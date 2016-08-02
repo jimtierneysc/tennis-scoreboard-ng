@@ -1,34 +1,59 @@
 <div class="container-fluid">
-  <div class="col-xs-12" ng-if="main.loading">
-    {{main.loadingMessage}}
-  </div>
 
-  <div class="col-xs-12" ng-if="main.loadingFailed">
-    {{main.loadingFailedMessage}}
-  </div>
-
-  <div class="col-xs-12" ng-if="!main.loading && !main.loadingFailed">
-
-    <!-- Select match drop down -->
-    <!-- Style to appear above child view -->
-
-    <div class="play-table">
-      <div>
-        <label for="team" class="control-label sr-only">Team</label>
-        <ui-select ng-model="main.selectedMatch" theme="bootstrap" id="team" name="team"
-                   ng-required="true" on-select="main.selectedMatchChange()">
-          <ui-select-match placeholder="Select a match">{{$select.selected.title}}</ui-select-match>
-          <ui-select-choices repeat="item in main.matches | filter: $select.search">
-            <div ng-bind-html="item.title | highlight: $select.search"></div>
-            <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-          </ui-select-choices>
-        </ui-select>
-      </div>
+  <div class="row">
+    <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+      <fe-loading-messages
+        error="vm.loadingError"
+        loading="vm.loading"
+        failed="vm.loadingFailed"
+      ></fe-loading-messages>
     </div>
 
+    <div class="col-xs-12" ng-if="!vm.loading && !vm.loadingFailed">
 
-    <div ui-view></div>
+      <div ng-if="vm.matches.length == 0">
+        <fe-empty-list-message
+          logged-in="vm.loggedIn"
+          kind="matches"
+        ></fe-empty-list-message>
+      </div>
 
+      <div class="play-table clearfix" ng-if="vm.matches.length > 0">
+
+        <div class="row">
+          <div class="col-xs-10">
+            <label for="team" class="control-label sr-only">Team</label>
+            <ui-select autofocus ng-model="vm.selectedMatch"
+                       theme="bootstrap" id="team" name="team"
+                       ng-required="true" on-select="vm.selectedMatchChange()">
+              <ui-select-match placeholder="Select a match">{{$select.selected.title}}</ui-select-match>
+              <ui-select-choices repeat="item in vm.matches | filter: $select.search">
+                <div ng-bind-html="item.title | highlight: $select.search"></div>
+                <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
+              </ui-select-choices>
+            </ui-select>
+          </div>
+
+
+          <div class="col-xs-2">
+            <div ng-if="vmScoreboard">
+              <!--Drop down menu -->
+              <fe-score-commands
+                vm="vmScoreboard"
+                logged-in="vm.loggedIn"
+              ></fe-score-commands>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div class="xrow xcol-xs-12">
+        <div class="xplay-table">
+          <div ui-view></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

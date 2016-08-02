@@ -8,21 +8,23 @@
  <fe-score-table></fe-score-table>
  */
 
-
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .directive('feScoreTable', directiveFunc);
+    .module('frontendScores')
+    .directive('feScoreTable', directive);
 
   /** @ngInject */
-  function directiveFunc() {
+  function directive() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/scores/scoreTable.html',
       scope: {
-        scores: '='
+        scores: '=',
+        view: '=',
+        updating: '=',
+        loggedIn: '='
       }
     };
 

@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name fePlayer
+ * @name fePlayersForm
  * @description
- * Form for new player and editing player
+ * Form for new player and edit player
  *
  * @example:
  <fe-players-form></fe-players-form>
@@ -13,13 +13,13 @@
   'use strict';
 
   angular
-    .module('frontend')
+    .module('frontendPlayers')
     .directive('fePlayersForm', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
-      restrict: 'EA',
+      restrict: 'E',
       templateUrl: 'app/players/playersForm.html',
       scope: {
         form: '=',

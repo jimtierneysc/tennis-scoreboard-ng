@@ -1,58 +1,87 @@
 (function () {
   'use strict';
 
-  /**
-   * @todo Complete the test
-   */
-  describe('directive teams form', function () {
-    var $log;
+  describe('feTeamsForm directive', function () {
     var errors;
     var entity;
     var compiledDirective;
     var scope;
     var okText;
+    var isolatedScope;
+    var element;
+    var players;
 
-    beforeEach(module('frontend'));
-    beforeEach(inject(function ($compile, $rootScope, _$log_) {
-      $log = _$log_;
+    beforeEach(module('frontendTeams'));
+
+    beforeEach(inject(function ($compile, $rootScope) {
 
       errors = {
         other: ['othererror'],
         name: ['nameerror']
       };
-      entity = { name: 'namevalue'};
+      entity = {name: 'aname', doubles: true};
+      players = [{name: 'aname', id: 1}];
       okText = 'clickme';
 
       scope = $rootScope.$new();
+      scope.aform = null;
       scope.aentity = entity;
       scope.aerrors = errors; // errors;
       scope.asubmit = jasmine.createSpy('onSubmit');
       scope.acancel = jasmine.createSpy('onCancel');
-      scope.aform = null;
+      scope.aplayers = players;
 
-      // TODO test directive
-      var html = ('<fe-teams-form>' +
+      var html = ('<fe-teams-form ' +
       'form="aform" ' +
       'errors="aerrors" ' +
-      'cancel="acancel" ' +
-      'submit="asubmit" ' +
+      'cancel="acancel()" ' +
+      'submit="asubmit()" ' +
       'entity="aentity" ' +
-      'ok="' + "{{'" + okText + "'}}" + '"' +
-      '</fe-teams-form>');
+      'players-list="aplayers" ' +
+      'ok="' + okText + '"' +
+      '></fe-teams-form>');
 
-      var el = angular.element(html);
+      element = angular.element(html);
 
-      compiledDirective = $compile(el)(scope);
-      // scope.$digest();   // form is non-assignable
+      compiledDirective = $compile(element)(scope);
+      scope.$digest();
+      isolatedScope = compiledDirective.isolateScope();
     }));
 
-    it('should have isolate scope object with members', function () {
-      // var isolatedScope = compiledDirective.isolateScope();
-      //
-      // expect(isolatedScope).not.toEqual(null);
-      // TODO: Get this working
-      // expect(isolatedScope.entity).toBeDefined();
-      // expect(isolatedScope.entity.name).toBeDefined();
+    describe('isolated scope', function () {
+
+      it('should have .form', function () {
+        expect(isolatedScope.form).toEqual(scope.aform);
+      });
+
+      it('should have .errors', function () {
+        expect(isolatedScope.errors).toBe(scope.aerrors);
+      });
+
+      it('should have .entity', function () {
+        expect(isolatedScope.entity).toBe(scope.aentity);
+      });
+
+      it('should have .cancel()', function () {
+        isolatedScope.cancel();
+        expect(scope.acancel).toHaveBeenCalled();
+      });
+
+      it('should have .submit()', function () {
+        isolatedScope.submit();
+        expect(scope.asubmit).toHaveBeenCalled();
+      });
+
+      it('should have ok text', function () {
+        expect(isolatedScope.ok).toEqual(okText);
+      });
+
+      it('should have .playersList', function () {
+        expect(isolatedScope.playersList).toBe(players);
+      });
+
+
+      // TODO: Test form elements
 
     });
   });
