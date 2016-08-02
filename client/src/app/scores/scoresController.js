@@ -1,79 +1,58 @@
 /**
  * @ngdoc controller
- * @name ScoreController
+ * @name ScoresController
  * @description
- * Controller for displaying scores
+ * Controller for listing and selecting match scores
  *
  */
 (function () {
   'use strict';
 
   angular
-    .module('frontend')
-    .controller('ScoreController', MainController);
+    .module('frontendScores')
+    .controller('ScoresController', Controller);
 
   /** @ngInject */
-  function MainController($log, $filter, $state, $timeout, $document, matchesResource, $q, loadingHelper,
-                          waitIndicator, response) {
-
+  function Controller($timeout, $filter, $log, $scope, $state, crudResource, $q, loadingHelper,
+                      authHelper, response) {
 
     var vm = this;
-    vm.matches = [];
-    vm.selectedMatch = null;
-    vm.selectedMatchChange = selectedMatchChange;
 
     activate();
 
     function activate() {
+      vm.matches = [];
+      vm.selectedMatch = null;
+      vm.selectedMatchChange = selectedMatchChange;
 
-      loadingHelper.activate(vm);
+      authHelper(vm, $scope);
+      loadingHelper(vm);
 
-      if (response) {
-        if (angular.isArray(response))
-          getMatchesSucceeded(response);
-        else
-          getMatchesFailed(response);
-      }
+      if (angular.isArray(response))
+        getMatchesSucceeded(response);
       else
-        getMatches();
-    }
-
-    function getMatches() {
-      var endWait = waitIndicator.beginWait();
-      matchesResource.getMatches().query(
-        function (response) {
-          endWait();
-          getMatchesSucceeded(response);
-        },
-        function (response) {
-          endWait();
-          getMatchesFailed(response);
-        }
-      );
+        getMatchesFailed(response);
     }
 
     function getMatchesSucceeded(response) {
-      $log.info('received data');
       vm.matches = response;
-      vm.loadingHasCompleted();
+      vm.updateLoadingCompleted();
       selectMatch();
     }
 
     function getMatchesFailed(response) {
-      $log.info('data error ' + response.status + " " + response.statusText);
-      vm.loadingHasFailed(response);
+      $log.error('data error ' + response.status + " " + response.statusText);
+      vm.updateLoadingFailed(response);
     }
 
     function selectMatch() {
-      if (angular.isDefined($state.current.name)) {
-        if ($state.current.name == 'scores.board') {
-          var id = $state.params.id;
-          var found = $filter('filter')(vm.matches, function (o) {
-            return o.id == id;
-          });
-          if (found)
-            vm.selectedMatch = found[0];
-        }
+      if ($state.current.name === 'scores.board') {
+        var id = $state.params.id;
+        var found = $filter('filter')(vm.matches, function (o) {
+          return o.id == id;
+        });
+        if (found.length > 0)
+          vm.selectedMatch = found[0];
       }
     }
 
@@ -81,13 +60,16 @@
       $log.info('selectedMatchChange');
       // Kill focus so that keyboard doesn't show on mobile devices
       // See https://github.com/angular-ui/ui-select/issues/818
-      $timeout(function(){
+      var timer = $timeout(function () {
         var active = $document.prop('activeElement');
         if (active.type == 'text') {
           $log.info('kill focus');
           active.blur();
-        }        
-      },1,false);
+        }
+      }, 1, false);
+      $scope.$on('$destroy', function () {
+        $timeout.cancel(timer);
+      });
       $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
     }
   }
