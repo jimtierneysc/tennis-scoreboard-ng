@@ -103,6 +103,7 @@ class Match < ActiveRecord::Base
         end
         method[:exec].call options
         # Version number is used to detect when client has is out of sync
+        self.play_version = next_version_number
         self.save!
       end
     else
