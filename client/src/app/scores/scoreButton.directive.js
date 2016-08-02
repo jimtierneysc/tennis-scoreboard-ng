@@ -24,7 +24,7 @@
       scope: {
         scores: '=',
         param: '=',
-        updating: '=',
+        view: '=',
         title: '='
       }
     };

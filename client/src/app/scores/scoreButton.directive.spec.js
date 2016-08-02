@@ -21,12 +21,12 @@
       scope.ascores = scores;
       scope.aparam = 'foo';
       scope.atitle = 'bar';
-      scope.aupdating = true;
+      scope.aview = {};
 
       var html = ('<fe-score-button ' +
       'scores="ascores" ' +
       'param="aparam" ' +
-      'updating="aupdating" ' +
+      'view="aview" ' +
       'title="atitle" ' +
       '></fe-score-button>');
 
@@ -44,15 +44,15 @@
       });
 
       it('should have .param', function () {
-        expect(isolatedScope.param).toEqual(scope.aparam);
+        expect(isolatedScope.param).toBe(scope.aparam);
       });
 
       it('should have .title', function () {
-        expect(isolatedScope.title).toEqual(scope.atitle);
+        expect(isolatedScope.title).toBe(scope.atitle);
       });
 
-      it('should have .updating', function () {
-        expect(isolatedScope.updating).toEqual(scope.aupdating);
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
       });
 
       // TODO: Test elements

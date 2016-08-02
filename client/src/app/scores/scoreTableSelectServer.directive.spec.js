@@ -17,7 +17,6 @@
 
       var html = ('<fe-score-table-select-server ' +
       'scores="ascores" ' +
-      'server="aserver" ' +
       '></fe-score-table-select-server>');
 
       element = angular.element(html);
@@ -31,10 +30,6 @@
 
       it('should have .scores', function () {
         expect(isolatedScope.scores).toBe(scope.ascores);
-      });
-
-      it('should have .server', function () {
-        expect(isolatedScope.server).toBe(scope.aserver);
       });
 
       // TODO: Test elements

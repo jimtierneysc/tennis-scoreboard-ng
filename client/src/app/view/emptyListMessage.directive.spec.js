@@ -12,8 +12,6 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var match = {title: 'atitle', doubles: true};
-
       scope = $rootScope.$new();
       scope.aloggedIn = true;
 

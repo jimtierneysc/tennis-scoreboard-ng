@@ -49,7 +49,7 @@
         <th colspan=3 class="score-col-3">
           <!--Match button-->
           <fe-score-button
-            updating=updating
+            view="view"
             scores="scores"
           ></fe-score-button>
         </th>
@@ -86,7 +86,7 @@
           <div ng-if="view.keepingScore()">
             <!--New set button-->
             <fe-score-button
-              updating="updating"
+              view="view"
               scores="scores"
               title="scores.newSet.title"
             ></fe-score-button>
@@ -116,7 +116,7 @@
           <div ng-if="view.keepingScore()">
             <!--Set button-->
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               title="set.title"
             ></fe-score-button>
@@ -156,13 +156,12 @@
         <th colspan=2 class="score-col-3" ng-if="view.keepingScore()">
 
           <!--select next server when starting 1st or 2nd game-->
-          <form class="form-animate-if" ng-if="scores.firstServers" name="scores.firstServers.Form" novalidate>
+          <form ng-if="scores.firstServers" name="scores.firstServers.Form" novalidate>
             <fe-score-table-select-server
               scores="scores"
-              server="scores.selectServer"
             ></fe-score-table-select-server>
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               title="scores.newGame.title"
               param="scores.selectServer"
@@ -172,7 +171,7 @@
           <!--don't need to select servers-->
           <div ng-if="!scores.firstServers">
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               title="scores.newGame.title"
             ></fe-score-button>
@@ -210,7 +209,7 @@
           <div>
             <!--Game Button-->
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               param="0"
               title="title"
@@ -223,7 +222,7 @@
           <div>
             <!--Game Button-->
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               param="1"
               title="title"
@@ -262,7 +261,7 @@
           <div ng-if="!game.winner && scores.btns.showGame">
             <!--Game Button-->
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               param="0"
               title="game.title"
@@ -285,7 +284,7 @@
           <div ng-if="!game.winner && scores.btns.showGame">
             <!--Game Button-->
             <fe-score-button
-              updating=updating
+              view="view"
               scores="scores"
               param="1"
               title="game.title"

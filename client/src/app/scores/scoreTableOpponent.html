@@ -3,8 +3,7 @@
   <!--First doubles player-->
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="!leftmost">
-      <span ng-class="{'leftmost serving glyphicon glyphicon-none': scores.server == opponent.first_player.id}"></span>
-      <!--<div class="serving">serving</div>-->
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.first_player.id}"></span>
     </span>
 
   </div>
@@ -14,7 +13,8 @@
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="leftmost">
       <!--Need something in this cell to prevent second player from being mis-aligned -->
-      <span ng-if="scores.server == opponent.first_player.id" class="serving glyphicon glyphicon-none"></span>
+      <span ng-if="scores.server == opponent.first_player.id"
+            class="glyphicon glyphicon-star"></span>
       <span ng-if="scores.server != opponent.first_player.id">&nbsp;</span>
     </span>
     <span ng-if="!leftmost">
@@ -26,7 +26,7 @@
   <!--Second doubles player-->
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="!leftmost">
-      <span ng-class="{'leftmost serving glyphicon glyphicon-none': scores.server == opponent.second_player.id}"></span>
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.second_player.id}"></span>
     </span>
 
   </div>
@@ -35,7 +35,7 @@
   </div>
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="leftmost">
-      <span ng-class="{'serving glyphicon glyphicon-none': scores.server == opponent.second_player.id}"></span>
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.second_player.id}"></span>
     </span>
   </div>
 
@@ -44,15 +44,15 @@
 <div ng-if="!scores.doubles">
   <!--Singles player-->
   <div ng-if="scores.server" class="col-xs-2">
-    <span ng-if="!leftmost">
-      <span ng-class="{'serving glyphicon glyphicon-none': scores.server == scores.second_player.id}"></span>
+    <span ng-if="!leftmost" class="flip-horizontal">
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_player.id}"></span>
     </span>
 
   </div>
   <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{opponent.name}}</div>
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="leftmost">
-      <span ng-class="{'leftmost serving glyphicon glyphicon-none': scores.server == opponent.id}"></span>
+      <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.id}"></span>
     </span>
   </div>
 

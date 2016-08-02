@@ -182,11 +182,10 @@
 
     // List players to serve next game
     function firstServers(sb) {
-      if ((sb.doubles && sb.servers.length <= 1) || (!sb.doubles && sb.servers.length === 0)) {
+      if ((sb.doubles && sb.servers.length <= 1) || (!sb.doubles && sb.servers.length === 0))
         return listPlayers();
-      } else {
-        return null;
-      }
+      else
+        return null; // No more first servers
 
       function listPlayers() {
         var list = [];
@@ -194,19 +193,17 @@
         if (sb.doubles) {
           if (sb.servers.length == 1) {
             if ([sb.first_team.first_player.id,
-                sb.first_team.second_player_id].indexOf(sb.servers[0]) >= 0) {
+                sb.first_team.second_player.id].indexOf(sb.servers[0]) >= 0) {
               addTeamPlayers([sb.second_team]);
             }
             else
               addTeamPlayers([sb.first_team]);
           }
-          else {
+          else
             addTeamPlayers([sb.first_team, sb.second_team]);
-          }
         }
-        else {
+        else
           addPlayers([sb.first_player, sb.second_player]);
-        }
 
         return list;
 
