@@ -2,35 +2,17 @@
 
 ### Summary
 
-A Rails API application and AngularJS application to keep the score of a tennis match.  
-
-Redesign of https://github.com/jimtierneysc/tennis-score-board
+A Rails API application and AngularJS application to keep score of tennis matches.  
 
 ### Two Applications
 
 The root directory contains a Rails API application.  This application implements a REST API for managing
-information associated with a tennis match.
+information associated with tennis matches.
   
 The client subdirectory contains an AngularJS/Gulp application.  This application communicates with the
-Rails API application using conventional Angular $resource calls.
+Rails API application by making HTTP requests.
 
 The two application are built independently.    
-
-### Status
-
-COMPLETE
-
-* Nav bar
-* Players view
-* Teams view
-* Matches view
-* Scoreboard View
-
-TODO
-
-* Login
-* Automatic scoreboard refresh
-
 
 ### Download
 
@@ -39,6 +21,7 @@ TODO
 ### Run on Heroku
 
 * `sudo gem install heroku` (if not already installed)
+* `heroku create your-app-name`
 * `cd tennis-score-board-ng`
 * Buildpack setup (see https://www.angularonrails.com/deploy-angular-2rails-5-app-heroku/)
   * `heroku buildpacks:add https://github.com/jasonswett/heroku-buildpack-nodejs`
@@ -46,6 +29,8 @@ TODO
 * `git push heroku master`
 * DB setup
     * `heroku run rake db:migrate`
+* Add a user
+    * `heroku run rake db:seed username=someuser password=somepassword`
 * Sample data
     * `heroku run rake db:sample_data`
     * `heroku run rake db:clear_data` to clear
@@ -65,6 +50,8 @@ TODO
     * Install Postgres server
     * `rake db:create`
     * `rake db:migrate`
+* Add a user
+    * `rake db:seed username=someuser password=somepassword`
 * Sample data
     * `rake db:sample_data`
     * `rake db:clear_data` to clear
@@ -76,40 +63,28 @@ TODO
     * `cd client`
     * `gulp serve` or `gulp serve:dist` 
 * Test
-    * `rake test`
     * `rake spec`
     * `cd client`
     * `gulp test`
     
 
-### Using the app
 
-There are four different types of data in this application: players, doubles teams, matches, and scores.  
-Login is not implemented yet, so for now anyone can create, edit or delete data. 
+### Logging in
 
-#### Players
+* A login link appears in the upper right corner of the page.  Enter the password and username specified with
+the db:seed command.  Login is only required to edit or keep score.  Login is not required to view.
 
-* Click "Players" to view, create, edit and delete players.
-* Players view
-    * Click "Player+" to add a player.
-    * Click trashcan to delete a player.
-    * Click pencil to edit a player.
+#### Players, Teams and Matches views
 
-#### Doubles teams
+* Choose a link in the navbar.
+* Each view supports add, delete and edit.
+* The Matches view has a link to the score.
 
-* Click "Teams" to view, create, edit and delete doubles teams.  
+#### Scores view
 
-#### Matches
-
-* Click "Matches" to view, create, edit and delete matches.
-* Matches view
-    * Click "Score" to show scoreboard for a match.
-
-#### Scores
-
-* Click "Scores" to view and edit scores.  
-* Scores view
-    * Select a match from a list. 
-    * Use the "menu" to toggle various display options
-        * Choose the "Keep Score" option to enable scoring
+* Choose "Scores" in the navbar or the "Score" link in the Matches view.
+* A drop down list is used to select a match.
+* A drop down menu has commands to change the view and the score.
+* The "Keep Score" command may be used to enable scoring.  This command is 
+    enabled when the user in logged in.
 
