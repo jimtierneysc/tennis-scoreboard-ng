@@ -13,7 +13,7 @@
     .controller('ScoreboardController', Controller);
 
   /** @ngInject */
-  function Controller($log, $q, $scope, $stateParams, errorsMapper, scoreboardResource,
+  function Controller($log, $scope, $stateParams, errorsMapper, scoreboardResource,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, waitIndicator, toastrHelper,
                       scoreboardBuilder, response) {
@@ -25,7 +25,6 @@
       vm.id = $stateParams.id;
       vm.scoreboard = {};
       vm.view = new View();
-      vm.updatingScore = false;
 
       // Set ScoresController.vmScoreboard.  Needed by <fe-score-commands>.
       var scoresController = $scope.$parent;
@@ -52,6 +51,7 @@
 
 
     function updateScore(action, params, confirm) {
+      vm.clearToast();
 
       var confirmActions = {
         discard_play: 'Confirm Clear Scoreboard',
@@ -93,17 +93,17 @@
       var key = {id: vm.id};
       var body = makeUpdateBody(action, params);
       var endWait = waitIndicator.beginWait();
-      vm.updatingScore = true;
+      vm.view.updating = true;
       crudResource.getResource(scoreboardResource).save(key, body,
         function (response) {
           endWait();
-          vm.updatingScore = false;
+          vm.view.updating = false;
           scoreUpdated(response);
         },
         function (response) {
           $log.error('update error ' + response.status + " " + response.statusText);
           endWait();
-          vm.updatingScore = false;
+          vm.view.updating = false;
           scoreUpdateError(body, response);
         }
       );
@@ -134,7 +134,7 @@
     }
 
     function scoreUpdated(response) {
-      var scoreboard = {}
+      var scoreboard = {};
       angular.copy(response, scoreboard);
       // angular.copy(response, vm.scoreboard);
       if (scoreboard.errors && !angular.equals({}, scoreboard.errors)) {
@@ -157,41 +157,42 @@
 
       var DATANAME = 'scoreboardView';
 
-      var _this = this; // eslint-disable-line
-      _this.changed = storeView;
-      _this.showGames = showGames;
-      _this.keepingScore = keepingScore;
-      _this.toggleShowDetails = toggleShowDetails;
-      _this.localDataName = DATANAME;
-      _this.expand = "collapse";
-      _this.keepScore = false;
-      _this.showDetails = false;
+      var view = this; // eslint-disable-line
+      view.changed = storeView;
+      view.showGames = showGames;
+      view.keepingScore = keepingScore;
+      view.toggleShowDetails = toggleShowDetails;
+      view.localDataName = DATANAME;
+      view.expand = "collapse";
+      view.keepScore = false;
+      view.showDetails = false;
+      view.updating = false;
       loadView();
 
       function showGames(set) {  // eslint-disable-line
-        if (_this.expand == 'collapse')
+        if (view.expand == 'collapse')
           return false;
         // expand_set not longer supported.   Too confusing.
-        // else if (_this.expand == 'expand_set')
+        // else if (view.expand == 'expand_set')
         //   return vm.scoreboard.sets.length <= 1 || vm.scoreboard.sets[0] == set;
         else // expand_all
           return true;
       }
 
       function keepingScore() {
-        return vm.loggedIn && _this.keepScore;
+        return vm.loggedIn && view.keepScore;
       }
 
       function toggleShowDetails() {
-        _this.showDetails = !_this.showDetails
+        view.showDetails = !view.showDetails
       }
 
       function viewData() {
         return {
           view: {
-            expand: _this.expand,
-            keepScore: _this.keepScore,
-            showDetails: _this.showDetails
+            expand: view.expand,
+            keepScore: view.keepScore,
+            showDetails: view.showDetails
           }
         }
       }
@@ -203,9 +204,9 @@
       function loadView() {
         var data = $localStorage[DATANAME] || {};
         if (data.view) {
-          _this.expand = data.view.expand;
-          _this.keepScore = data.view.keepScore;
-          _this.showDetails = data.view.showDetails;
+          view.expand = data.view.expand;
+          view.keepScore = data.view.keepScore;
+          view.showDetails = data.view.showDetails;
         }
       }
     }

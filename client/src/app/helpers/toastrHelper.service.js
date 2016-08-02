@@ -20,12 +20,12 @@
       var vm = _vm_;
       vm.showToast = showToast;
       vm.showHttpErrorToast = showHttpErrorToast;
+      vm.clearToast = clearToast;
       vm.lastToast = null;
-      
+
       _scope_.$on('$destroy', function () {
         // Remove current toasts when switch views
-        toastr.clear();
-        vm.lastToast = null;
+        clearToast();
       });
 
       function showToast(message, caption, kind) {
@@ -42,6 +42,11 @@
         if (result)
           vm.showToast('Please login again.', "Authentication no longer valid");
         return result;
+      }
+
+      function clearToast() {
+        toastr.clear();
+        vm.lastToast = null;
       }
 
     }

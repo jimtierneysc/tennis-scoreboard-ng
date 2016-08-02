@@ -31,8 +31,12 @@
       });
 
       describe('members', function () {
-        it('should have .showToastrError()', function () {
+        it('should have .showToast()', function () {
           expect(vm.showToast).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .showHttpErrorToast()', function () {
+          expect(vm.showHttpErrorToast).toEqual(jasmine.any(Function));
         });
 
         it('should have .lastToast', function () {
@@ -40,7 +44,7 @@
         });
       });
 
-      describe('toast', function () {
+      describe('.showToast', function () {
         it('should show toast', function () {
           vm.showToast('test');
           expect(vm.lastToast).not.toBeNull();
@@ -52,6 +56,39 @@
           $rootScope.$digest();
           expect(vm.lastToast).toBeNull();
         });
+      });
+
+      describe('.showHttpErrorToast', function () {
+        describe('error 403', function() {
+          var result;
+          beforeEach(function(){
+            result = vm.showHttpErrorToast(403);
+          });
+
+          it('should show toast', function() {
+            expect(vm.lastToast).not.toBeNull();
+          });
+
+          it('should return true', function() {
+            expect(result).toBeTruthy();
+          });
+        });
+
+        describe('error 401', function() {
+          var result;
+          beforeEach(function(){
+            result = vm.showHttpErrorToast(401);
+          });
+
+          it('should not show toast', function() {
+            expect(vm.lastToast).toBeNull();
+          });
+
+          it('should return false', function() {
+            expect(result).toBeFalsy();
+          });
+        });
+
       })
     })
   });

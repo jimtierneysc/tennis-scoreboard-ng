@@ -100,10 +100,6 @@
 
       };
 
-      this.unauthorized = function () {
-        vm.showToast('Please login again.', "Authentication no longer valid");
-      };
-
       this.closeEditors = function (event, state) {
         if (state.name == CRUD) {
           hideNewEntity();
@@ -112,6 +108,7 @@
       };
 
       this.trashEntity = function (entity, confirmDelete) {
+        vm.clearToast();
         if (angular.isUndefined(confirmDelete))
           confirmDelete = true;
         if (confirmDelete) {
@@ -134,6 +131,8 @@
       };
 
       this.showNewEntity = function () {
+
+        vm.clearToast();
 
         editInProgress.closeEditors().then(
           show
@@ -160,6 +159,8 @@
       };
 
       this.showEditEntity = function (entity) {
+
+        vm.clearToast();
 
         editInProgress.closeEditors().then(
           show
@@ -289,14 +290,12 @@
 
       function entityCreateError(entity, response) {
         vm.showHttpErrorToast(response.status);
-        var errors = vm.errorsOfResponse(response);
-        vm.entityCreateErrors = errors;
+        vm.entityCreateErrors = vm.errorsOfResponse(response);
       }
 
       function entityUpdateError(entity, response) {
         vm.showHttpErrorToast(response.status);
-        var errors = vm.errorsOfResponse(response);
-        vm.entityUpdateErrors = errors;
+        vm.entityUpdateErrors = vm.errorsOfResponse(response);
       }
 
       function entityRemoved(entity) {
@@ -307,15 +306,8 @@
         }
       }
 
-      function showUnauthorizedErrorToast(response) {
-        var result = response.status == 403;
-        if (result)
-          vm.showToast('Please login again.', "Authentication no longer valid");
-        return result;
-      }
-
       function entityRemoveError(entity, response) {
-        if (!showUnauthorizedErrorToast(response)) {
+        if (!vm.showHttpErrorToast(response.status)) {
           showErrorToast()
         }
 
