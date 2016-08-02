@@ -1,5 +1,4 @@
 // Styling for scoreboard table
-@import '../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 
 $border: 1px solid black;
 $table_width: 550px;
@@ -173,21 +172,7 @@ div.player-col-2 {
   color: transparent !important;
 }
 
-.serving {
-  background-image:url('/assets/images/tennis.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-}
 
-.serving.leftmost,
-.img-hor {
-  -moz-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-  filter: FlipH;
-  -ms-filter: "FlipH";
-}
 
 
 

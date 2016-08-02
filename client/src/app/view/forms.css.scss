@@ -1,15 +1,25 @@
 //Animate ng-if toggle of forms
 
+@mixin ease-in {
+  transition:0.5s linear all;
+}
+
+@mixin ease-out {
+  transition:0.5s linear all;
+}
+
+@mixin ease-out-fast {
+  transition:0.2s linear all;
+}
+
+//Animate show/hide of edit and new forms
 .form-animate-in-if.ng-enter,
-.form-animate-if.ng-enter
-{
-  //ease in
-  transition:all cubic-bezier(0.42, 0.0, 1.0, 1.0) .5s;
+.form-animate-if.ng-enter {
+  @include ease_in;
 }
 
 .form-animate-if.ng-leave {
-  // ease out
-  transition:all cubic-bezier(0.0, 0.0, 0.58, 1.0) .2s;
+  @include ease_out_fast;
 }
 
 .form-animate-in-if.ng-enter,
@@ -26,27 +36,21 @@
 
 // Animate insert and delete of list item
 .item-animate-repeat.ng-enter {
-  //ease in
-  transition:0.5s linear all;
+  @include ease_in;
 }
 
-//.repeat-item.ng-enter,
 .item-animate-repeat.ng-leave {
-  -webkit-transition:0.5s linear all;
-  transition:0.5s linear all;
+  @include ease_out;
 }
 
-//.repeat-item.ng-enter,
 .item-animate-repeat.ng-enter,
 .item-animate-repeat.ng-leave.ng-leave-active {
   opacity:0;
-  //height: 0px;
 }
 
 .item-animate-repeat.ng-enter.ng-enter-active,
 .item-animate-repeat.ng-leave {
   opacity:1;
-  //height: 30px;
 }
 
 
