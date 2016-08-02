@@ -3,7 +3,7 @@
   <div class="radio" ng-repeat="player in scores.firstServers.list"
        ng-init="scores.selectServer = scores.firstServers.list[0].id">
     <label>
-      <input type="radio" name="player" value="{{player.id}}" ng-model="server">
+      <input type="radio" name="player" value="{{player.id}}" ng-model="scores.selectServer">
       {{player.name}}
     </label>
   </div>
