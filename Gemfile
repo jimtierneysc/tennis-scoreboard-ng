@@ -26,6 +26,10 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'active_model_serializers', '0.9.3'
 
+group :development do
+  gem 'byebug'
+end
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'simplecov'
