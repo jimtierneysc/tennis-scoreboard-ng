@@ -43,7 +43,8 @@
       state: "in_progress",
       sets: [{games: []}],
       servers: [],
-      actions: {}
+      actions: {},
+      version: 100
     };
 
     function doublesResponse() {
@@ -269,7 +270,8 @@
           return {
             match_score_board: {
               player: id,
-              action: 'start_game'
+              action: 'start_game',
+              version: 100
             }
           }
         }
@@ -283,7 +285,8 @@
             params[action] = {
               match_score_board: {
                 player: playerId,
-                action: action
+                action: action,
+                version: 100
               }
             }
           }
@@ -322,7 +325,8 @@
             params[action] = {
               match_score_board: {
                 team: 200,
-                action: action
+                action: action,
+                version: 100
               }
             }
           }
@@ -409,6 +413,10 @@
           expect(view.expand).toEqual(jasmine.any(String));
         });
 
+        it('should have .showDetails', function () {
+          expect(view.showDetails).toEqual(jasmine.any(Boolean));
+        });
+
         it('should have .keepScore', function () {
           expect(view.keepScore).toEqual(jasmine.any(Boolean));
         });
@@ -453,6 +461,26 @@
         });
       });
 
+      describe('.showDetails', function() {
+        var vm;
+        beforeEach(function () {
+          vm = scoreboardController(singlesResponse());
+          vm.view.showDetails = false;
+        });
+
+        it('should toggle to true', function () {
+          vm.view.showDetails = false;
+          vm.view.toggleShowDetails();
+          expect(vm.view.showDetails).toBeTruthy();
+        });
+
+        it('should toggle to false', function () {
+          vm.view.showDetails = true;
+          vm.view.toggleShowDetails();
+          expect(vm.view.showDetails).toBeFalsy();
+        });
+
+      });
 
       describe('.showGames()', function () {
         var vm;

@@ -153,6 +153,7 @@
             ]
           },
           {
+            scoring: 'ten_point',
             games: [
               {
                 winner: null
@@ -519,8 +520,9 @@
           for (var i = 0; i < 4; i++) {
             describe('is player ' + (i + 1), function () {
               var firstServers;
+              var index = i;  // capture i
               beforeEach(function () {
-                scores.servers = [allServerIds[i]];
+                scores.servers = [allServerIds[index]];
                 firstServers = service.firstServers(scores);
               });
 
@@ -529,7 +531,7 @@
               });
 
               it('should list correct servers', function () {
-                var expected = i <= 1 ? firstTeamServers : secondTeamServers;
+                var expected = index > 1 ? firstTeamServers : secondTeamServers;
                 expect([firstServers[0].id, firstServers[1].id]).toEqual(expected);
               });
             });

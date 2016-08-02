@@ -25,15 +25,17 @@
     });
 
     describe('authentication', function () {
-      var service;
+      var userCredentials;
+      var authInterceptor;
       var USERNAME = 'authHelper username';
 
       beforeEach(function () {
 
-        inject(function (userCredentials) {
-          service = userCredentials;
+        inject(function (_userCredentials_, _authInterceptor_) {
+          userCredentials = _userCredentials_;
+          authInterceptor = _authInterceptor_;
         });
-        service.setCredentials(USERNAME, '')
+        userCredentials.setCredentials(USERNAME, '')
       });
 
       it('should get .userName when .setCredentials()', function () {
@@ -45,14 +47,19 @@
       });
 
       it('should not be .loggedIn when .clearCredentials', function () {
-        service.clearCredentials();
+        userCredentials.clearCredentials();
         expect(vm.loggedIn).toEqual(false);
       });
 
       it('should not be .loggedIn after .logOut()', function () {
         vm.logOut();
         $rootScope.$digest();
-        expect(service.loggedIn).toEqual(false);
+        expect(userCredentials.loggedIn).toEqual(false);
+      });
+
+      it('should clear credentials when unauthorized', function() {
+        authInterceptor.responseError({status: 403});
+        expect(vm.loggedIn).toEqual(false);
       });
     })
   });
