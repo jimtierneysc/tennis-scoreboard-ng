@@ -103,8 +103,8 @@
         var options;
         var resourceName;
         beforeEach(function () {
-          inject(function (_matchesResource_) {
-            resourceName = _matchesResource_;
+          inject(function (_matchesPath_) {
+            resourceName = _matchesPath_;
           });
           options = crudMock.options;
         });

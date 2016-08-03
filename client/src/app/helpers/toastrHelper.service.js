@@ -2,7 +2,7 @@
  * @ngdoc factory
  * @name toastrHelper
  * @description
- * Adds popup message functionality to a controller
+ * Adds popup toast functionality to a controller
  *
  */
 (function () {
@@ -38,9 +38,9 @@
       }
 
       function showHttpErrorToast(status) {
-        var result = status == 403;
+        var result = status == 401;
         if (result)
-          vm.showToast('Please login again.', "Authentication no longer valid");
+          vm.showToast('Please login again.', "Authorization is no longer valid");
         return result;
       }
 
@@ -48,9 +48,7 @@
         toastr.clear();
         vm.lastToast = null;
       }
-
     }
-
   }
 })();
 

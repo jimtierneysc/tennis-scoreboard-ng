@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name crudResource
  * @description
- * Base for crud resource services
+ * Make CRUD HTTP requests
  *
  */
 (function () {
@@ -13,19 +13,19 @@
     .service('crudResource', Service);
 
   /** @ngInject */
-  function Service($resource, baseURL) {
+  function Service($resource, apiPath) {
 
     var service = this;
 
     service.getPath = getPath;
     service.getResource = getResource;
 
-    function getPath(name) {
-      return baseURL + name;
+    function getPath(resourcePath) {
+      return apiPath + resourcePath;
     }
 
-    function getResource(name) {
-      return $resource(getPath(name) + '/:id', null, {'update': {method: 'PUT'}});
+    function getResource(resourcePath) {
+      return $resource(getPath(resourcePath) + '/:id', null, {'update': {method: 'PUT'}});
     }
   }
 })();

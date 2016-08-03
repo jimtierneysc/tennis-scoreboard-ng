@@ -36,27 +36,6 @@
         };
       };
     }
-
-    // function Helper(_vm_) {
-    //   var helper = this;
-    //   var vm = _vm_;
-    //
-    //   helper.failed = function (response) {
-    //     vm.loading = false;
-    //     vm.loadingFailed = true;
-    //     vm.loadingError = {
-    //       statusText: response.statusText,
-    //       status: response.status,
-    //       data: response.data
-    //     };
-    //   };
-    //
-    //   helper.completed = function () {
-    //     vm.loading = false;
-    //     vm.loadingFailed = false;
-    //     vm.loadingError = null;
-    //   }
-    // }
   }
 })();
 

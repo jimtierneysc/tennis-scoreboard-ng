@@ -3,39 +3,45 @@
 
   describe('api constants', function () {
 
-    var baseURL, playersResource, teamsResource, matchesResource,
-      scoreboardResource, authHeaderName;
+    var apiPath, playersPath, teamsPath, matchesPath,
+      scoreboardPath, authHeaderName, sessionsPath;
 
     beforeEach(module('frontendApi'));
 
-    beforeEach(inject(function (_baseURL_, _authHeaderName_, _playersResource_,
-                                _teamsResource_, _matchesResource_, _scoreboardResource_) {
-      baseURL = _baseURL_;
+    beforeEach(inject(function (_apiPath_, _authHeaderName_, _playersPath_,
+                                _teamsPath_, _matchesPath_, _scoreboardPath_,
+                                _sessionsPath_) {
+      apiPath = _apiPath_;
       authHeaderName = _authHeaderName_;
-      teamsResource = _teamsResource_;
-      playersResource = _playersResource_;
-      matchesResource = _matchesResource_;
-      scoreboardResource = _scoreboardResource_;
+      teamsPath = _teamsPath_;
+      playersPath = _playersPath_;
+      matchesPath = _matchesPath_;
+      scoreboardPath = _scoreboardPath_;
+      sessionsPath = _sessionsPath_;
     }));
 
-    it('should have .baseURL', function () {
-      expect(baseURL).toEqual('/api/');
+    it('should have .apiPath', function () {
+      expect(apiPath).toEqual('/api/');
     });
 
-    it('should have .teamsResource', function () {
-      expect(teamsResource).toEqual('teams');
+    it('should have .teamsPath', function () {
+      expect(teamsPath).toEqual('teams');
     });
 
-    it('should have .playersResource', function () {
-      expect(playersResource).toEqual('players');
+    it('should have .sessionsPath', function () {
+      expect(sessionsPath).toEqual('sessions');
     });
 
-    it('should have .matchesResource', function () {
-      expect(matchesResource).toEqual('matches');
+    it('should have .playersPath', function () {
+      expect(playersPath).toEqual('players');
     });
 
-    it('should have .scoreboardResource', function () {
-      expect(scoreboardResource).toEqual('match_score_board');
+    it('should have .matchesPath', function () {
+      expect(matchesPath).toEqual('matches');
+    });
+
+    it('should have .scoreboardPath', function () {
+      expect(scoreboardPath).toEqual('match_score_board');
     });
 
     it('should have .authHeaderName', function () {

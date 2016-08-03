@@ -7,7 +7,7 @@
 
   /** @ngInject */
   function routerConfig($stateProvider, $urlRouterProvider,
-                        teamsResource, playersResource, matchesResource, scoreboardResource) {
+                        teamsPath, playersPath, matchesPath, scoreboardPath) {
     var header = {
       templateUrl: 'app/header/header.html',
       controller: 'HeaderController',
@@ -106,22 +106,22 @@
 
     /** @ngInject */
     function resolvePlayers($injector) {
-      return makeQueryPromise($injector, playersResource);
+      return makeQueryPromise($injector, playersPath);
     }
 
     /** @ngInject */
     function resolveMatches($injector) {
-      return makeQueryPromise($injector, matchesResource);
+      return makeQueryPromise($injector, matchesPath);
     }
 
     /** @ngInject */
     function resolveTeams($injector) {
-      return makeQueryPromise($injector, teamsResource);
+      return makeQueryPromise($injector, teamsPath);
     }
 
     /** @ngInject */
     function resolveScoreBoard($injector, $stateParams) {
-      return makeGetPromise($injector, scoreboardResource, $stateParams.id);
+      return makeGetPromise($injector, scoreboardPath, $stateParams.id);
     }
 
 

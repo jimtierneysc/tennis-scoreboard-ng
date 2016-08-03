@@ -3,9 +3,6 @@
  * @name feCredentialsForm
  * @description
  * Form for login or signup
- *
- * @example:
- <fe-credentials-form></fe-credentials-form>
  */
 
 

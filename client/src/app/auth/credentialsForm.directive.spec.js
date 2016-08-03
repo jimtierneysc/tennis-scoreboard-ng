@@ -4,6 +4,7 @@
   describe('feCredentialsForm directive', function () {
 
     var compile, scope, directiveElem, okText;
+    var isolatedScope;
 
     beforeEach(module('frontendAuth'));
 
@@ -26,6 +27,7 @@
       '></fe-credentials-form>');
 
       directiveElem = getCompiledElement(html);
+      isolatedScope = directiveElem.isolateScope();
     });
 
     function getCompiledElement(html) {
@@ -36,22 +38,15 @@
     }
 
     it('should have .submit()', function () {
-      var isolatedScope = directiveElem.isolateScope();
-
       expect(isolatedScope.submit).toEqual(jasmine.any(Function));
     });
 
-
     it('should call .submit()', function () {
-      var isolatedScope = directiveElem.isolateScope();
       isolatedScope.submit();
-
       expect(scope.asubmit).toHaveBeenCalled();
     });
 
     it('should two-way bind .errors', function () {
-      var isolatedScope = directiveElem.isolateScope();
-
       var value = {errors: 'one'};
 
       isolatedScope.errors = value;
@@ -61,8 +56,6 @@
     });
 
     it('should two-way bind .entity', function () {
-      var isolatedScope = directiveElem.isolateScope();
-
       var value = {name: 'one'};
 
       isolatedScope.entity = value;
@@ -76,7 +69,7 @@
         expect(directiveElem.find('button').length).toEqual(1);
       });
 
-      it('should have correct button text', function () {
+      it('should have button text', function () {
         expect(directiveElem.find('button')[0].innerText).toEqual(okText);
       });
 

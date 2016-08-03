@@ -14,7 +14,7 @@
     .controller('PlayersController', Controller);
 
   /** @ngInject */
-  function Controller($log, $scope, crudHelper, authHelper, playersResource, response, $q) {
+  function Controller($log, $scope, crudHelper, authHelper, playersPath, response, $q) {
 
     var vm = this;
 
@@ -25,7 +25,7 @@
       crudHelper(vm,
         {
           response: response,
-          resourceName: playersResource,
+          resourceName: playersPath,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
           beforeShowNewEntity: resolvedPromise,

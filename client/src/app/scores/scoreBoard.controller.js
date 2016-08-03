@@ -13,7 +13,7 @@
     .controller('ScoreboardController', Controller);
 
   /** @ngInject */
-  function Controller($log, $scope, $stateParams, errorsMapper, scoreboardResource,
+  function Controller($log, $scope, $stateParams, errorsMapper, scoreboardPath,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, waitIndicator, toastrHelper,
                       scoreboardBuilder, response) {
@@ -67,11 +67,11 @@
           vm.scoreboard.title + '"?'
         })
           .then(function () {
-            scoreboardResourceUpdate(action, params);
+            scoreboardPathUpdate(action, params);
           });
       }
       else {
-        scoreboardResourceUpdate(action, params);
+        scoreboardPathUpdate(action, params);
       }
     }
 
@@ -89,12 +89,12 @@
       vm.updateLoadingFailed(response);
     }
 
-    function scoreboardResourceUpdate(action, params) {
+    function scoreboardPathUpdate(action, params) {
       var key = {id: vm.id};
       var body = makeUpdateBody(action, params);
       var endWait = waitIndicator.beginWait();
       vm.view.updating = true;
-      crudResource.getResource(scoreboardResource).save(key, body,
+      crudResource.getResource(scoreboardPath).save(key, body,
         function (response) {
           endWait();
           vm.view.updating = false;

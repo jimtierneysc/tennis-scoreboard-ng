@@ -4,8 +4,6 @@
  * @description
  * Display animation while waiting
  *
- * @example:
- <fe-wait-indicator></fe-wait-indicator>
  */
 
 (function () {
@@ -48,7 +46,6 @@
         $scope.$on('$destroy', function() {
           $timeout.cancel(timer);}
         );
-
       }
       else
         vm.waiting = false;

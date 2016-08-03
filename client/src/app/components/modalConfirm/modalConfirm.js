@@ -19,14 +19,34 @@
     controller: Controller,
     controllerAs: 'vm'
   };
-  
+
   var defaultLabels = {
     text: 'Are you sure?',
     title: 'Confirm',
     ok: 'Yes',
     cancel: 'Cancel'
   };
-  
+
+  /** @ngInject */
+  function factory($uibModal) {
+
+    return {
+      confirm: confirm,
+      open: open
+    };
+
+    function confirm(labels) {
+      return open(labels).result; // promise
+    }
+
+    function open(labels) {
+      var settings = angular.copy(modalSettings);
+      settings.resolve = {data: angular.extend({}, defaultLabels, labels || {})};
+
+      return $uibModal.open(settings);
+    }
+  }
+
   /** @ngInject */
   function Controller($uibModalInstance, data) {
     var vm = this;
@@ -46,26 +66,7 @@
     }
   }
 
-  /** @ngInject */
-  function factory($uibModal) {
 
-    return {
-      confirm: confirm,
-      open: open
-    };
-
-    function confirm(labels, options) {
-      return open(labels, options).result; // promise
-    }
-
-    function open(labels, options) {
-      var settings = angular.copy(modalSettings);
-      angular.extend(settings, options || {});
-      settings.resolve = {data: angular.extend({}, defaultLabels, labels || {})};
-
-      return $uibModal.open(settings);
-    }
-  }
 
 })();
 

@@ -4,6 +4,7 @@
  * @description
  * Service to manage state of a wait indicator
  */
+
 (function() {
   'use strict';
 

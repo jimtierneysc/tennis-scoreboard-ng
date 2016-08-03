@@ -13,7 +13,7 @@
     .controller('TeamsController', Controller);
 
   /** @ngInject */
-  function Controller($q, $filter, $log, $scope, crudHelper, authHelper, teamsResource, playersSelectOptions, response) {
+  function Controller($q, $filter, $log, $scope, crudHelper, authHelper, teamsPath, playersSelectOptions, response) {
     var vm = this;
 
     activate();
@@ -25,8 +25,7 @@
       crudHelper(vm,
         {
           response: response,
-          resourceName: teamsResource,
-          // getResources: teamsResource.getTeams,
+          resourceName: teamsPath,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
           beforeShowNewEntity: beforeShowNewEntity,

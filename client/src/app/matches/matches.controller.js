@@ -14,7 +14,7 @@
     .controller('MatchesController', Controller);
 
   /** @ngInject */
-  function Controller($filter, $q, $log, $scope, crudHelper, matchesResource,
+  function Controller($filter, $q, $log, $scope, crudHelper, matchesPath,
                       authHelper, playersSelectOptions, teamsSelectOptions, response) {
     var vm = this;
 
@@ -27,7 +27,7 @@
       crudHelper(vm,
         {
           response: response,
-          resourceName: matchesResource,
+          resourceName: matchesPath,
           prepareToCreateEntity: prepareToCreateEntity,
           prepareToUpdateEntity: prepareToUpdateEntity,
           beforeShowNewEntity: beforeShowNewEntity,

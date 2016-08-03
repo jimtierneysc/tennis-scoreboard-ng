@@ -6,19 +6,7 @@
     var compile, scope, directiveElem;
 
     beforeEach(module('frontendAuth'));
-    // beforeEach(module(function ($provide) {
-    //   $provide.factory('validateCredentials', function () {
-    //     return function(data) {
-    //       // return $q.$defer().resolve(data);
-    //       inject(function(_$q_) {
-    //          $q = _$q_;
-    //       });
-    //       var deferred = $q.$defer();
-    //       deferred.resolve(data);
-    //       return deferred;
-    //     };
-    //   });
-    // }));
+
     afterEach(function() {
       localStorage.clear();
     });

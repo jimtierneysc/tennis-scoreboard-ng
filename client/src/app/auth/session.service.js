@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name sessionResource
  * @description
- * Service to login a user
+ * Service to login a user by HTTP request
  *
  */
 (function() {
@@ -13,8 +13,8 @@
     .factory('sessionResource', factory);
 
   /** @ngInject */
-  function factory($log, $resource, baseURL) {
-    var path = baseURL + 'sessions';
+  function factory($resource, apiPath, sessionsPath) {
+    var path = apiPath + sessionsPath;
 
     var service = {
       path: path,

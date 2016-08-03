@@ -15,6 +15,7 @@
         $rootScope = _$rootScope_;
         scope = _$rootScope_.$new();
       });
+      // Add auth functionality to vm
       service(vm, scope);
     });
 
@@ -58,12 +59,13 @@
       });
 
       it('should clear credentials when unauthorized', function() {
-        authInterceptor.responseError({status: 403});
+        authInterceptor.responseError({status: 401});
         expect(vm.loggedIn).toEqual(false);
       });
     })
   });
 
+  // Define matchers to test controllers for auth support
   beforeEach(function () {
     var matchers = {
       toSupportAuth: function () {

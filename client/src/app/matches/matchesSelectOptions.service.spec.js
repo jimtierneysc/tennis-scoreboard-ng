@@ -19,11 +19,11 @@
     beforeEach(module('frontendMatches'));
 
     beforeEach(function () {
-      inject(function (_crudResource_, _matchesResource_,
+      inject(function (_crudResource_, _matchesPath_,
                        _$httpBackend_, _matchesSelectOptions_, _$rootScope_) {
         $rootScope = _$rootScope_;
         service = _matchesSelectOptions_;
-        path = _crudResource_.getPath(_matchesResource_);
+        path = _crudResource_.getPath(_matchesPath_);
         $httpBackend = _$httpBackend_;
       });
     });

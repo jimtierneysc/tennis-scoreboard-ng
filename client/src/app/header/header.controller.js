@@ -2,9 +2,10 @@
  * @ngdoc controller
  * @name HeaderController
  * @description
- * Manage data required by nav bar
+ * Controller for navbar
  *
  */
+
 (function () {
   'use strict';
 
@@ -24,9 +25,10 @@
       vm.showingLogin = showingLogin;
       vm.showLogin = showLogin;
 
+      // Add auth support like (e.g.; loggedIn property)
       authHelper(vm, $scope);
 
-      // close responsive drop down if the user is prompted close editor
+      // close responsive drop down if the user is prompted to close an editor
       editInProgress.registerOnConfirmed($scope,
         function () {
           vm.isCollapsed = true;

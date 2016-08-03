@@ -92,8 +92,8 @@
         var options;
         var resourceName;
         beforeEach(function () {
-          inject(function (_teamsResource_) {
-            resourceName = _teamsResource_;
+          inject(function (_teamsPath_) {
+            resourceName = _teamsPath_;
           });
           options = crudMock.options;
         });
@@ -365,8 +365,7 @@
     _this.getPlayersSelectOptions = function () {
       return getSelectOptions(_this.playerList);
     };
-
-
+    
     _this.reject = false;
     _this.playerList = [];
     _this.setPlayerCount(3);  // default to list of 3

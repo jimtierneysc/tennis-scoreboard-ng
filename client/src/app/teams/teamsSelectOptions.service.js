@@ -13,14 +13,14 @@
     .factory('teamsSelectOptions', factory);
 
   /** @ngInject */
-  function factory($log, $q, crudResource, teamsResource) {
+  function factory($log, $q, crudResource, teamsPath) {
 
     return getSelectOptions;
 
     // Return a promise
     function getSelectOptions() {
       var deferredObject = $q.defer();
-      crudResource.getResource(teamsResource).query(
+      crudResource.getResource(teamsPath).query(
         function (response) {
           var options = [];
           angular.forEach(response, function (value) {

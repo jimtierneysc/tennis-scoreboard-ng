@@ -19,11 +19,11 @@
     beforeEach(module('frontendTeams'));
 
     beforeEach(function () {
-      inject(function (_crudResource_, _teamsResource_,
+      inject(function (_crudResource_, _teamsPath_,
                        _$httpBackend_, _teamsSelectOptions_, _$rootScope_) {
         $rootScope = _$rootScope_;
         service = _teamsSelectOptions_;
-        path = _crudResource_.getPath(_teamsResource_);
+        path = _crudResource_.getPath(_teamsPath_);
         $httpBackend = _$httpBackend_;
       });
     });

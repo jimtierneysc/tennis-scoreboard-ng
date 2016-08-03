@@ -24,7 +24,7 @@
         expect(service.getSession).not.toEqual(null);
       });
 
-      it('should return data', function() {
+      it('should resolve when OK', function() {
         $httpBackend.expect('POST',  service.path).respond(200, {auth_token: 'atoken'});
         var data = null;
         service.getSession().login(function(response) {
@@ -37,7 +37,7 @@
         expect(data).toEqual(jasmine.any(Object));
       });
 
-      it('should return error', function() {
+      it('should reject when error', function() {
         $httpBackend.expect('POST',  service.path).respond(500);
         var error = false;
         service.getSession().login(function() {

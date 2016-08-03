@@ -59,10 +59,10 @@
       });
 
       describe('.showHttpErrorToast', function () {
-        describe('error 403', function() {
+        describe('error 401', function() {
           var result;
           beforeEach(function(){
-            result = vm.showHttpErrorToast(403);
+            result = vm.showHttpErrorToast(401);
           });
 
           it('should show toast', function() {
@@ -74,10 +74,10 @@
           });
         });
 
-        describe('error 401', function() {
+        describe('error 403', function() {
           var result;
           beforeEach(function(){
-            result = vm.showHttpErrorToast(401);
+            result = vm.showHttpErrorToast(403);
           });
 
           it('should not show toast', function() {

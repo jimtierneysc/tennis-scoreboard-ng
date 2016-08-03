@@ -1,4 +1,7 @@
-div.modal-footer {
+
+// Default is right justified, but no other buttons in app are right justified.
+// Centered seems to look OK.
+.modal-footer.centered {
   text-align: center; // align buttons
 }
 

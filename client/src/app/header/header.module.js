@@ -3,6 +3,5 @@
 
   angular
     .module('frontendHeader', ['frontendAuth', 'frontendComponents', 'frontendHelpers']);
-
-
+  
 })();

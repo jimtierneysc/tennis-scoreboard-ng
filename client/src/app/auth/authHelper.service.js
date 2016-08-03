@@ -17,8 +17,8 @@
 
     return activate;
 
+    // Initialize controller
     function activate(vm, scope) {
-      // Initialize controller
       vm.loggedIn = userCredentials.loggedIn;
       vm.userName = userCredentials.userName;
       vm.logOut = function () {
@@ -26,11 +26,13 @@
         editInProgress.closeEditors().then(
           userCredentials.clearCredentials)
       };
+      
       userCredentials.subscribeChanged(scope, function () {
         vm.loggedIn = userCredentials.loggedIn;
         vm.userName = userCredentials.userName;
       });
 
+      // Clear credentials on 403 error
       authInterceptor.subscribeUnauthorized(scope, function () {
         $log.error('unauthorized');
         userCredentials.clearCredentials();

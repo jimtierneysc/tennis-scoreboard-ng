@@ -13,13 +13,13 @@
     .factory('matchesSelectOptions', matchesFunc);
 
   /** @ngInject */
-  function matchesFunc($log, $q, matchesResource, crudResource) {
+  function matchesFunc($log, $q, matchesPath, crudResource) {
 
     return getSelectOptions;
 
     function getSelectOptions() {
       var deferred = $q.defer();
-      crudResource.getResource(matchesResource).query(
+      crudResource.getResource(matchesPath).query(
         function (response) {
           var options = [];
           angular.forEach(response, function (value) {

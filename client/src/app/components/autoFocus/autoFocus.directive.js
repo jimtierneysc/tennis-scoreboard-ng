@@ -2,10 +2,8 @@
  * @ngdoc directive
  * @name feAutoFocus
  * @description
- * Set focus to element
+ * Set focus to an HTML element
  *
- * @example:
- * <input type="text" fe-auto-focus>
  */
 
 (function () {
@@ -14,7 +12,6 @@
   angular
     .module('frontendComponents')
     .directive('feAutoFocus', directive)
-    .factory('autoFocus', factory);
 
   /** @ngInject */
   function directive($timeout) {
@@ -22,7 +19,7 @@
       restrict: 'A',
       link: function (scope, element, attr) {
         if (attr.feAutoFocus) {
-          // fe-auto-focus has a value.  Wait for notification.
+          // fe-auto-focus has a value, so wait for event.
           scope.$on('fe-autoFocus', function (e, name) {
             if (name === attr.feAutoFocus) {
               setFocus();
@@ -30,7 +27,7 @@
           });
         }
         else {
-          // fe-auto-focus does not have a value.  Focus when linked.
+          // fe-auto-focus does not have a value, so focus when linked.
           var timer = $timeout(function () {
             setFocus();
           }, 1);
@@ -49,6 +46,21 @@
       }
     }
   }
+})();
+
+/**
+ * @ngdoc factory
+ * @name autoFocus
+ * @description
+ * Use with feAutoFocus directive to set focus after linking
+ **/
+
+(function () {
+  'use strict';
+
+  angular
+    .module('frontendComponents')
+    .factory('autoFocus', factory);
 
   /** @ngInject */
   function factory($timeout, $rootScope) {
@@ -65,6 +77,4 @@
 
     }
   }
-
-
 })();

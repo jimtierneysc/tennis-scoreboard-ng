@@ -6,11 +6,6 @@
     var $httpBackend;
 
     beforeEach(module('frontendAuth'));
-    // beforeEach(module(function (_$provide_) {
-    //   _$provide_.value('userCredentials', {
-    //     loadCredentials: jasmine.createSpy()
-    //   });
-    // }));
 
     beforeEach(function() {
       inject(function(_userResource_, _$httpBackend_) {
@@ -18,18 +13,6 @@
         $httpBackend = _$httpBackend_;
       })
     });
-
-    // beforeEach(
-    // module(function($provide) {
-    //   $provide.service('util', function() {
-    //     this.isNumber = jasmine.createSpy('isNumber').andCallFake(function(num) {
-    //       //a fake implementation
-    //     });
-    //     this.isDate = jasmine.createSpy('isDate').andCallFake(function(num) {
-    //       //a fake implementation
-    //     });
-    //   });
-    // }));
 
     describe('.path', function() {
       it('should have .path', function() {
@@ -42,7 +25,7 @@
         expect(service.getUser).not.toEqual(null);
       });
 
-      it('should return data', function() {
+      it('should resolve when OK', function() {
         $httpBackend.expect('GET', service.path).respond(200, {username: 'auser'});
         var data = null;
         service.getUser().get(function(response) {
@@ -55,7 +38,7 @@
         expect(data).toEqual(jasmine.any(Object));
       });
 
-      it('should return error', function() {
+      it('should reject when error', function() {
         $httpBackend.expect('GET', service.path).respond(500);
         var error = false;
         service.getUser().get(function() {

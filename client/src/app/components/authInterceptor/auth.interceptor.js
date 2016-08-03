@@ -2,7 +2,8 @@
  * @ngdoc service
  * @name authInterceptor
  * @description
- * Intercept HTTP error 401
+ * Intercept HTTP error 401 unauthorized and notify subscribers.  This 
+ * error usually means that the auth token is no longer valid.
  *
  */
 (function () {
@@ -20,9 +21,10 @@
     service.responseError = responseError;
     service.subscribeUnauthorized = subscribeUnauthorized;
 
+    // Interceptor method
     function responseError(response) {
-      if (response.status == 403) {
-        unauthorized();
+      if (response.status == 401) {
+        emitUnauthorized();
       }
       return $q.reject(response);
     }
@@ -34,10 +36,9 @@
       scope.$on('$destroy', handler);
     }
 
-    function unauthorized() {
+    function emitUnauthorized() {
       $rootScope.$emit(EVENT_NAME);
     }
-
   }
 
   /** @ngInject */

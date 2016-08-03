@@ -41,7 +41,6 @@
         service.confirm(labels);
         expect($uibModal.open).toHaveBeenCalled();
       });
-
     });
 
     describe('form elements', function () {
@@ -50,10 +49,6 @@
       beforeEach(function () {
         form = createModal(labels).element;
       });
-
-      // afterEach(function () {
-      //   destroyModal();
-      // })
 
       it('should have <article>', function () {
         expect(form.find('article').length).toEqual(1);
@@ -153,7 +148,7 @@
         service = _modalConfirm_;
         $modalStack = _$modalStack_;
         $rootScope = _$rootScope_;
-      })
+      });
       var modal = service.open(labels, {animation: false});
       $rootScope.$digest();
       return {

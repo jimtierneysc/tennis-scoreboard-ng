@@ -13,12 +13,12 @@
       var deferred = $q.defer();
       if (currentUser) {
         $http.defaults.headers.common[authHeaderName] = currentUser.token;
-        // Validate credentials
+        // Credentials are valid when token identifies a user
         userResource.getUser().get(
-          function(response) {
-            deferred.resolve(
-            { username: response.username,
-            token: currentUser.token
+          function (response) {
+            deferred.resolve({
+              username: response.username,
+              token: currentUser.token
             });
           },
           function (response) {

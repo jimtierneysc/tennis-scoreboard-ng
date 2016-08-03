@@ -4,8 +4,6 @@
  * @description
  * Form for login
  *
- * @example:
- <fe-login-form></fe-login-form>
  */
 
 
@@ -75,8 +73,5 @@
         }
       );
     }
-
   }
-
-
 })();

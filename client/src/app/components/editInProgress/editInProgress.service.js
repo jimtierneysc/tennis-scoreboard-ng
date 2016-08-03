@@ -3,7 +3,7 @@
  * @name editInProgress
  * @description
  * Prompt the user to cancel the edit in progress, and notify controllers
- * if cancelled or not.
+ * whether cancelled or not.
  */
 (function () {
   'use strict';
@@ -23,7 +23,7 @@
     service.registerOnClose = registerOnClose;
 
     // Return a promise.  The promise will be rejected when there is an edit in-
-    // progress (e.g.; entering a title for a new something) and the user chooses not to cancel
+    // progress (e.g.; entering a title for a new entity) and the user chooses not to cancel
     // editing.
     function closeEditors() {
       var deferredObject = $q.defer();
@@ -75,8 +75,7 @@
       }
     }
     
-
-    // Register a callback used by this service to retrieve the state of an editor
+    // Register a callback to retrieve the state of an editor
     // from a controller.
     function registerOnQueryState(scope, queryCallback) {
       registerEvent(scope, QUERY_EVENT, queryCallback);

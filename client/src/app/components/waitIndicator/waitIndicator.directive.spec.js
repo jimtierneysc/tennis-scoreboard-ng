@@ -80,6 +80,5 @@
         expect(vm.waiting).toBeFalsy();
       })
     })
-
   });
 })();

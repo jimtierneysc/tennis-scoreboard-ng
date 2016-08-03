@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name userResource
  * @description
- * Service to access current user
+ * Service to access current user by HTTP request
  *
  */
 (function() {
@@ -13,8 +13,8 @@
     .factory('userResource', factory);
 
   /** @ngInject */
-  function factory($log, $resource, baseURL) {
-    var path = baseURL + 'user';
+  function factory($log, $resource, apiPath, userPath) {
+    var path = apiPath + userPath;
 
     var service = {
       path: path,

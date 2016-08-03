@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('service waitIndicator', function () {
+  describe('waitIndicator service', function () {
 
     var service;
 
@@ -62,7 +62,7 @@
         expect(spy).toHaveBeenCalled();
       });
 
-      it('should notify once when .beginWait twice', function () {
+      it('should notify once when .beginWait() twice', function () {
         service.subscribeChanged(scope, spy);
         service.beginWait();
         service.beginWait();
