@@ -20,10 +20,10 @@ RSpec.describe V1::UserController, { type: :controller } do
       it_behaves_like 'a response with success code', 200
     end
 
-    context 'when is not authorized' do
+    context 'when is not logged in' do
       before { get :show }
 
-      it_behaves_like 'not authenticated'
+      it_behaves_like 'login required'
     end
   end
 

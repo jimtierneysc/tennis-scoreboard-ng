@@ -92,8 +92,8 @@ module ControllersShared
     it_behaves_like 'a response with error code', 403
   end
 
-  RSpec.shared_examples 'not authenticated' do
-    it { expect(json_response).to include_error 'Not authenticated' }
+  RSpec.shared_examples 'not authorized' do
+    it { expect(json_response).to include_error 'Not authorized' }
 
     it_behaves_like 'a response with error code', 401
   end
@@ -117,7 +117,7 @@ module ControllersShared
   end
 
   RSpec.shared_examples 'an error when delete referenced entity' do |message|
-    it { expect(json_response).to include_error_named :base, message }
+    it { expect(json_response).to include_error_named :errors, message }
 
     it { is_expected.to respond_with 422 }
   end

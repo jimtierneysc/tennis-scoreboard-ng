@@ -5,8 +5,7 @@
 # Updates a team.
 # Deletes a team.
 class V1::TeamsController < ApplicationController
-  before_action :check_login!, only:
-    [:update, :create, :destroy]
+  before_action :authorize_user!,  only: [:update, :create, :destroy]
   before_action :set_team, only: [:show, :update, :destroy]
 
   # GET /teams

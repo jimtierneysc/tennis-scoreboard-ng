@@ -5,9 +5,8 @@
 # Updates a match.
 # Deletes a match.
 class V1::MatchesController < ApplicationController
-  before_action :check_login!, only: [:create, :update, :destroy]
-  before_action :set_match, only:
-    [:show, :update, :destroy]
+  before_action :authorize_user!, only: [:create, :update, :destroy]
+  before_action :set_match, only: [:show, :update, :destroy]
 
   @match = nil
   # GET /matches

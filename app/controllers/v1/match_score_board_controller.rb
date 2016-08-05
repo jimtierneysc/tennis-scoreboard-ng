@@ -5,7 +5,7 @@ class V1::MatchScoreBoardController < ApplicationController
   include MatchLoader
 
   rescue_from ::Exceptions::UnknownOperation, with: :when_unknown_operation
-  before_action :check_login!, only: [:update]
+  before_action :authorize_user!, only: [:update]
   before_action :set_match_eager_load, only: [:show, :update]
 
   def show
