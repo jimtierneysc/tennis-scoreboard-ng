@@ -4,8 +4,6 @@
  * @description
  * Display opponents of a match
  *
- * @example:
- * <fe-match_opponents></fe-match_opponents>
  */
 
 (function () {

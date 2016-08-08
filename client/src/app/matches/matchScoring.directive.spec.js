@@ -11,10 +11,8 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var match = {title: 'atitle', doubles: true};
-
       scope = $rootScope.$new();
-      scope.amatch = match;
+      scope.amatch = {};
 
       var html = ('<fe-match-scoring ' +
       'match="amatch" ' +
@@ -29,9 +27,6 @@
 
 
     describe('isolated scope', function () {
-      it('should have scope', function () {
-        expect(isolatedScope).not.toBe(null);
-      });
 
       it('should have .match', function () {
         expect(isolatedScope.match).toBe(scope.amatch);

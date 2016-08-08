@@ -4,8 +4,6 @@
  * @description
  * Display status of a match
  *
- * @example:
- * <fe-match_status></fe-match_status>
  */
 
 (function () {

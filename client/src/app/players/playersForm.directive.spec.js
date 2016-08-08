@@ -12,17 +12,12 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var errors = {
-        other: ['othererror'],
-        name: ['nameerror']
-      };
-      var entity = {name: 'aname'};
       okText = 'clickme';
 
       scope = $rootScope.$new();
       scope.aform = null;
-      scope.aentity = entity;
-      scope.aerrors = errors; // errors;
+      scope.aentity = {};
+      scope.aerrors = {};
       scope.asubmit = jasmine.createSpy('onSubmit');
       scope.acancel = jasmine.createSpy('onCancel');
 
@@ -44,36 +39,30 @@
 
 
     describe('isolated scope', function () {
-      it('should have scope', function () {
-        expect(isolatedScope).not.toBe(null);
+      it('should have .form', function () {
+        expect(isolatedScope.form).toEqual(scope.aform);
       });
 
-      describe('members', function () {
-        it('should have .form', function () {
-          expect(isolatedScope.form).toEqual(scope.aform);
-        });
+      it('should have .errors', function () {
+        expect(isolatedScope.errors).toBe(scope.aerrors);
+      });
 
-        it('should have .errors', function () {
-          expect(isolatedScope.errors).toBe(scope.aerrors);
-        });
+      it('should have .entity', function () {
+        expect(isolatedScope.entity).toBe(scope.aentity);
+      });
 
-        it('should have .entity', function () {
-          expect(isolatedScope.entity).toBe(scope.aentity);
-        });
+      it('should call .cancel()', function () {
+        isolatedScope.cancel();
+        expect(scope.acancel).toHaveBeenCalled();
+      });
 
-        it('should call .cancel()', function () {
-          isolatedScope.cancel();
-          expect(scope.acancel).toHaveBeenCalled();
-        });
+      it('should call .submit()', function () {
+        isolatedScope.submit();
+        expect(scope.asubmit).toHaveBeenCalled();
+      });
 
-        it('should call .submit()', function () {
-          isolatedScope.submit();
-          expect(scope.asubmit).toHaveBeenCalled();
-        });
-
-        it('should have ok text', function () {
-          expect(isolatedScope.ok).toEqual(okText);
-        });
+      it('should have ok text', function () {
+        expect(isolatedScope.ok).toEqual(okText);
       });
 
       // TODO: Test HTML elements

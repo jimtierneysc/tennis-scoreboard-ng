@@ -11,14 +11,11 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var scores = {};
-      var view = {};
-
       scope = $rootScope.$new();
-      scope.ascores = scores;
+      scope.ascores = {};
       scope.aloggedIn = true;
       scope.aupdating = true;
-      scope.aview = view;
+      scope.aview = {};
 
       var html = ('<fe-score-table ' +
       'scores="ascores" ' +

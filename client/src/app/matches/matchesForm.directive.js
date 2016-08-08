@@ -4,8 +4,6 @@
  * @description
  * Form for new player and editing player
  *
- * @example:
- <fe-matches-form></fe-matches-form>
  */
 
 

@@ -29,7 +29,7 @@
         <ol class="list-group">
 
           <!--New player-->
-          <li class="list-group-item form-animate-in-if" ng-if="vm.showingNewEntity">
+          <li class="list-group-item form-animate-in" ng-if="vm.showingNewEntity">
             <div class="row">
               <div class="col-xs-10 col-md-8">
                 <fe-players-form
@@ -59,7 +59,7 @@
 
                 <!--Edit player-->
 
-                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-if">
+                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-inout">
 
                   <fe-players-form
                     form="vm.editEntityForm"

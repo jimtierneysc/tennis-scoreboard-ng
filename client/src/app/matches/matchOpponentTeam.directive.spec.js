@@ -12,7 +12,7 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.ateam = {doubles: true};
+      scope.ateam = {};
 
       var html = ('<fe-match_opponent-team ' +
       'team="ateam" ' +

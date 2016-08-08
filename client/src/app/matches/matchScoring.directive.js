@@ -4,8 +4,6 @@
  * @description
  * Display how match is scored
  *
- * @example:
- * <fe-match-scoring></fe-match-scoring>
  */
 
 (function () {

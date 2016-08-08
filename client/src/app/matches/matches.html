@@ -26,7 +26,7 @@
       <div>
         <ol class="list-group">
           <!--New match-->
-          <li class="list-group-item form-animate-if" ng-if="vm.showingNewEntity">
+          <li class="list-group-item form-animate-inout" ng-if="vm.showingNewEntity">
             <div class="row">
               <div class="col-xs-10 ">
                 <fe-matches-form
@@ -66,7 +66,7 @@
                 </div>
 
                 <!--Use ng-if so there won't be bunch of forms in the DOM-->
-                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-if">
+                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-inout">
                   <fe-matches-form
                     form="vm.editEntityForm"
                     errors="vm.entityUpdateErrors"

@@ -1,6 +1,6 @@
 # Model for a user.
 #
-# A user has a name, password and authentication token.
+# A user has a name, password and authorization token.
 #
 class User < ActiveRecord::Base
   validates :auth_token, uniqueness: true

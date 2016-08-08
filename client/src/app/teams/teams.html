@@ -25,7 +25,7 @@
 
       <div>
         <ol class="list-group">
-          <li class="list-group-item form-animate-if" ng-if="vm.showingNewEntity">
+          <li class="list-group-item form-animate-inout" ng-if="vm.showingNewEntity">
 
             <!--New team-->
             <div class="row">
@@ -59,7 +59,7 @@
                   </div>
                 </div>
 
-                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-if">
+                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-inout">
                   <div>
                     <fe-teams-form
                       form="vm.editEntityForm"

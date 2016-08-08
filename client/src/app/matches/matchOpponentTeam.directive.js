@@ -4,8 +4,6 @@
  * @description
  * Display a team opponent in a match
  *
- * @example:
- * <fe-match_opponent-team></fe-match_opponent-team>
  */
 
 (function () {

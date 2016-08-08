@@ -35,7 +35,7 @@ class Player < ActiveRecord::Base
   def that_can_destroy
     clean_singles_team
     if on_any_team?
-      errors.add :base, 'Can\'t delete a player in a match or on a team'
+      errors.add :errors, 'Can\'t delete a player in a match or on a team'
       return false
     end
   end

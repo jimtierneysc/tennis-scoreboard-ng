@@ -15,21 +15,15 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      errors = {
-        other: ['othererror'],
-        name: ['nameerror']
-      };
-      entity = {name: 'aname', doubles: true};
-      players = [{name: 'aname', id: 1}];
       okText = 'clickme';
 
       scope = $rootScope.$new();
       scope.aform = null;
-      scope.aentity = entity;
-      scope.aerrors = errors; // errors;
+      scope.aentity = {};
+      scope.aerrors = {};
       scope.asubmit = jasmine.createSpy('onSubmit');
       scope.acancel = jasmine.createSpy('onCancel');
-      scope.aplayers = players;
+      scope.aplayers = [];
 
       var html = ('<fe-teams-form ' +
       'form="aform" ' +
@@ -77,7 +71,7 @@
       });
 
       it('should have .playersList', function () {
-        expect(isolatedScope.playersList).toBe(players);
+        expect(isolatedScope.playersList).toBe(scope.aplayers);
       });
 
 
