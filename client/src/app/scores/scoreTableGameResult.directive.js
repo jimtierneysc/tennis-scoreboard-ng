@@ -21,7 +21,8 @@
       scope: {
         winner: '=',
         leftmost: '=',
-        serviceBreak: '='
+        view: '=',
+        game: '='
       }
     };
 

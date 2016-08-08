@@ -10,18 +10,15 @@
     beforeEach(module('frontendScores'));
 
     beforeEach(inject(function ($compile, $rootScope) {
-
-      var scores = {
-        title: 'atitle', doubles: true,
-        first_team: {title: 'xyz'}
-      };
-
+      
       scope = $rootScope.$new();
-      scope.ascores = scores;
-      scope.aopponent = scores.first_team;
+      scope.ascores = {};
+      scope.aopponent = {};
+      scope.aview = {};
 
       var html = ('<fe-score-table-opponent ' +
       'scores="ascores" ' +
+      'view="aview" ' +
       'opponent="aopponent" ' +
       'leftmost="true" ' +
       '></fe-score-table-opponent>');
@@ -40,7 +37,11 @@
       });
 
       it('should have .opponent', function () {
-        expect(isolatedScope.opponent).toEqual(scope.ascores.first_team);
+        expect(isolatedScope.opponent).toBe(scope.aopponent);
+      });
+
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
       });
 
       it('should have .leftmost', function () {

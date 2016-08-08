@@ -29,9 +29,6 @@ class PlayMatch
     match.play_match! :start_play
     # apply_first_servers
     scores.each { |v| play_set(v, options) }
-    unless options[:complete_match] == false
-      match.play_match! :complete_play if match.play_match?(:complete_play)
-    end
   end
 
   # Play a set
@@ -41,7 +38,6 @@ class PlayMatch
   def play_set(scores, options={})
     start_set
     play_games(scores)
-    complete_set unless options[:complete_set] == false
   end
 
   def start_play
@@ -98,14 +94,6 @@ class PlayMatch
       match.play_match! :start_match_tiebreaker
     elsif match.play_match? :start_set
       match.play_match! :start_set
-    end
-  end
-
-  def complete_set
-    if match.play_match? :complete_set_play
-      match.play_match! :complete_set_play
-    elsif match.play_match? :complete_match_tiebreaker
-      match.play_match! :complete_match_tiebreaker
     end
   end
 

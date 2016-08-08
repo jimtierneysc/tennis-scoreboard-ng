@@ -1,4 +1,6 @@
-<span class="circle-text" ng-class="{'winner-text': winner }">
+<span ng-if="!view.animatingScores || !view.changingSetResult(set)"
+      class="score-animate">
+   <span ng-class="{'winner-text': winner }">
           {{count}}
+         </span>
 </span>
-

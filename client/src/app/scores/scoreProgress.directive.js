@@ -1,29 +1,26 @@
 /**
  * @ngdoc directive
- * @name feScoreStatus
+ * @name feScoreProgress
  * @description
- * Score status messages
+ * Score progress messages
  *
- * @example:
- <fe-score-status></fe-score-status>
  */
-
 
 (function () {
   'use strict';
 
   angular
     .module('frontendScores')
-    .directive('feScoreStatus', directive);
+    .directive('feScoreProgress', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/scores/scoreStatus.html',
+      templateUrl: 'app/scores/scoreProgress.html',
       scope: {
         scores: '=',
-        title: '='
+        view: '='
       }
     };
 

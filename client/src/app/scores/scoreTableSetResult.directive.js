@@ -20,7 +20,9 @@
       templateUrl: 'app/scores/scoreTableSetResult.html',
       scope: {
         winner: '=',
-        count: '='
+        count: '=',
+        view: '=',
+        set: '='
       }
     };
 

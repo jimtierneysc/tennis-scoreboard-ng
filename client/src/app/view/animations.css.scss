@@ -1,0 +1,119 @@
+//Animate ng-if toggle of forms
+
+@mixin ease-in {
+  transition: .5s ease-in-out all;
+}
+
+@mixin ease-out {
+  transition: .5s ease-in-out all;
+}
+
+@mixin ease-out-fast {
+  transition:0.2s ease-in-out all;
+}
+
+//Animate show/hide of edit and new forms
+.form-animate-in.ng-enter,
+.form-animate-inout.ng-enter {
+  @include ease_in;
+}
+
+.form-animate-inout.ng-leave {
+  @include ease_out_fast;
+}
+
+.form-animate-in.ng-enter,
+.form-animate-inout.ng-enter,
+.form-animate-inout.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.form-animate-in.ng-enter.ng-enter-active,
+.form-animate-inout.ng-enter.ng-enter-active,
+.form-animate-inout.ng-leave {
+  opacity:1;
+}
+
+// Animate insert and delete of list item
+.item-animate-repeat.ng-enter {
+  @include ease_in;
+}
+
+.item-animate-repeat.ng-leave {
+  @include ease_out;
+}
+
+.item-animate-repeat.ng-enter,
+.item-animate-repeat.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.item-animate-repeat.ng-enter.ng-enter-active,
+.item-animate-repeat.ng-leave {
+  opacity:1;
+}
+
+//Animate show/hide of scoreboard elements
+
+.xscore-animate.ng-enter {
+  @include ease_in;
+}
+
+.xscore-animate.ng-leave {
+  @include ease_out;
+}
+
+.xscore-animate.ng-enter,
+.xscore-animate.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.xscore-animate.ng-enter.ng-enter-active,
+.xscore-animate.ng-leave {
+  opacity:1;
+}
+
+
+
+.xscore-button-animate.ng-enter {
+  @include ease_in;
+}
+
+.xscore-button-animate.ng-leave {
+  @include ease_out;
+}
+
+.xscore-button-animate.ng-enter,
+.xscore-button-animate.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.xscore-button-animate.ng-enter.ng-enter-active,
+.xscore-button-animate.ng-leave {
+  opacity: 1;
+}
+
+
+
+.myDiv{
+  //width:400px;
+  //height:200px;
+  //background-color:red;
+  -webkit-transition: 1s linear;
+  /*to only change opacity*/
+  /*-webkit-transition: opacity 1s linear*/
+  -moz-transition: 1s linear;
+  -o-transition: 1s linear;
+  transition: 1s linear;
+  opacity: 1;
+}
+
+.foo{
+  //background-color: blue;
+  opacity: 0;
+}
+
+
+
+
+

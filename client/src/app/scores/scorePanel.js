@@ -1,26 +1,28 @@
 /**
  * @ngdoc directive
- * @name feScoreTableSetTitle
+ * @name feScorePanel
  * @description
- * Display title of a set in the score table
+ * Display controls to play match
+ *
  */
-
 
 (function () {
   'use strict';
 
   angular
     .module('frontendScores')
-    .directive('feScoreTableSetTitle', directive);
+    .directive('feScorePanel', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/scores/scoreTableSetTitle.html',
+      templateUrl: 'app/scores/scorePanel.html',
       scope: {
+        scores: '=',
         view: '=',
-        set: '='
+        updating: '=',
+        loggedIn: '='
       }
     };
 

@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name feScoreTableSetTitle
+ * @name feScoreTableMatchResult
  * @description
- * Display title of a set in the score table
+ * Display the result of a set in the score table
  */
 
 
@@ -11,16 +11,18 @@
 
   angular
     .module('frontendScores')
-    .directive('feScoreTableSetTitle', directive);
+    .directive('feScoreTableMatchResult', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/scores/scoreTableSetTitle.html',
+      templateUrl: 'app/scores/scoreTableMatchResult.html',
       scope: {
+        winner: '=',
+        count: '=',
         view: '=',
-        set: '='
+        scores: '='
       }
     };
 

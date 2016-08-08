@@ -15,14 +15,12 @@
       };
 
       scope = $rootScope.$new();
-      scope.atitle = game;
-      scope.averbose = true;
-      scope.atiebreaker = true;
+      scope.aview = {};
+      scope.agame = {};
 
       var html = ('<fe-score-table-game-title ' +
-      'title="atitle" ' +
-      'verbose="averbose" ' +
-      'tiebreaker="atiebreaker" ' +
+      'game="agame" ' +
+      'view="aview" ' +
       '></fe-score-table-game-title>');
 
       element = angular.element(html);
@@ -34,16 +32,12 @@
 
     describe('isolated scope', function () {
 
-      it('should have .title', function () {
-        expect(isolatedScope.title).toBe(scope.atitle);
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
       });
 
-      it('should have .verbose', function () {
-        expect(isolatedScope.verbose).toBe(scope.averbose);
-      });
-
-      it('should have .tiebreaker', function () {
-        expect(isolatedScope.tiebreaker).toBe(scope.atiebreaker);
+      it('should have .game', function () {
+        expect(isolatedScope.game).toBe(scope.agame);
       });
 
       // TODO: Test elements

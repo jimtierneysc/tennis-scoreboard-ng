@@ -36,20 +36,6 @@ module MatchPlayShared
     end
   end
 
-  RSpec::Matchers.define :be_finished do
-    match do |m|
-      m.state == :finished
-    end
-
-    failure_message do
-      'expect to be finished'
-    end
-
-    failure_message_when_negated do
-      'do not expect to be finished'
-    end
-  end
-
   RSpec::Matchers.define :be_complete do
     match do |m|
       m.state == :complete
@@ -191,21 +177,6 @@ module MatchPlayShared
     end
   end
 
-  RSpec::Matchers.define :have_finished_set do
-    match do |m|
-      last_set = m.last_set
-      return last_set && last_set.state == :finished
-    end
-
-    failure_message do
-      'expect to have finished set'
-    end
-
-    failure_message_when_negated do
-      'do not expect to have finished set'
-    end
-  end
-
   RSpec::Matchers.define :have_game_in_progress do
     match do |m|
       last_game = m.last_set.last_game if m.last_set
@@ -330,10 +301,6 @@ module MatchPlayShared
     it { is_expected.to permit_action :win_tiebreaker }
   end
 
-  RSpec.shared_examples 'a match with finished set' do
-    it { is_expected.to have_finished_set }
-  end
-
   RSpec.shared_examples 'a match can start match tiebreaker' do
     it { is_expected.to permit_action :start_match_tiebreaker }
   end
@@ -342,20 +309,8 @@ module MatchPlayShared
     it { is_expected.to permit_action :win_match_tiebreaker }
   end
 
-  RSpec.shared_examples 'a match finished' do
-    it { is_expected.to be_finished }
-  end
-
-  RSpec.shared_examples 'a match set can be completed' do
-    it { is_expected.to permit_action :complete_set_play }
-  end
-
   RSpec.shared_examples 'a match with complete set' do
     it { is_expected.to have_complete_set }
-  end
-
-  RSpec.shared_examples 'a match can be completed' do
-    it { is_expected.to permit_action :complete_play }
   end
 
   RSpec.shared_examples 'a match complete' do
@@ -417,14 +372,11 @@ module MatchPlayShared
       :start_play,
       :restart_play,
       :discard_play,
-      :complete_play,
       :start_set,
-      :complete_set_play,
       :start_game,
       :start_tiebreaker,
       :remove_last_change,
       :start_match_tiebreaker,
-      :complete_match_tiebreaker,
       :win_game,
       :win_tiebreaker,
       :win_match_tiebreaker

@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feScoreTableOpponent
+ * @name feMatchStatus
  * @description
- * Table heading for opponent
+ * Display game, set or match winner
+ *
  */
 
 (function () {
@@ -10,22 +11,19 @@
 
   angular
     .module('frontendScores')
-    .directive('feScoreTableOpponent', directive);
+    .directive('feScoreProgressWinner', directiveFunc);
 
   /** @ngInject */
-  function directive() {
+  function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/scores/scoreTableOpponent.html',
+      templateUrl: 'app/scores/scoreProgressWinner.html',
       scope: {
         scores: '=',
-        opponent: '=',
-        leftmost: '@',
-        view: '='
+        winner: '='
       }
     };
 
     return directive;
   }
-
 })();

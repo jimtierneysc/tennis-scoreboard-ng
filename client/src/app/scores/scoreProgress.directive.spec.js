@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feScoreTableSetTitle directive', function () {
+  describe('feScoreProgress directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -12,13 +12,13 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.aset = {};
+      scope.ascores = {};
       scope.aview = {};
 
-      var html = ('<fe-score-table-set-title ' +
-      'set="aset" ' +
+      var html = ('<fe-score-progress ' +
+      'scores="ascores" ' +
       'view="aview" ' +
-      '></fe-score-table-set-title>');
+      '></fe-score-progress>');
 
       element = angular.element(html);
 
@@ -29,12 +29,12 @@
 
     describe('isolated scope', function () {
 
-      it('should have .set', function () {
-        expect(isolatedScope.set).toBe(scope.aset);
+      it('should have .scores', function () {
+        expect(isolatedScope.scores).toBe(scope.ascores);
       });
 
       it('should have .view', function () {
-        expect(isolatedScope.view).toBe(scope.aview);
+        expect(isolatedScope.view).toEqual(scope.aview);
       });
 
       // TODO: Test elements

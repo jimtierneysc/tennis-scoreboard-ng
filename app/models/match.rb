@@ -5,9 +5,8 @@
 # A match has two opponent teams.  The teams may be doubles teams, or
 # singles teams (a singles team has only one player).
 #
-# A match may be in different states: not started, in progress, finished
-# and complete. Both finished and complete matches have a winner.
-# completing a match is the final step in match play.
+# A match may be in different states: not started, in progress,
+# and complete. Complete matches have a winner.
 #
 # A match may have first servers.  These are the players that server
 # the first game or two.  For a singles match, there is one
@@ -46,12 +45,8 @@ class Match < ActiveRecord::Base
   #   Discard all scoring and start playing
   # :discard_play
   #   Discard all scoring
-  # :complete_play
-  #   Complete match
   # :start_set
   #   Start the next set
-  # :complete_set_play
-  #   Complete the current set
   # :start_game [player]
   #   Start the next game.  The first one or two games require
   #   a player parameter to identify the server
@@ -61,8 +56,6 @@ class Match < ActiveRecord::Base
   #   Back up to the previous state
   # :start_match_tiebreaker
   #   Start the match tiebreaker
-  # :complete_match_tiebreaker
-  #   Coomplete the match tiebreaker
   # :win_game team
   #   Win the current game.  A team parameter identies the
   #   doubles team or singles team to win
@@ -153,8 +146,6 @@ class Match < ActiveRecord::Base
   def state
     if completed?
       :complete
-    elsif compute_team_winner
-      :finished
     elsif started
       :in_progress
     else
@@ -204,11 +195,15 @@ class Match < ActiveRecord::Base
 
   # return the winner of the match, if any
   def compute_team_winner
-    if first_team && second_team
-      if sets_won(first_team) == min_sets_to_play
-        first_team
-      elsif sets_won(second_team) == min_sets_to_play
-        second_team
+    if completed?
+      team_winner
+    else
+      if first_team && second_team
+        if sets_won(first_team) == min_sets_to_play
+          first_team
+        elsif sets_won(second_team) == min_sets_to_play
+          second_team
+        end
       end
     end
   end

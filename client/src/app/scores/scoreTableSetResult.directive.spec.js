@@ -14,9 +14,13 @@
       scope = $rootScope.$new();
       scope.awinner = true;
       scope.acount = 5;
+      scope.aset = {};
+      scope.aview = {};
 
       var html = ('<fe-score-table-set-result ' +
       'winner="awinner" ' +
+      'view="aview" ' +
+      'set="aset" ' +
       'count="acount" ' +
       '></fe-score-table-set-result>');
 
@@ -35,6 +39,14 @@
 
       it('should have .count', function () {
         expect(isolatedScope.count).toBe(scope.acount);
+      });
+
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
+      });
+
+      it('should have .set', function () {
+        expect(isolatedScope.set).toBe(scope.aset);
       });
 
       // TODO: Test elements

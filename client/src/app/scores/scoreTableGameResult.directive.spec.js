@@ -14,12 +14,14 @@
       scope = $rootScope.$new();
       scope.awinner = true;
       scope.aleftmost = true;
-      scope.aserviceBreak = true;
+      scope.aview = {};
+      scope.agame = {};
 
       var html = ('<fe-score-table-game-result ' +
       'winner="awinner" ' +
       'leftmost="aleftmost" ' +
-      'service-break="aserviceBreak" ' +
+      'game="agame" ' +
+      'view="aview" ' +
       '></fe-score-table-game-result>');
 
       element = angular.element(html);
@@ -35,8 +37,12 @@
         expect(isolatedScope.winner).toBe(scope.awinner);
       });
 
-      it('should have .serviceBreak', function () {
-        expect(isolatedScope.serviceBreak).toBe(scope.aserviceBreak);
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
+      });
+
+      it('should have .game', function () {
+        expect(isolatedScope.game).toBe(scope.agame);
       });
 
       it('should have .leftmost', function () {

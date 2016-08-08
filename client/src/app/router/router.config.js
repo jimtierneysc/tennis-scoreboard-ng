@@ -88,7 +88,7 @@
       })
       .state('scores.board', {
         url: '/board/:id',
-        templateUrl: 'app/scores/scoreBoard.html',
+        templateUrl: 'app/scores/scoreboard.html',
         controller: 'ScoreboardController',
         controllerAs: 'vm',
         resolve: {

@@ -1,8 +1,6 @@
 # Model for a set in a match.
 # #
-# A set may has a state: in progress, finished and complete.
-# Finished and complete sets both have a winner.  Set completion is a final
-# step after an opponent has won the set.
+# A set may has a state: in progress and complete.
 #
 # A match tiebreaker is a special kind of set with only one game.
 #
@@ -22,24 +20,26 @@ class MatchSet < ActiveRecord::Base
   default_scope { order('ordinal ASC') }
 
   def completed?
-    team_winner_id
+    team_winner
   end
 
   def state
     if completed?
       :complete
-    elsif compute_team_winner
-      :finished
     else
       :in_progress
     end
   end
 
   def compute_team_winner
-    lookup = lookup_games_won
-    # pass games won by each team
-    calc_winner_team(lookup[match.first_team_id][0],
-                     lookup[match.second_team_id][0])
+    if completed?
+      team_winner
+    else
+      lookup = lookup_games_won
+      # pass games won by each team
+      calc_winner_team(lookup[match.first_team_id][0],
+                       lookup[match.second_team_id][0])
+    end
   end
 
   def last_game

@@ -1,3 +1,6 @@
-{{title}}<span class="hidden-xs"> Set</span>
+<!--if: {{!set.newSet}}-->
+<span ng-if="!view.animatingScores || !view.changingSetResult(set)" class="score-animate">
+  {{set.title}}<span class="hidden-xs"> Set</span>
+</span>
 
 

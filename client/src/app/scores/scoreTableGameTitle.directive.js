@@ -19,9 +19,8 @@
       restrict: 'E',
       templateUrl: 'app/scores/scoreTableGameTitle.html',
       scope: {
-        title: '=',
-        tiebreaker: '=',
-        verbose: '='
+        game: '=',
+        view: '=',
       }
     };
 

@@ -1,5 +1,4 @@
 // Styling for scoreboard table
-@import '../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
 
 $border: 1px solid black;
 $table_width: 550px;
@@ -13,16 +12,16 @@ $col_2_min_width: 120px;
 $col_3_min_width: 240px;
 
 $score_color: green;
+$side_margin: 60px;
 
 @mixin center-cell {
   text-align: center;
+  vertical-align: middle !important;
 }
 
 // Default to maximum size
 .score-col-1 {
   width: $col_1_width;
-  vertical-align: middle  !important;
-;
   @include center-cell;
 }
 
@@ -46,9 +45,30 @@ div.play-table {
   width: $table_width;
 }
 
+.play-table td,
+.play-table th {
+  height: 3em;
+}
+
+tr.game th,
+tr.game td {
+    // Allow button to fit in row
+    //padding-top: 2px !important;
+    //padding-bottom: 2px !important;
+
+}
+
+//tr.servers th {
+//  text-align: left;
+//}
+
+tr.servers .score-col-3 {
+  text-align: left;
+}
+
 
 // override with proportional sizing
-@media only screen and (max-width: $table_width) {
+@media only screen and (max-width: $table_width + $side_margin) {
   table.play-table, div.play-table {
     width: 100%;
   }
@@ -63,10 +83,11 @@ div.play-table {
   .score-col-3 {
     width: 80%;
   }
+
 }
 
 // override with minumum size
-@media only screen and (max-width: $table_min_width) {
+@media only screen and (max-width: $table_min_width + $side_margin) {
   div.play-table, table.play-table {
     width: $table_min_width;
   }
@@ -81,10 +102,17 @@ div.play-table {
   .score-col-3 {
     width: $col_3_min_width;
   }
+
 }
 
 .match-btn {
-  width: 100%;
+  //width: 100%;
+}
+
+.score-col-2 .match-btn,
+.score-col-3 .match-btn {
+  //padding-top: 2px !important;
+  //padding-bottom: 2px !important;
 }
 
 @mixin hide-overflow {
@@ -171,25 +199,3 @@ div.player-col-2 {
   content: "\2122";
   color: transparent !important;
 }
-
-#match_table {
-  border: 4px;
-
-  > table {
-    border: none;
-  }
-  .toolbar-cell {
-    border: none;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-

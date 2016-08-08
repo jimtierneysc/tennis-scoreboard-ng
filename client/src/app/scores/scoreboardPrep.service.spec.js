@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('service scoreboardBuilder', function () {
+  describe('service scoreboardPrep', function () {
 
     beforeEach(module('frontendScores'));
 
@@ -9,63 +9,87 @@
 
     beforeEach(function () {
 
-      inject(function (_scoreboardBuilder_) {
-        service = _scoreboardBuilder_;
+      inject(function (_scoreboardPrep_) {
+        service = _scoreboardPrep_;
       })
     });
 
     describe('members', function () {
+      var builder;
+      beforeEach(function () {
+        builder = {};
+        service(builder);
+      });
+
+      it('should be a function', function () {
+        expect(service).toEqual(jasmine.any(Function));
+      });
       it('should have .opponents', function () {
-        expect(service.opponents).toEqual(jasmine.any(Function));
+        expect(builder.opponents).toEqual(jasmine.any(Object));
       });
       it('should have .server', function () {
-        expect(service.server).toEqual(jasmine.any(Function));
+        expect(builder.server).toEqual(jasmine.any(Object));
       });
-      it('should have .insertScores', function () {
-        expect(service.insertScores).toEqual(jasmine.any(Function));
+      // it('should have .insertScores', function () {
+      //   expect(builder.insertScores).toEqual(jasmine.any(Function));
+      // });
+      // it('should have .insertTitles', function () {
+      //   expect(builder.insertTitles).toEqual(jasmine.any(Function));
+      // });
+      // it('should have .buttonStatus', function () {
+      //   expect(builder.buttonStatus).toEqual(jasmine.any(Object));
+      // });
+      // it('should have .currentGame', function () {
+      //   expect(builder.newGame).toEqual(jasmine.any(Object));
+      // });
+      // it('should have .newSet', function () {
+      //   expect(builder.newSet).toEqual(jasmine.any(Object));
+      // });
+    });
+
+    describe('.opponents', function () {
+
+      describe('doubles', function () {
+        var doublesScore = {
+          doubles: true,
+          first_team: {id: 11},
+          second_team: {id: 22}
+        };
+
+        var doublesExpected = [11, 22];
+
+        var builder;
+        beforeEach(function () {
+          builder = service(angular.copy(doublesScore));
+        });
+
+        it('should build opponents', function () {
+          expect(builder.opponents).toEqual(doublesExpected);
+        });
       });
-      it('should have .insertTitles', function () {
-        expect(service.insertTitles).toEqual(jasmine.any(Function));
-      });
-      it('should have .buttonStatus', function () {
-        expect(service.buttonStatus).toEqual(jasmine.any(Function));
-      });
-      it('should have .newGame', function () {
-        expect(service.newGame).toEqual(jasmine.any(Function));
-      });
-      it('should have .newSet', function () {
-        expect(service.newSet).toEqual(jasmine.any(Function));
-      });
-    })
 
-    describe('.opponents()', function () {
+      describe('singles', function () {
 
-      var doublesScore = {
-        doubles: true,
-        first_team: {id: 11},
-        second_team: {id: 22}
-      };
+        var singlesScore = {
+          doubles: false,
+          first_player: {id: 33},
+          second_player: {id: 44}
+        };
 
-      var doublesExpected = [11, 22];
+        var singlesExpected = [33, 44];
 
-      var singlesScore = {
-        doubles: false,
-        first_player: {id: 33},
-        second_player: {id: 44}
-      };
+        var builder;
+        beforeEach(function () {
+          builder = service(angular.copy(singlesScore));
+        });
 
-      var singlesExpected = [33, 44];
-
-      it('should build singles opponents', function () {
-        expect(service.opponents(singlesScore)).toEqual(singlesExpected);
-      });
-
-      it('should build doubles opponents', function () {
-        expect(service.opponents(doublesScore)).toEqual(doublesExpected);
+        it('should build opponents', function () {
+          expect(builder.opponents).toEqual(singlesExpected);
+        });
       });
     });
 
-    describe('.server()', function () {
+    describe('.server', function () {
       var server = 3;
       var inProgress = 'in_progress';
       var complete = 'complete';
@@ -92,27 +116,32 @@
       });
 
       it('should have server when in_progress', function () {
-        expect(service.server(scores)).toEqual(server);
+        service(scores);
+        expect(scores.server).toEqual(server);
       });
 
       it('should not have server when winner', function () {
         scores.sets[0].games[1].winner = server;
-        expect(service.server(scores)).toEqual(null);
+        service(scores);
+        expect(scores.server).toEqual(null);
       });
 
       it('should not have server when no games', function () {
         scores.sets[0].games = [];
-        expect(service.server(scores)).toEqual(null);
+        service(scores);
+        expect(scores.server).toEqual(null);
       });
 
       it('should not have server when no sets', function () {
         scores.sets = [];
-        expect(service.server(scores)).toEqual(null);
+        service(scores);
+        expect(scores.server).toEqual(null);
       });
 
       it('should not have server when match not in progress ', function () {
         var scores = makeScores(complete);
-        expect(service.server(scores)).toEqual(null);
+        service(scores);
+        expect(scores.server).toEqual(null);
       });
     });
 
@@ -173,7 +202,7 @@
           beforeEach(function () {
             result = angular.copy(singles);
             result.sets = angular.copy(sets);
-            service.insertScores(result);
+            service(result);
           });
 
           it('should add two winners', function () {
@@ -198,7 +227,8 @@
           beforeEach(function () {
             result = angular.copy(doubles);
             result.sets = angular.copy(sets);
-            service.insertScores(result);
+            service(result);
+            // builder.insertScores();
           });
 
           it('should add two winners', function () {
@@ -229,7 +259,8 @@
           beforeEach(function () {
             result = angular.copy(singles);
             result.sets = angular.copy(sets);
-            service.insertScores(result);
+            service(result);
+            // builder.insertScores();
           });
 
           it('should count match score', function () {
@@ -242,16 +273,15 @@
           beforeEach(function () {
             result = angular.copy(doubles);
             result.sets = angular.copy(sets);
-            service.insertScores(result);
+            service(result);
+            // builder.insertScores();
           });
 
           it('should count match score', function () {
             expect(result.scores).toEqual([2, 1]);
           });
         });
-
       })
-
     });
 
     describe('.insertTitles()', function () {
@@ -263,11 +293,13 @@
               games: [
                 {}, {}, {tiebreaker: true}]
             }
-          ]
+          ],
+          actions: {}
         };
         beforeEach(function () {
           result = angular.copy(sample);
-          service.insertTitles(result);
+          service(result);
+          // builder.insertTitles();
         });
 
         it('should have game 1 title', function () {
@@ -293,7 +325,8 @@
         var titles = ['1st', '2nd', '3rd', '4th', '5th'];
         beforeEach(function () {
           result = angular.copy(sample);
-          service.insertTitles(result);
+          service(result);
+          // builder.insertTitles(result);
         });
 
         for (var i = 1; i <= 4; i++) {
@@ -307,77 +340,50 @@
       });
     });
 
-    describe('.buttonStatus()', function () {
-      describe('members', function () {
-        var options;
-        beforeEach(function () {
-          options = service.buttonStatus({actions: {}});
-        });
-
-        it('should have .showWin', function () {
-          expect(options.showWin).toEqual(jasmine.any(Boolean));
-        });
-
-        it('should have .customTitle', function () {
-          expect(options.customTitle).not.toBe(undefined);
-        });
-      });
-      describe('for', function () {
-        var winGameActivity = {
-          showGame: true,
-          showWin: true,
-          customTitle: null
-        };
-        var gameActivity = {
-          showGame: true,
-          showWin: false,
-          customTitle: null
-        };
-        var setActivity = {
-          showSet: true,
-          showWin: false,
-          customTitle: null
-        };
-        var matchActivity = {
-          showMatch: true,
-          showWin: false,
-          customTitle: null
-        };
-        var winTiebreakerActivity = {
-          showGame: true,
-          showWin: true,
-          customTitle: 'Tiebreak'
-        };
-
-        var actions = {
-          win_game: winGameActivity,
-          win_tiebreaker: winTiebreakerActivity,
-          win_match_tiebreaker: winTiebreakerActivity,
-          start_tiebreaker: gameActivity,
-          start_game: gameActivity,
-          start_set: setActivity,
-          start_match_tiebreaker: setActivity,
-          complete_match_tiebreaker: setActivity,
-          complete_set_play: setActivity,
-          complete_match_play: matchActivity,
-          complete_set_tiebreaker: setActivity,
-          start_play: matchActivity,
-          restart_play: matchActivity
-        };
-
-        angular.forEach(actions, function (value, key) {
-          describe('action ' + key, function () {
-            it('should match expected value', function () {
-              var actions = {};
-              actions[key] = true;
-              var options = service.buttonStatus({actions: actions})
-              expect(options).toEqual(value);
-            })
-          });
-        });
-      });
-    });
-
+    // describe('.buttonStatus', function () {
+    //   describe('for', function () {
+    //     var winGameActivity = {
+    //       show: {win: true}
+    //     };
+    //     var gameActivity = {
+    //       show: {game: true}
+    //     };
+    //     var setActivity = {
+    //       show: {set: true}
+    //     };
+    //     var matchActivity = {
+    //       show: {match: true}
+    //     };
+    //     var winTiebreakerActivity = {
+    //       show: {win: true}
+    //     };
+    //
+    //     var actions = {
+    //       win_game: winGameActivity,
+    //       win_tiebreaker: winTiebreakerActivity,
+    //       win_match_tiebreaker: winTiebreakerActivity,
+    //       start_tiebreaker: gameActivity,
+    //       start_game: gameActivity,
+    //       start_set: setActivity,
+    //       start_match_tiebreaker: setActivity,
+    //       start_play: matchActivity,
+    //       restart_play: matchActivity
+    //     };
+    //
+    //     angular.forEach(actions, function (value, key) {
+    //       describe('action ' + key, function () {
+    //         it('should match expected value', function () {
+    //           var actions = {};
+    //           actions[key] = true;
+    //           var builder = service({actions: actions});
+    //           var status = builder.buttonStatus;
+    //           expect(status).toEqual(value);
+    //         })
+    //       });
+    //     });
+    //   });
+    // });
+    //
     describe('.newGame()', function () {
 
       describe('for', function () {
@@ -410,7 +416,8 @@
           actions[action] = true;
           var scores = angular.copy(sampleScores);
           scores.actions = actions;
-          return service.newGame(scores);
+          service(scores);
+          return scores.currentGame && scores.currentGame.newGame ? scores.currentGame : null;
         }
 
         angular.forEach(actions, function (value, key) {
@@ -429,12 +436,9 @@
                 expect(newGame.title).toEqual(value.title);
               });
 
-              it('should have set', function () {
-                expect(newGame.set).toEqual(sampleScores.sets[0]);
-              });
             }
             else {
-              it('shold not create new game', function () {
+              it('should not create new game', function () {
                 expect(newGame).toBe(null);
               });
             }
@@ -443,10 +447,11 @@
       });
     });
 
-    describe('.firstServers()', function () {
+    describe('.firstServers', function () {
       describe('singles match', function () {
         var singles = {
           doubles: false,
+          actions: {start_game: true},
           servers: [],
           sets: [
             {games: []}],
@@ -465,20 +470,24 @@
         });
 
         it('should have list when no server', function () {
-          var firstServers = service.firstServers(scores)
-          expect(firstServers.length).toEqual(allServerIds.length)
+          service(scores);
+          var list = scores.firstServers.list;
+          expect(list.length).toEqual(allServerIds.length)
         });
 
         it('should not have list when server', function () {
           scores.servers = [1];
-          var firstServers = service.firstServers(scores);
-          expect(firstServers).toBe(null);
+          service(scores);
+          var list = scores.firstServers;
+          expect(list).toBe(null);
         });
       });
 
       describe('doubles match', function () {
         var doubles = {
           doubles: true,
+          sets: [{games:[]}],
+          actions: {start_game: true},
           servers: [],
           first_team: {
             first_player: {
@@ -505,8 +514,9 @@
         });
 
         it('should list all when no server', function () {
-          var firstServers = service.firstServers(scores)
-          expect(firstServers.length).toEqual(allServerIds.length)
+          service(scores);
+          var list = scores.firstServers.list;
+          expect(list.length).toEqual(allServerIds.length)
         });
 
         describe('when one server', function () {
@@ -523,7 +533,8 @@
               var index = i;  // capture i
               beforeEach(function () {
                 scores.servers = [allServerIds[index]];
-                firstServers = service.firstServers(scores);
+                service(scores);
+                firstServers = scores.firstServers.list;
               });
 
               it('should list two servers', function () {
@@ -540,8 +551,9 @@
 
         it('should list none when two servers', function () {
           scores.servers = [0, 0];
-          var firstServers = service.firstServers(scores);
-          expect(firstServers).toBe(null);
+          service(scores);
+          var list = scores.firstServers;
+          expect(list).toBe(null);
         });
       });
     });
@@ -573,7 +585,8 @@
           actions[action] = true;
           var scores = angular.copy(sampleScores);
           scores.actions = actions;
-          return service.newSet(scores);
+          service(scores);
+          return scores.currentSet && scores.currentSet.newSet ? scores.currentSet : null;
         }
 
         angular.forEach(actions, function (value, key) {

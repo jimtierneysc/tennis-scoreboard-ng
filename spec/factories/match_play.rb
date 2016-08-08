@@ -6,8 +6,6 @@ FactoryGirl.define do
       scores []
       start_play false
       start_first_game false
-      complete_set true
-      complete_match true
       start_set_game false
     end
 
@@ -21,8 +19,6 @@ FactoryGirl.define do
       scores []
       start_play false
       start_first_game false
-      complete_set true
-      complete_match true
       start_set_game false
     end
 
@@ -41,9 +37,7 @@ def after_build(subject, factory)
   end
   if factory.scores.count > 0
     scores = PlayMatch.convert_scores(factory.scores)
-    PlayMatch.play_match(subject, scores, { complete_set: factory.complete_set,
-                                                       complete_match: factory.complete_match
-    })
+    PlayMatch.play_match(subject, scores)
   end
   if factory.start_set_game
     PlayMatch.new(subject).start_set_game

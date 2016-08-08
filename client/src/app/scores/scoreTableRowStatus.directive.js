@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feScoreTableSetTitle
+ * @name feScoreStatus
  * @description
- * Display title of a set in the score table
+ * Score status messages
+ *
  */
 
 
@@ -11,16 +12,15 @@
 
   angular
     .module('frontendScores')
-    .directive('feScoreTableSetTitle', directive);
+    .directive('feScoreTableRowStatus', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/scores/scoreTableSetTitle.html',
+      templateUrl: 'app/scores/scoreTableRowStatus.html',
       scope: {
-        view: '=',
-        set: '='
+        scores: '='
       }
     };
 

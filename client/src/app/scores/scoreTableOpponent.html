@@ -1,9 +1,10 @@
 <div ng-if="scores.doubles">
-
   <!--First doubles player-->
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="!leftmost">
+<span ng-if="!view.animatingScores" class="score-animate">
       <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.first_player.id}"></span>
+  </span>
     </span>
 
   </div>
@@ -13,8 +14,10 @@
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="leftmost">
       <!--Need something in this cell to prevent second player from being mis-aligned -->
+<span ng-if="!view.animatingScores" class="score-animate">
       <span ng-if="scores.server == opponent.first_player.id"
             class="glyphicon glyphicon-star"></span>
+</span>
       <span ng-if="scores.server != opponent.first_player.id">&nbsp;</span>
     </span>
     <span ng-if="!leftmost">
@@ -26,7 +29,9 @@
   <!--Second doubles player-->
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="!leftmost">
+<span ng-if="!view.animatingScores" class="score-animate">
       <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.second_player.id}"></span>
+</span>
     </span>
 
   </div>
@@ -35,7 +40,9 @@
   </div>
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="leftmost">
+<span ng-if="!view.animatingScores" class="score-animate">
       <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.second_player.id}"></span>
+</span>
     </span>
   </div>
 
@@ -45,14 +52,18 @@
   <!--Singles player-->
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="!leftmost" class="flip-horizontal">
+<span ng-if="!view.animatingScores" class="score-animate">
       <span ng-class="{'glyphicon glyphicon-star': scores.server == scores.second_player.id}"></span>
+</span>
     </span>
 
   </div>
   <div class="player-col-2" ng-class="scores.server ? 'col-xs-8' : 'col-xs-12'">{{opponent.name}}</div>
   <div ng-if="scores.server" class="col-xs-2">
     <span ng-if="leftmost">
+<span ng-if="!view.animatingScores" class="score-animate">
       <span ng-class="{'glyphicon glyphicon-star': scores.server == opponent.id}"></span>
+</span>
     </span>
   </div>
 

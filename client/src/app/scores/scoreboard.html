@@ -1,0 +1,46 @@
+<div>
+
+  <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+    <fe-loading-messages
+      error="vm.loadingError"
+      loading="vm.loading"
+      failed="vm.loadingFailed"
+    ></fe-loading-messages>
+  </div>
+
+  <div ng-if="!vm.loading && !vm.loadingFailed">
+
+    <div class="panel panel-default play-table">
+      <!--<div class="col-xs-10">-->
+
+      <div class="panel-body">
+        <div class="form-animate-inout" ng-if="vm.view.showDetails">
+          <fe-match-details
+            match="vm.scoreboard"
+          ></fe-match-details>
+        </div>
+
+        <div>
+          <fe-score-panel
+            scores="vm.scoreboard"
+            view="vm.view"
+            logged-in="vm.loggedIn"
+            updating="vm.updatingScore"
+          ></fe-score-panel>
+        </div>
+      </div>
+
+
+    </div>
+
+
+    <fe-score-table
+      scores="vm.scoreboard"
+      view="vm.view"
+      logged-in="vm.loggedIn"
+      updating="vm.updatingScore"
+    ></fe-score-table>
+
+  </div>
+</div>
+

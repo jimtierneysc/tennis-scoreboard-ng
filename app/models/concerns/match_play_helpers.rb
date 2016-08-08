@@ -78,6 +78,14 @@ module MatchPlayHelpers
       complete_current_helper.win_game?
     end
 
+    # complete! will complete current set if enough games have been won.
+    # Then, will complete the match if enough sets have been won.
+    def complete!
+      complete_set_play! if complete_set_play?
+      complete_match_tiebreaker! if complete_match_tiebreaker?
+      complete_play! if complete_play?
+    end
+
     def win_game!(team)
       unless win_game?
         raise Exceptions::InvalidOperation,
@@ -85,6 +93,7 @@ module MatchPlayHelpers
       end
       game = complete_current_helper.win_game team
       game.save!
+      complete!
       game
     end
 
@@ -113,6 +122,7 @@ module MatchPlayHelpers
       end
       game = complete_current_helper.win_tiebreaker team
       game.save!
+      complete!
       game
     end
 
@@ -158,6 +168,7 @@ module MatchPlayHelpers
       end
       game = complete_current_helper.win_match_tiebreaker team
       game.save!
+      complete!
       game
     end
 
@@ -310,9 +321,9 @@ module MatchPlayHelpers
       unless @methods
         @methods = {}
         syms = [:start_play, :restart_play,
-                :discard_play, :complete_play, :start_set,
-                :complete_set_play, :start_game, :start_tiebreaker, :remove_last_change,
-                :start_match_tiebreaker, :complete_match_tiebreaker,
+                :discard_play, :start_set,
+                :start_game, :start_tiebreaker, :remove_last_change,
+                :start_match_tiebreaker,
                 :win_game, :win_tiebreaker, :win_match_tiebreaker]
         syms.each do |sym|
           @methods[sym] =
@@ -395,9 +406,7 @@ module MatchPlayHelpers
       def remove_match_complete
         match.team_winner = nil
         save_list << match
-        if match.min_sets_to_play == 1
           remove_last_set_complete match.last_set
-        end
       end
 
       def remove_last_set_change(last_set_var)
@@ -418,7 +427,7 @@ module MatchPlayHelpers
         save_list << last_set_var
         # if match.min_sets_to_play == 1
         #   # only one set, so remove one more change
-        #   remove_last_game_change(last_set_var.last_game)
+        remove_last_game_change(last_set_var.last_game)
         # end
       end
 
@@ -452,8 +461,7 @@ module MatchPlayHelpers
       end
     end
 
-
-    # Helper class to start games, tiebreaker, sets and match tiebreakers
+    # Helper class to start games, tiebreakers, sets, and match tiebreakers
     class StartNext
       def initialize(match)
         @match = match
@@ -665,7 +673,7 @@ module MatchPlayHelpers
 
       def complete_set_kind?(kind)
         last_set_var = match.last_set
-        last_set_finished = last_set_var && last_set_var.state == :finished
+        last_set_finished = last_set_var && last_set_var.compute_team_winner
         if last_set_finished
           tiebreaker = last_set_var.tiebreaker?
           (kind == :tiebreaker) == tiebreaker

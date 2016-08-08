@@ -120,6 +120,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
             context 'remove last change' do
               before {
                 subject.play_match! :remove_last_change
+                subject.reload
               }
               it_behaves_like 'a match with game won'
             end
@@ -177,33 +178,13 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
   describe 'complete set' do
 
-    context 'multiple set match' do
-      subject do
-        FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
-                          scores: [[6, 0]], complete_set: false)
-      end
-
-      it_behaves_like 'a match set can be completed'
-
-      context 'complete play' do
-        before { subject.play_match! :complete_set_play }
-
-        it_behaves_like 'a match with complete set'
-
-        context 'remove last change' do
-          before { subject.play_match! :remove_last_change }
-          it_behaves_like 'a match set can be completed'
-        end
-      end
-    end
-
     context 'single set match' do
       subject do
         FactoryGirl.build(:play_singles_match, scoring: :one_eight_game,
-                          scores: [[8, 0]], complete_match: false)
+                          scores: [[8, 0]])
       end
 
-      it_behaves_like 'a match with finished set'
+      it_behaves_like 'a match with complete set'
 
       context 'remove last change' do
         before {
@@ -231,7 +212,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       context 'win tiebreaker with player' do
         before { subject.play_match! :win_tiebreaker, opponent: subject.first_team }
 
-        it_behaves_like 'a match with finished set'
+        it_behaves_like 'a match with complete set'
 
         context 'remove last change' do
           before { subject.play_match! :remove_last_change }
@@ -264,7 +245,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
   describe 'remove second set' do
     subject do
       FactoryGirl.build(:play_singles_match,
-                        scoring: :two_six_game_ten_point, scores: [[6, 0]], complete_set: true)
+                        scoring: :two_six_game_ten_point, scores: [[6, 0]])
     end
 
     it_behaves_like 'a match with one set'
@@ -303,21 +284,11 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
           subject.play_match! :win_match_tiebreaker, opponent: subject.first_team
         end
 
-        it_behaves_like 'a match finished'
+        it_behaves_like 'a match complete'
 
         context 'remove last change' do
           before { subject.play_match! :remove_last_change }
           it_behaves_like 'a match in match tiebreaker'
-        end
-
-        context 'complete match tiebreaker' do
-          before { subject.play_match! :complete_match_tiebreaker }
-          it_behaves_like 'a match with complete set'
-
-          context 'remove last change' do
-            before { subject.play_match! :remove_last_change }
-            it_behaves_like 'a match with finished set'
-          end
         end
 
         it 'should not win again' do
@@ -339,49 +310,6 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
           subject.reload # clears destroyed entities
         end
         it_behaves_like 'a match can start match tiebreaker'
-      end
-    end
-  end
-
-  describe 'complete match' do
-    context 'multiple set match' do
-      subject do
-        FactoryGirl.build(:play_singles_match, scoring: :three_six_game, scores: [[6, 0], [6, 0]],
-                          complete_match: false)
-      end
-
-      it_behaves_like 'a match can be completed'
-
-      context 'complete play' do
-        before { subject.play_match! :complete_play }
-
-        it_behaves_like 'a match complete'
-
-        context 'remove last change' do
-          before { subject.play_match! :remove_last_change }
-          it_behaves_like 'a match can be completed'
-        end
-      end
-    end
-
-    context 'one set match' do
-      subject do
-        FactoryGirl.build(:play_singles_match, scoring: :one_eight_game, scores: [[8, 0]],
-                          complete_match: false)
-      end
-
-      it_behaves_like 'a match can be completed'
-
-      context 'complete play' do
-        before { subject.play_match! :complete_play }
-
-        it_behaves_like 'a match complete'
-
-        context 'remove last change' do
-          before { subject.play_match! :remove_last_change }
-
-          it_behaves_like 'a match can be completed'
-        end
       end
     end
   end

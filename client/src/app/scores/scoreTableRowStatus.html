@@ -1,0 +1,19 @@
+<!-- Message about match status displayed on a table row -->
+<div ng-if="scores.actions.win_game">
+  Game {{scores.currentGame.title}} in progress
+</div>
+<div ng-if="scores.actions.win_tiebreaker">
+  Tiebreak in progress
+</div>
+<div ng-if="scores.actions.win_match_tiebreaker">
+  Tiebreak in progress
+</div>
+<div ng-if="scores.actions.start_game">
+  Game {{scores.currentGame.title}} has not started
+</div>
+<div ng-if="scores.actions.start_tiebreaker">
+  Tiebreak has not started
+</div>
+<div ng-if="scores.actions.start_match_tiebreaker">
+  Tiebreak has not started
+</div>

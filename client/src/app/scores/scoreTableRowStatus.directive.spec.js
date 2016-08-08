@@ -11,17 +11,13 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var scores = {title: 'atitle', doubles: true};
-      var title = 'sometitle'
-
       scope = $rootScope.$new();
-      scope.ascores = scores;
-      scope.atitle = title;
+      scope.ascores = {};
 
-      var html = ('<fe-score-status ' +
+      var html = ('<fe-score-table-row-status ' +
       'scores="ascores" ' +
       'title="atitle" ' +
-      '></fe-score-status>');
+      '></fe-score-table-row-status>');
 
       element = angular.element(html);
 
@@ -34,10 +30,6 @@
 
       it('should have .scores', function () {
         expect(isolatedScope.scores).toBe(scope.ascores);
-      });
-
-      it('should have .title', function () {
-        expect(isolatedScope.title).toEqual(scope.atitle);
       });
 
       // TODO: Test elements
