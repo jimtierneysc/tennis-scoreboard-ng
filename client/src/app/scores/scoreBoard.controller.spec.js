@@ -6,6 +6,7 @@
     var $scope;
     var $rootScope;
     var mockResource;
+    var $timeout;
 
     var firstPlayer = {
       id: 10,
@@ -41,7 +42,7 @@
     {
       id: 1,
       state: "in_progress",
-      sets: [{games: []}],
+      sets: [{games: [{}]}],
       servers: [],
       actions: {},
       version: 100
@@ -67,22 +68,28 @@
 
     beforeEach(function () {
 
-      inject(function (_$controller_, _$rootScope_) {
+      inject(function (_$controller_, _$rootScope_, _$timeout_) {
         $rootScope = _$rootScope_;
         $controller = _$controller_;
         $scope = $rootScope.$new();
+        $timeout = _$timeout_;
       });
       mockResource = new MockResource();
     });
 
-    function scoreboardController(response) {
+    function scoreboardController(response, disableAnimation) {
+      if (angular.isUndefined(disableAnimation))
+        disableAnimation = true;
       var locals = {
         $scope: $scope,
         response: response,
         $stateParams: {id: scoresResponse.id},
         crudResource: mockResource
       };
-      return $controller('ScoreboardController', locals);
+      var result = $controller('ScoreboardController', locals);
+      if (disableAnimation)
+        result.view.disableAnimations();
+      return result;
     }
 
     describe('members', function () {
@@ -115,6 +122,10 @@
       it('should have .scoreboard', function () {
         expect(vm.scoreboard).toEqual(jasmine.any(Object));
       });
+
+      // it('should have .updateScore', function () {
+      //   expect(vm.updateScore).toEqual(jasmine.any(Function));
+      // });
     });
 
     describe('loading', function () {
@@ -150,25 +161,25 @@
           expect(sb.server).toBe(null);
         });
 
-        it('should have .btns', function () {
-          expect(sb.btns).toEqual(jasmine.any(Object));
-        });
+        // it('should have .buttonState', function () {
+        //   expect(sb.buttonState).toEqual(jasmine.any(Object));
+        // });
 
-        it('should not have .newGame', function () {
-          expect(sb.newGame).toBeUndefined();
-        });
+        // it('should not have .newGame', function () {
+        //   expect(sb.newGame).toBeNull();
+        // });
 
-        it('should not have .newSet', function () {
-          expect(sb.newSet).toBeUndefined();
-        });
+        // it('should not have .newSet', function () {
+        //   expect(sb.newSet).toBeNull();
+        // });
 
         it('should not have .firstServers', function () {
-          expect(sb.firstServers).toBeUndefined();
+          expect(sb.firstServers).toBeNull();
         });
 
-        it('should have .update()', function () {
-          expect(sb.update).toEqual(jasmine.any(Function));
-        });
+        // it('should have .update()', function () {
+        //   expect(sb.update).toEqual(jasmine.any(Function));
+        // });
       });
 
       describe('newGame', function () {
@@ -181,8 +192,8 @@
           sb = vm.scoreboard;
         });
 
-        it('should equal newGame', function () {
-          expect(sb.newGame).toEqual(jasmine.any(Object));
+        it('should have newGame', function () {
+          expect(sb.currentGame.newGame).toBeTruthy();
         });
 
         it('should have .firstServers', function () {
@@ -200,8 +211,8 @@
           sb = vm.scoreboard;
         });
 
-        it('should equal newSet', function () {
-          expect(sb.newSet).toEqual(jasmine.any(Object));
+        it('should have newSet', function () {
+          expect(sb.currentSet.newSet).toBeTruthy();
         });
       });
 
@@ -230,38 +241,20 @@
     });
 
     describe('update', function () {
-      var waitIndicator;
-      beforeEach(function () {
-        inject(function (_waitIndicator_) {
-          waitIndicator = _waitIndicator_;
-        });
-        spyOn(waitIndicator, 'beginWait').and.callThrough();
-      });
-
-      function expectWaitIndicator() {
-        it('should call .beginWait()', function () {
-          expect(waitIndicator.beginWait).toHaveBeenCalled();
-        });
-
-        it('should not be .waiting when finished', function () {
-          expect(waitIndicator.waiting()).toBeFalsy();
-        });
-      }
 
       describe('success', function () {
         var vm;
         beforeEach(function () {
           var response = singlesResponse();
           vm = scoreboardController(response);
-          var sb = vm.scoreboard;
-          sb.update('fake_action', 0, true);
+          vm.view.updateScore('fake_action', 0, true);
+          $rootScope.$digest();
         });
 
         it('should have updated', function () {
           expect(vm.scoreboard.mockSaved).toBeTruthy();
         });
 
-        expectWaitIndicator();
       });
 
       describe('with param', function () {
@@ -295,24 +288,25 @@
           addParams('win_match');
           addParams('win_tiebreaker');
 
-          var sb;
+          var vm;
           beforeEach(function () {
             var response = singlesResponse();
-            var vm = scoreboardController(response);
-            sb = vm.scoreboard;
+            vm = scoreboardController(response);
           });
 
           angular.forEach(params, function (value, key) {
             it('should have valid params for ' + key + ' action', function () {
               mockResource.params = null;
-              sb.update(key, 0, true);
+              vm.view.updateScore(key, 0, true);
+              $rootScope.$digest();
               expect(mockResource.params).toEqual(params[key])
             });
           });
 
           it('should have valid params for start_game action', function () {
             mockResource.params = null;
-            sb.update('start_game', playerId, true);
+            vm.view.updateScore('start_game', playerId, true);
+            $rootScope.$digest();
             expect(mockResource.params).toEqual(startNextGameParams(10));
           });
         });
@@ -335,17 +329,17 @@
           addParams('win_match');
           addParams('win_tiebreaker');
 
-          var sb;
+          var vm;
           beforeEach(function () {
             var response = doublesResponse();
-            var vm = scoreboardController(response);
-            sb = vm.scoreboard;
+            vm = scoreboardController(response);
           });
 
           angular.forEach(params, function (value, key) {
             it('should have valid params for ' + key, function () {
               mockResource.params = null;
-              sb.update(key, 1);
+              vm.view.updateScore(key, 1);
+              $rootScope.$digest();
               expect(mockResource.params).toEqual(params[key])
             });
           });
@@ -358,8 +352,8 @@
           mockResource.respondWithDataError = true;
           var response = angular.copy(singlesResponse());
           vm = scoreboardController(response);
-          var sb = vm.scoreboard;
-          sb.update('fake_action', 0, true);
+          vm.view.updateScore('fake_action', 0, true);
+          $rootScope.$digest();
         });
 
         it('should save with error', function () {
@@ -374,7 +368,6 @@
           expect(vm).not.toFailLoading();
         });
 
-        expectWaitIndicator();
       });
 
       describe('HTTP error', function () {
@@ -383,8 +376,8 @@
           mockResource.respondWithHTTPError = true;
           var response = singlesResponse();
           vm = scoreboardController(response);
-          var sb = vm.scoreboard;
-          sb.update('fake_action', 0, true);
+          vm.view.updateScore('fake_action', 0, true);
+          $rootScope.$digest();
         });
 
         it('should not show toast', function () {
@@ -395,7 +388,6 @@
           expect(vm).toFailLoading();
         });
 
-        expectWaitIndicator();
       });
 
     }); // update
@@ -409,16 +401,25 @@
           view = vm.view;
         });
 
-        it('should have .expand', function () {
-          expect(view.expand).toEqual(jasmine.any(String));
+
+        it('should have .showGames', function () {
+          expect(view.showGames).toEqual(jasmine.any(Boolean));
         });
 
-        it('should have .showDetails', function () {
-          expect(view.showDetails).toEqual(jasmine.any(Boolean));
+        it('should have .updateScore()', function () {
+          expect(view.updateScore).toEqual(jasmine.any(Function));
         });
 
-        it('should have .keepScore', function () {
-          expect(view.keepScore).toEqual(jasmine.any(Boolean));
+        it('should have .animateScoreboardChanges()', function () {
+          expect(view.animateScoreboardChanges).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .disableAnimations()', function () {
+          expect(view.disableAnimations).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .showDescription', function () {
+          expect(view.showDescription).toEqual(jasmine.any(Boolean));
         });
 
         it('should have .keepingScore()', function () {
@@ -429,13 +430,21 @@
           expect(view.changed).toEqual(jasmine.any(Function));
         });
 
-        it('should have .showGames()', function () {
-          expect(view.showGames).toEqual(jasmine.any(Function));
+        it('should have .toggleShowGames', function () {
+          expect(view.toggleShowGames).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .toggleShowDescription', function () {
+          expect(view.toggleShowDescription).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .toggleKeepScore', function () {
+          expect(view.toggleKeepScore).toEqual(jasmine.any(Function));
         });
       });
 
-      var USERNAME = 'scoreBoard username';
-      var TOKEN = 'scoreBoard token';
+      var USERNAME = 'scoreboard username';
+      var TOKEN = 'scoreboard token';
 
       describe('.keepingScore', function () {
 
@@ -461,45 +470,71 @@
         });
       });
 
-      describe('.showDetails', function() {
+      describe('.showDescription', function () {
         var vm;
         beforeEach(function () {
           vm = scoreboardController(singlesResponse());
-          vm.view.showDetails = false;
+          vm.view.showDescription = false;
         });
 
         it('should toggle to true', function () {
-          vm.view.showDetails = false;
-          vm.view.toggleShowDetails();
-          expect(vm.view.showDetails).toBeTruthy();
+          vm.view.showDescription = false;
+          vm.view.toggleShowDescription();
+          // $timeout.flush();
+          expect(vm.view.showDescription).toBeTruthy();
         });
 
         it('should toggle to false', function () {
-          vm.view.showDetails = true;
-          vm.view.toggleShowDetails();
-          expect(vm.view.showDetails).toBeFalsy();
+          vm.view.showDescription = true;
+          vm.view.toggleShowDescription();
+          // $timeout.flush();
+          expect(vm.view.showDescription).toBeFalsy();
         });
 
       });
 
-      describe('.showGames()', function () {
+      describe('.toggleShowGames()', function () {
         var vm;
         beforeEach(function () {
           vm = scoreboardController(singlesResponse());
-          vm.scoreboard.sets = [{}, {}];
+        });
+
+        it('should toggle to true', function () {
+          vm.view.showGames = false;
+          vm.view.toggleShowGames();
+          // $timeout.flush();
+          expect(vm.view.showGames).toBeTruthy();
+        });
+
+        it('should toggle to false', function () {
+          vm.view.showGames = true;
+          vm.view.toggleShowGames();
+          // $timeout.flush();
+          expect(vm.view.showGames).toBeFalsy();
+        });
+      });
+
+      describe('.toggleKeepScore()', function () {
+        var vm;
+        beforeEach(function () {
+          vm = scoreboardController(singlesResponse());
+          vm.keepScore = false;
 
         });
 
-        it('should show games when expanded', function () {
-          vm.view.expand = 'expand_all';
-          expect(vm.view.showGames(1)).toBeTruthy();
-
+        it('should toggle to true', function () {
+          vm.view.keepScore = false;
+          vm.view.toggleKeepScore();
+          // $timeout.flush();
+          expect(vm.view.keepScore).toBeTruthy();
         });
 
-        it('should not show games when collapsed', function () {
-          vm.view.expand = 'collapse';
-          expect(vm.view.showGames(1)).toBeFalsy();
-        })
+        it('should toggle to false', function () {
+          vm.view.keepScore = true;
+          vm.view.toggleKeepScore();
+          // $timeout.flush();
+          expect(vm.view.keepScore).toBeFalsy();
+        });
       });
 
       describe('storage of .expand and .keepingScore', function () {
@@ -536,14 +571,14 @@
         describe('load data', function () {
           beforeEach(function () {
             var vm = scoreboardController(singlesResponse());
-            vm.view.expand = 'xyz';
+            vm.view.showGames = true;
             vm.view.keepScore = true;
             vm.view.changed();
           });
 
-          it('should have .expand', function () {
+          it('should have .showGames', function () {
             var vm = scoreboardController(singlesResponse());
-            expect(vm.view.expand).toEqual('xyz');
+            expect(vm.view.showGames).toEqual(true);
           });
 
           it('should have .keepScore', function () {
@@ -570,7 +605,6 @@
 
       var confirmActions = {
         discard_play: true,
-        restart_play: true,
         start_set: false
       };
 
@@ -582,7 +616,7 @@
         angular.forEach(confirmActions, function (value, key) {
           describe(key, function () {
             beforeEach(function () {
-              vm.scoreboard.update(key, 0, true);
+              vm.view.updateScore(key, 0, true);
             });
             var message = 'open modal for ' + key + ' action';
             if (value) {
@@ -619,7 +653,7 @@
           describe(key, function () {
             beforeEach(function () {
               mockResource.params = null;
-              vm.scoreboard.update(key, 0, true);
+              vm.view.updateScore(key, 0, true);
               $rootScope.$digest();
             });
             var message = 'confirm ' + key + ' action';
@@ -643,7 +677,7 @@
           describe(key, function () {
             beforeEach(function () {
               mockResource.params = null;
-              vm.scoreboard.update(key, 0, true);
+              vm.view.updateScore(key, 0, true);
               $rootScope.$digest();
             });
             var message = 'cancel change for ' + key + ' action';
@@ -659,6 +693,50 @@
           })
         });
       });
+
+      describe('animations', function () {
+        var vm;
+        beforeEach(function () {
+          // Enable animation
+          vm = scoreboardController(singlesResponse(), false);
+        });
+
+        describe('.toggleShowGames()', function () {
+
+          it('should toggle to true', function () {
+            vm.view.showGames = false;
+            vm.view.toggleShowGames();
+            $timeout.flush();
+            $timeout.flush();
+            expect(vm.view.showGames).toBeTruthy();
+          });
+
+          it('should toggle to false', function () {
+            vm.view.showGames = true;
+            vm.view.toggleShowGames();
+            $timeout.flush();
+            $timeout.flush();
+            expect(vm.view.showGames).toBeFalsy();
+          });
+
+        });
+
+        describe('updateScore', function () {
+          beforeEach(function () {
+            vm.view.updateScore('fake_action', 0, true);
+            $timeout.flush();
+            $rootScope.$digest();
+            $timeout.flush();
+          });
+
+          it('should have updated', function () {
+            expect(vm.scoreboard.mockSaved).toBeTruthy();
+          });
+
+        });
+
+      });
+
     });
 
     function MockResource() {

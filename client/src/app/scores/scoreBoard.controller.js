@@ -15,9 +15,11 @@
   /** @ngInject */
   function Controller($log, $scope, $stateParams, errorsMapper, scoreboardPath,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
-                      authHelper, waitIndicator, toastrHelper,
-                      scoreboardBuilder, response) {
+                      authHelper, toastrHelper, $q,
+                      scoreboardPrep, $timeout, animationIntervals,
+                      toggleClass, response) {
     var vm = this;
+    var updating = false;
 
     activate();
 
@@ -30,7 +32,7 @@
       var scoresController = $scope.$parent;
       var vmScoreboard = {view: vm.view, scores: vm.scoreboard};
       scoresController.vmScoreboard = vmScoreboard;
-      $scope.$on('$destroy', function() {
+      $scope.$on('$destroy', function () {
         if (scoresController.vmScoreboard == vmScoreboard)
           scoresController.vmScoreboard = null
       });
@@ -38,24 +40,26 @@
       authHelper(vm, $scope);
       loadingHelper(vm);
       toastrHelper(vm, $scope);
-      if (angular.isDefined(response.id))
-        getScoreBoardSucceeded(response);
-      else
-        getScoreBoardFailed(response);
-    }
 
+      if (angular.isDefined(response.id)) {
+        applyResponseToScoreboard(response);
+        vm.loadingHasCompleted();
+      }
+      else {
+        $log.error('data error ' + response.status + " " + response.statusText);
+        vm.loadingHasFailed(response);
+      }
+    }
 
     //
     // Internal methods
     //
 
-
-    function updateScore(action, params, confirm) {
+    function confirmScoreboardUpdate(action, param, confirm) {
       vm.clearToast();
 
       var confirmActions = {
-        discard_play: 'Confirm Clear Scoreboard',
-        restart_play: 'Confirm Restart Scoring'
+        discard_play: 'Confirm Clear Scoreboard'
       };
 
       if (angular.isUndefined(confirm))
@@ -67,90 +71,101 @@
           vm.scoreboard.title + '"?'
         })
           .then(function () {
-            scoreboardPathUpdate(action, params);
+            scoreboardUpdate(action, param);
           });
       }
       else {
-        scoreboardPathUpdate(action, params);
+        scoreboardUpdate(action, param);
       }
     }
 
-    function getScoreBoardSucceeded(response) {
-      var scoreboard = {};
-      angular.copy(response, scoreboard);
-      // vm.scoreboard = response;
-      prepareScoreBoard(scoreboard);
-      angular.copy(scoreboard, vm.scoreboard);
-      vm.updateLoadingCompleted();
+    function scoreboardUpdate(action, param) {
+
+      if (updating)  // Prevent re-enter
+        return;
+
+      var winAction = action.startsWith('win');
+      var update = {
+        action: action,
+        param: param
+        // changeGameScore: winAction,
+        // changeLeftmost: param == 0,
+        // changeMatchScore: function () {
+        //   return winAction &&
+        //     (!vm.scoreboard.currentSet && vm.scoreboard.previousSet && vm.scoreboard.previousSet.winner);
+        // }
+      };
+
+      var promise = postUpdate(action, param);
+      vm.view.animateScoreboardChanges(update, promise,
+        function (response) {
+          updating = false;
+          applyResponseToScoreboard(response);
+        },
+        function (response) {
+          updating = false;
+          showError(response);
+        });
+
     }
 
-    function getScoreBoardFailed(response) {
-      $log.error('data error ' + response.status + " " + response.statusText);
-      vm.updateLoadingFailed(response);
-    }
 
-    function scoreboardPathUpdate(action, params) {
+    function postUpdate(action, param) {
       var key = {id: vm.id};
-      var body = makeUpdateBody(action, params);
-      var endWait = waitIndicator.beginWait();
-      vm.view.updating = true;
+      var body = makePostBody(action, param);
+      var deferred = $q.defer();
       crudResource.getResource(scoreboardPath).save(key, body,
         function (response) {
-          endWait();
-          vm.view.updating = false;
-          scoreUpdated(response);
+          deferred.resolve(response);
         },
         function (response) {
           $log.error('update error ' + response.status + " " + response.statusText);
-          endWait();
-          vm.view.updating = false;
-          scoreUpdateError(body, response);
+          deferred.reject(response);
         }
       );
+      return deferred.promise;
+
+      function makePostBody(action, id) {
+        var params = {};
+        if (vm.scoreboard.version)
+          params.version = vm.scoreboard.version;
+        if (action == 'start_game') {
+          if (id) {
+            // player to serve next
+            params.player = id;
+          }
+        }
+        else if (action.startsWith('win')) {
+          if (id == 0 || id == 1) {
+            var opponent = vm.scoreboard.opponents[id];
+            if (vm.scoreboard.doubles)
+              params.team = opponent;
+            else
+              params.player = opponent;
+          }
+        }
+
+        params.action = action;
+        return {match_score_board: params};
+      }
     }
 
-    function makeUpdateBody(action, id) {
-      var params = {};
-      if (vm.scoreboard.version)
-        params.version = vm.scoreboard.version;
-      if (action == 'start_game') {
-        if (id) {
-          // player to serve next
-          params.player = id;
-        }
-      }
-      else if (action.startsWith('win')) {
-        if (id == 0 || id == 1) {
-          var opponent = vm.scoreboard.opponents[id];
-          if (vm.scoreboard.doubles)
-            params.team = opponent;
-          else
-            params.player = opponent;
-        }
-      }
-
-      params.action = action;
-      return {match_score_board: params};
-    }
-
-    function scoreUpdated(response) {
-      var scoreboard = {};
-      angular.copy(response, scoreboard);
-      // angular.copy(response, vm.scoreboard);
-      if (scoreboard.errors && !angular.equals({}, scoreboard.errors)) {
-        var errors = errorsMapper(scoreboard.errors, null);
+    function applyResponseToScoreboard(response) {
+      var sb = response;
+      if (sb.errors && !angular.equals({}, sb.errors)) {
+        var errors = errorsMapper(sb.errors, null);
         var message = 'Unable to update score';
         if (angular.isDefined(errors.other[0]))
           message = errors.other[0];
         vm.showToast(message)
       }
-      prepareScoreBoard(scoreboard);
-      angular.copy(scoreboard, vm.scoreboard);
+      angular.copy(sb, vm.scoreboard);
+      prepareScoreboard(vm.scoreboard);
     }
 
-    function scoreUpdateError(body, response) {
+    function showError(response) {
       if (!vm.showHttpErrorToast(response.status))
-        vm.updateLoadingFailed(response);
+        vm.loadingHasFailed(response);
     }
 
     function View() {
@@ -159,95 +174,172 @@
 
       var view = this; // eslint-disable-line
       view.changed = storeView;
-      view.showGames = showGames;
+
+      view.animateScoreboardChanges = animateScoreboardChanges;
+      view.updateScore = confirmScoreboardUpdate;
+      view.disableAnimations = disableAnimations;
       view.keepingScore = keepingScore;
-      view.toggleShowDetails = toggleShowDetails;
+      view.toggleShowDescription = toggleShowDescription;
+      view.toggleShowGames = toggleShowGames;
+      view.toggleKeepScore = toggleKeepScore;
+
+      view.animate = {
+        showGames: false,
+        description: true,
+        playerServing: true,
+        // keepingScore: true
+      };
+
+      var noAnimations = false;
       view.localDataName = DATANAME;
-      view.expand = "collapse";
+      view.showGames = false;
       view.keepScore = false;
-      view.showDetails = false;
-      view.updating = false;
+      view.showDescription = false;
       loadView();
 
-      function showGames(set) {  // eslint-disable-line
-        if (view.expand == 'collapse')
-          return false;
-        // expand_set not longer supported.   Too confusing.
-        // else if (view.expand == 'expand_set')
-        //   return vm.scoreboard.sets.length <= 1 || vm.scoreboard.sets[0] == set;
-        else // expand_all
-          return true;
+      function disableAnimations() {
+        noAnimations = true;
       }
 
       function keepingScore() {
         return vm.loggedIn && view.keepScore;
       }
 
-      function toggleShowDetails() {
-        view.showDetails = !view.showDetails
+      function toggleShowDescription() {
+        view.showDescription = !view.showDescription
+        storeView();
       }
 
-      function viewData() {
-        return {
-          view: {
-            expand: view.expand,
-            keepScore: view.keepScore,
-            showDetails: view.showDetails
-          }
+      function toggleShowGames() {
+        if (noAnimations) {
+          toggle();
+        } else {
+          view.animate.showGames = true;
+          $timeout(function () {
+            toggle();
+            $timeout(function () {
+              // Disable animation so that animation will not occur
+              // when score table is refreshed
+              view.animate.showGames = false;
+            }, view.showGames ? animationIntervals.in : animationIntervals.out);
+          });
+        }
+
+        function toggle() {
+          view.showGames = !view.showGames;
+          storeView();
         }
       }
 
+      function toggleKeepScore() {
+        // if (noAnimations || view.animate.keepingScore) {
+        //   toggle();
+        // } else {
+        //   view.animate.keepingScore = true;
+        //   $timeout(function () {
+        //     toggle();
+        //     $timeout(function () {
+        //       // Disable animation so that animation will not occur
+        //       // when score table is refreshed
+        //       view.animate.keepingScore = false;
+        //     }, view.keepScore ? animationIntervals.in : animationIntervals.out);
+        //   }, 1);
+        // }
+        //
+        // function toggle() {
+          view.keepScore = !view.keepScore;
+          storeView();
+        // }
+      }
+
       function storeView() {
-        $localStorage[DATANAME] = viewData();
+
+        var viewData = {
+          view: {
+            showGames: view.showGames,
+            keepScore: view.keepScore,
+            showDescription: view.showDescription
+          }
+        };
+
+        $localStorage[DATANAME] = viewData;
+
       }
 
       function loadView() {
         var data = $localStorage[DATANAME] || {};
         if (data.view) {
-          view.expand = data.view.expand;
+          view.showGames = data.view.showGames;
           view.keepScore = data.view.keepScore;
-          view.showDetails = data.view.showDetails;
+          view.showDescription = data.view.showDescription;
+        }
+      }
+
+      function animateScoreboardChanges(update, promise, accept, reject) {
+
+        if (noAnimations) {
+          promise.then(
+            function (response) {
+              accept(response)
+            },
+            function (response) {
+              reject(response);
+            }
+          );
+        }
+        else {
+
+          // Allow time for old data to hide
+          var timerPromise = $timeout(function () {
+          }, animationIntervals.out);
+
+          // Promise to wait until time has passed and post has finished
+          var all = $q.all({timer: timerPromise, post: promise});
+
+          // Create object to hide and show data during animation
+          var hideAndShow = scoreboardPrep.hideAndShowData(vm.scoreboard, update.action, update.param);
+
+          // Set flags so that old data will be hidden
+          hideAndShow.hideOldData();
+
+          // Wait for data to hide
+          all.then(
+            function (hash) {
+              var response = hash.post;
+              // Update scoreboard
+              accept(response);
+
+              // Set flags so that new data will be hidden, initially
+              hideAndShow.hideNewData();
+
+              // Let ng-class be processed
+              $timeout(function () {
+                // Show the new data
+                hideAndShow.showNewData();
+              });
+
+              // Wait for new data to finish showing
+              $timeout(function () {
+                // Cleanup flags
+                hideAndShow.stopHideAndShow();
+              }, animationIntervals.in);
+
+            },
+            function (response) {
+              reject(response);
+              hideAndShow.stopHideAndShow();
+            });
         }
       }
     }
 
     // prepare scoreboard for viewing
-    function prepareScoreBoard(sb) {
+    function prepareScoreboard(sb) {
 
-      // Add some properties to the score board object
-      prepareValues();
-      prepareMethods();
+      scoreboardPrep.prepare(sb);
       // Reverse order of sets and games to
       // display most recent games at top of view.
       reverseOrder();
-
-      function prepareValues() {
-        sb.opponents = scoreboardBuilder.opponents(sb);
-        sb.server = scoreboardBuilder.server(sb);
-        scoreboardBuilder.insertScores(sb);
-        scoreboardBuilder.insertTitles(sb);
-        sb.btns = scoreboardBuilder.buttonStatus(sb);
-        var newGame = scoreboardBuilder.newGame(sb);
-        if (newGame) {
-          sb.newGame = newGame;
-          var firstServers = scoreboardBuilder.firstServers(sb);
-          if (firstServers) {
-            sb.firstServers =
-            {
-              list: firstServers,
-              id: firstServers[0].id
-            };
-          }
-        } else {
-          var newSet = scoreboardBuilder.newSet(sb);
-          if (newSet)
-            sb.newSet = newSet;
-        }
-      }
-
-      function prepareMethods() {
-        sb.update = updateScore;
-      }
 
       function reverseOrder() {
         // Reverse order of sets and games to
