@@ -25,7 +25,7 @@ module V1::MatchSerializerShared
   end
 
   RSpec.shared_examples 'a scoreboard' do
-    it { is_expected.to include :sets, :actions, :errors, :servers, :version }
+    it { is_expected.to include :sets, :actions, :errors, :servers, :version, :near_winners }
   end
 
   RSpec.shared_examples 'a doubles scoreboard' do

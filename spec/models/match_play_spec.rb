@@ -603,5 +603,181 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
     end
 
   end
+
+  describe 'near winners' do
+    context 'singles' do
+      context 'one more set' do
+        context 'first player' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[6, 0]])
+          end
+
+          it 'should have first player near winner' do
+            expect(subject.near_team_winner? subject.first_team).to be_truthy
+          end
+
+          it 'should not have second player near winner' do
+            expect(subject.near_team_winner? subject.second_team).not_to be_truthy
+          end
+        end
+
+        context 'second player' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[0, 6]])
+          end
+
+          it 'should not have first player near winner' do
+            expect(subject.near_team_winner? subject.first_team).not_to be_truthy
+          end
+
+          it 'should have second player near winner' do
+            expect(subject.near_team_winner? subject.second_team).to be_truthy
+          end
+        end
+      end
+
+      context 'one more game' do
+        context 'first player' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[6, 0], [5, 0]])
+          end
+
+          it 'should have first player near winner' do
+            expect(subject.last_set.near_team_winner? subject.first_team).to be_truthy
+          end
+
+          it 'should not have second player near winner' do
+            expect(subject.last_set.near_team_winner? subject.second_team).not_to be_truthy
+          end
+
+        end
+
+        context 'second player' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[0, 6], [0, 5]])
+          end
+
+          it 'should not have first player near winner' do
+            expect(subject.last_set.near_team_winner? subject.first_team).not_to be_truthy
+          end
+
+          it 'should have second player near winner' do
+            expect(subject.last_set.near_team_winner? subject.second_team).to be_truthy
+          end
+        end
+      end
+
+      context 'set tiebreak' do
+        subject do
+          FactoryGirl.build(:play_singles_match,
+                            scoring: :two_six_game_ten_point, scores: [[6, 6]])
+        end
+
+        it 'should have first player near tiebreak winner' do
+          expect(subject.last_set.near_team_winner? subject.first_team).to be_truthy
+        end
+
+        it 'should have second player near tiebreak winner' do
+          expect(subject.last_set.near_team_winner? subject.second_team).to be_truthy
+        end
+
+      end
+
+      context 'match tiebreak' do
+        subject do
+          FactoryGirl.build(:play_singles_match,
+                            scoring: :two_six_game_ten_point, scores: [[6, 0], [0, 6], [0, 0]])
+        end
+
+        it 'should have first player near tiebreak winner' do
+          expect(subject.last_set.near_team_winner? subject.first_team).to be_truthy
+        end
+
+        it 'should have second player near tiebreak winner' do
+          expect(subject.last_set.near_team_winner? subject.second_team).to be_truthy
+        end
+
+        it 'should have first player near match winner' do
+          expect(subject.near_team_winner? subject.first_team).to be_truthy
+        end
+
+        it 'should have second player near match winner' do
+          expect(subject.near_team_winner? subject.second_team).to be_truthy
+        end
+
+      end
+    end
+
+    context 'doubles' do
+      context 'one more set' do
+        context 'first team needs one more set' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[6, 0]])
+          end
+
+          it 'should have first player near winner' do
+            expect(subject.near_team_winner? subject.first_team).to be_truthy
+          end
+
+          it 'should not have second player near winner' do
+            expect(subject.near_team_winner? subject.second_team).not_to be_truthy
+          end
+
+        end
+
+        context 'second player needs one more set' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[0, 6]])
+          end
+
+          it 'should not have first player near winner' do
+            expect(subject.near_team_winner? subject.first_team).not_to be_truthy
+          end
+
+          it 'should have second player near winner' do
+            expect(subject.near_team_winner? subject.second_team).to be_truthy
+          end
+        end
+      end
+
+      context 'one more game' do
+        context 'first team needs one more game' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[6, 0], [5, 0]])
+          end
+
+          it 'should have first team near winner' do
+            expect(subject.last_set.near_team_winner? subject.first_team).to be_truthy
+          end
+
+          it 'should not have second team near winner' do
+            expect(subject.last_set.near_team_winner? subject.second_team).not_to be_truthy
+          end
+        end
+
+        context 'second team needs one more game' do
+          subject do
+            FactoryGirl.build(:play_singles_match,
+                              scoring: :two_six_game_ten_point, scores: [[0, 6], [0, 5]])
+          end
+
+          it 'should not have first team near winner' do
+            expect(subject.last_set.near_team_winner? subject.first_team).not_to be_truthy
+          end
+
+          it 'should have second team near winner' do
+            expect(subject.last_set.near_team_winner? subject.second_team).to be_truthy
+          end
+        end
+      end
+    end
+  end
 end
 

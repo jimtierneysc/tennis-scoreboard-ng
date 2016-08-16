@@ -42,6 +42,18 @@ class MatchSet < ActiveRecord::Base
     end
   end
 
+  # Identify teams that can win set with one more game win
+  def near_team_winner? team
+    unless completed?
+      lookup = lookup_games_won
+      first_won = lookup[match.first_team_id][0]
+      second_won = lookup[match.second_team_id][0]
+      first_won += 1 if team.id == match.first_team_id
+      second_won += 1 if team.id == match.second_team_id
+      calc_winner_team(first_won, second_won)
+    end
+  end
+
   def last_game
     set_games.last
   end

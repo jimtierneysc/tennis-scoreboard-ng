@@ -64,6 +64,38 @@ RSpec.describe V1::MatchScoreBoardSerializer, { type: :serializer, match_seriali
     end
   end
 
+  describe 'near winners' do
+    context 'doubles' do
+      let(:match) { FactoryGirl.create :play_doubles_match,
+                                       scoring: :two_six_game_ten_point,
+                                       scores: [[7, 6],[4, 6], [0, 0]]}
+
+      subject do
+        scoreboard_json(match)
+      end
+
+      it_behaves_like 'a doubles scoreboard'
+
+      it { is_expected.to eql_match(match) }
+    end
+
+    context 'singles' do
+      let(:match) { FactoryGirl.create :play_singles_match,
+                                       scoring: :two_six_game_ten_point,
+                                       scores: [[7, 6], [4, 6], [0, 0]]}
+
+      subject do
+        scoreboard_json(match)
+      end
+
+      it_behaves_like 'a singles scoreboard'
+
+      it { is_expected.to eql_match(match) }
+    end
+  end
+
+
+
 end
 
 

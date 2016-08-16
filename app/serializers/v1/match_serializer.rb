@@ -3,11 +3,7 @@ class V1::MatchSerializer < ActiveModel::Serializer
 
   def winner
     unless object.team_winner.nil?
-      if object.doubles
-        object.team_winner.id
-      else
-        object.team_winner.first_player.id
-      end
+      opponent_id object.team_winner
     else
       nil
     end
@@ -39,6 +35,14 @@ class V1::MatchSerializer < ActiveModel::Serializer
 
   def second_team
     V1::OpponentTeamSerializer.new(object.second_team, root: false)
+  end
+
+  def opponent_id team
+    if object.doubles
+      team.id
+    else
+      team.first_player.id
+    end
   end
 
 end

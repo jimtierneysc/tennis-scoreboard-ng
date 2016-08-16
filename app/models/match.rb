@@ -156,7 +156,7 @@ class Match < ActiveRecord::Base
   def sets_won(team)
     match_sets.reduce(0) do |sum, set|
       winner = set.compute_team_winner
-      sum + (winner && (winner.id == team || winner == team) ? 1 : 0)
+      sum + (winner && winner == team ? 1 : 0)
     end
   end
 
@@ -205,6 +205,12 @@ class Match < ActiveRecord::Base
           second_team
         end
       end
+    end
+  end
+
+  def near_team_winner? team
+    unless completed?
+      sets_won(team) + 1 == min_sets_to_play
     end
   end
 
