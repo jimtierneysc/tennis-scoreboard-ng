@@ -60,7 +60,6 @@ class PlayMatch
 
   def start_set_game
     match.play_match! :start_set
-    match.play_match! :start_game
   end
 
   private
@@ -109,11 +108,11 @@ class PlayMatch
   end
 
   def play_game(winner)
-    if match.play_match? :start_game
+    if match.play_match?(:start_game) || match.play_match?(:win_game)
       play_normal_game winner
     elsif match.play_match? :win_match_tiebreaker
       match.play_match! :win_match_tiebreaker, opponent: winner
-    elsif match.play_match? :start_tiebreaker
+    elsif match.play_match?(:start_tiebreaker) || match.play_match?(:win_tiebreaker)
       play_tiebreaker winner
     else
       invalid_game
@@ -121,24 +120,28 @@ class PlayMatch
   end
 
   def play_tiebreaker(winner)
-    match.play_match! :start_tiebreaker
+    if match.play_match? :start_tiebreaker
+      match.play_match! :start_tiebreaker
+    end
     match.play_match! :win_tiebreaker, opponent: winner
   end
 
   def play_normal_game(winner)
-    param = nil
-    if match.doubles
-      if match.first_player_server.nil?
-        param = match.first_team.first_player
-      elsif match.second_player_server.nil?
-        param = match.second_team.first_player
+    if match.play_match? :start_game
+      param = nil
+      if match.doubles
+        if match.first_player_server.nil?
+          param = match.first_team.first_player
+        elsif match.second_player_server.nil?
+          param = match.second_team.first_player
+        end
+      else
+        if match.first_player_server.nil?
+          param = match.first_player
+        end
       end
-    else
-      if match.first_player_server.nil?
-        param = match.first_player
-      end
+      match.play_match! :start_game, player: param
     end
-    match.play_match! :start_game, player: param
     match.play_match! :win_game, opponent: winner
   end
 

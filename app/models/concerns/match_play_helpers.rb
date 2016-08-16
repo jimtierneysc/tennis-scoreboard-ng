@@ -58,7 +58,10 @@ module MatchPlayHelpers
         raise Exceptions::InvalidOperation,
               "Can\'t start set #{match.match_sets.count}"
       end
-      update_start_set!
+      set = create_new_set
+      set.save!
+      game = start_next_helper.start_game
+      game.save!
     end
 
     # Start a new game.  A game will be added to the current set.
@@ -264,10 +267,10 @@ module MatchPlayHelpers
       match.save!
     end
 
-    def update_start_set!
-      set = create_new_set
-      set.save!
-    end
+    # def update_start_set!
+    #   set = create_new_set
+    #   set.save!
+    # end
 
     def update_start_play!
       match.started = true
@@ -406,7 +409,7 @@ module MatchPlayHelpers
       def remove_match_complete
         match.team_winner = nil
         save_list << match
-          remove_last_set_complete match.last_set
+        remove_last_set_complete match.last_set
       end
 
       def remove_last_set_change(last_set_var)
@@ -445,7 +448,12 @@ module MatchPlayHelpers
           save_list << last_game_var
         else
           # Undo start game
-          last = last_set_var.tiebreaker? ? last_set_var : last_game_var
+          # Discard set if first game in set but not first game in match
+          last = if last_set_var.ordinal > 1 && last_set_var.set_games.count == 1
+                   last_set_var
+                 else
+                   last_game_var
+                 end
           destroy_list << last
           save_list << match if undo_first_servers(last_set_var)
         end
