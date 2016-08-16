@@ -13,11 +13,9 @@
 
       scope = $rootScope.$new();
       scope.aset = {};
-      scope.aview = {};
 
       var html = ('<fe-score-table-set-title ' +
       'set="aset" ' +
-      'view="aview" ' +
       '></fe-score-table-set-title>');
 
       element = angular.element(html);
@@ -31,10 +29,6 @@
 
       it('should have .set', function () {
         expect(isolatedScope.set).toBe(scope.aset);
-      });
-
-      it('should have .view', function () {
-        expect(isolatedScope.view).toBe(scope.aview);
       });
 
       // TODO: Test elements

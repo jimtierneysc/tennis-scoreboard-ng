@@ -13,10 +13,11 @@
 
       scope = $rootScope.$new();
       scope.ascores = {};
-      scope.aserver = 1;
+      scope.aview = {};
 
       var html = ('<fe-score-table-select-server ' +
       'scores="ascores" ' +
+      'view="aview" ' +
       '></fe-score-table-select-server>');
 
       element = angular.element(html);
@@ -30,6 +31,10 @@
 
       it('should have .scores', function () {
         expect(isolatedScope.scores).toBe(scope.ascores);
+      });
+
+      it('should have .view', function () {
+        expect(isolatedScope.view).toBe(scope.aview);
       });
 
       // TODO: Test elements

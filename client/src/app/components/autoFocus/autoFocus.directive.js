@@ -39,7 +39,8 @@
 
         function setFocus() {
           if (angular.isDefined(scope.autoFocused)) {
-            scope.autoFocused = element[0].name; // for testing
+            // Indicate that focus was set
+            scope.autoFocused = element[0].name; 
           }
           element[0].focus();
         }
@@ -48,33 +49,3 @@
   }
 })();
 
-/**
- * @ngdoc factory
- * @name autoFocus
- * @description
- * Use with feAutoFocus directive to set focus after linking
- **/
-
-(function () {
-  'use strict';
-
-  angular
-    .module('frontendComponents')
-    .factory('autoFocus', factory);
-
-  /** @ngInject */
-  function factory($timeout, $rootScope) {
-    return focus;
-
-    function focus(scope, name) {
-      var timer = $timeout(function () {
-        $rootScope.$broadcast('fe-autoFocus', name);
-      }, 100);
-      scope.$on('$destroy', function () {
-          $timeout.cancel(timer);
-        }
-      );
-
-    }
-  }
-})();

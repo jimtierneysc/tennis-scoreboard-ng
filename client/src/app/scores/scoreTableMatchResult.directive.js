@@ -19,8 +19,7 @@
       restrict: 'E',
       templateUrl: 'app/scores/scoreTableMatchResult.html',
       scope: {
-        winner: '=',
-        count: '=',
+        leftmost: '=',
         view: '=',
         scores: '='
       }

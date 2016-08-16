@@ -1,6 +1,10 @@
-<span ng-if="!view.animatingScores || !view.changingSetResult(set)"
-      class="score-animate">
-   <span ng-class="{'winner-text': winner }">
-          {{count}}
-         </span>
+
+<span ng-init="index = (leftmost) ? 0 : 1" ng-if="!(set.hiddenResult && leftmost == set.hiddenLeftmost)"
+      ng-class="{'score-animate': set.showingResult}">
+
+  <span ng-class="{'winner-text': set.winner === scores.opponents[index] }">
+          {{set.scores[index]}}
+  </span>
+
 </span>
+

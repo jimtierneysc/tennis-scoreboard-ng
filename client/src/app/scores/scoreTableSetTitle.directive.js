@@ -19,7 +19,6 @@
       restrict: 'E',
       templateUrl: 'app/scores/scoreTableSetTitle.html',
       scope: {
-        view: '=',
         set: '='
       }
     };

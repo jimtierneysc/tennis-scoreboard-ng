@@ -1,14 +1,15 @@
 <span ng-if="scores.doubles">
-    <span ng-init="team = (winner == scores.first_team.id) ? scores.first_team : scores.second_team">
-      <span>
-        {{team.first_player.name}} and {{team.second_player.name}}
-      </span>
-    </span>
+  <fe-match-opponent-team
+    team="(scores.first_team.id) ? scores.first_team : scores.second_team"
+    period="period"
+    display-players="true"
+  ></fe-match-opponent-team>
 </span>
 <span ng-if="!scores.doubles">
-    <span ng-init="player = (winner == scores.first_player.id) ? scores.first_player : scores.second_player">
-        {{player.name}}
-     </span>
+  <fe-match-opponent-player
+    player="(scores.first_player.id) ? scores.first_player : scores.second_player"
+    period="period"
+  ></fe-match-opponent-player>
 </span>
 
 

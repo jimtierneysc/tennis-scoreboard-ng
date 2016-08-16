@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feMatchDetails directive', function () {
+  describe('feMatchState directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -14,9 +14,9 @@
       scope = $rootScope.$new();
       scope.amatch = {};
 
-      var html = ('<fe-match-details ' +
+      var html = ('<fe-match-state ' +
       'match="amatch" ' +
-      '></fe-match-details>');
+      '></fe-match-state>');
 
       element = angular.element(html);
 
@@ -25,13 +25,14 @@
       isolatedScope = compiledDirective.isolateScope();
     }));
 
+
     describe('isolated scope', function () {
 
       it('should have .match', function () {
         expect(isolatedScope.match).toBe(scope.amatch);
       });
 
-      // TODO: Test elements
+      // TODO: Test HTML elements
 
     });
   });

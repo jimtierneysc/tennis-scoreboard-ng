@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name feMatchStatus
+ * @name feMatchOpponentPlayer
  * @description
- * Display status of a match
+ * Display a player opponent in a match
  *
  */
 
@@ -11,18 +11,20 @@
 
   angular
     .module('frontendMatches')
-    .directive('feMatchStatus', directiveFunc);
+    .directive('feMatchOpponentPlayer', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/matches/matchStatus.html',
+      templateUrl: 'app/matches/matchOpponentPlayer.html',
       scope: {
-        match: '='
+        player: '=',
+        period: '@'
       }
     };
 
     return directive;
   }
+
 })();

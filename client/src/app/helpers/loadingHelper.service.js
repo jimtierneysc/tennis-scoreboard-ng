@@ -21,12 +21,12 @@
       vm.loading = true;
       vm.loadingFailed = false;
       vm.loadingError = null;
-      vm.updateLoadingCompleted =  function () {
+      vm.loadingHasCompleted =  function () {
         vm.loading = false;
         vm.loadingFailed = false;
         vm.loadingError = null;
       };
-      vm.updateLoadingFailed = function (response) {
+      vm.loadingHasFailed = function (response) {
         vm.loading = false;
         vm.loadingFailed = true;
         vm.loadingError = {

@@ -17,6 +17,7 @@
       var html = ('<fe-score-progress-winner ' +
       'scores="ascores" ' +
       'winner="ascores.winner" ' +
+      'period="true" ' +
       '></fe-score-progress-winner>');
 
       element = angular.element(html);
@@ -35,6 +36,10 @@
 
       it('should have .winner', function () {
         expect(isolatedScope.winner).toBe(scope.ascores.winner);
+      });
+
+      it('should have .period', function () {
+        expect(isolatedScope.period).toBeTruthy();
       });
 
       // TODO: Test HTML elements

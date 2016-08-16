@@ -12,14 +12,12 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.ashow = true;
       scope.adelete = jasmine.createSpy('onCancel');
       scope.aentity = {name: 'xxx'}
 
       var html = ('<fe-delete-entity-button ' +
       'entity="aentity" ' +
       'delete-entity="adelete()" ' +
-      'show="ashow" '  +
       '></fe-delete-entity-button>');
 
       element = angular.element(html);
@@ -34,10 +32,6 @@
       it('should have .deleteEntity()', function () {
         isolatedScope.deleteEntity();
         expect(scope.adelete).toHaveBeenCalled();
-      });
-
-      it('should have .show', function () {
-        expect(isolatedScope.show).toBe(scope.ashow);
       });
 
       it('should have .entity', function () {

@@ -26,7 +26,7 @@
   }
 
   /** @ngInject */
-  function Controller(waitIndicator, $scope, $timeout) {
+  function Controller(waitIndicator, $scope, $timeout, waitInterval) {
     var vm = this;
     vm.waiting = false;
 
@@ -38,19 +38,17 @@
 
     function changed() {
       if (waitIndicator.waiting()) {
+        // Wait before showing indicator
         var timer = $timeout(function () {
-            // Wait a second before showing wait indicator
             vm.waiting = waitIndicator.waiting();
           },
-          1000);
+          waitInterval);
         $scope.$on('$destroy', function() {
-          $timeout.cancel(timer);}
-        );
+          $timeout.cancel(timer);
+        });
       }
       else
         vm.waiting = false;
     }
   }
-
-
 })();

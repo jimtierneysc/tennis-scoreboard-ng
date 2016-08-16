@@ -58,17 +58,12 @@
           password: vm.entity.password
         }
       };
-      var endWait = waitIndicator.beginWait();
       sessionResource.getSession().login(body,
         function (response) {
-          endWait();
-          
           userCredentials.setCredentials(response.username, response.auth_token);
         },
         function (response) {
           $log.error('auth error ' + response.status + " " + response.statusText);
-          endWait();
-          
           vm.errors = vm.errorsOfResponse(response);
         }
       );

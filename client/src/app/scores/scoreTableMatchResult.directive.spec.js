@@ -12,14 +12,12 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.awinner = true;
-      scope.acount = 5;
+      scope.aleftmost = true;
       scope.ascores = {};
       scope.aview = {};
 
       var html = ('<fe-score-table-match-result ' +
-      'winner="awinner" ' +
-      'count="acount" ' +
+      'leftmost="aleftmost" ' +
       'scores="ascores" ' +
       'view="aview" ' +
       '></fe-score-table-match-result>');
@@ -33,8 +31,8 @@
 
     describe('isolated scope', function () {
 
-      it('should have .winner', function () {
-        expect(isolatedScope.winner).toBe(scope.awinner);
+      it('should have .leftmost', function () {
+        expect(isolatedScope.leftmost).toBe(scope.aleftmost);
       });
 
       it('should have .view', function () {
@@ -43,10 +41,6 @@
 
       it('should have .scores', function () {
         expect(isolatedScope.scores).toBe(scope.ascores);
-      });
-
-      it('should have .count', function () {
-        expect(isolatedScope.count).toBe(scope.acount);
       });
 
       // TODO: Test elements

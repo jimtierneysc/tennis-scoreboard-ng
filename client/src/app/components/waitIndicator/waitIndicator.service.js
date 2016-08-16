@@ -5,12 +5,13 @@
  * Service to manage state of a wait indicator
  */
 
-(function() {
+(function () {
   'use strict';
 
   angular
     .module('frontendComponents')
     .service('waitIndicator', Service);
+
 
   /** @ngInject */
   function Service($log, $rootScope) {
@@ -46,6 +47,7 @@
     }
 
     var EVENT_NAME = 'wait-indicator:change';
+
     function subscribeChanged(scope, callback) {
       var handler = $rootScope.$on(EVENT_NAME, callback);
       scope.$on('$destroy', handler);
@@ -54,6 +56,5 @@
     function changed() {
       $rootScope.$emit(EVENT_NAME);
     }
-
   }
 })();

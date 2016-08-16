@@ -16,6 +16,8 @@
 
       var html = ('<fe-match_opponent-team ' +
       'team="ateam" ' +
+      'display-players="true" ' +
+      'period="true" ' +
       '></fe-match_opponent-team>');
 
       element = angular.element(html);
@@ -29,6 +31,14 @@
 
       it('should have .team', function () {
         expect(isolatedScope.team).toBe(scope.ateam);
+      });
+
+      it('should have .displayPlayers', function () {
+        expect(isolatedScope.displayPlayers).toBeTruthy();
+      });
+
+      it('should have .period', function () {
+        expect(isolatedScope.period).toBeTruthy();
       });
 
       // TODO: Test HTML elements

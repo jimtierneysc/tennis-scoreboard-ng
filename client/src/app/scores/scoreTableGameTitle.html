@@ -1,7 +1,7 @@
-<span ng-if="!view.animatingScores  || !view.changingGameTitle(game)" class="score-animate">
+<span ng-if="!game.hiddenTitle" ng-class="{'score-animate': game.showingTitle}">
 <span class="hidden-xs" ng-if="game.verboseTitle">
 Game
 </span>
 {{game.title}}
-  </span>
+</span>
 

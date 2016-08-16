@@ -19,7 +19,8 @@
       restrict: 'E',
       templateUrl: 'app/scores/scoreTableSelectServer.html',
       scope: {
-        scores: '='
+        scores: '=',
+        view: '='
       }
     };
 

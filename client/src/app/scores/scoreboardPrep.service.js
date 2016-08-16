@@ -13,16 +13,25 @@
     .module('frontendScores')
     .factory('scoreboardPrep', factory);
 
-  function factory() {
-    return function (sb) {
-      prep(sb);
-      return sb;
+  /** @ngInject */
+  function factory($timeout) {
+
+    return {
+      prepare: function (sb) {
+        prep(sb, $timeout);
+        return sb;
+      },
+      hideAndShowData: function(sb, action, param) {
+        return new HideAndShowData(sb, action, param, $timeout);
+      }
     }
   }
 
+  // Add various properties to the scoreboard object in order to make it easier to write client
+  // code and markup to display and alter the score.
 
-  /** @ngInject */
   function prep(sb) {
+
     var tieBreakTitle = 'Tiebreak';
     var setsTitles = [
       '1st',
@@ -41,15 +50,18 @@
     var setsAndGames = collectSetAndGames();
 
     // Add various properties
+    sb.matchFlags = {};
     sb.opponents = opponents();
     sb.server = server();
     insertScores(sb.opponents);
     insertFirsts();
     insertTitles();
+    sb.startingSetOrMatch = context.startingSetOrMatch;
     sb.currentGame = currentGame();
     sb.previousGame = previousGame();
     sb.currentSet = currentSet();
     sb.previousSet = previousSet();
+    sb.lastSetWithWin = setsAndGames.lastSetWithWin;
     sb.firstServers = null;
     if (sb.currentGame && sb.currentGame.newGame) {
       var list = listFirstServers();
@@ -73,22 +85,22 @@
 
       // Create newSet object if a set is starting
       function newSet() {
-        newSet = {
+        var result = {
           newSet: true,
           games: []
         };
         if (context.inNewMatchTiebreaker)
-          newSet.tiebreaker = true;
-        return newSet;
+          result.tiebreaker = true;
+        return result;
       }
 
       // Create newGame object  if a game is starting
       function newGame() {
-        newGame = {newGame: true};
+        var result = {newGame: true};
         if (context.inTiebreaker)
-          newGame.tiebreaker = true;
+          result.tiebreaker = true;
 
-        return newGame;
+        return result;
       }
     }
 
@@ -118,48 +130,45 @@
     function collectSetAndGames() {
       var result = {
         lastGame: null,
-        prevGame: null,
-        lastTiebreaker: null,
         lastGameOrTiebreaker: null,
+        prevGameOrTiebreaker: null,
         lastSet: null,
         prevSet: null,
         lastGames: [],
-        lastTiebreakers: []
+        lastSetWithWin: null
       };
 
-      var lastGame;
-      var prevGame;
-      var lastTiebreaker;
+      var lastGame = null;
+      var lastGameInSet;
+      var winner;
 
       enumerateSetsAndGames(
         function (set) {
           result.prevSet = result.lastSet;
           result.lastSet = set;
-          lastGame = null;
-          lastTiebreaker = null;
-          prevGame = null;
+          lastGameInSet = null;
+          winner = false;
         },
         function (game) {
           if (!game.tiebreaker) {
-            prevGame = lastGame;
             lastGame = game;
-          } else {
-            lastTiebreaker = game;
+            lastGameInSet = game;
           }
+          result.prevGameOrTiebreaker = result.lastGameOrTiebreaker;
+          result.lastGameOrTiebreaker = game;
+          winner = winner || game.winner;
         },
         function (set) {
           result.lastGame = lastGame;
-          result.prevGame = prevGame;
-          result.lastTiebreaker = lastTiebreaker;
-          result.lastTiebreakers.push(lastTiebreaker);
-          result.lastGameOrTiebreaker = lastGame || lastTiebreaker;
-          result.lastGames.push(lastGame);
+          result.lastGames.push(lastGameInSet);
+          if (winner)
+            result.lastSetWithWin = set;
+
         }
       );
 
       return result;
     }
-
 
     // Call functions for each game and set
     function enumerateSetsAndGames(onSet, onGame, onAfterGames) {
@@ -251,7 +260,7 @@
       var firstOfMatch = true;
       var firstOfSet;
       enumerateSetsAndGames(
-        function (_set_, ordinal) {
+        function () {
           firstOfSet = true;
         },
         function (game) {
@@ -262,31 +271,6 @@
         }
       );
     }
-
-    function insertChangeState(lastAction, lastActionParams) {
-
-//       var winAction = lastAction && lastAction.startsWith('win_');
-//       var startPlayAction = lastAction == 'start_play';
-//       var startSetAction = lastAction == 'start_set';
-
-//       var lastGame = setsAndGames.lastGame;
-//       if (!lastGame)
-//         lastGame = setsAndGames.lastTiebreaker;
-//       var lastSet = setsAndGames.lastSet;
-
-//       if (winAction) {
-//         lastGame.updateScore = true;
-//         lastSet.updateScore = true;
-//         if (lastSet.state == 'complete') {
-//           sb.updateMatchScore = true;
-//         }
-//       }
-//       if (startPlayAction)
-//         lastSet.newSet = true;
-//       if (startSetAction)
-//         lastSet.newResult = true;
-    }
-
 
     function actionContext() {
       var result = {};
@@ -306,6 +290,8 @@
           result.inNewSet = true;
         if (sb.actions.start_match_tiebreaker)
           result.inNewMatchTiebreaker = true;
+        if (sb.actions.start_play || sb.actions.start_set || sb.actions.start_match_tiebreaker)
+          result.startingSetOrMatch = true;
       }
       return result;
     }
@@ -317,7 +303,7 @@
 
     function previousGame() {
       if (context.playingGame || context.startingGame)
-        return setsAndGames.prevGame;
+        return setsAndGames.prevGameOrTiebreaker;
       else
         return setsAndGames.lastGameOrTiebreaker;
     }
@@ -378,6 +364,168 @@
         }
       }
     }
+  }
+
+  // Set flags in scoreboard to enable animation of the scoreboard before and
+  // after an action.
+  function HideAndShowData(_sb_, _action_, _param_, _$timeout_) {
+
+    var sb = _sb_;
+    var action = _action_;
+    var param = _param_;
+    var $timeout = _$timeout_;
+
+    this.hideOldData = hideOldData;
+    this.hideNewData = hideNewData;
+    this.stopHideAndShow = stopHideAndShow;
+    this.showNewData = showNewData;
+
+
+    function hideOldData() {
+      var changeState = new ChangeState({oldData: true});
+
+      sb.matchFlags.showingProgress = true;
+      if (changeState.winningGame && !changeState.winningSet)
+        sb.currentGame.showingTitle = true;
+
+      if (changeState.winningGame)
+        sb.currentSet.showingResult = true;
+
+      if (changeState.winningSet)
+        sb.matchFlags.showingResult = true;
+
+      // Apply ng-class of elements before hide elements
+      $timeout(function () {
+        eachDataItem(
+          function (item) {
+            item.hiddenLeftmost = changeState.leftmost;
+            setHidden(item, true);
+          });
+      });
+
+    }
+
+    function hideNewData() {
+
+      var changeState = new ChangeState({oldData: false})
+
+      sb.matchFlags.showingProgress = true;
+
+      if (changeState.winningGame && !changeState.winningSet) {
+        sb.currentGame.showingTitle = true;
+        sb.currentSet.showingResult = true;
+      }
+
+      if (changeState.winningSet) {
+        sb.matchFlags.showingResult = true;
+        sb.previousSet.showingResult = true;
+      }
+
+      // Hide game that just got a winner
+      if (changeState.winningGame) {
+        if (sb.currentGame && sb.currentGame.newGame && sb.previousGame) {
+          sb.currentGame.showingTitle = true;
+          sb.previousGame.showing = true;
+        }
+      }
+
+      // Hide a newly created set and set's first game
+      if (changeState.startingSet || changeState.startingMatch) {
+        if (sb.currentGame && !sb.currentGame.winner && sb.currentSet.games.length == 1) {
+          sb.currentGame.showing = true;
+          sb.currentSet.showing = true;
+        }
+      }
+
+      eachDataItem(
+        function (item) {
+          item.hiddenLeftmost = changeState.leftmost;
+          setHidden(item, true);
+        });
+    }
+
+    function showNewData() {
+      eachDataItem(
+        function (item) {
+          setHidden(item, false);
+        });
+    }
+
+    function stopHideAndShow() {
+      eachDataItem(
+        function (item) {
+          setHidden(item, false);
+          clearShowing(item);
+        });
+    }
+
+    function ChangeState(data) {
+      this.winningGame = winningGame(action);
+      this.winningSet = data.oldData ? predictWinningSet() : winningSet();
+      this.winningMatch = data.oldData ? predictWinningMatch() : winningMatch();
+      this.startingSet = startingSet(action);
+      this.startingMatch = action == 'start_play';
+      this.leftmost = winningGame(action) ? param == 0 : undefined;
+
+      function predictWinningSet() {
+        var nearWinners = sb.near_winners.set;
+        var opponent = sb.opponents[param];
+        return winningGame() && nearWinners.indexOf(opponent) >= 0;
+      }
+
+      function predictWinningMatch() {
+        var nearWinners = sb.near_winners.match;
+        var opponent = sb.opponents[param];
+        return winningGame() && nearWinners.indexOf(opponent) >= 0
+      }
+
+      function winningSet() {
+        // if match is finished then must have won a set.
+        // Otherwise, if there is a new set then the previous set was won
+        return winningGame() && (sb.winner ||
+          (sb.currentSet && sb.currentSet.newSet && sb.previousSet));
+      }
+
+      function winningMatch() {
+        return winningGame() && sb.winner;
+      }
+
+      function winningGame() {
+        return action.startsWith('win');
+      }
+
+      function startingSet() {
+        return ['start_set', 'start_match_tiebreaker', 'start_match'].indexOf(action) >= 0;
+      }
+    }
+
+    function setHidden(item, value) {
+      if (item.showingResult)
+        item.hiddenResult = value;
+      if (item.showingProgress)
+        item.hiddenProgress = value;
+      if (item.showingTitle)
+        item.hiddenTitle = value;
+      if (item.showing)
+        item.hidden = value;
+    }
+
+    function clearShowing(item) {
+      item.showingResult = false;
+      item.showingProgress = false;
+      item.showingTitle = false;
+      item.showing = false;
+    }
+
+    function eachDataItem(fn) {
+      var items = [sb.previousGame, sb.currentGame, sb.currentSet, sb.previousSet, sb.matchFlags];
+      angular.forEach(items,
+        function (item) {
+          if (item)
+            fn(item)
+        });
+    }
+
   }
 
 })();

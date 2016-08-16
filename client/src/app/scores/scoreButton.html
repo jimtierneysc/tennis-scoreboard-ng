@@ -1,38 +1,39 @@
-<!--actions: {{scores.actions}}-->
-<div ng-if="!view.animatingButtons" class="score-button-animate">
-<!--Buttons to update match score-->
-<div ng-if="scores.actions.win_game">
-  <button  xng-disabled="view.updating" class="btn btn-primary match-btn glyphicon glyphicon-ok" ng-click="scores.update('win_game', param)">
+<div ng-if="scores.actions.win_game && !scores.currentGame.hiddenWinButton"
+     ng-class="{'score-animate': scores.currentGame.showingWinButton}">
+  <button   class="btn btn-primary  glyphicon glyphicon-ok" ng-click="view.updateScore('win_game', param)">
   </button>
 </div>
-<div ng-if="scores.actions.win_tiebreaker">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn glyphicon glyphicon-ok" ng-click="scores.update('win_tiebreaker', param)">
+<div ng-if="scores.actions.win_tiebreaker && !scores.currentGame.hiddenWinButton"
+ ng-class="{'score-animate': scores.currentGame.showingWinButton}">
+  <button   class="btn btn-primary  glyphicon glyphicon-ok" ng-click="view.updateScore('win_tiebreaker', param)">
   </button>
 </div>
-<div ng-if="scores.actions.win_match_tiebreaker">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn glyphicon glyphicon-ok" ng-click="scores.update('win_match_tiebreaker', param)">
+<div ng-if="scores.actions.win_match_tiebreaker && !scores.currentGame.hiddenWinButton"
+  ng-class="{'score-animate': scores.currentGame.showingWinButton}">
+  <button   class="btn btn-primary  glyphicon glyphicon-ok" ng-click="view.updateScore('win_match_tiebreaker', param)">
   </button>
 </div>
-<div ng-if="scores.actions.start_set">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_set')">Start {{scores.currentSet.title}} Set
+<div ng-if="scores.actions.start_set  && !scores.currentSet.hiddenStartSetButton"
+     ng-class="{'score-animate': scores.currentSet.showingStartSetButton}">
+  <button   class="btn btn-primary " ng-click="view.updateScore('start_set')">Start {{scores.currentSet.title}} Set
   </button>
 </div>
-<div ng-if="scores.actions.start_game">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_game', param)">Start Game {{scores.currentGame.title}}
+<div ng-if="scores.actions.start_game  && !scores.currentGame.hiddenStartGameButton"
+     ng-class="{'score-animate': scores.currentGame.showingGameSetButton}">
+  <button   class="btn btn-primary " ng-click="view.updateScore('start_game', param)">Start Game {{scores.currentGame.title}}
   </button>
 </div>
-<div ng-if="scores.actions.start_tiebreaker">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_tiebreaker')">Start Tiebreak
+<div ng-if="scores.actions.start_tiebreaker  && !scores.currentGame.hiddenStartGameButton"
+     ng-class="{'score-animate': scores.currentGame.showingStartGameSetButton}">
+  <button   class="btn btn-primary " ng-click="view.updateScore('start_tiebreaker')">Start Tiebreak
   </button>
 </div>
-<div ng-if="scores.actions.start_match_tiebreaker">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_match_tiebreaker')">Start Tiebreak Set
+<div ng-if="scores.actions.start_match_tiebreaker  && !scores.currentSet.hiddenStartSetButton"
+     ng-class="{'score-animate': scores.currentSet.showingStartSetButton}">
+  <button   class="btn btn-primary " ng-click="view.updateScore('start_match_tiebreaker')">Start Tiebreak
   </button>
 </div>
-<div ng-if="scores.state == 'complete' && scores.actions.restart_play">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn" ng-click="scores.update('restart_play')">Start Over</button>
+<div ng-if="scores.actions.start_play  && !scores.matchFlags.hiddenStartPlayButton"
+     ng-class="{'score-animate': scores.matchFlags.showingStartPlayButton}">
+  <button   class="btn btn-primary " ng-click="view.updateScore('start_play')">Start Match</button>
 </div>
-<div ng-if="scores.actions.start_play">
-  <button xng-disabled="view.updating"  class="btn btn-primary match-btn" ng-click="scores.update('start_play')">Start Playing</button>
-</div>
-  </div>

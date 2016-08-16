@@ -87,17 +87,7 @@
           });
           spyOn(waitIndicator, 'beginWait').and.callThrough();
         });
-
-        function expectWaitIndicator() {
-          it('should call .beginWait()', function () {
-            expect(waitIndicator.beginWait).toHaveBeenCalled();
-          });
-
-          it('should not be .waiting when finished', function () {
-            expect(waitIndicator.waiting()).toBeFalsy();
-          });
-        }
-
+        
         beforeEach(function () {
           // username and password needed to make valid
           vm.entity.username = 'loginForm someuser';
@@ -144,7 +134,6 @@
             expect(userCredentials.loggedIn).toBeTruthy();
           });
 
-          expectWaitIndicator();
         });
 
         describe('has password error', function () {
@@ -173,7 +162,6 @@
             expect(vm.errors).toEqual(expected);
           });
 
-          expectWaitIndicator();
         });
       });
     })

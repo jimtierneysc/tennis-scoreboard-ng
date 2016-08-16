@@ -18,10 +18,9 @@
         ></fe-empty-list-message>
       </div>
 
-      <div class="play-table clearfix" ng-if="vm.matches.length > 0">
+      <div class="score-panel clearfix" ng-if="vm.matches.length > 0">
 
-        <div class="row">
-          <div class="col-xs-10">
+          <div class="pull-left score-select-list">
             <label for="team" class="control-label sr-only">Team</label>
             <ui-select autofocus ng-model="vm.selectedMatch"
                        theme="bootstrap" id="team" name="team"
@@ -35,7 +34,7 @@
           </div>
 
 
-          <div class="col-xs-2">
+          <div  class="pull-right">
             <div ng-if="vmScoreboard">
               <!--Drop down menu -->
               <fe-score-commands
@@ -43,12 +42,13 @@
                 logged-in="vm.loggedIn"
               ></fe-score-commands>
             </div>
-          </div>
         </div>
       </div>
 
-      <br>
-      <div ui-view></div>
+      <!--Spacing-->
+      <div class="score-panel-spacing"></div>
+
+      <div ui-view class="view-animate"></div>
     </div>
   </div>
 </div>

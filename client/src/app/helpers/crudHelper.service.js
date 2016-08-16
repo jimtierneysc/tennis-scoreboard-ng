@@ -55,9 +55,9 @@
       editInProgress.registerOnClose(scope, operations.closeEditors);
 
       if (angular.isArray(response))
-        operations.entityLoaded(response);
+        operations.entityLoadingHasCompleted(response);
       else
-        operations.entityLoadFailed(response);
+        operations.entityLoadHasFailed(response);
     }
 
     function Operations(_vm_, controllerOptions) {
@@ -185,14 +185,14 @@
         return vm.editEntity && (vm.editEntity.id == entity.id);
       };
 
-      this.entityLoaded = function (response) {
+      this.entityLoadingHasCompleted = function (response) {
         vm.entitys = response;
-        vm.updateLoadingCompleted();
+        vm.loadingHasCompleted();
       };
 
-      this.entityLoadFailed = function (response) {
+      this.entityLoadHasFailed = function (response) {
         $log.error('data error ' + response.status + " " + response.statusText);
-        vm.updateLoadingFailed(response);
+        vm.loadingHasFailed(response);
       };
 
       //
@@ -218,17 +218,14 @@
 
       function createEntity(entity) {
         var body = makeEntityBody(entity);
-        var endWait = vm.beginWait();
         getResource().save(body,
           function (response) {
-            endWait();
             var newEntity = angular.copy(entity);
             angular.merge(newEntity, response);
             entityCreated(newEntity);
           },
           function (response) {
             $log.error('create error ' + response.status + " " + response.statusText);
-            endWait();
             entityCreateError(entity, response);
           }
         );
@@ -238,17 +235,14 @@
         var id = entity.id;
         var key = {id: id};
         var body = makeEntityBody(entity);
-        var endWait = vm.beginWait();
         getResource().update(key, body,
           function (response) {
-            endWait();
             var updatedEntity = angular.copy(entity);
             angular.merge(updatedEntity, response);
             entityUpdated(updatedEntity);
           },
           function (response) {
             $log.error('update error ' + response.status + " " + response.statusText);
-            endWait();
             entityUpdateError(entity, response);
           }
         );
@@ -257,15 +251,12 @@
       function removeEntity(entity) {
         var id = entity.id;
         var key = {id: id};
-        var endWait = vm.beginWait();
         getResource().remove(key,
           function () {
-            endWait();
             entityRemoved(entity);
           },
           function (response) {
             $log.error('remove entity error ' + response.status + " " + response.statusText);
-            endWait();
             entityRemoveError(entity, response);
           }
         );

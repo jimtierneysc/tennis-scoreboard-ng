@@ -19,11 +19,15 @@
 
 <div ng-if="!match.doubles">
   <!--Singles-->
-    <strong>{{match.first_player.name}}</strong>
+  <fe-match-opponent-player
+    player="match.first_player"
+  ></fe-match-opponent-player>
 
     <span>
       &nbsp;vs.&nbsp;
     </span>
 
-    <strong>{{match.second_player.name}}</strong>
+  <fe-match-opponent-player
+    player="match.second_player"
+  ></fe-match-opponent-player>
 </div>

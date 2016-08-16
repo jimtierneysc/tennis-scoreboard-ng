@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name feMatchDetails
+ * @name feMatchState
  * @description
- * Displays information about the match
+ * Displays whether match is in progress, complete or not started
  *
  */
 
@@ -12,13 +12,13 @@
 
   angular
     .module('frontendMatches')
-    .directive('feMatchDetails', directive);
+    .directive('feMatchState', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/matches/matchDetails.html',
+      templateUrl: 'app/matches/matchState.html',
       scope: {
         match: '='
       }

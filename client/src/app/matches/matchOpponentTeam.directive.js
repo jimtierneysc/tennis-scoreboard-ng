@@ -19,7 +19,9 @@
       restrict: 'E',
       templateUrl: 'app/matches/matchOpponentTeam.html',
       scope: {
-        team: '='
+        team: '=',
+        displayPlayers: '=',
+        period: '@'
       }
     };
 

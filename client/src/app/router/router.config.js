@@ -154,15 +154,12 @@
       function makeResourcePromise($q, $log, waitIndicator, crudResource, resourceName) {
         var resource = crudResource.getResource(resourceName);
         var deferred = $q.defer();
-        var endWait = waitIndicator.beginWait();
         resource.query(
           function (response) {
-            endWait();
             deferred.resolve(response);
           },
           function (response) {
             $log.error('data error ' + response.status + " " + response.statusText);
-            endWait();
             // Resolved even if error making http request
             deferred.resolve(response);
           }
@@ -179,15 +176,12 @@
       function makeResourcePromise($q, $log, waitIndicator, crudResource) {
         var resource = crudResource.getResource(resourceName);
         var deferred = $q.defer();
-        var endWait = waitIndicator.beginWait();
         resource.get({id: id},
           function (response) {
-            endWait();
             deferred.resolve(response);
           },
           function (response) {
             $log.error('data error ' + response.status + " " + response.statusText);
-            endWait();
             deferred.resolve(response);
           }
         );

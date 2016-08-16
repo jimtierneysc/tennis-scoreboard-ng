@@ -12,7 +12,7 @@
         compile = $compile;
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
-        // by defining autoFocus, we can tell if autoFocus directive executed
+        // initialize autoFocused flag
         scope.autoFocused = null;
         $timeout = _$timeout_;
       });

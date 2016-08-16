@@ -1,15 +1,15 @@
 (function () {
   'use strict';
 
-  describe('authInterceptor service', function () {
+  describe('authHttpInterceptor service', function () {
     var service;
     var $rootScope;
 
     beforeEach(module('frontendComponents'));
 
     beforeEach(function () {
-      inject(function (_authInterceptor_, _$rootScope_) {
-        service = _authInterceptor_;
+      inject(function (_authHttpInterceptor_, _$rootScope_) {
+        service = _authHttpInterceptor_;
         $rootScope = _$rootScope_;
       });
     });

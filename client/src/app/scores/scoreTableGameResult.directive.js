@@ -19,10 +19,10 @@
       restrict: 'E',
       templateUrl: 'app/scores/scoreTableGameResult.html',
       scope: {
-        winner: '=',
         leftmost: '=',
         view: '=',
-        game: '='
+        game: '=',
+        scores: '='
       }
     };
 

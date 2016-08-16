@@ -38,7 +38,7 @@
         var response;
         beforeEach(function () {
           response = {statusText: 'text', status: 500, data: 'message'};
-          vm.updateLoadingFailed(response);
+          vm.loadingHasFailed(response);
         });
 
         it('should have .loadingError', function () {
@@ -53,7 +53,7 @@
 
       describe('loading completed', function () {
         beforeEach(function () {
-          vm.updateLoadingCompleted();
+          vm.loadingHasCompleted();
         });
 
         it('should not have failed', function () {
@@ -100,8 +100,8 @@
         function compare(vm) {
           var helper = new MatcherHelper(vm);
 
-          helper.checkFunction('updateLoadingCompleted');
-          helper.checkFunction('updateLoadingFailed');
+          helper.checkFunction('loadingHasCompleted');
+          helper.checkFunction('loadingHasFailed');
           helper.checkBoolean('loading');
           helper.checkBoolean('loadingFailed');
           helper.checkObject('loadingError');

@@ -2,14 +2,11 @@
   'use strict';
 
   describe('feTeamsForm directive', function () {
-    var errors;
-    var entity;
     var compiledDirective;
     var scope;
     var okText;
     var isolatedScope;
     var element;
-    var players;
 
     beforeEach(module('frontendTeams'));
 

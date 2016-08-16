@@ -20,9 +20,7 @@
       templateUrl: 'app/scores/scoreTable.html',
       scope: {
         scores: '=',
-        view: '=',
-        updating: '=',
-        loggedIn: '='
+        view: '='
       }
     };
 

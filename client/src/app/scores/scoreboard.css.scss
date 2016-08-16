@@ -13,6 +13,7 @@ $col_3_min_width: 240px;
 
 $score_color: green;
 $side_margin: 60px;
+$menu_width: 20px;
 
 @mixin center-cell {
   text-align: center;
@@ -20,67 +21,78 @@ $side_margin: 60px;
 }
 
 // Default to maximum size
-.score-col-1 {
+th.score-col-1 {
   width: $col_1_width;
   @include center-cell;
 }
 
-.score-col-2 {
+th.score-col-2 {
   width: $col_2_width;
   @include center-cell;
 }
 
-.score-col-3 {
+th.score-col-3 {
   width: $col_3_width;
   @include center-cell;
 }
 
-table.play-table {
-  width: $table_width;
+div.score-panel table {
   table-layout: fixed;
 }
 
-div.play-table {
-  //border: 1px solid black;
+div.score-panel {
   width: $table_width;
 }
 
-.play-table td,
-.play-table th {
+div.score-panel .score-progress {
+  // container for button and two lines of text
   height: 3em;
+  overflow: hidden;
 }
 
-tr.game th,
-tr.game td {
-    // Allow button to fit in row
-    //padding-top: 2px !important;
-    //padding-bottom: 2px !important;
+div.score-panel-spacing {
+  height: 15px;
 
 }
 
-//tr.servers th {
-//  text-align: left;
-//}
-
-tr.servers .score-col-3 {
-  text-align: left;
+div.score-panel.details .panel-body {
+  padding: 8px 12px 0 12px;
 }
 
+div.score-panel.details {
+  margin-bottom: 0;
+}
+
+div.score-menu {
+  margin-top: .5em;
+  //width: 100px;
+}
+
+div.score-select-list {
+  width: -moz-calc(100% - 60px);
+  width: -webkit-calc(100% - 60px);
+  width: calc(100% - 60px);
+}
+
+th.score-col-3.contains-button,
+th.score-col-2.contains-button {
+  height: 3.2em;
+}
 
 // override with proportional sizing
 @media only screen and (max-width: $table_width + $side_margin) {
-  table.play-table, div.play-table {
+  table.score-panel, div.score-panel {
     width: 100%;
   }
-  .score-col-1 {
+  th.score-col-1 {
     width: 20%;
   }
 
-  .score-col-2 {
+  th.score-col-2 {
     width: 40%;
   }
 
-  .score-col-3 {
+  th.score-col-3 {
     width: 80%;
   }
 
@@ -88,31 +100,21 @@ tr.servers .score-col-3 {
 
 // override with minumum size
 @media only screen and (max-width: $table_min_width + $side_margin) {
-  div.play-table, table.play-table {
+  div.score-panel, table.score-panel {
     width: $table_min_width;
   }
-  .score-col-1 {
+  th.score-col-1 {
     width: $col_1_min_width;
   }
 
-  .score-col-2 {
+  th.score-col-2 {
     width: $col_2_min_width;
   }
 
-  .score-col-3 {
+  th.score-col-3 {
     width: $col_3_min_width;
   }
 
-}
-
-.match-btn {
-  //width: 100%;
-}
-
-.score-col-2 .match-btn,
-.score-col-3 .match-btn {
-  //padding-top: 2px !important;
-  //padding-bottom: 2px !important;
 }
 
 @mixin hide-overflow {
@@ -128,9 +130,9 @@ tr.servers .score-col-3 {
   padding-right: 0px;
 }
 
-.hide-overflow {
-  @include hide-overflow;
-}
+//.hide-overflow {
+//  @include hide-overflow;
+//}
 
 div.game-col-3 {
   @include hide-overflow-padding;
@@ -173,8 +175,8 @@ div.player-col-2 {
   filter: fliph; /*IE*/
 }
 
-// Draw text within green ellipse
-.winner-text {
+// Display set and match winner score in circle
+th.score-col-2 span.winner-text {
   display: inline-block;
   padding: 4px;
   line-height: 100%;
@@ -184,6 +186,12 @@ div.player-col-2 {
 
   background-color: green;
   color: white;
+}
+
+// Prevent circle from increasing height of row
+th.score-col-2.match,
+th.score-col-2.set {
+  padding: 0;
 }
 
 // Disable links in bootstrap drop down menu
@@ -199,3 +207,30 @@ div.player-col-2 {
   content: "\2122";
   color: transparent !important;
 }
+
+// Custom grid sizes
+
+.col-xs-2-4 {
+  @include make-xs-column(2.4)
+}
+
+.col-xs-9-6 {
+  @include make-xs-column(9.6)
+}
+
+.col-xs-2-7 {
+  @include make-xs-column(2.7)
+}
+
+.col-xs-6-6 {
+  @include make-xs-column(6.6)
+}
+
+.col-xs-4-8 {
+  @include make-xs-column(4.8)
+}
+
+.col-xs-7-2 {
+  @include make-xs-column(7.2)
+}
+

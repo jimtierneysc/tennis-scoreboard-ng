@@ -20,7 +20,6 @@
       templateUrl: 'app/view/editEntityButton.html',
       scope: {
         entity: '=',
-        show: '=',
         disable:'=',
         editEntity: '&'
       }

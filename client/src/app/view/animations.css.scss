@@ -1,118 +1,190 @@
-//Animate ng-if toggle of forms
+$slow: 1s;
+$normal: .5s;
+$fast: .25s;
+$fastest: .10s;
 
-@mixin ease-in {
-  transition: .5s ease-in-out all;
+@mixin ease_in_out($speed:$normal) {
+  transition: $speed ease-in-out all;
+  -webkit-transition: all $speed ease-in-out;
+  -moz-transition: all $speed ease-in-out;
+  -o-transition: all $speed ease-in-out;
 }
 
-@mixin ease-out {
-  transition: .5s ease-in-out all;
+@mixin ease_in_out_fast {
+  @include ease_in_out($fast);
 }
 
-@mixin ease-out-fast {
-  transition:0.2s ease-in-out all;
+@mixin ease_in_out_normal {
+  @include ease_in_out($normal);
+}
+
+@mixin ease_in_out_fastest {
+  @include ease_in_out($fastest);
+}
+
+@mixin ease_in_out_slow {
+  @include ease_in_out($slow);
+}
+
+//Animate show/hide of accesories like add, delete and edit buttons
+.accessory-animate-inout.ng-enter,
+.accessory-animate-inout.ng-leave {
+  @include ease_in_out_fast;
+}
+
+.accessory-animate-inout.ng-enter,
+.accessory-animate-inout.ng-leave-active {
+  opacity: 0;
+}
+
+.accessory-animate-inout.ng-enter-active,
+.accessory-animate-inout.ng-leave {
+  opacity: 1;
 }
 
 //Animate show/hide of edit and new forms
 .form-animate-in.ng-enter,
 .form-animate-inout.ng-enter {
-  @include ease_in;
+  @include ease_in_out_normal;
 }
 
 .form-animate-inout.ng-leave {
-  @include ease_out_fast;
+  @include ease_in_out_fast;
 }
 
 .form-animate-in.ng-enter,
 .form-animate-inout.ng-enter,
-.form-animate-inout.ng-leave.ng-leave-active {
-  opacity:0;
+.form-animate-inout.ng-leave-active {
+  opacity: 0;
 }
 
-.form-animate-in.ng-enter.ng-enter-active,
-.form-animate-inout.ng-enter.ng-enter-active,
+.form-animate-in.ng-enter-active,
+.form-animate-inout.ng-enter-active,
 .form-animate-inout.ng-leave {
-  opacity:1;
+  opacity: 1;
 }
 
 // Animate insert and delete of list item
 .item-animate-repeat.ng-enter {
-  @include ease_in;
+  @include ease_in_out_normal;
 }
 
 .item-animate-repeat.ng-leave {
-  @include ease_out;
+  @include ease_in_out_normal;
 }
 
 .item-animate-repeat.ng-enter,
-.item-animate-repeat.ng-leave.ng-leave-active {
-  opacity:0;
+.item-animate-repeat.ng-leave-active {
+  opacity: 0;
 }
 
-.item-animate-repeat.ng-enter.ng-enter-active,
+.item-animate-repeat.ng-enter-active,
 .item-animate-repeat.ng-leave {
-  opacity:1;
-}
-
-//Animate show/hide of scoreboard elements
-
-.xscore-animate.ng-enter {
-  @include ease_in;
-}
-
-.xscore-animate.ng-leave {
-  @include ease_out;
-}
-
-.xscore-animate.ng-enter,
-.xscore-animate.ng-leave.ng-leave-active {
-  opacity:0;
-}
-
-.xscore-animate.ng-enter.ng-enter-active,
-.xscore-animate.ng-leave {
-  opacity:1;
-}
-
-
-
-.xscore-button-animate.ng-enter {
-  @include ease_in;
-}
-
-.xscore-button-animate.ng-leave {
-  @include ease_out;
-}
-
-.xscore-button-animate.ng-enter,
-.xscore-button-animate.ng-leave.ng-leave-active {
-  opacity: 0;
-}
-
-.xscore-button-animate.ng-enter.ng-enter-active,
-.xscore-button-animate.ng-leave {
   opacity: 1;
 }
 
+// view animations
 
+.view-animate.ng-enter,
+.xview-animate.ng-leave {
+  @include ease_in_out_fast;
+}
 
-.myDiv{
-  //width:400px;
-  //height:200px;
-  //background-color:red;
-  -webkit-transition: 1s linear;
-  /*to only change opacity*/
-  /*-webkit-transition: opacity 1s linear*/
-  -moz-transition: 1s linear;
-  -o-transition: 1s linear;
-  transition: 1s linear;
+.view-animate.ng-enter {
+  opacity: .7;
+}
+
+.view-animate.ng-enter-active {
   opacity: 1;
 }
 
-.foo{
-  //background-color: blue;
+.xview-animate.ng-leave {
+  opacity: 1;
+}
+
+.view-animate.ng-leave-active {
   opacity: 0;
 }
 
+// score animate
+
+.score-animate.ng-enter,
+.score-animate.ng-leave {
+  @include ease_in_out_slow;
+}
+
+.score-animate.ng-enter {
+  opacity: 0;
+}
+
+.score-animate.ng-enter-active {
+  opacity: 1;
+}
+
+.score-animate.ng-leave {
+  opacity: 1;
+}
+
+.score-animate.ng-leave-active {
+  opacity: 0;
+}
+
+// score animate
+
+.score-animate-in.ng-enter,
+.xscore-animate-in.ng-leave {
+  @include ease_in_out_slow;
+}
+
+.score-animate-in.ng-enter {
+  opacity: 0;
+}
+
+.score-animate-in.ng-enter-active {
+  opacity: 1;
+}
+
+.xscore-animate-in.ng-leave {
+  opacity: 1;
+}
+
+.xscore-animate-in.ng-leave-active {
+  opacity: 0;
+}
+
+// score animate
+
+.score-animate-fast.ng-enter,
+.score-animate-fast.ng-leave {
+  @include ease_in_out_slow;
+}
+
+.score-animate-fast.ng-enter,
+.score-animate-fast.ng-leave-active{
+  opacity: 0;
+}
+
+.score-animate-fast.ng-enter-active,
+.score-animate-fast.ng-leave {
+  opacity: 1;
+}
+
+// score animate
+
+.score-animate-fast-in.ng-enter,
+.score-animate-fast-in.ng-leave {
+  @include ease_in_out_slow;
+}
+
+.score-animate-fast-in.ng-enter,
+.score-animate-fast-in.ng-leave-active{
+  opacity: 0;
+}
+
+.score-animate-fast-in.ng-enter-active,
+.score-animate-fast-in.ng-leave{
+  opacity: 1;
+}
 
 
 

@@ -27,14 +27,14 @@
 
     describe('authentication', function () {
       var userCredentials;
-      var authInterceptor;
+      var authHttpInterceptor;
       var USERNAME = 'authHelper username';
 
       beforeEach(function () {
 
-        inject(function (_userCredentials_, _authInterceptor_) {
+        inject(function (_userCredentials_, _authHttpInterceptor_) {
           userCredentials = _userCredentials_;
-          authInterceptor = _authInterceptor_;
+          authHttpInterceptor = _authHttpInterceptor_;
         });
         userCredentials.setCredentials(USERNAME, '')
       });
@@ -59,7 +59,7 @@
       });
 
       it('should clear credentials when unauthorized', function() {
-        authInterceptor.responseError({status: 401});
+        authHttpInterceptor.responseError({status: 401});
         expect(vm.loggedIn).toEqual(false);
       });
     })

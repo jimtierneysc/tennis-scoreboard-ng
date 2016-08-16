@@ -10,35 +10,39 @@
 
   <div ng-if="!vm.loading && !vm.loadingFailed">
 
-    <div class="panel panel-default play-table">
-      <!--<div class="col-xs-10">-->
+    <div class="panel panel-default score-panel details">
 
       <div class="panel-body">
-        <div class="form-animate-inout" ng-if="vm.view.showDetails">
-          <fe-match-details
-            match="vm.scoreboard"
-          ></fe-match-details>
+        <div ng-class="{'score-animate': vm.view.animate.description}" ng-if="vm.view.showDescription">
+          <div>
+            <fe-match-opponents
+              match="vm.scoreboard"
+            ></fe-match-opponents>
+          </div>
+          <div class="space-match-detail">
+            <fe-match-scoring
+              match="vm.scoreboard"
+            ></fe-match-scoring>
+          </div>
+          <div class="space-match-detail"></div>
         </div>
 
-        <div>
-          <fe-score-panel
+        <div class="score-progress">
+          <fe-score-progress
             scores="vm.scoreboard"
             view="vm.view"
-            logged-in="vm.loggedIn"
-            updating="vm.updatingScore"
-          ></fe-score-panel>
+          ></fe-score-progress>
+
         </div>
       </div>
-
-
     </div>
 
+    <!--Spacing-->
+    <div class="score-panel-spacing"></div>
 
     <fe-score-table
       scores="vm.scoreboard"
       view="vm.view"
-      logged-in="vm.loggedIn"
-      updating="vm.updatingScore"
     ></fe-score-table>
 
   </div>

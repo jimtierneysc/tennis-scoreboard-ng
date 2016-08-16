@@ -11,16 +11,11 @@
 
     beforeEach(inject(function ($compile, $rootScope) {
 
-      var game = {
-      };
-
       scope = $rootScope.$new();
-      scope.aview = {};
       scope.agame = {};
 
       var html = ('<fe-score-table-game-title ' +
       'game="agame" ' +
-      'view="aview" ' +
       '></fe-score-table-game-title>');
 
       element = angular.element(html);
@@ -31,10 +26,6 @@
     }));
 
     describe('isolated scope', function () {
-
-      it('should have .view', function () {
-        expect(isolatedScope.view).toBe(scope.aview);
-      });
 
       it('should have .game', function () {
         expect(isolatedScope.game).toBe(scope.agame);

@@ -65,9 +65,7 @@
     function beforeShowNewEntity() {
       var deferredObject = $q.defer();
       var players = prepareToShowPlayerOptions();
-      var endWait = vm.beginWait();
       players.then(function() {
-        endWait();
         var playerCount = vm.playerOptionsList.list.length;
         if (playerCount < 2) {
           deferredObject.reject();
@@ -88,9 +86,7 @@
     function beforeShowEditEntity() {
       var deferredObject = $q.defer();
       var players = prepareToShowPlayerOptions();
-      var endWait = vm.beginWait();
       players.then(function() {
-        endWait();
         prepareToEditEntity();
         deferredObject.resolve();
       });

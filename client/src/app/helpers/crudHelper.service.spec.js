@@ -359,17 +359,7 @@
           });
         });
       });
-
-      function expectWaitIndicator() {
-        it('should call .beginWait()', function () {
-          expect(waitIndicator.beginWait).toHaveBeenCalled();
-        });
-
-        it('should not be .waiting when finished', function () {
-          expect(waitIndicator.waiting()).toBeFalsy();
-        });
-      }
-
+      
       describe('crud create success', function () {
         beforeEach(function () {
           service(vm, crudOptions);
@@ -391,7 +381,6 @@
           expect(vm.entityCreateErrors).toBe(null);
         });
 
-        expectWaitIndicator();
       });
 
       describe('crud create error', function () {
@@ -410,7 +399,6 @@
           expect(vm.entityCreateErrors).not.toBe(null);
         });
 
-        expectWaitIndicator();
       });
 
       describe('crud update success', function () {
@@ -434,7 +422,6 @@
           expect(vm.entityUpdateErrors).toBe(null);
         });
 
-        expectWaitIndicator();
       });
 
       describe('crud update error', function () {
@@ -454,7 +441,6 @@
           expect(vm.entityUpdateErrors).not.toBe(null);
         });
 
-        expectWaitIndicator();
       });
 
       describe('crud delete success', function () {
@@ -472,7 +458,6 @@
           expect(vm).not.toHaveToast();
         });
 
-        expectWaitIndicator();
       });
 
       describe('crud delete error', function () {
@@ -500,7 +485,7 @@
           expect(vm).toHaveToast();
         });
 
-        expectWaitIndicator();
+        // expectWaitIndicator();
       });
 
       describe('confirm delete', function () {
@@ -712,7 +697,6 @@
   /*global MatcherHelper*/
   beforeEach(function () {
     var matchers = {
-      // toBeCrudOptions matcher
       // Validate parameter to crudHelper service
       // Usage: expect(options).toBeCrudOptions();
       toBeCrudOptions: function () {
@@ -735,8 +719,7 @@
           return helper.getResult();
         }
       },
-      // toSupportCrud matcher
-      // Validate crued members
+      // Validate crud members
       // Usage: expect(vm).supportsCrud();
       toSupportCrud: function () {
         return {

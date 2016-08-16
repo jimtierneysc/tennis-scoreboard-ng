@@ -18,11 +18,11 @@
       var builder;
       beforeEach(function () {
         builder = {};
-        service(builder);
+        service.prepare(builder);
       });
 
-      it('should be a function', function () {
-        expect(service).toEqual(jasmine.any(Function));
+      it('should be an object', function () {
+        expect(service).toEqual(jasmine.any(Object));
       });
       it('should have .opponents', function () {
         expect(builder.opponents).toEqual(jasmine.any(Object));
@@ -30,21 +30,6 @@
       it('should have .server', function () {
         expect(builder.server).toEqual(jasmine.any(Object));
       });
-      // it('should have .insertScores', function () {
-      //   expect(builder.insertScores).toEqual(jasmine.any(Function));
-      // });
-      // it('should have .insertTitles', function () {
-      //   expect(builder.insertTitles).toEqual(jasmine.any(Function));
-      // });
-      // it('should have .buttonStatus', function () {
-      //   expect(builder.buttonStatus).toEqual(jasmine.any(Object));
-      // });
-      // it('should have .currentGame', function () {
-      //   expect(builder.newGame).toEqual(jasmine.any(Object));
-      // });
-      // it('should have .newSet', function () {
-      //   expect(builder.newSet).toEqual(jasmine.any(Object));
-      // });
     });
 
     describe('.opponents', function () {
@@ -60,7 +45,7 @@
 
         var builder;
         beforeEach(function () {
-          builder = service(angular.copy(doublesScore));
+          builder = service.prepare(angular.copy(doublesScore));
         });
 
         it('should build opponents', function () {
@@ -80,7 +65,7 @@
 
         var builder;
         beforeEach(function () {
-          builder = service(angular.copy(singlesScore));
+          builder = service.prepare(angular.copy(singlesScore));
         });
 
         it('should build opponents', function () {
@@ -116,31 +101,31 @@
       });
 
       it('should have server when in_progress', function () {
-        service(scores);
+        service.prepare(scores);
         expect(scores.server).toEqual(server);
       });
 
       it('should not have server when winner', function () {
         scores.sets[0].games[1].winner = server;
-        service(scores);
+        service.prepare(scores);
         expect(scores.server).toEqual(null);
       });
 
       it('should not have server when no games', function () {
         scores.sets[0].games = [];
-        service(scores);
+        service.prepare(scores);
         expect(scores.server).toEqual(null);
       });
 
       it('should not have server when no sets', function () {
         scores.sets = [];
-        service(scores);
+        service.prepare(scores);
         expect(scores.server).toEqual(null);
       });
 
       it('should not have server when match not in progress ', function () {
         var scores = makeScores(complete);
-        service(scores);
+        service.prepare(scores);
         expect(scores.server).toEqual(null);
       });
     });
@@ -202,7 +187,7 @@
           beforeEach(function () {
             result = angular.copy(singles);
             result.sets = angular.copy(sets);
-            service(result);
+            service.prepare(result);
           });
 
           it('should add two winners', function () {
@@ -227,7 +212,7 @@
           beforeEach(function () {
             result = angular.copy(doubles);
             result.sets = angular.copy(sets);
-            service(result);
+            service.prepare(result);
             // builder.insertScores();
           });
 
@@ -259,7 +244,7 @@
           beforeEach(function () {
             result = angular.copy(singles);
             result.sets = angular.copy(sets);
-            service(result);
+            service.prepare(result);
             // builder.insertScores();
           });
 
@@ -273,7 +258,7 @@
           beforeEach(function () {
             result = angular.copy(doubles);
             result.sets = angular.copy(sets);
-            service(result);
+            service.prepare(result);
             // builder.insertScores();
           });
 
@@ -298,7 +283,7 @@
         };
         beforeEach(function () {
           result = angular.copy(sample);
-          service(result);
+          service.prepare(result);
           // builder.insertTitles();
         });
 
@@ -325,7 +310,7 @@
         var titles = ['1st', '2nd', '3rd', '4th', '5th'];
         beforeEach(function () {
           result = angular.copy(sample);
-          service(result);
+          service.prepare(result);
           // builder.insertTitles(result);
         });
 
@@ -340,50 +325,6 @@
       });
     });
 
-    // describe('.buttonStatus', function () {
-    //   describe('for', function () {
-    //     var winGameActivity = {
-    //       show: {win: true}
-    //     };
-    //     var gameActivity = {
-    //       show: {game: true}
-    //     };
-    //     var setActivity = {
-    //       show: {set: true}
-    //     };
-    //     var matchActivity = {
-    //       show: {match: true}
-    //     };
-    //     var winTiebreakerActivity = {
-    //       show: {win: true}
-    //     };
-    //
-    //     var actions = {
-    //       win_game: winGameActivity,
-    //       win_tiebreaker: winTiebreakerActivity,
-    //       win_match_tiebreaker: winTiebreakerActivity,
-    //       start_tiebreaker: gameActivity,
-    //       start_game: gameActivity,
-    //       start_set: setActivity,
-    //       start_match_tiebreaker: setActivity,
-    //       start_play: matchActivity,
-    //       restart_play: matchActivity
-    //     };
-    //
-    //     angular.forEach(actions, function (value, key) {
-    //       describe('action ' + key, function () {
-    //         it('should match expected value', function () {
-    //           var actions = {};
-    //           actions[key] = true;
-    //           var builder = service({actions: actions});
-    //           var status = builder.buttonStatus;
-    //           expect(status).toEqual(value);
-    //         })
-    //       });
-    //     });
-    //   });
-    // });
-    //
     describe('.newGame()', function () {
 
       describe('for', function () {
@@ -416,7 +357,7 @@
           actions[action] = true;
           var scores = angular.copy(sampleScores);
           scores.actions = actions;
-          service(scores);
+          service.prepare(scores);
           return scores.currentGame && scores.currentGame.newGame ? scores.currentGame : null;
         }
 
@@ -470,14 +411,14 @@
         });
 
         it('should have list when no server', function () {
-          service(scores);
+          service.prepare(scores);
           var list = scores.firstServers.list;
           expect(list.length).toEqual(allServerIds.length)
         });
 
         it('should not have list when server', function () {
           scores.servers = [1];
-          service(scores);
+          service.prepare(scores);
           var list = scores.firstServers;
           expect(list).toBe(null);
         });
@@ -514,7 +455,7 @@
         });
 
         it('should list all when no server', function () {
-          service(scores);
+          service.prepare(scores);
           var list = scores.firstServers.list;
           expect(list.length).toEqual(allServerIds.length)
         });
@@ -533,7 +474,7 @@
               var index = i;  // capture i
               beforeEach(function () {
                 scores.servers = [allServerIds[index]];
-                service(scores);
+                service.prepare(scores);
                 firstServers = scores.firstServers.list;
               });
 
@@ -551,7 +492,7 @@
 
         it('should list none when two servers', function () {
           scores.servers = [0, 0];
-          service(scores);
+          service.prepare(scores);
           var list = scores.firstServers;
           expect(list).toBe(null);
         });
@@ -585,7 +526,7 @@
           actions[action] = true;
           var scores = angular.copy(sampleScores);
           scores.actions = actions;
-          service(scores);
+          service.prepare(scores);
           return scores.currentSet && scores.currentSet.newSet ? scores.currentSet : null;
         }
 

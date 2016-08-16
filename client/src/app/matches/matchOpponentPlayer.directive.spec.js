@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feMatchStatus directive', function () {
+  describe('feMatchOpponentPlayer directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -12,11 +12,12 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.amatch = {};
+      scope.aplayer = {};
 
-      var html = ('<fe-match_status ' +
-      'match="amatch" ' +
-      '></fe-match_status>');
+      var html = ('<fe-match_opponent-player ' +
+      'player="aplayer" ' +
+      'period="true" ' +
+      '></fe-match_opponent-player>');
 
       element = angular.element(html);
 
@@ -25,11 +26,14 @@
       isolatedScope = compiledDirective.isolateScope();
     }));
 
-
     describe('isolated scope', function () {
 
-      it('should have .match', function () {
-        expect(isolatedScope.match).toBe(scope.amatch);
+      it('should have .player', function () {
+        expect(isolatedScope.player).toBe(scope.aplayer);
+      });
+
+      it('should have .period', function () {
+        expect(isolatedScope.period).toBeTruthy();
       });
 
       // TODO: Test HTML elements

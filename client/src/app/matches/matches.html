@@ -10,7 +10,7 @@
     </div>
 
     <div ng-if="!vm.loading && !vm.loadingFailed">
-      <div ng-if="vm.loggedIn">
+      <div ng-if="vm.loggedIn" class="accessory-animate-inout">
         <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
           <span class="glyphicon glyphicon-plus"></span> Match
         </button>
@@ -56,13 +56,19 @@
                 <span ng-if="entity.title">
                 {{ entity.title}}
                   </span>
-               <span ng-if="!entity.title">
-                 (untitled)
-                  </span>
+                    <span ng-if="!entity.title">(untitled)</span>
                   </div>
-                  <fe-match-details
-                    match="entity"
-                  ></fe-match-details>
+
+                  <div>
+                    <fe-match-opponents match="entity"></fe-match-opponents>
+                  </div>
+                  <div class="space-match-detail">
+                    <fe-match-scoring match="entity"></fe-match-scoring>
+                  </div>
+                  <div class="space-match-detail">
+                    <fe-match-state match="entity"></fe-match-state>
+                  </div>
+
                 </div>
 
                 <!--Use ng-if so there won't be bunch of forms in the DOM-->
@@ -84,19 +90,19 @@
               <div class="col-xs-2">
                 <!--Delete button-->
                 <div class="pull-right">
-                  <fe-delete-entity-button
-                    entity="entity"
-                    show="vm.loggedIn"
-                    delete-entity="vm.trashEntity(entity)"
-                  >
-                  </fe-delete-entity-button>
-                  <fe-edit-entity-button
-                    entity="entity"
-                    show="vm.loggedIn"
-                    disable="vm.showingEditEntity(entity)"
-                    edit-entity="vm.showEditEntity(entity)"
-                  >
-                  </fe-edit-entity-button>
+                  <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+                    <fe-delete-entity-button
+                      entity="entity"
+                      delete-entity="vm.trashEntity(entity)"
+                    ></fe-delete-entity-button>
+                  </div>
+                  <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+                    <fe-edit-entity-button
+                      entity="entity"
+                      disable="vm.showingEditEntity(entity)"
+                      edit-entity="vm.showEditEntity(entity)"
+                    ></fe-edit-entity-button>
+                  </div>
                   <a
                     ui-sref="scores.board({ id: entity.id })">Score
                   </a>

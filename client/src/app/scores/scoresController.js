@@ -30,20 +30,20 @@
       loadingHelper(vm);
 
       if (angular.isArray(response))
-        getMatchesSucceeded(response);
+        getMatchesHasSucceeded(response);
       else
-        getMatchesFailed(response);
+        getMatchesHasFailed(response);
     }
 
-    function getMatchesSucceeded(response) {
+    function getMatchesHasSucceeded(response) {
       vm.matches = response;
-      vm.updateLoadingCompleted();
+      vm.loadingHasCompleted();
       selectMatch();
     }
 
-    function getMatchesFailed(response) {
+    function getMatchesHasFailed(response) {
       $log.error('data error ' + response.status + " " + response.statusText);
-      vm.updateLoadingFailed(response);
+      vm.loadingHasFailed(response);
     }
 
     function selectMatch() {

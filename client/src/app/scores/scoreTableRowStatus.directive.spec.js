@@ -16,7 +16,6 @@
 
       var html = ('<fe-score-table-row-status ' +
       'scores="ascores" ' +
-      'title="atitle" ' +
       '></fe-score-table-row-status>');
 
       element = angular.element(html);

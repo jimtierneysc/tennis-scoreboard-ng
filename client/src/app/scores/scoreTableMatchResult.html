@@ -1,15 +1,9 @@
-<!--<span ng-if="!view.animatingScores || !view.changingMatchResult()" class="score-animate">-->
-<!--<span ng-class="{'winner-text': winner }">-->
-           <!--{{count}}-->
-         <!--</span>-->
-<!--</span>-->
+<span ng-init="index = (leftmost) ? 0 : 1"
+      ng-if="!(scores.matchFlags.hiddenResult && leftmost == scores.matchFlags.hiddenLeftmost)"
+      ng-class="{'score-animate': scores.matchFlags.showingResult}">
 
+  <span ng-class="{'winner-text': scores.winner === scores.opponents[index] }">
+          {{scores.scores[index]}}
+  </span>
 
-<span ng-if="!view.animatingScores || !view.changingMatchResult()"
-      class="score-animate">
-   <span ng-class="{'winner-text': winner }">
-          {{count}}
-         </span>
 </span>
-
-

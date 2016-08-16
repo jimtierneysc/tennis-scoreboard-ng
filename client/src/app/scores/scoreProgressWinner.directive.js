@@ -20,7 +20,8 @@
       templateUrl: 'app/scores/scoreProgressWinner.html',
       scope: {
         scores: '=',
-        winner: '='
+        winner: '=',
+        period: '@'
       }
     };
 

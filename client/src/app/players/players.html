@@ -11,8 +11,8 @@
 
 
     <div ng-if="!vm.loading && !vm.loadingFailed">
-      <div ng-if="vm.loggedIn">
-        <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
+      <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+        <button ng-disabled="vm.showingNewEntity" class="btn btn-primary " ng-click="vm.showNewEntity()">
           <span class="glyphicon glyphicon-plus"></span> Player
         </button>
       </div>
@@ -77,16 +77,15 @@
 
               <div class="col-xs-2">
                 <!--Delete button-->
-                <div class="pull-right">
+                <div class="pull-right" ng-if="vm.loggedIn"
+                class="accessory-animate-inout">
                   <fe-delete-entity-button
                     entity="entity"
-                    show="vm.loggedIn"
                     delete-entity="vm.trashEntity(entity)"
                   >
                   </fe-delete-entity-button>
                   <fe-edit-entity-button
                     entity="entity"
-                    show="vm.loggedIn"
                     disable="vm.showingEditEntity(entity)"
                     edit-entity="vm.showEditEntity(entity)"
                   >

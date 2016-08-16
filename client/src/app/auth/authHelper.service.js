@@ -13,7 +13,7 @@
     .factory('authHelper', factory);
 
   /** @ngInject */
-  function factory($log, userCredentials, editInProgress, authInterceptor) {
+  function factory($log, userCredentials, editInProgress, authHttpInterceptor) {
 
     return activate;
 
@@ -33,7 +33,7 @@
       });
 
       // Clear credentials on 403 error
-      authInterceptor.subscribeUnauthorized(scope, function () {
+      authHttpInterceptor.subscribeUnauthorized(scope, function () {
         $log.error('unauthorized');
         userCredentials.clearCredentials();
       });
