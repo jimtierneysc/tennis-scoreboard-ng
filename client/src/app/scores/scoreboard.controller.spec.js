@@ -45,7 +45,8 @@
       sets: [{games: [{}]}],
       servers: [],
       actions: {},
-      version: 100
+      version: 100,
+      near_winners:{set: [], match: []}
     };
 
     function doublesResponse() {
@@ -161,25 +162,11 @@
           expect(sb.server).toBe(null);
         });
 
-        // it('should have .buttonState', function () {
-        //   expect(sb.buttonState).toEqual(jasmine.any(Object));
-        // });
-
-        // it('should not have .newGame', function () {
-        //   expect(sb.newGame).toBeNull();
-        // });
-
-        // it('should not have .newSet', function () {
-        //   expect(sb.newSet).toBeNull();
-        // });
 
         it('should not have .firstServers', function () {
           expect(sb.firstServers).toBeNull();
         });
 
-        // it('should have .update()', function () {
-        //   expect(sb.update).toEqual(jasmine.any(Function));
-        // });
       });
 
       describe('newGame', function () {
@@ -242,7 +229,7 @@
 
     describe('update', function () {
 
-      describe('success', function () {
+      describe('when success', function () {
         var vm;
         beforeEach(function () {
           var response = singlesResponse();
@@ -253,6 +240,26 @@
 
         it('should have updated', function () {
           expect(vm.scoreboard.mockSaved).toBeTruthy();
+        });
+
+      });
+
+      describe('when re-entered', function () {
+        var vm;
+        beforeEach(function () {
+          var response = singlesResponse();
+          vm = scoreboardController(response);
+          vm.view.updateScore('first_action', 0, true);
+          vm.view.updateScore('second_action', 0, true);
+          $rootScope.$digest();
+        });
+
+        it('should have updated', function () {
+          expect(vm.scoreboard.mockSaved).toBeTruthy();
+        });
+
+        it('should have ignored second update', function () {
+          expect(mockResource.lastAction()).toEqual('first_action')
         });
 
       });
@@ -373,7 +380,7 @@
       describe('HTTP error', function () {
         var vm;
         beforeEach(function () {
-          mockResource.respondWithHTTPError = true;
+          mockResource.respondWithHttpError = true;
           var response = singlesResponse();
           vm = scoreboardController(response);
           vm.view.updateScore('fake_action', 0, true);
@@ -721,36 +728,54 @@
 
         });
 
-        describe('updateScore', function () {
-          beforeEach(function () {
-            vm.view.updateScore('fake_action', 0, true);
-            $timeout.flush();
-            $rootScope.$digest();
-            $timeout.flush();
+        describe('.updateScore', function () {
+
+          describe('http error', function() {
+            beforeEach(function () {
+              mockResource.respondWithHttpError = true;
+              vm.view.updateScore('fake_action', 0, true);
+              $rootScope.$digest();
+              $timeout.flush();
+              $timeout.flush();
+            });
+
+            it('should show loading error', function () {
+              expect(vm).toFailLoading();
+            });
           });
 
-          it('should have updated', function () {
-            expect(vm.scoreboard.mockSaved).toBeTruthy();
+          describe('success', function() {
+            beforeEach(function () {
+              vm.view.updateScore('fake_action', 0, true);
+              $rootScope.$digest();
+              $timeout.flush();
+              $timeout.flush();
+            });
+
+            it('should have updated', function () {
+              expect(vm.scoreboard.mockSaved).toBeTruthy();
+            });
           });
 
         });
-
       });
-
     });
 
     function MockResource() {
 
       var _this = this;
 
-      _this.respondWithHTTPError = false;
+      _this.respondWithHttpError = false;
       _this.respondWithDataError = false;
       _this.params = null;
+      _this.lastAction = function() {
+        return _this.params ? _this.params.match_score_board.action : null;
+      };
 
       _this.getResource = function () {
         var methods;
 
-        if (_this.respondWithHTTPError)
+        if (_this.respondWithHttpError)
           methods = {
             save: saveResourceWithHTTPError
           };

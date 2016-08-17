@@ -2,8 +2,8 @@
  * @ngdoc factory
  * @name scoreboardPrep
  * @description
- * Build up scores object with information needed by controller/view
- *
+ * To make it easier to display and update the score, add more
+ * properties to the scores object received from the backend.
  */
 
 (function () {
@@ -61,7 +61,6 @@
     sb.previousGame = previousGame();
     sb.currentSet = currentSet();
     sb.previousSet = previousSet();
-    sb.lastSetWithWin = setsAndGames.lastSetWithWin;
     sb.firstServers = null;
     if (sb.currentGame && sb.currentGame.newGame) {
       var list = listFirstServers();
@@ -135,7 +134,6 @@
         lastSet: null,
         prevSet: null,
         lastGames: [],
-        lastSetWithWin: null
       };
 
       var lastGame = null;
@@ -275,13 +273,13 @@
     function actionContext() {
       var result = {};
 
+      if (sb.state != 'not_started' && sb.state != 'complete')
+        result.playingMatch = true;
       if (sb.actions) {
         if (sb.actions.start_game || sb.actions.start_tiebreaker)
           result.startingGame = true;
         else if (sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.win_match_tiebreaker)
           result.playingGame = true;
-        if (sb.state != 'not_started' && sb.state != 'complete')
-          result.playingMatch = true;
         if (sb.actions.start_game)
           result.inNewGame = true;
         if (sb.actions.start_tiebreaker)
@@ -382,23 +380,23 @@
 
 
     function hideOldData() {
-      var changeState = new ChangeState({oldData: true});
+      var actionState = new ActionState({oldData: true});
 
       sb.matchFlags.showingProgress = true;
-      if (changeState.winningGame && !changeState.winningSet)
+      if (actionState.winningGame && !actionState.winningSet)
         sb.currentGame.showingTitle = true;
 
-      if (changeState.winningGame)
+      if (actionState.winningGame)
         sb.currentSet.showingResult = true;
 
-      if (changeState.winningSet)
+      if (actionState.winningSet)
         sb.matchFlags.showingResult = true;
 
       // Apply ng-class of elements before hide elements
       $timeout(function () {
         eachDataItem(
           function (item) {
-            item.hiddenLeftmost = changeState.leftmost;
+            item.hiddenLeftmost = actionState.leftmost;
             setHidden(item, true);
           });
       });
@@ -407,22 +405,23 @@
 
     function hideNewData() {
 
-      var changeState = new ChangeState({oldData: false})
+      var actionState = new ActionState({oldData: false});
 
       sb.matchFlags.showingProgress = true;
 
-      if (changeState.winningGame && !changeState.winningSet) {
+      if (actionState.winningGame && !actionState.winningSet) {
         sb.currentGame.showingTitle = true;
         sb.currentSet.showingResult = true;
       }
 
-      if (changeState.winningSet) {
+      if (actionState.winningSet) {
         sb.matchFlags.showingResult = true;
-        sb.previousSet.showingResult = true;
+        if (sb.previousSet)
+          sb.previousSet.showingResult = true;
       }
 
       // Hide game that just got a winner
-      if (changeState.winningGame) {
+      if (actionState.winningGame) {
         if (sb.currentGame && sb.currentGame.newGame && sb.previousGame) {
           sb.currentGame.showingTitle = true;
           sb.previousGame.showing = true;
@@ -430,7 +429,7 @@
       }
 
       // Hide a newly created set and set's first game
-      if (changeState.startingSet || changeState.startingMatch) {
+      if (actionState.startingSet || actionState.startingMatch) {
         if (sb.currentGame && !sb.currentGame.winner && sb.currentSet.games.length == 1) {
           sb.currentGame.showing = true;
           sb.currentSet.showing = true;
@@ -439,7 +438,7 @@
 
       eachDataItem(
         function (item) {
-          item.hiddenLeftmost = changeState.leftmost;
+          item.hiddenLeftmost = actionState.leftmost;
           setHidden(item, true);
         });
     }
@@ -459,7 +458,7 @@
         });
     }
 
-    function ChangeState(data) {
+    function ActionState(data) {
       this.winningGame = winningGame(action);
       this.winningSet = data.oldData ? predictWinningSet() : winningSet();
       this.winningMatch = data.oldData ? predictWinningMatch() : winningMatch();
@@ -525,7 +524,6 @@
             fn(item)
         });
     }
-
   }
 
 })();

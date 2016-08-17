@@ -17,7 +17,7 @@
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, toastrHelper, $q,
                       scoreboardPrep, $timeout, animationIntervals,
-                      toggleClass, response) {
+                      response) {
     var vm = this;
     var updating = false;
 
@@ -83,7 +83,6 @@
 
       if (updating)  // Prevent re-enter
         return;
-
       var winAction = action.startsWith('win');
       var update = {
         action: action,
@@ -97,6 +96,7 @@
       };
 
       var promise = postUpdate(action, param);
+      updating = true;
       vm.view.animateScoreboardChanges(update, promise,
         function (response) {
           updating = false;
