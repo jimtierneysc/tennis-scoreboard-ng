@@ -1,33 +1,26 @@
 <div ng-if="match.doubles">
-  <!--Doubles-->
 
   <div>
-    <fe-match-opponent-team
-      team="match.first_team"
-    ></fe-match-opponent-team>
+    <fe-match-opponent-teams
+      match="match"
+    ></fe-match-opponent-teams>
+  </div>
 
-    <span>&nbsp;vs.&nbsp;</span>
-
-    <fe-match-opponent-team
-      team="match.second_team"
-    ></fe-match-opponent-team>
-
+  <div class="space-match-detail">
+    <fe-match-opponent-teams-players
+      match="match"
+    ></fe-match-opponent-teams-players>
   </div>
 
 </div>
 
 
 <div ng-if="!match.doubles">
-  <!--Singles-->
-  <fe-match-opponent-player
-    player="match.first_player"
-  ></fe-match-opponent-player>
 
-    <span>
-      &nbsp;vs.&nbsp;
-    </span>
+  <div>
+    <fe-match-opponent-players
+      match="match"
+    ></fe-match-opponent-players>
+  </div>
 
-  <fe-match-opponent-player
-    player="match.second_player"
-  ></fe-match-opponent-player>
 </div>

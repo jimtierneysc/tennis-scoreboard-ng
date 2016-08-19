@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feMatchScoring directive', function () {
+  describe('feMatchOpponents directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -12,11 +12,12 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.amatch = {};
+      scope.amatch = {first_player: {}, second_player: {}};
 
-      var html = ('<fe-match-scoring ' +
+      var html = ('<fe-match_opponents ' +
       'match="amatch" ' +
-      '></fe-match-scoring>');
+      'short-player-names="true" ' +
+      '></fe-match_opponents>');
 
       element = angular.element(html);
 
@@ -29,6 +30,10 @@
 
       it('should have .match', function () {
         expect(isolatedScope.match).toBe(scope.amatch);
+      });
+
+      it('should have .shortPlayerNames', function () {
+        expect(isolatedScope.shortPlayerNames).toBeTruthy();
       });
 
     });

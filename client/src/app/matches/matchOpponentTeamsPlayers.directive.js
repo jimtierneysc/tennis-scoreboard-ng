@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name feMatchOpponents
+ * @name feMatchOpponentTeamsPlayers
  * @description
- * Display opponents of a match
+ * Display the players on both teams of a doubles match
  *
  */
 
@@ -11,13 +11,13 @@
 
   angular
     .module('frontendMatches')
-    .directive('feMatchOpponents', directiveFunc);
+    .directive('feMatchOpponentTeamsPlayers', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/matches/matchOpponents.html',
+      templateUrl: 'app/matches/matchOpponentTeamsPlayers.html',
       scope: {
         match: '=',
         shortPlayerNames: '@'
@@ -27,5 +27,5 @@
     return directive;
   }
 
-  
+
 })();

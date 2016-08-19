@@ -1,7 +1,1 @@
-<span ng-if="!displayPlayers && team.name != null">
-  <strong>{{team.name}}</strong></strong><span ng-if="period && !team.name.endsWith('.')">.</span>
-</span>
-<span ng-if="displayPlayers || team.name == null">
-  <strong>{{team.first_player.name}}</strong> and
-  <strong>{{team.second_player.name}}</strong></strong><span ng-if="period && !team.second_player.name.endsWith('.')">.</span>
-</span>
+  <strong>{{vm.teamName()}}</strong><span>{{vm.suffix()}}</span>

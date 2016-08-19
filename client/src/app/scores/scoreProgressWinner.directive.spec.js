@@ -17,7 +17,8 @@
       var html = ('<fe-score-progress-winner ' +
       'scores="ascores" ' +
       'winner="ascores.winner" ' +
-      'period="true" ' +
+      'match-winner="true" ' +
+      'punctuation="." ' +
       '></fe-score-progress-winner>');
 
       element = angular.element(html);
@@ -26,8 +27,7 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-
-
+    
     describe('isolated scope', function () {
 
       it('should have .scores', function () {
@@ -38,11 +38,13 @@
         expect(isolatedScope.winner).toBe(scope.ascores.winner);
       });
 
-      it('should have .period', function () {
-        expect(isolatedScope.period).toBeTruthy();
+      it('should have .matchWinner', function () {
+        expect(isolatedScope.matchWinner).toBeTruthy();
       });
 
-      // TODO: Test HTML elements
+      it('should have .punctuation', function () {
+        expect(isolatedScope.punctuation).toEqual('.');
+      });
 
     });
   });

@@ -1,8 +1,8 @@
 /**
  * @ngdoc directive
- * @name feMatchOpponents
+ * @name feMatchOpponentPlayers
  * @description
- * Display opponents of a match
+ * Display opponents of a singles match
  *
  */
 
@@ -11,13 +11,13 @@
 
   angular
     .module('frontendMatches')
-    .directive('feMatchOpponents', directiveFunc);
+    .directive('feMatchOpponentPlayers', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/matches/matchOpponents.html',
+      templateUrl: 'app/matches/matchOpponentPlayers.html',
       scope: {
         match: '=',
         shortPlayerNames: '@'

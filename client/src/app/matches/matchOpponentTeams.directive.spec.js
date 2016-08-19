@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feMatchScoring directive', function () {
+  describe('feMatchOpponentTeams directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -12,11 +12,20 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.amatch = {};
+      scope.amatch = {
+        first_team: {
+          first_player: {},
+          second_player: {}
+        },
+        second_team: {
+          first_player: {},
+          second_player: {}
+        }
+      };
 
-      var html = ('<fe-match-scoring ' +
+      var html = ('<fe-match-opponent-teams ' +
       'match="amatch" ' +
-      '></fe-match-scoring>');
+      '></fe-match-opponent-teams>');
 
       element = angular.element(html);
 
@@ -24,7 +33,7 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-
+    
     describe('isolated scope', function () {
 
       it('should have .match', function () {

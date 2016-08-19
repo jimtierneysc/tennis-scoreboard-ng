@@ -21,7 +21,8 @@
       scope: {
         scores: '=',
         winner: '=',
-        period: '@'
+        matchWinner: '@',
+        punctuation: '@'
       }
     };
 

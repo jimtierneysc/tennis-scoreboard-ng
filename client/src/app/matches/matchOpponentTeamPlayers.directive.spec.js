@@ -1,23 +1,26 @@
 (function () {
   'use strict';
 
-  describe('feMatchOpponents directive', function () {
+  describe('feMatchOpponentTeamPlayers directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
     beforeEach(module('frontendMatches'));
-
+    
     beforeEach(inject(function ($compile, $rootScope) {
-
       scope = $rootScope.$new();
-      scope.amatch = {first_player: {}, second_player: {}};
+      scope.ateam = {
+        first_player: {},
+        second_player: {}
+      };
 
-      var html = ('<fe-match_opponents ' +
-      'match="amatch" ' +
+      var html = ('<fe-match-opponent-team-players ' +
+      'team="ateam" ' +
       'short-player-names="true" ' +
-      '></fe-match_opponents>');
+      'punctuation="." ' +
+      '></fe-match-opponent-team-players>');
 
       element = angular.element(html);
 
@@ -25,17 +28,20 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-    
-    describe('isolated scope', function () {
 
-      it('should have .match', function () {
-        expect(isolatedScope.match).toBe(scope.amatch);
+    describe('members', function () {
+
+      it('should have .team', function () {
+        expect(isolatedScope.team).toBe(scope.ateam);
       });
 
       it('should have .shortPlayerNames', function () {
         expect(isolatedScope.shortPlayerNames).toBeTruthy();
       });
 
+      it('should have .punctuation', function () {
+        expect(isolatedScope.punctuation).toEqual('.');
+      });
     });
   });
 })();
