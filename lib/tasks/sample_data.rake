@@ -38,32 +38,32 @@ class SampleData
 
   def sample_data
     player_data = [
-      { name: 'Serena' },
-      { name: 'Venus' },
-      { name: 'Bob B.' },
-      { name: 'Mike B.' },
-      { name: 'Jamie M.' },
-      { name: 'Andy M.' },
-      { name: 'Roger' },
-      { name: 'John M.' },
-      { name: 'Patrick M.' },
+      { name: 'Serena Williams' },
+      { name: 'Venus Williams' },
+      { name: 'Bob Brian' },
+      { name: 'Mike Brian' },
+      { name: 'Jamie Murray' },
+      { name: 'Andy Murray' },
+      { name: 'Roger Federer' },
+      { name: 'John McEnroe' },
+      { name: 'Patrick McEnroe' },
       { name: 'Leander Paes' },
       { name: 'Martina Hingis' },
-      { name: 'Novak' },
-      { name: 'Rafa' },
+      { name: 'Novak Djokovic' },
+      { name: 'Rafael Nadal' },
       { name: 'Lisa Raymond' },
       { name: 'Sania Mirza' }
     ]
 
     team_data = [
-      { name: 'Williams Sisters', p1: 'Serena', p2: 'Venus', doubles: true },
-      { name: 'Brian Brothers', p1: 'Mike B.', p2: 'Bob B.', doubles: true },
-      { name: 'McEnroe Brothers', p1: 'John M.', p2: 'Patrick M.',
+      { name: 'Williams Sisters', p1: 'Serena Williams', p2: 'Venus Williams', doubles: true },
+      { name: 'Brian Brothers', p1: 'Mike Brian', p2: 'Bob Brian', doubles: true },
+      { name: 'McEnroe Brothers', p1: 'John McEnroe', p2: 'Patrick McEnroe',
         doubles: true },
-      { name: 'Murray Brothers', p1: 'Andy M.', p2: 'Jamie M.', doubles: true },
+      { name: 'Murray Brothers', p1: 'Andy Murray', p2: 'Jamie Murray', doubles: true },
       { name: 'India', p1: 'Leander Paes', p2: 'Sania Mirza', doubles: true },
-      { name: 'Switzerland', p1: 'Roger', p2: 'Martina Hingis', doubles: true },
-      { name: nil, p1: 'Mike B.', p2: 'Lisa Raymond', doubles: true }
+      { name: 'Switzerland', p1: 'Roger Federer', p2: 'Martina Hingis', doubles: true },
+      { name: nil, p1: 'Mike Brian', p2: 'Lisa Raymond', doubles: true }
     ]
 
     match_data = [
@@ -77,15 +77,15 @@ class SampleData
       { title: nil,
         scoring: :three_six_game,
         doubles: false,
-        p1: 'Roger',
-        p2: 'Novak',
+        p1: 'Roger Federer',
+        p2: 'Novak Djokovic',
         scores: [SIX_TO_SEVEN, FOUR_TO_FOUR]
       },
       { title: 'Sisters',
         scoring: :three_six_game,
         doubles: false,
-        p1: 'Venus',
-        p2: 'Serena',
+        p1: 'Venus Williams',
+        p2: 'Serena Williams',
         scores: [SIX_TO_FOUR]
       },
       { title: 'Olympics Mixed',
