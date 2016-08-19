@@ -36,8 +36,7 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-
-
+    
     describe('isolated scope', function () {
       it('should have .form', function () {
         expect(isolatedScope.form).toEqual(scope.aform);
@@ -64,8 +63,6 @@
       it('should have ok text', function () {
         expect(isolatedScope.ok).toEqual(okText);
       });
-
-      // TODO: Test HTML elements
 
     });
   });

@@ -70,7 +70,7 @@
       }
 
       function changed() {
-        service.loggedIn = angular.isDefined(data.currentUser);
+        service.loggedIn = data.currentUser;
         if (service.loggedIn) {
           service.userName = data.currentUser.username;
         }

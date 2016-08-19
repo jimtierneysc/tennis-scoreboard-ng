@@ -94,7 +94,6 @@
     }
 
     function getEntityDisplayName(entity) {
-      // TODO: build team name
       return entity.name || '(unnamed)'
     }
 
@@ -145,9 +144,9 @@
     }
 
     function prepareToApplyEntity(entity, result) {
-      if (angular.isDefined(entity.select_first_player))
+      if (entity.select_first_player)
         result.first_player_id = entity.select_first_player.id;
-      if (angular.isDefined(entity.select_second_player))
+      if (entity.select_second_player)
         result.second_player_id = entity.select_second_player.id;
     }
 

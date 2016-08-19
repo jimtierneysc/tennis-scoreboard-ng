@@ -99,8 +99,6 @@ module ControllersShared
   end
 
   RSpec.shared_examples 'not found' do
-    it { expect(json_response).to include_error 'Not found' }
-
     it_behaves_like 'a response with error code', 404
   end
 

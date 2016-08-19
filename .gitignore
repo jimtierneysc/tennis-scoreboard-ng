@@ -18,4 +18,6 @@
 
 /.byebug_history
 /.idea
+/coverage
+/spec/examples.txt
 

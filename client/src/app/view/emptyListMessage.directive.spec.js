@@ -26,8 +26,7 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-
-
+    
     describe('isolated scope', function () {
       it('should have scope', function () {
         expect(isolatedScope).not.toBe(null);
@@ -40,8 +39,6 @@
       it('should have .loggedIn', function () {
         expect(isolatedScope.loggedIn).toBe(scope.aloggedIn);
       });
-
-      // TODO: Test HTML elements
 
     });
   });

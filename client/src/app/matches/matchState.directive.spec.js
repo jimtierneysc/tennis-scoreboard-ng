@@ -25,15 +25,12 @@
       isolatedScope = compiledDirective.isolateScope();
     }));
 
-
     describe('isolated scope', function () {
 
       it('should have .match', function () {
         expect(isolatedScope.match).toBe(scope.amatch);
       });
-
-      // TODO: Test HTML elements
-
+      
     });
   });
 })();

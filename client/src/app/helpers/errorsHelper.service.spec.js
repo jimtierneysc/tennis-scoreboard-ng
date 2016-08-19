@@ -63,7 +63,7 @@
         });
 
         it('should have expected errors', function () {
-          expect(errorsOfResponse).toEqual({other: ['Status ' + STATUS]});
+          expect(errorsOfResponse).toEqual({other: [STATUS]});
         });
       });
 
@@ -75,7 +75,7 @@
         });
 
         it('should have expected errors', function () {
-          expect(errorsOfResponse).toEqual({other: ['Status unexpected error']});
+          expect(errorsOfResponse).toEqual({other: ['Unexpected error']});
         });
       });
     })

@@ -44,23 +44,23 @@
       });
 
       it('should be .loggedIn when .setCredentials', function () {
-        expect(vm.loggedIn).toEqual(true);
+        expect(vm.loggedIn).toBeTruthy();
       });
 
       it('should not be .loggedIn when .clearCredentials', function () {
         userCredentials.clearCredentials();
-        expect(vm.loggedIn).toEqual(false);
+        expect(vm.loggedIn).toBeFalsy();
       });
 
       it('should not be .loggedIn after .logOut()', function () {
         vm.logOut();
         $rootScope.$digest();
-        expect(userCredentials.loggedIn).toEqual(false);
+        expect(userCredentials.loggedIn).toBeFalsy();
       });
 
       it('should clear credentials when unauthorized', function() {
         authHttpInterceptor.responseError({status: 401});
-        expect(vm.loggedIn).toEqual(false);
+        expect(vm.loggedIn).toBeFalsy();
       });
     })
   });

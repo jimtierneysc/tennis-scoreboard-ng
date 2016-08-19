@@ -23,12 +23,10 @@
         var result;
         if (angular.isObject(response.data)) {
           var data = response.data;
-          if (angular.isObject(data.errors))
-            data = data.errors;
           result = errorsMapper(data, errorsMap.names, errorsMap.map);
         }
         else
-          result = errorsMapper({'Status': response.statusText ? response.statusText : 'unexpected error'});
+          result = errorsMapper({'errors': response.statusText ? response.statusText : 'Unexpected error'});
         return result;
       };
     }

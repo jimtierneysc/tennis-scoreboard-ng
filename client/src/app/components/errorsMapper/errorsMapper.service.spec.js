@@ -15,6 +15,12 @@
       expect(service).toEqual(jasmine.any(Function));
     });
 
+    it('should support nested errors object', function () {
+      var value = {errors: {x: ['one']}};
+      var expected = { other: ['X one']};
+      expect(service(value)).toEqual(expected);
+    });
+
     it('should match names', function () {
       var names = ['x', 'y'];
       var value = {x: ['one', 'two'],  y: 'four'};

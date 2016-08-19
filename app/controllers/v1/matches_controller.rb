@@ -86,11 +86,6 @@ class V1::MatchesController < ApplicationController
     @match = Match.find(params[:id])
   end
 
-  # Handle record not found exception
-  def when_record_not_found
-    render json: { errors: 'Not found' }, status: :not_found
-  end
-
   def create_doubles_match(params_var)
     Match.new params_var
   end

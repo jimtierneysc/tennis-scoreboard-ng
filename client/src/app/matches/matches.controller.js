@@ -153,14 +153,14 @@
         teamsSelectOptions().then(
           function (list) {
             vm.teamOptionsList.list = list;
-            deferredObject.resolve();
           },
           function () {
             vm.teamOptionsList.list = [];
             $log.error('teamOptionsList');
-            deferredObject.resolve();
           }
-        );
+        ).finally(function() {
+          deferredObject.resolve();
+        });
       }
       else {
         deferredObject.resolve();
@@ -174,14 +174,14 @@
         playersSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
-            deferredObject.resolve();
           },
           function () {
             vm.playerOptionsList.list = [];
             $log.error('playerOptionsList')
-            deferredObject.resolve();
           }
-        );
+        ).finally(function() {
+          deferredObject.resolve();
+        });
       }
       else {
         deferredObject.resolve();
@@ -217,9 +217,9 @@
     }
 
     function prepareToSubmitPlayers(entity, result) {
-      if (angular.isDefined(entity.select_first_player))
+      if (entity.select_first_player)
         result.first_player_id = entity.select_first_player.id;
-      if (angular.isDefined(entity.select_second_player))
+      if (entity.select_second_player)
         result.second_player_id = entity.select_second_player.id;
     }
 
@@ -251,9 +251,9 @@
     }
 
     function prepareToSubmitTeams(entity, result) {
-      if (angular.isDefined(entity.select_first_team))
+      if (entity.select_first_team)
         result.first_team_id = entity.select_first_team.id;
-      if (angular.isDefined(entity.select_second_team))
+      if (entity.select_second_team)
         result.second_team_id = entity.select_second_team.id;
     }
   }

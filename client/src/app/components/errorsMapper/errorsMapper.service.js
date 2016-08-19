@@ -31,6 +31,10 @@
       map = map || {};
       defaultKey = defaultKey || 'other';
 
+      if (angular.isObject(data.errors))
+        // handle nested errors object
+        data = data.errors;
+
       var result = {};
       angular.forEach(data, function (value, key) {
         var newKey = matchKeyName(key);
@@ -74,7 +78,7 @@
       function makePrefix(key) {
         var result = key;
         if (result.length > 0) {
-          var notAPrefix = [defaultKey, 'errors'];
+          var notAPrefix = [defaultKey, 'errors', 'error'];
           if (notAPrefix.indexOf(key) >= 0)
             result = '';
           else {
