@@ -89,8 +89,8 @@ class PlayMatch
   end
 
   def start_set
-    if match.play_match? :start_match_tiebreaker
-      match.play_match! :start_match_tiebreaker
+    if match.play_match? :start_match_tiebreak
+      match.play_match! :start_match_tiebreak
     elsif match.play_match? :start_set
       match.play_match! :start_set
     end
@@ -110,20 +110,20 @@ class PlayMatch
   def play_game(winner)
     if match.play_match?(:start_game) || match.play_match?(:win_game)
       play_normal_game winner
-    elsif match.play_match? :win_match_tiebreaker
-      match.play_match! :win_match_tiebreaker, opponent: winner
-    elsif match.play_match?(:start_tiebreaker) || match.play_match?(:win_tiebreaker)
-      play_tiebreaker winner
+    elsif match.play_match? :win_match_tiebreak
+      match.play_match! :win_match_tiebreak, opponent: winner
+    elsif match.play_match?(:start_tiebreak) || match.play_match?(:win_tiebreak)
+      play_tiebreak winner
     else
       invalid_game
     end
   end
 
-  def play_tiebreaker(winner)
-    if match.play_match? :start_tiebreaker
-      match.play_match! :start_tiebreaker
+  def play_tiebreak(winner)
+    if match.play_match? :start_tiebreak
+      match.play_match! :start_tiebreak
     end
-    match.play_match! :win_tiebreaker, opponent: winner
+    match.play_match! :win_tiebreak, opponent: winner
   end
 
   def play_normal_game(winner)

@@ -62,7 +62,7 @@ RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
       end
 
       context 'when is denied' do
-        before { post_action doubles_match.id, :start_tiebreaker }
+        before { post_action doubles_match.id, :start_tiebreak }
 
         it_behaves_like 'denied action'
       end

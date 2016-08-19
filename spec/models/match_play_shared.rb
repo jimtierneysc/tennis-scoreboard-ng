@@ -52,19 +52,19 @@ module MatchPlayShared
 
   RSpec::Matchers.define :permit_win_game do
     match do |m|
-      m.play_match?(:win_game) || m.play_match?(:win_tiebreaker)
+      m.play_match?(:win_game) || m.play_match?(:win_tiebreak)
     end
 
     description do
-      'permit win_game or win_tiebreaker actions'
+      'permit win_game or win_tiebreak actions'
     end
 
     failure_message do
-      'expect to permit win_game or win_tiebreaker actions'
+      'expect to permit win_game or win_tiebreak actions'
     end
 
     failure_message_when_negated do
-      'do not expect to permit win_game or win_tiebreaker actions'
+      'do not expect to permit win_game or win_tiebreak actions'
     end
   end
 
@@ -89,7 +89,7 @@ module MatchPlayShared
   RSpec::Matchers.define :have_set_size do |size|
     match do |m|
       @actual = nil
-      sets = m.match_sets.reject(&:tiebreaker?)
+      sets = m.match_sets.reject(&:tiebreak?)
       sets.each do |set|
         unless size == set.win_threshold
           @actual = set.win_threshold
@@ -113,7 +113,7 @@ module MatchPlayShared
 
   RSpec::Matchers.define :have_set_count do |count|
     match do |m|
-      @actual = m.match_sets.reject(&:tiebreaker?).count
+      @actual = m.match_sets.reject(&:tiebreak?).count
       @actual == count
     end
 
@@ -130,23 +130,23 @@ module MatchPlayShared
     end
   end
 
-  RSpec::Matchers.define :have_match_tiebreaker do
+  RSpec::Matchers.define :have_match_tiebreak do
     match do |m|
-      m.last_set.tiebreaker?
+      m.last_set.tiebreak?
     end
 
     failure_message do
-      'expect to have match tiebreaker'
+      'expect to have match tiebreak'
     end
 
     failure_message_when_negated do
-      'do not expect to have match tiebreaker'
+      'do not expect to have match tiebreak'
     end
   end
 
   RSpec::Matchers.define :have_changes do
     match do |m|
-      actions = [:restart_play, :discard_play, :remove_last_change]
+      actions = [:discard_play, :remove_last_change]
       actions.each do |action|
         return false if not m.play_match? action
       end
@@ -293,20 +293,20 @@ module MatchPlayShared
     it { is_expected.to have_game_with_winner }
   end
 
-  RSpec.shared_examples 'a match can start set tiebreaker' do
-    it { is_expected.to permit_action :start_tiebreaker }
+  RSpec.shared_examples 'a match can start set tiebreak' do
+    it { is_expected.to permit_action :start_tiebreak }
   end
 
-  RSpec.shared_examples 'a match in set tiebreaker' do
-    it { is_expected.to permit_action :win_tiebreaker }
+  RSpec.shared_examples 'a match in set tiebreak' do
+    it { is_expected.to permit_action :win_tiebreak }
   end
 
-  RSpec.shared_examples 'a match can start match tiebreaker' do
-    it { is_expected.to permit_action :start_match_tiebreaker }
+  RSpec.shared_examples 'a match can start match tiebreak' do
+    it { is_expected.to permit_action :start_match_tiebreak }
   end
 
-  RSpec.shared_examples 'a match in match tiebreaker' do
-    it { is_expected.to permit_action :win_match_tiebreaker }
+  RSpec.shared_examples 'a match in match tiebreak' do
+    it { is_expected.to permit_action :win_match_tiebreak }
   end
 
   RSpec.shared_examples 'a match with complete set' do
@@ -351,8 +351,8 @@ module MatchPlayShared
     it { is_expected.to have_set_count(2) }
   end
 
-  RSpec.shared_examples 'a match with match tiebreaker' do
-    it { is_expected.to have_match_tiebreaker }
+  RSpec.shared_examples 'a match with match tiebreak' do
+    it { is_expected.to have_match_tiebreak }
   end
 
   RSpec.shared_examples 'a match with one set' do
@@ -370,16 +370,15 @@ module MatchPlayShared
   def all_actions
     [
       :start_play,
-      :restart_play,
       :discard_play,
       :start_set,
       :start_game,
-      :start_tiebreaker,
+      :start_tiebreak,
       :remove_last_change,
-      :start_match_tiebreaker,
+      :start_match_tiebreak,
       :win_game,
-      :win_tiebreaker,
-      :win_match_tiebreaker
+      :win_tiebreak,
+      :win_match_tiebreak
     ]
   end
 
@@ -392,8 +391,8 @@ module MatchPlayShared
   def win_actions
     [
       :win_game,
-      :win_tiebreaker,
-      :win_match_tiebreaker
+      :win_tiebreak,
+      :win_match_tiebreak
     ]
   end
 

@@ -8,7 +8,7 @@
 # A match may be in different states: not started, in progress,
 # and complete. Complete matches have a winner.
 #
-# A match may have first servers.  These are the players that server
+# A match may have first servers.  These are the players that serve
 # the first game or two.  For a singles match, there is one
 # first server; two for a doubles match.
 #
@@ -41,8 +41,6 @@ class Match < ActiveRecord::Base
   # === action
   # :start_play
   #   Start playing
-  # :restart_play
-  #   Discard all scoring and start playing
   # :discard_play
   #   Discard all scoring
   # :start_set
@@ -50,20 +48,20 @@ class Match < ActiveRecord::Base
   # :start_game [player]
   #   Start the next game.  The first one or two games require
   #   a player parameter to identify the server
-  # :start_tiebreaker
-  #   Start game tiebreaker
+  # :start_tiebreak
+  #   Start game tiebreak
   # :remove_last_change
   #   Back up to the previous state
-  # :start_match_tiebreaker
-  #   Start the match tiebreaker
+  # :start_match_tiebreak
+  #   Start the match tiebreak
   # :win_game team
-  #   Win the current game.  A team parameter identies the
+  #   Win the current game.  A team parameter identifies the
   #   doubles team or singles team to win
-  # :win_tiebreaker
-  #   Win the current set tiebreaker.  A team parameter identies the
+  # :win_tiebreak
+  #   Win the current set tiebreak.  A team parameter identifies the
   #   doubles team or singles team to win
-  # :win_match_tiebreaker
-  #   Win the current match tiebreaker.  A team parameter identies the
+  # :win_match_tiebreak
+  #   Win the current match tiebreak.  A team parameter identies the
   #   doubles team or singles team to win
   # === Options
   # [:version]
@@ -189,7 +187,7 @@ class Match < ActiveRecord::Base
     last_set ? last_set.set_games.count + 1 : 0
   end
 
-  def tiebreaker_set?(ordinal)
+  def tiebreak_set?(ordinal)
     scoring_of_set_ordinal(ordinal) == :ten_point
   end
 

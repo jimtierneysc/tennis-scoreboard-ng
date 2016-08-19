@@ -86,10 +86,6 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
         end
       end
 
-      context 'restart play' do
-        before { subject.play_match! :restart_play }
-        it_behaves_like 'a match just started'
-      end
     end
 
     context 'doubles match' do
@@ -196,39 +192,39 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
     end
   end
 
-  describe 'set tiebreaker' do
+  describe 'set tiebreak' do
     subject do
       FactoryGirl.build(:play_singles_match, scoring: :one_eight_game,
                         scores: [[8, 8]])
     end
 
-    it_behaves_like 'a match can start set tiebreaker'
+    it_behaves_like 'a match can start set tiebreak'
 
-    context 'start tiebreaker' do
-      before { subject.play_match! :start_tiebreaker }
+    context 'start tiebreak' do
+      before { subject.play_match! :start_tiebreak }
 
-      it_behaves_like 'a match in set tiebreaker'
+      it_behaves_like 'a match in set tiebreak'
 
-      context 'win tiebreaker with player' do
-        before { subject.play_match! :win_tiebreaker, opponent: subject.first_team }
+      context 'win tiebreak with player' do
+        before { subject.play_match! :win_tiebreak, opponent: subject.first_team }
 
         it_behaves_like 'a match with complete set'
 
         context 'remove last change' do
           before { subject.play_match! :remove_last_change }
-          it_behaves_like 'a match in set tiebreaker'
+          it_behaves_like 'a match in set tiebreak'
         end
 
-        it 'should not win tiebreaker again' do
+        it 'should not win tiebreak again' do
           expect {
-            subject.play_match! :win_tiebreaker, opponent: subject.first_team
+            subject.play_match! :win_tiebreak, opponent: subject.first_team
           }.to raise_error Exceptions::InvalidOperation
         end
       end
 
-      context 'win tiebreaker without player' do
+      context 'win tiebreak without player' do
         it 'should not win' do
-          expect { subject.play_match! :win_tiebreaker }.to raise_error Exceptions::UnknownOperation
+          expect { subject.play_match! :win_tiebreak }.to raise_error Exceptions::UnknownOperation
         end
       end
 
@@ -237,7 +233,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
           subject.play_match! :remove_last_change
           subject.reload
         end
-        it_behaves_like 'a match can start set tiebreaker'
+        it_behaves_like 'a match can start set tiebreak'
       end
     end
   end
@@ -266,41 +262,41 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
     end
   end
 
-  describe 'match tiebreaker' do
+  describe 'match tiebreak' do
     subject do
       FactoryGirl.build(:play_singles_match,
                         scoring: :two_six_game_ten_point, scores: [[6, 0], [0, 6]])
     end
 
-    it_behaves_like 'a match can start match tiebreaker'
+    it_behaves_like 'a match can start match tiebreak'
 
     context 'start ' do
-      before { subject.play_match! :start_match_tiebreaker }
+      before { subject.play_match! :start_match_tiebreak }
 
-      it_behaves_like 'a match in match tiebreaker'
+      it_behaves_like 'a match in match tiebreak'
 
       context 'win with player' do
         before do
-          subject.play_match! :win_match_tiebreaker, opponent: subject.first_team
+          subject.play_match! :win_match_tiebreak, opponent: subject.first_team
         end
 
         it_behaves_like 'a match complete'
 
         context 'remove last change' do
           before { subject.play_match! :remove_last_change }
-          it_behaves_like 'a match in match tiebreaker'
+          it_behaves_like 'a match in match tiebreak'
         end
 
         it 'should not win again' do
           expect {
-            subject.play_match! :win_match_tiebreaker, opponent: subject.first_team
+            subject.play_match! :win_match_tiebreak, opponent: subject.first_team
           }.to raise_error Exceptions::InvalidOperation
         end
       end
 
       context 'win without player' do
         it 'should not win' do
-          expect { subject.play_match! :win_match_tiebreaker }.to raise_error Exceptions::UnknownOperation
+          expect { subject.play_match! :win_match_tiebreak }.to raise_error Exceptions::UnknownOperation
         end
       end
 
@@ -309,7 +305,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
           subject.play_match! :remove_last_change
           subject.reload # clears destroyed entities
         end
-        it_behaves_like 'a match can start match tiebreaker'
+        it_behaves_like 'a match can start match tiebreak'
       end
     end
   end
@@ -514,7 +510,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       end
     end
 
-    context 'tiebreaker' do
+    context 'tiebreak' do
       context 'singles' do
         subject do
           FactoryGirl.build(:play_singles_match, scoring: :three_six_game,
@@ -551,7 +547,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
                           scores: [[6, 3], [3, 6], [0, 1]])
       end
       it_behaves_like 'a match with two sets'
-      it_behaves_like 'a match with match tiebreaker'
+      it_behaves_like 'a match with match tiebreak'
       it_behaves_like 'a match with six game sets'
     end
 

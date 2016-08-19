@@ -85,7 +85,7 @@ module MatchPlayHelpers
     # Then, will complete the match if enough sets have been won.
     def complete!
       complete_set_play! if complete_set_play?
-      complete_match_tiebreaker! if complete_match_tiebreaker?
+      complete_match_tiebreak! if complete_match_tiebreak?
       complete_play! if complete_play?
     end
 
@@ -100,30 +100,30 @@ module MatchPlayHelpers
       game
     end
 
-    # Start a tiebreaker at the end of a set.
-    def start_tiebreaker?
-      start_next_helper.start_tiebreaker?
+    # Start a tiebreak at the end of a set.
+    def start_tiebreak?
+      start_next_helper.start_tiebreak?
     end
 
-    def start_tiebreaker!
-      unless start_tiebreaker?
-        raise Exceptions::InvalidOperation, 'can\'t start tiebreaker'
+    def start_tiebreak!
+      unless start_tiebreak?
+        raise Exceptions::InvalidOperation, 'can\'t start tiebreak'
       end
-      game = start_next_helper.start_tiebreaker
+      game = start_next_helper.start_tiebreak
       game.save!
       game
     end
 
-    # Win a tiebreaker.  The winning team must be provided.
-    def win_tiebreaker?
-      complete_current_helper.win_tiebreaker?
+    # Win a tiebreak.  The winning team must be provided.
+    def win_tiebreak?
+      complete_current_helper.win_tiebreak?
     end
 
-    def win_tiebreaker!(team)
-      unless win_tiebreaker?
-        raise Exceptions::InvalidOperation, 'can\'t win tiebreaker'
+    def win_tiebreak!(team)
+      unless win_tiebreak?
+        raise Exceptions::InvalidOperation, 'can\'t win tiebreak'
       end
-      game = complete_current_helper.win_tiebreaker team
+      game = complete_current_helper.win_tiebreak team
       game.save!
       complete!
       game
@@ -135,58 +135,55 @@ module MatchPlayHelpers
     end
 
     def complete_set_play!
-      unless complete_set_play?
-        raise Exceptions::InvalidOperation,
-              "Can\'t complete set #{match.match_sets.count}"
+      if complete_set_play?
+        last_set_var = match.last_set
+        last_set_var.team_winner = last_set_var.compute_team_winner
+        last_set_var.save!
       end
-      last_set_var = match.last_set
-      last_set_var.team_winner = last_set_var.compute_team_winner
-      last_set_var.save!
     end
 
-    # Start a match tiebreaker.  A match tiebreaker can be
+    # Start a match tiebreak.  A match tiebreak can be
     # created after each player has won an equal number of sets.
-    def start_match_tiebreaker?
-      start_next_helper.start_match_tiebreaker?
+    def start_match_tiebreak?
+      start_next_helper.start_match_tiebreak?
     end
 
-    def start_match_tiebreaker!
-      unless start_match_tiebreaker?
-        raise Exceptions::InvalidOperation, 'Can\'t start match tiebreaker'
+    def start_match_tiebreak!
+      unless start_match_tiebreak?
+        raise Exceptions::InvalidOperation, 'Can\'t start match tiebreak'
       end
       set = create_new_set
       set.save!
-      game = start_next_helper.start_tiebreaker
+      game = start_next_helper.start_tiebreak
       game.save!
     end
 
-    # Win the match tiebreaker.
-    def win_match_tiebreaker?
-      complete_current_helper.win_match_tiebreaker?
+    # Win the match tiebreak.
+    def win_match_tiebreak?
+      complete_current_helper.win_match_tiebreak?
     end
 
-    def win_match_tiebreaker!(team)
-      unless win_match_tiebreaker?
-        raise Exceptions::InvalidOperation, 'Can\'t win match tiebreaker'
+    def win_match_tiebreak!(team)
+      unless win_match_tiebreak?
+        raise Exceptions::InvalidOperation, 'Can\'t win match tiebreak'
       end
-      game = complete_current_helper.win_match_tiebreaker team
+      game = complete_current_helper.win_match_tiebreak team
       game.save!
       complete!
       game
     end
 
-    # Complete match tiebreaker.
-    def complete_match_tiebreaker?
-      complete_current_helper.complete_match_tiebreaker?
+    # Complete match tiebreak.
+    def complete_match_tiebreak?
+      complete_current_helper.complete_match_tiebreak?
     end
 
-    def complete_match_tiebreaker!
-      unless complete_match_tiebreaker?
-        raise Exceptions::InvalidOperation, 'Can\'t complete match tiebreaker'
+    def complete_match_tiebreak!
+      if complete_match_tiebreak?
+        last_set_var = match.last_set
+        last_set_var.team_winner = last_set_var.compute_team_winner
+        last_set_var.save!
       end
-      last_set_var = match.last_set
-      last_set_var.team_winner = last_set_var.compute_team_winner
-      last_set_var.save!
     end
 
     # Complete the match.
@@ -204,10 +201,15 @@ module MatchPlayHelpers
     end
 
     def complete_play!
-      unless complete_play?
-        raise Exceptions::InvalidOperation, 'Can\'t complete play'
+      if complete_play?
+        if match.min_sets_to_play == 1
+          last_set_var = match.last_set
+          last_set_var.team_winner = last_set_var.compute_team_winner
+          last_set_var.save!
+        end
+        match.team_winner = match.compute_team_winner
+        match.save!
       end
-      update_complete_play!
     end
 
     # Discard all of the match scoring.
@@ -220,19 +222,6 @@ module MatchPlayHelpers
         raise Exceptions::InvalidOperation, 'Can\'t discard play'
       end
       update_discard_play!
-    end
-
-    # Return match to state after match started.
-    def restart_play!
-      unless restart_play?
-        raise Exceptions::InvalidOperation, 'Can\'t restart play'
-      end
-      update_discard_play!
-      update_start_play!
-    end
-
-    def restart_play?
-      match.started
     end
 
     # Back out one scoring operation.
@@ -267,11 +256,6 @@ module MatchPlayHelpers
       match.save!
     end
 
-    # def update_start_set!
-    #   set = create_new_set
-    #   set.save!
-    # end
-
     def update_start_play!
       match.started = true
       match.save!
@@ -302,16 +286,6 @@ module MatchPlayHelpers
       game
     end
 
-    def update_complete_play!
-      if match.min_sets_to_play == 1
-        last_set_var = match.last_set
-        last_set_var.team_winner = last_set_var.compute_team_winner
-        last_set_var.save!
-      end
-      match.team_winner = match.compute_team_winner
-      match.save!
-    end
-
     def start_next_helper
       @start_next_helper ||= StartNext.new(match)
     end
@@ -323,11 +297,11 @@ module MatchPlayHelpers
     def play_methods_table
       unless @methods
         @methods = {}
-        syms = [:start_play, :restart_play,
+        syms = [:start_play,
                 :discard_play, :start_set,
-                :start_game, :start_tiebreaker, :remove_last_change,
-                :start_match_tiebreaker,
-                :win_game, :win_tiebreaker, :win_match_tiebreaker]
+                :start_game, :start_tiebreak, :remove_last_change,
+                :start_match_tiebreak,
+                :win_game, :win_tiebreak, :win_match_tiebreak]
         syms.each do |sym|
           @methods[sym] =
             {
@@ -336,7 +310,7 @@ module MatchPlayHelpers
             }
         end
 
-        [:win_game, :win_tiebreaker, :win_match_tiebreaker].each do |sym|
+        [:win_game, :win_tiebreak, :win_match_tiebreak].each do |sym|
           # Methods with team parameter
           @methods[sym][:exec] = lambda do |options|
             team = team_from_options options if options
@@ -469,7 +443,7 @@ module MatchPlayHelpers
       end
     end
 
-    # Helper class to start games, tiebreakers, sets, and match tiebreakers
+    # Helper class to start games, tiebreaks, sets, and match tiebreaks
     class StartNext
       def initialize(match)
         @match = match
@@ -481,24 +455,24 @@ module MatchPlayHelpers
         start_game_kind? :game
       end
 
-      def start_tiebreaker?
-        start_game_kind? :tiebreaker
+      def start_tiebreak?
+        start_game_kind? :tiebreak
       end
 
       def start_set?
         start_set_kind? :set
       end
 
-      def start_match_tiebreaker?
-        start_set_kind? :tiebreaker
+      def start_match_tiebreak?
+        start_set_kind? :tiebreak
       end
 
       def start_game
         start_game_kind :game
       end
 
-      def start_tiebreaker
-        start_game_kind :tiebreaker
+      def start_tiebreak
+        start_game_kind :tiebreak
       end
 
       private
@@ -507,8 +481,8 @@ module MatchPlayHelpers
         last_set_var = match.last_set
         if last_set_var && last_set_var.state == :in_progress &&
           no_game_in_progress(last_set_var)
-          (kind == :tiebreaker) ==
-            last_set_var.tiebreaker_game?(last_set_var.set_games.count + 1)
+          (kind == :tiebreak) ==
+            last_set_var.tiebreak_game?(last_set_var.set_games.count + 1)
         end
       end
 
@@ -520,8 +494,8 @@ module MatchPlayHelpers
       def start_set_kind?(kind)
         last_set_var = match.last_set
         if match.state == :in_progress && no_set_in_progress?(last_set_var)
-          (kind == :tiebreaker) ==
-            match.tiebreaker_set?(match.match_sets.count + 1)
+          (kind == :tiebreak) ==
+            match.tiebreak_set?(match.match_sets.count + 1)
         end
       end
 
@@ -533,8 +507,8 @@ module MatchPlayHelpers
         last_set_var = match.last_set
         raise Exceptions::InvalidOperation, 'No set' unless last_set_var
         game = SetGame.new(ordinal: match.next_game_ordinal,
-                           tiebreaker: kind == :tiebreaker)
-        assign_game_server(game) unless game.tiebreaker
+                           tiebreaker: kind == :tiebreak)
+        assign_game_server(game) unless game.tiebreak?
         last_set_var.set_games << game
         game
       end
@@ -562,9 +536,9 @@ module MatchPlayHelpers
         # Once the first server(s) are known, the server for a
         # particular game can be calculated.
         def next_player_server
-          # Count total games, ignoring tiebreakers
+          # Count total games, ignoring tiebreaks
           games_played = match.set_games.all.reduce(0) do |sum, game|
-            sum + (game.tiebreaker ? 0 : 1)
+            sum + (game.tiebreak? ? 0 : 1)
           end
           if match.doubles
             next_doubles_server games_played
@@ -619,7 +593,7 @@ module MatchPlayHelpers
 
     end
 
-    # Helper class to complete games, tiebreakers, sets and match tiebreakers
+    # Helper class to complete games, tiebreaks, sets and match tiebreaks
     class CompleteCurrent
       def initialize(match)
         @match = match
@@ -631,34 +605,34 @@ module MatchPlayHelpers
         win_game_kind? :game
       end
 
-      def win_tiebreaker?
+      def win_tiebreak?
         # last_set_var = match.last_set
-        # last_set_var && !last_set_var.tiebreaker? &&
-        win_game_kind?(:tiebreaker)
+        # last_set_var && !last_set_var.tiebreak? &&
+        win_game_kind?(:tiebreak)
       end
 
       def complete_set?
         complete_set_kind? :set unless match.min_sets_to_play == 1
       end
 
-      def complete_match_tiebreaker?
-        complete_set_kind? :tiebreaker
+      def complete_match_tiebreak?
+        complete_set_kind? :tiebreak
       end
 
-      def win_match_tiebreaker?
-        win_game_kind?(:match_tiebreaker)
+      def win_match_tiebreak?
+        win_game_kind?(:match_tiebreak)
       end
 
-      def win_tiebreaker(team)
-        win_game_kind team, :tiebreaker
+      def win_tiebreak(team)
+        win_game_kind team, :tiebreak
       end
 
       def win_game(team)
         win_game_kind team, :game
       end
 
-      def win_match_tiebreaker(team)
-        win_game_kind team, :match_tiebreaker
+      def win_match_tiebreak(team)
+        win_game_kind team, :match_tiebreak
       end
 
       attr_reader :match
@@ -668,10 +642,10 @@ module MatchPlayHelpers
           last_set_var = match.last_set
           last_game = last_set_var.last_game if last_set_var
           if last_game && last_game.state == :in_progress
-            if last_set_var.tiebreaker?
-              (kind == :match_tiebreaker)
-            elsif last_game.tiebreaker?
-              (kind == :tiebreaker)
+            if last_set_var.tiebreak?
+              (kind == :match_tiebreak)
+            elsif last_game.tiebreak?
+              (kind == :tiebreak)
             else
               kind == :game
             end
@@ -683,8 +657,8 @@ module MatchPlayHelpers
         last_set_var = match.last_set
         last_set_finished = last_set_var && last_set_var.compute_team_winner
         if last_set_finished
-          tiebreaker = last_set_var.tiebreaker?
-          (kind == :tiebreaker) == tiebreaker
+          tiebreak = last_set_var.tiebreak?
+          (kind == :tiebreak) == tiebreak
         end
       end
 
@@ -693,10 +667,10 @@ module MatchPlayHelpers
         raise Exceptions::NotFound, 'Set not found' unless last_set_var
         game = last_set_var.last_game
         raise Exceptions::NotFound, 'Game not found' unless game
-        valid_kind = if last_set_var.tiebreaker?
-                       kind == :match_tiebreaker
-                     elsif game.tiebreaker?
-                       kind == :tiebreaker
+        valid_kind = if last_set_var.tiebreak?
+                       kind == :match_tiebreak
+                     elsif game.tiebreak?
+                       kind == :tiebreak
                      else
                        kind == :game
                      end

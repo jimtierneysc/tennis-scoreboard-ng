@@ -2,7 +2,7 @@
 # #
 # A set may has a state: in progress and complete.
 #
-# A match tiebreaker is a special kind of set with only one game.
+# A match tiebreak is a special kind of set with only one game.
 #
 # A set has an ordinal.  The first set in the match has ordinal 1.
 #
@@ -69,13 +69,13 @@ class MatchSet < ActiveRecord::Base
     end
   end
 
-  def tiebreaker?
+  def tiebreak?
     scoring.to_sym == :ten_point
   end
 
-  def tiebreaker_game?(game_ordinal)
-    tiebreaker_ordinal = (win_threshold == 1) ? 1 : win_threshold * 2 + 1
-    game_ordinal == tiebreaker_ordinal
+  def tiebreak_game?(game_ordinal)
+    tiebreak_ordinal = (win_threshold == 1) ? 1 : win_threshold * 2 + 1
+    game_ordinal == tiebreak_ordinal
   end
 
   # Notification to clear cached values
@@ -108,8 +108,8 @@ class MatchSet < ActiveRecord::Base
     minmax = [first_team_wins, second_team_wins].minmax
     win_by_two = (first_team_wins - second_team_wins).abs >= 2 &&
       minmax[1] >= threshold
-    win_tiebreaker = minmax == [threshold, threshold + 1]
-    win_by_two || win_tiebreaker
+    win_tiebreak = minmax == [threshold, threshold + 1]
+    win_by_two || win_tiebreak
   end
 
   def lookup_games_won

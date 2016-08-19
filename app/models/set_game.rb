@@ -6,9 +6,9 @@
 #
 # A game may have a winning team
 #
-# A tiebreaker is a special kind of game that occurs at the end of a set.
+# A tiebreak is a special kind of game that occurs at the end of a set.
 #
-# Normal games have a serving player.  Tiebreakers do not have a serving player.
+# Normal games have a serving player.  Tiebreaks do not have a serving player.
 #
 class SetGame < ActiveRecord::Base
   belongs_to :match_set
@@ -24,7 +24,7 @@ class SetGame < ActiveRecord::Base
     team_winner_id ? :finished : :in_progress
   end
 
-  def tiebreaker?
+  def tiebreak?
     tiebreaker
   end
 end
