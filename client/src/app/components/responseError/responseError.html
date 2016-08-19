@@ -1,0 +1,13 @@
+<h4>
+  An error occurred when requesting data
+</h4>
+<dl>
+  <dt>Code</dt>
+  <dd>{{vm.status()}}</dd>
+  <dt>Status</dt>
+  <dd>{{vm.statusText()}}</dd>
+  <dt ng-if="vm.hasMessage()">Message</dt>
+  <dd ng-if="vm.hasMessage()">{{vm.message()}}</dd>
+</dl>
+
+

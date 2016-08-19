@@ -3,16 +3,10 @@
 </div>
 
 <div ng-if="failed">
-  <h4>
-    An error occurred when requesting data
-  </h4>
-  <dl>
-    <dt>Code</dt>
-    <dd>{{error.status}}</dd>
-    <dt>Status</dt>
-    <dd>{{error.statusText}}</dd>
-    <dt ng-show="error.data">Message</dt>
-    <dd ng-show="error.data">{{error.data}}</dd>
-  </dl>
+  <fe-response-error
+    error="error"
+  >
+  </fe-response-error>
 </div>
+
 
