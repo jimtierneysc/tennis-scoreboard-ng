@@ -287,6 +287,75 @@
         });
       });
 
+
+      describe('inserted short names', function () {
+        var names = [];
+        var expected = [];
+        for(var i=0; i<4; i++) {
+          names.push('First' + i + ' ' + 'Last' + i);
+          expected.push('First' + i + ' L.');
+        }
+        var singles = {
+          doubles: false,
+          first_player: {name: names[0]},
+          second_player: {name: names[1]}
+        };
+        var doubles = {
+          doubles: true,
+          first_team: {
+            first_player: {name: names[0]},
+            second_player: {name: names[1]}
+          },
+          second_team: {
+            first_player: {name: names[2]},
+            second_player: {name: names[3]}
+          }
+        };
+
+        describe('singles', function () {
+          var result;
+          beforeEach(function () {
+            result = angular.copy(singles);
+            service.prepare(result);
+          });
+
+          it('should shorten first player name', function () {
+            expect(result.first_player.shortName).toEqual(expected[0]);
+          });
+
+          it('should shorten second player name', function () {
+            expect(result.second_player.shortName).toEqual(expected[1]);
+          });
+
+        });
+
+        describe('doubles', function () {
+          var result;
+          beforeEach(function () {
+            result = angular.copy(doubles);
+            service.prepare(result);
+          });
+
+          it('should shorten first player name', function () {
+            expect(result.first_team.first_player.shortName).toEqual(expected[0]);
+          });
+
+          it('should shorten second player name', function () {
+            expect(result.first_team.second_player.shortName).toEqual(expected[1]);
+          });
+
+          it('should shorten third player name', function () {
+            expect(result.second_team.first_player.shortName).toEqual(expected[2]);
+          });
+
+          it('should shorten fourth player name', function () {
+            expect(result.second_team.second_player.shortName).toEqual(expected[3]);
+          });
+        });
+
+      });
+
+
       describe('inserted scores', function () {
         var singles = {
           doubles: false,
@@ -431,7 +500,7 @@
             sets: [
               {
                 games: [
-                  {}, {}, {tiebreaker: true}]
+                  {}, {}, {tiebreak: true}]
               }
             ],
             actions: {}
@@ -457,7 +526,7 @@
           var sample = {
             sets: [
               {}, {}, {}, {}, {},
-              {tiebreaker: true}
+              {tiebreak: true}
             ]
           };
 
@@ -494,14 +563,14 @@
             set: sampleScores.sets[0]
           };
 
-          var expectNewTiebreaker = {
+          var expectNewTiebreak = {
             title: 'Tiebreak',
             set: sampleScores.sets[0]
           };
 
           var actions = {
             start_game: expectNewGame,
-            start_tiebreaker: expectNewTiebreaker,
+            start_tiebreaker: expectNewTiebreak,
             win_game: null
           };
 
@@ -664,13 +733,13 @@
           var expectNewSet = {
             title: '2nd'
           };
-          var expectNewTiebreaker = {
+          var expectNewTiebreak = {
             title: 'Tiebreak'
           };
 
           var actions = {
             start_set: expectNewSet,
-            start_match_tiebreaker: expectNewTiebreaker,
+            start_match_tiebreaker: expectNewTiebreak,
             win_game: null
           };
 

@@ -14,11 +14,11 @@
     .factory('scoreboardPrep', factory);
 
   /** @ngInject */
-  function factory($timeout) {
+  function factory($timeout, shortenName) {
 
     return {
       prepare: function (sb) {
-        prep(sb, $timeout);
+        prep(sb, shortenName);
         return sb;
       },
       hideAndShowData: function(sb, action, param) {
@@ -30,7 +30,7 @@
   // Add various properties to the scoreboard object in order to make it easier to write client
   // code and markup to display and alter the score.
 
-  function prep(sb) {
+  function prep(sb, shortenName) {
 
     var tieBreakTitle = 'Tiebreak';
     var setsTitles = [
@@ -56,6 +56,7 @@
     insertScores(sb.opponents);
     insertFirsts();
     insertTitles();
+    insertShortNames();
     sb.startingSetOrMatch = context.startingSetOrMatch;
     sb.currentGame = currentGame();
     sb.previousGame = previousGame();
@@ -74,10 +75,10 @@
     }
 
     function insertNew() {
-      if (context.inNewSet || context.inNewMatchTiebreaker) {
+      if (context.inNewSet || context.inNewMatchTiebreak) {
         sb.sets.push(newSet());
       }
-      if (context.inNewGame || context.inTiebreaker) {
+      if (context.inNewGame || context.inTiebreak) {
         var lastSet = sb.sets[sb.sets.length - 1];
         lastSet.games.push(newGame());
       }
@@ -88,16 +89,16 @@
           newSet: true,
           games: []
         };
-        if (context.inNewMatchTiebreaker)
-          result.tiebreaker = true;
+        if (context.inNewMatchTiebreak)
+          result.tiebreak = true;
         return result;
       }
 
       // Create newGame object  if a game is starting
       function newGame() {
         var result = {newGame: true};
-        if (context.inTiebreaker)
-          result.tiebreaker = true;
+        if (context.inTiebreak)
+          result.tiebreak = true;
 
         return result;
       }
@@ -129,11 +130,11 @@
     function collectSetAndGames() {
       var result = {
         lastGame: null,
-        lastGameOrTiebreaker: null,
-        prevGameOrTiebreaker: null,
+        lastGameOrTiebreak: null,
+        prevGameOrTiebreak: null,
         lastSet: null,
         prevSet: null,
-        lastGames: [],
+        lastGames: []
       };
 
       var lastGame = null;
@@ -148,12 +149,12 @@
           winner = false;
         },
         function (game) {
-          if (!game.tiebreaker) {
+          if (!game.tiebreak) {
             lastGame = game;
             lastGameInSet = game;
           }
-          result.prevGameOrTiebreaker = result.lastGameOrTiebreaker;
-          result.lastGameOrTiebreaker = game;
+          result.prevGameOrTiebreak = result.lastGameOrTiebreak;
+          result.lastGameOrTiebreak = game;
           winner = winner || game.winner;
         },
         function (set) {
@@ -207,14 +208,14 @@
       }
 
       function insertSetTitle(set, ordinal) {
-        if (set.tiebreaker)
+        if (set.tiebreak)
           set.title = tieBreakTitle;
         else
           set.title = setsTitles[ordinal - 1];
       }
 
       function insertGameTitle(game, ordinal) {
-        if (game.tiebreaker)
+        if (game.tiebreak)
           game.title = tieBreakTitle;
         else {
           game.title = ordinal.toString();
@@ -241,7 +242,7 @@
           setScorePair = [0, 0];
           incScore(matchScorePair, set.winner);
           if (set.scoring == 'ten_point')
-            set.tiebreaker = true;
+            set.tiebreak = true;
         },
         function (game) {
           incScore(setScorePair, game.winner);
@@ -270,6 +271,28 @@
       );
     }
 
+    function insertShortNames() {
+      if (sb.doubles) {
+        insertNames(sb.first_team);
+        insertNames(sb.second_team)
+      } else {
+        insertName(sb.first_player);
+        insertName(sb.second_player);
+      }
+
+      function insertName(player) {
+        if (player)
+          player.shortName = shortenName(player.name);
+      }
+
+      function insertNames(team) {
+        if (team) {
+          insertName(team.first_player);
+          insertName(team.second_player);
+        }
+      }
+    }
+
     function actionContext() {
       var result = {};
 
@@ -283,11 +306,11 @@
         if (sb.actions.start_game)
           result.inNewGame = true;
         if (sb.actions.start_tiebreaker)
-          result.inTiebreaker = true;
+          result.inTiebreak = true;
         if (sb.actions.start_set)
           result.inNewSet = true;
         if (sb.actions.start_match_tiebreaker)
-          result.inNewMatchTiebreaker = true;
+          result.inNewMatchTiebreak = true;
         if (sb.actions.start_play || sb.actions.start_set || sb.actions.start_match_tiebreaker)
           result.startingSetOrMatch = true;
       }
@@ -296,14 +319,14 @@
 
     function currentGame() {
       if (context.playingGame || context.startingGame)
-        return setsAndGames.lastGameOrTiebreaker;
+        return setsAndGames.lastGameOrTiebreak;
     }
 
     function previousGame() {
       if (context.playingGame || context.startingGame)
-        return setsAndGames.prevGameOrTiebreaker;
+        return setsAndGames.prevGameOrTiebreak;
       else
-        return setsAndGames.lastGameOrTiebreaker;
+        return setsAndGames.lastGameOrTiebreak;
     }
 
     function currentSet() {
