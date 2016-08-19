@@ -261,7 +261,6 @@
         it('should have ignored second update', function () {
           expect(mockResource.lastAction()).toEqual('first_action')
         });
-
       });
 
       describe('with param', function () {

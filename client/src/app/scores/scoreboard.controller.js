@@ -17,7 +17,7 @@
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, toastrHelper, $q,
                       scoreboardPrep, $timeout, animationIntervals,
-                      toggleClass, response) {
+                      response) {
     var vm = this;
     var updating = false;
 
@@ -41,7 +41,7 @@
       loadingHelper(vm);
       toastrHelper(vm, $scope);
 
-      if (angular.isDefined(response.id)) {
+      if (response.id) {
         applyResponseToScoreboard(response);
         vm.loadingHasCompleted();
       }
@@ -83,28 +83,22 @@
 
       if (updating)  // Prevent re-enter
         return;
-
-      var winAction = action.startsWith('win');
       var update = {
         action: action,
         param: param
-        // changeGameScore: winAction,
-        // changeLeftmost: param == 0,
-        // changeMatchScore: function () {
-        //   return winAction &&
-        //     (!vm.scoreboard.currentSet && vm.scoreboard.previousSet && vm.scoreboard.previousSet.winner);
-        // }
       };
 
       var promise = postUpdate(action, param);
+      updating = true;
       vm.view.animateScoreboardChanges(update, promise,
         function (response) {
-          updating = false;
           applyResponseToScoreboard(response);
         },
         function (response) {
-          updating = false;
           showError(response);
+        },
+        function() {
+          updating = false;
         });
 
     }
@@ -153,9 +147,9 @@
     function applyResponseToScoreboard(response) {
       var sb = response;
       if (sb.errors && !angular.equals({}, sb.errors)) {
-        var errors = errorsMapper(sb.errors, null);
+        var errors = errorsMapper(sb.errors);
         var message = 'Unable to update score';
-        if (angular.isDefined(errors.other[0]))
+        if (errors.other[0])
           message = errors.other[0];
         vm.showToast(message)
       }
@@ -275,7 +269,7 @@
         }
       }
 
-      function animateScoreboardChanges(update, promise, accept, reject) {
+      function animateScoreboardChanges(update, promise, accept, reject, final) {
 
         if (noAnimations) {
           promise.then(
@@ -285,13 +279,12 @@
             function (response) {
               reject(response);
             }
-          );
+          ).finally(final);
         }
         else {
 
           // Allow time for old data to hide
-          var timerPromise = $timeout(function () {
-          }, animationIntervals.out);
+          var timerPromise = $timeout(animationIntervals.out);
 
           // Promise to wait until time has passed and post has finished
           var all = $q.all({timer: timerPromise, post: promise});
@@ -328,7 +321,7 @@
             function (response) {
               reject(response);
               hideAndShow.stopHideAndShow();
-            });
+            }).finally(final);
         }
       }
     }

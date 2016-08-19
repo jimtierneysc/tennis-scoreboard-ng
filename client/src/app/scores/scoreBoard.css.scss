@@ -50,6 +50,12 @@ div.score-panel .score-progress {
   overflow: hidden;
 }
 
+div.score-panel .score-progress .progress-left {
+  width: -moz-calc(100% - 120px);
+  width: -webkit-calc(100% - 120px);
+  width: calc(100% - 120px);
+}
+
 div.score-panel-spacing {
   height: 15px;
 
@@ -175,7 +181,7 @@ div.player-col-2 {
   filter: fliph; /*IE*/
 }
 
-// Display set and match winner score in circle
+// Display a score in a green ellipse
 th.score-col-2 span.winner-text {
   display: inline-block;
   padding: 4px;
@@ -206,6 +212,21 @@ th.score-col-2.set {
 .glyphicon-none:before {
   content: "\2122";
   color: transparent !important;
+}
+
+@mixin current-server {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+div.current-server-left {
+  @include current-server;
+  text-align: right;
+}
+
+div.current-server-right {
+  @include current-server;
+  text-align: left;
 }
 
 // Custom grid sizes
