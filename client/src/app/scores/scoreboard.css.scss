@@ -13,7 +13,6 @@ $col_3_min_width: 240px;
 
 $score_color: green;
 $side_margin: 60px;
-$menu_width: 20px;
 
 @mixin center-cell {
   text-align: center;
@@ -21,84 +20,87 @@ $menu_width: 20px;
 }
 
 // Default to maximum size
-th.score-col-1 {
+.score-col-1 {
   width: $col_1_width;
   @include center-cell;
 }
 
-th.score-col-2 {
+.score-col-2 {
   width: $col_2_width;
   @include center-cell;
 }
 
-th.score-col-3 {
+.score-col-3 {
   width: $col_3_width;
   @include center-cell;
 }
 
-div.score-panel table {
+.score-panel table {
   table-layout: fixed;
 }
 
-div.score-panel {
+.score-panel {
   width: $table_width;
 }
 
-div.score-panel .score-progress {
+.score-progress {
   // container for button and two lines of text
   height: 3em;
   overflow: hidden;
 }
 
-div.score-panel .score-progress .progress-left {
+.score-progress-left {
   width: -moz-calc(100% - 120px);
   width: -webkit-calc(100% - 120px);
   width: calc(100% - 120px);
 }
 
-div.score-panel-spacing {
+.score-panel-spacing {
   height: 15px;
-
 }
 
-div.score-panel.details .panel-body {
+.score-panel-details .panel-body {
   padding: 8px 12px 0 12px;
 }
 
-div.score-panel.details {
+.score-panel-details {
   margin-bottom: 0;
 }
 
-div.score-menu {
+.score-menu {
   margin-top: .5em;
-  //width: 100px;
 }
 
-div.score-select-list {
+.score-select-list {
   width: -moz-calc(100% - 60px);
   width: -webkit-calc(100% - 60px);
   width: calc(100% - 60px);
 }
 
-th.score-col-3.contains-button,
-th.score-col-2.contains-button {
+.score-em {
+  //font-style: italic;
+  font-weight: normal;
+}
+
+// Score column with button
+.score-col-contains-button {
   height: 3.2em;
 }
 
 // override with proportional sizing
 @media only screen and (max-width: $table_width + $side_margin) {
-  table.score-panel, div.score-panel {
+  .score-panel {
     width: 100%;
   }
-  th.score-col-1 {
+  .score-col-1 {
     width: 20%;
   }
 
-  th.score-col-2 {
+  .score-col-2 {
     width: 40%;
   }
 
-  th.score-col-3 {
+  .score-col-3 {
     width: 80%;
   }
 
@@ -106,18 +108,18 @@ th.score-col-2.contains-button {
 
 // override with minumum size
 @media only screen and (max-width: $table_min_width + $side_margin) {
-  div.score-panel, table.score-panel {
+  .score-panel {
     width: $table_min_width;
   }
-  th.score-col-1 {
+  .score-col-1 {
     width: $col_1_min_width;
   }
 
-  th.score-col-2 {
+  .score-col-2 {
     width: $col_2_min_width;
   }
 
-  th.score-col-3 {
+  .score-col-3 {
     width: $col_3_min_width;
   }
 
@@ -136,38 +138,34 @@ th.score-col-2.contains-button {
   padding-right: 0px;
 }
 
-//.hide-overflow {
-//  @include hide-overflow;
-//}
-
-div.game-col-3 {
+.game-col-3 {
   @include hide-overflow-padding;
   color: $score_color;
   text-align: left;
 }
 
-div.game-col-1 {
+.game-col-1 {
   @include hide-overflow-padding;
   color: $score_color;
   text-align: right;
 }
 
-div.game-col-2 {
+.game-col-2 {
   @include hide-overflow-padding;
   color: $score_color;
 }
 
-div.player-col-3 {
+.player-col-3 {
   @include hide-overflow-padding;
   text-align: left;
 }
 
-div.player-col-1 {
+.player-col-1 {
   @include hide-overflow-padding;
   text-align: right;
 }
 
-div.player-col-2 {
+.player-col-2 {
   @include hide-overflow-padding;
 }
 
@@ -182,7 +180,7 @@ div.player-col-2 {
 }
 
 // Display a score in a green ellipse
-th.score-col-2 span.winner-text {
+.score-col-2 .winner-text {
   display: inline-block;
   padding: 4px;
   line-height: 100%;
@@ -195,8 +193,8 @@ th.score-col-2 span.winner-text {
 }
 
 // Prevent circle from increasing height of row
-th.score-col-2.match,
-th.score-col-2.set {
+.score-col-2.match,
+.score-col-2.set {
   padding: 0;
 }
 
@@ -214,44 +212,24 @@ th.score-col-2.set {
   color: transparent !important;
 }
 
-@mixin current-server {
-  padding-right: 0;
-  padding-left: 0;
-}
 
+// Show glyphs to side of player name
 div.current-server-left {
-  @include current-server;
   text-align: right;
+  padding-right: 4px;
 }
 
 div.current-server-right {
-  @include current-server;
+  padding-left: 4px;
   text-align: left;
 }
 
 // Custom grid sizes
-
-.col-xs-2-4 {
-  @include make-xs-column(2.4)
-}
-
-.col-xs-9-6 {
-  @include make-xs-column(9.6)
-}
-
 .col-xs-2-7 {
   @include make-xs-column(2.7)
 }
 
 .col-xs-6-6 {
   @include make-xs-column(6.6)
-}
-
-.col-xs-4-8 {
-  @include make-xs-column(4.8)
-}
-
-.col-xs-7-2 {
-  @include make-xs-column(7.2)
 }
 
