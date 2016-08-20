@@ -2,18 +2,14 @@
  Display a message on a score table row.  Message is shown following the score rather than
  when keeping score.
  -->
-<div ng-if="scores.actions.win_game">
-  Game {{scores.currentGame.title}} in progress
-</div>
-<div ng-if="scores.actions.win_tiebreaker">
+<em class="score-em">
+<span ng-if="scores.actions.win_game">
+  Game in progress
+</span>
+<span ng-if="scores.actions.win_tiebreak">
   Tiebreak in progress
-</div>
-<div ng-if="scores.actions.win_match_tiebreaker">
+</span>
+<span ng-if="scores.actions.win_match_tiebreak">
   Match tiebreak in progress
-</div>
-<div ng-if="scores.actions.start_game">
-  Game {{scores.currentGame.title}} has not started
-</div>
-<div ng-if="scores.actions.start_tiebreaker">
-  Waiting for tiebreak to start
-</div>
+</span>
+</em>

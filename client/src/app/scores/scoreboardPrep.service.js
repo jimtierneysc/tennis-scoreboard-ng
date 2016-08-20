@@ -21,7 +21,7 @@
         prep(sb, shortenName);
         return sb;
       },
-      hideAndShowData: function(sb, action, param) {
+      hideAndShowData: function (sb, action, param) {
         return new HideAndShowData(sb, action, param, $timeout);
       }
     }
@@ -62,6 +62,7 @@
     sb.previousGame = previousGame();
     sb.currentSet = currentSet();
     sb.previousSet = previousSet();
+    sb.hasCompletedGames = hasCompletedGames();
     sb.firstServers = null;
     if (sb.currentGame && sb.currentGame.newGame) {
       var list = listFirstServers();
@@ -299,22 +300,29 @@
       if (sb.state != 'not_started' && sb.state != 'complete')
         result.playingMatch = true;
       if (sb.actions) {
-        if (sb.actions.start_game || sb.actions.start_tiebreaker)
+        if (sb.actions.start_game || sb.actions.start_tiebreak)
           result.startingGame = true;
-        else if (sb.actions.win_game || sb.actions.win_tiebreaker || sb.actions.win_match_tiebreaker)
+        else if (sb.actions.win_game || sb.actions.win_tiebreak || sb.actions.win_match_tiebreak)
           result.playingGame = true;
         if (sb.actions.start_game)
           result.inNewGame = true;
-        if (sb.actions.start_tiebreaker)
+        if (sb.actions.start_tiebreak)
           result.inTiebreak = true;
         if (sb.actions.start_set)
           result.inNewSet = true;
-        if (sb.actions.start_match_tiebreaker)
+        if (sb.actions.start_match_tiebreak)
           result.inNewMatchTiebreak = true;
-        if (sb.actions.start_play || sb.actions.start_set || sb.actions.start_match_tiebreaker)
+        if (sb.actions.start_play || sb.actions.start_set || sb.actions.start_match_tiebreak)
           result.startingSetOrMatch = true;
       }
       return result;
+    }
+
+    function hasCompletedGames() {
+      return [currentGame(), previousGame()].reduce(
+        function (last, game) {
+          return last || (game && game.winner);
+        }, false);
     }
 
     function currentGame() {
@@ -400,12 +408,15 @@
     this.hideNewData = hideNewData;
     this.stopHideAndShow = stopHideAndShow;
     this.showNewData = showNewData;
+    this.hideKeepScore = hideKeepScore;
+    this.showKeepScore = showNewData;
 
 
     function hideOldData() {
       var actionState = new ActionState({oldData: true});
 
       sb.matchFlags.showingProgress = true;
+      sb.matchFlags.showingServer = true;
       if (actionState.winningGame && !actionState.winningSet)
         sb.currentGame.showingTitle = true;
 
@@ -415,6 +426,10 @@
       if (actionState.winningSet)
         sb.matchFlags.showingResult = true;
 
+      if (actionState.startingGame && sb.firstServers) {
+        sb.currentGame.showingServersForm = true;
+      }
+
       // Apply ng-class of elements before hide elements
       $timeout(function () {
         eachDataItem(
@@ -423,7 +438,27 @@
             setHidden(item, true);
           });
       });
+    }
 
+    function hideKeepScore() {
+      sb.matchFlags.showingProgress = true;
+      sb.matchFlags.showingServer = true;
+
+      if (sb.currentGame && sb.currentGame.newGame) {
+        sb.currentGame.showing = true;
+      }
+
+      if (sb.currentGame && !sb.currentGame.winner) {
+        sb.currentGame.showing = true;
+      }
+
+      // Apply ng-class of elements before hide elements
+      $timeout(function () {
+        eachDataItem(
+          function (item) {
+            setHidden(item, true);
+          });
+      });
     }
 
     function hideNewData() {
@@ -431,10 +466,20 @@
       var actionState = new ActionState({oldData: false});
 
       sb.matchFlags.showingProgress = true;
+      sb.matchFlags.showingServer = true;
+
+      if (actionState.startingGame) {
+        sb.currentGame.showingWinButton = true;
+      }
+
+      if (actionState.winningGame && sb.firstServers) {
+        sb.currentGame.showingServersForm = true;
+      }
 
       if (actionState.winningGame && !actionState.winningSet) {
         sb.currentGame.showingTitle = true;
         sb.currentSet.showingResult = true;
+        sb.currentGame.showingStartGameButton = true;
       }
 
       if (actionState.winningSet) {
@@ -485,6 +530,7 @@
       this.winningGame = winningGame(action);
       this.winningSet = data.oldData ? predictWinningSet() : winningSet();
       this.winningMatch = data.oldData ? predictWinningMatch() : winningMatch();
+      this.startingGame = startingGame(action);
       this.startingSet = startingSet(action);
       this.startingMatch = action == 'start_play';
       this.leftmost = winningGame(action) ? param == 0 : undefined;
@@ -513,11 +559,15 @@
       }
 
       function winningGame() {
-        return action.startsWith('win');
+        return action && action.startsWith('win');
       }
 
       function startingSet() {
-        return ['start_set', 'start_match_tiebreaker', 'start_match'].indexOf(action) >= 0;
+        return ['start_set', 'start_match_tiebreak', 'start_match'].indexOf(action) >= 0;
+      }
+
+      function startingGame() {
+        return ['start_game', 'start_tiebreak'].indexOf(action) >= 0;
       }
     }
 
@@ -526,8 +576,16 @@
         item.hiddenResult = value;
       if (item.showingProgress)
         item.hiddenProgress = value;
+      if (item.showingServer)
+        item.hiddenServer = value;
       if (item.showingTitle)
         item.hiddenTitle = value;
+      if (item.showingWinButton)
+        item.hiddenWinButton = value;
+      if (item.showingStartGameButton)
+        item.hiddenStartGameButton = value;
+      if (item.showingServersForm)
+        item.hiddenServersForm = value;
       if (item.showing)
         item.hidden = value;
     }
@@ -535,7 +593,11 @@
     function clearShowing(item) {
       item.showingResult = false;
       item.showingProgress = false;
+      item.showingServer = false;
       item.showingTitle = false;
+      item.showingWinButton = false;
+      item.showingStartGameButton = false;
+      item.showingServersForm = false;
       item.showing = false;
     }
 

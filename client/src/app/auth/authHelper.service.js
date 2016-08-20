@@ -18,7 +18,7 @@
     return activate;
 
     // Initialize controller
-    function activate(vm, scope) {
+    function activate(vm, scope, loggedInChanged) {
       vm.loggedIn = userCredentials.loggedIn;
       vm.userName = userCredentials.userName;
       vm.logOut = function () {
@@ -30,6 +30,10 @@
       userCredentials.subscribeChanged(scope, function () {
         vm.loggedIn = userCredentials.loggedIn;
         vm.userName = userCredentials.userName;
+        if (loggedInChanged) {
+          // Controller can be notified by implementing loggedInChanged()
+          loggedInChanged();
+        }
       });
 
       // Clear credentials on 403 error

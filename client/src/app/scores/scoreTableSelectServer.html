@@ -1,6 +1,7 @@
 <form class="text-left">
   <div class="form-group">
-    <label class="control-label">Select a player to serve game {{scores.currentGame.title}}</label>
+    <!--<label class="control-label score-em">Select a player to serve game {{scores.currentGame.title}}</label>-->
+    <em class="score-em">Select a player to serve game {{scores.currentGame.title}}</em>
     <div class="radio" ng-repeat="player in scores.firstServers.list"
          ng-init="scores.selectServer = scores.firstServers.list[0].id">
       <label>

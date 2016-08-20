@@ -37,7 +37,7 @@
           scoresController.vmScoreboard = null
       });
 
-      authHelper(vm, $scope);
+      authHelper(vm, $scope, vm.view.loggedInChanged);
       loadingHelper(vm);
       toastrHelper(vm, $scope);
 
@@ -49,6 +49,7 @@
         $log.error('data error ' + response.status + " " + response.statusText);
         vm.loadingHasFailed(response);
       }
+      vm.view.ready();
     }
 
     //
@@ -97,12 +98,11 @@
         function (response) {
           showError(response);
         },
-        function() {
+        function () {
           updating = false;
         });
 
     }
-
 
     function postUpdate(action, param) {
       var key = {id: vm.id};
@@ -167,44 +167,106 @@
       var DATANAME = 'scoreboardView';
 
       var view = this; // eslint-disable-line
-      view.changed = storeView;
 
       view.animateScoreboardChanges = animateScoreboardChanges;
       view.updateScore = confirmScoreboardUpdate;
       view.disableAnimations = disableAnimations;
-      view.keepingScore = keepingScore;
       view.toggleShowDescription = toggleShowDescription;
       view.toggleShowGames = toggleShowGames;
       view.toggleKeepScore = toggleKeepScore;
+      view.canShowGame = canShowGame;
+      view.loggedInChanged = loggedInChanged;
+      view.ready = ready;
 
+      // Show hint first time win button is shown
+      view.showWinButtonHint = true;
+
+      view.keepingScore = false;
       view.animate = {
         showGames: false,
-        description: true,
-        playerServing: true,
-        // keepingScore: true
+        description: true
       };
 
       var noAnimations = false;
-      view.localDataName = DATANAME;
-      view.showGames = false;
-      view.keepScore = false;
-      view.showDescription = false;
-      loadView();
+      view.localDataName = function () {
+        return DATANAME;
+      };
+      view.storeSettings = storeSettings;
+      view.settings = {
+        showGames: false,
+        keepScore: false,
+        showDescription: false
+      };
+
+      function ready() {
+        loadSettings();
+        updateKeepingScore();
+      }
+
+      function loggedInChanged() {
+        if (view.settings.keepScore) {
+          animateKeepScore(updateKeepingScore)
+        }
+        else {
+          updateKeepingScore();
+        }
+      }
+
+      function updateKeepingScore() {
+        view.keepingScore = vm.loggedIn && view.settings.keepScore;
+      }
 
       function disableAnimations() {
         noAnimations = true;
       }
 
-      function keepingScore() {
-        return vm.loggedIn && view.keepScore;
-      }
-
       function toggleShowDescription() {
-        view.showDescription = !view.showDescription
-        storeView();
+        view.settings.showDescription = !view.settings.showDescription;
+        storeSettings();
       }
 
-      function toggleShowGames() {
+      function animateToggle(toggle, stage1, stage2, stop) {
+        if (noAnimations) {
+          toggle();
+        } else {
+
+          stage1();
+
+          $timeout(function () {
+
+            toggle();
+            stage2();
+
+            $timeout(function () {
+              stop();
+            }, animationIntervals.in);
+
+          }, animationIntervals.out);
+        }
+      }
+
+      function toggleShowGames(showGames) {
+        if (showGames != view.settings.showGames) {
+          if (!vm.scoreboard.hasCompletedGames) {
+            toggle();
+            if (showGames)
+              vm.showToast('This setting has been changed, however there are no completed games to show',
+                'Show Completed Games');
+            else
+              vm.showToast('This setting has been changed, however there are no completed games to hide',
+                'Hide Completed Games');
+          } else
+            animateShowGames(toggle);
+        }
+
+        function toggle() {
+          view.settings.showGames = showGames;
+          storeSettings();
+        }
+
+      }
+
+      function animateShowGames(toggle) {
         if (noAnimations) {
           toggle();
         } else {
@@ -215,44 +277,64 @@
               // Disable animation so that animation will not occur
               // when score table is refreshed
               view.animate.showGames = false;
-            }, view.showGames ? animationIntervals.in : animationIntervals.out);
+            }, view.settings.showGames ? animationIntervals.in : animationIntervals.out);
           });
         }
 
+      }
+
+      // Indicate when to show a game in the score table.
+      // Depends on whether user is keeping score or following score, and
+      // whether sets and games are shown or just sets,
+      function canShowGame(game) {
+        return (view.settings.showGames && !game.newGame) ||
+          (!game.winner && !game.newGame) ||
+          (game.newGame && view.keepingScore)
+      }
+
+      function toggleKeepScore(keepScore) {
+
+        if (!vm.loggedIn) {
+          if (keepScore)
+            vm.showToast('You must be logged in.', "Unable to Keep Score");
+        } else {
+          if (keepScore != view.keepingScore)
+            animateKeepScore(toggle);
+        }
         function toggle() {
-          view.showGames = !view.showGames;
-          storeView();
+          view.settings.keepScore = keepScore;
+          storeSettings();
+          updateKeepingScore();
         }
       }
 
-      function toggleKeepScore() {
-        // if (noAnimations || view.animate.keepingScore) {
-        //   toggle();
-        // } else {
-        //   view.animate.keepingScore = true;
-        //   $timeout(function () {
-        //     toggle();
-        //     $timeout(function () {
-        //       // Disable animation so that animation will not occur
-        //       // when score table is refreshed
-        //       view.animate.keepingScore = false;
-        //     }, view.keepScore ? animationIntervals.in : animationIntervals.out);
-        //   }, 1);
-        // }
-        //
-        // function toggle() {
-          view.keepScore = !view.keepScore;
-          storeView();
-        // }
+      function animateKeepScore(toggle) {
+
+        animateToggle(toggle, hide, show, stop);
+
+        var hideAndShow;
+
+        function hide() {
+          hideAndShow = scoreboardPrep.hideAndShowData(vm.scoreboard);
+          hideAndShow.hideKeepScore();
+        }
+
+        function show() {
+          if (hideAndShow) hideAndShow.showKeepScore();
+        }
+
+        function stop() {
+          if (hideAndShow) hideAndShow.stopHideAndShow();
+        }
       }
 
-      function storeView() {
+      function storeSettings() {
 
         var viewData = {
-          view: {
-            showGames: view.showGames,
-            keepScore: view.keepScore,
-            showDescription: view.showDescription
+          settings: {
+            showGames: view.settings.showGames,
+            keepScore: view.settings.keepScore,
+            showDescription: view.settings.showDescription
           }
         };
 
@@ -260,12 +342,12 @@
 
       }
 
-      function loadView() {
+      function loadSettings() {
         var data = $localStorage[DATANAME] || {};
-        if (data.view) {
-          view.showGames = data.view.showGames;
-          view.keepScore = data.view.keepScore;
-          view.showDescription = data.view.showDescription;
+        if (data.settings) {
+          view.settings.showGames = data.settings.showGames;
+          view.settings.keepScore = data.settings.keepScore;
+          view.settings.showDescription = data.settings.showDescription;
         }
       }
 
@@ -304,6 +386,9 @@
 
               // Set flags so that new data will be hidden, initially
               hideAndShow.hideNewData();
+              if (update.action.startsWith('win')) {
+                vm.view.showWinButtonHint = false;
+              }
 
               // Let ng-class be processed
               $timeout(function () {

@@ -10,10 +10,10 @@
 
   <div ng-if="!vm.loading && !vm.loadingFailed">
 
-    <div class="panel panel-default score-panel details">
+    <div class="panel panel-default score-panel score-panel-details">
 
       <div class="panel-body">
-        <div ng-class="{'score-animate': vm.view.animate.description}" ng-if="vm.view.showDescription">
+        <div ng-class="{'score-animate': vm.view.animate.description}" ng-if="vm.view.settings.showDescription">
           <div>
             <fe-match-opponents
               match="vm.scoreboard"

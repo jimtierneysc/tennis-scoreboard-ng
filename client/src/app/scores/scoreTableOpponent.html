@@ -1,45 +1,51 @@
 <div ng-if="scores.doubles">
   <!--First doubles player-->
-  <div ng-if="scores.server == opponent.first_player.id" class="current-server-right col-xs-2-7 col-sm-2"
-       ng-class="{'score-animate-in': view.animate.playerServing}">
-    <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
-    </div>
+  <div ng-if="scores.server == opponent.first_player.id" class="current-server-right col-xs-2-7 col-sm-2">
+    <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'score-animate': scores.matchFlags.showingServer}">
+      <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
+    </span>
+  </div>
   <div class="player-col-2" ng-class="scores.server == opponent.first_player.id ? 'col-xs-6-6 col-md-8' : 'col-xs-12'">
     {{opponent.first_player.shortName}}
   </div>
-  <div  ng-if="scores.server == opponent.first_player.id" class="current-server-left col-xs-2-7 col-sm-2"
-       ng-class="{'score-animate-in': view.animate.playerServing}">
-    <span class="text-right" ng-class="{'icon-tennis': leftmost}"></span>
+  <div ng-if="scores.server == opponent.first_player.id" class="current-server-left col-xs-2-7 col-sm-2">
+    <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'score-animate': scores.matchFlags.showingServer}">
+      <span class="text-right" ng-class="{'icon-tennis': leftmost}"></span>
+    </span>
   </div>
 
   <!--Second doubles player-->
-  <div ng-if="scores.server == opponent.second_player.id" class="current-server-right col-xs-2-7 col-sm-2"
-       ng-class="{'score-animate-in': view.animate.playerServing}">
-    <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
+  <div ng-if="scores.server == opponent.second_player.id" class="current-server-right col-xs-2-7 col-sm-2">
+    <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'score-animate': scores.matchFlags.showingServer}">
+      <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
+    </span>
   </div>
   <div class="player-col-2"
        ng-class="scores.server == opponent.second_player.id ? 'col-xs-6-6  col-md-8' : 'col-xs-12'">
     {{opponent.second_player.shortName}}
   </div>
-  <div ng-if="scores.server == opponent.second_player.id" class="current-server-left col-xs-2-7 col-sm-2"
-       ng-class="{'score-animate-in': view.animate.playerServing}">
-    <span ng-class="{'icon-tennis': leftmost}"></span>
+  <div ng-if="scores.server == opponent.second_player.id" class="current-server-left col-xs-2-7 col-sm-2">
+    <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'score-animate': scores.matchFlags.showingServer}">
+      <span ng-class="{'icon-tennis': leftmost}"></span>
+    </span>
   </div>
 
 </div>
 
 <div ng-if="!scores.doubles">
   <!--Singles player-->
-  <div ng-if="scores.server == opponent.id" class="current-server-right col-xs-2-7 col-sm-2"
-       ng-class="{'score-animate-in': view.animate.playerServing}">
-    <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
+  <div ng-if="scores.server == opponent.id" class="current-server-right col-xs-2-7 col-sm-2">
+    <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'score-animate': scores.matchFlags.showingServer}">
+      <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
+    </span>
   </div>
   <div class="player-col-2" ng-class="scores.server == opponent.id ? 'col-xs-6-6 col-md-8' : 'col-xs-12'">
     {{opponent.shortName}}
   </div>
-  <div ng-if="scores.server == opponent.id" class="current-server-left col-xs-2-7 col-sm-2"
-       ng-class="{'score-animate-in': view.animate.playerServing}">
-    <span ng-class="{'icon-tennis': leftmost}"></span>
+  <div ng-if="scores.server == opponent.id" class="current-server-left col-xs-2-7 col-sm-2">
+    <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'score-animate': scores.matchFlags.showingServer}">
+      <span ng-class="{'icon-tennis': leftmost}"></span>
+    </span>
   </div>
 
 </div>

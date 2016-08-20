@@ -407,11 +407,6 @@
           view = vm.view;
         });
 
-
-        it('should have .showGames', function () {
-          expect(view.showGames).toEqual(jasmine.any(Boolean));
-        });
-
         it('should have .updateScore()', function () {
           expect(view.updateScore).toEqual(jasmine.any(Function));
         });
@@ -424,18 +419,6 @@
           expect(view.disableAnimations).toEqual(jasmine.any(Function));
         });
 
-        it('should have .showDescription', function () {
-          expect(view.showDescription).toEqual(jasmine.any(Boolean));
-        });
-
-        it('should have .keepingScore()', function () {
-          expect(view.keepingScore).toEqual(jasmine.any(Function));
-        });
-
-        it('should have .changed()', function () {
-          expect(view.changed).toEqual(jasmine.any(Function));
-        });
-
         it('should have .toggleShowGames', function () {
           expect(view.toggleShowGames).toEqual(jasmine.any(Function));
         });
@@ -446,6 +429,26 @@
 
         it('should have .toggleKeepScore', function () {
           expect(view.toggleKeepScore).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .storeSettings', function () {
+          expect(view.storeSettings).toEqual(jasmine.any(Function));
+        });
+
+        describe('.settings', function() {
+          it('should have .showGames', function () {
+            expect(view.settings.showGames).toEqual(jasmine.any(Boolean));
+          });
+
+          it('should have .keepScore', function () {
+            expect(view.settings.keepScore).toEqual(jasmine.any(Boolean));
+          });
+
+          it('should have .showDescription', function () {
+            expect(view.settings.showDescription).toEqual(jasmine.any(Boolean));
+          });
+
+
         });
       });
 
@@ -463,16 +466,18 @@
           var vm = scoreboardController(singlesResponse());
           view = vm.view;
           userCredentials.setCredentials(USERNAME, TOKEN);
-          view.keepScore = true;
+          view.settings.keepScore = true;
         });
 
         it('should be false when clear credentials', function () {
           userCredentials.clearCredentials();
-          expect(view.keepingScore()).toBeFalsy();
+          view.loggedInChanged();
+          expect(view.keepingScore).toBeFalsy();
         });
 
         it('should be true when set credentials', function () {
-          expect(view.keepingScore()).toBeTruthy();
+          view.loggedInChanged();
+          expect(view.keepingScore).toBeTruthy();
         });
       });
 
@@ -480,21 +485,18 @@
         var vm;
         beforeEach(function () {
           vm = scoreboardController(singlesResponse());
-          vm.view.showDescription = false;
+          vm.view.settings.showDescription = false;
         });
 
         it('should toggle to true', function () {
-          vm.view.showDescription = false;
           vm.view.toggleShowDescription();
-          // $timeout.flush();
-          expect(vm.view.showDescription).toBeTruthy();
+          expect(vm.view.settings.showDescription).toBeTruthy();
         });
 
         it('should toggle to false', function () {
-          vm.view.showDescription = true;
           vm.view.toggleShowDescription();
-          // $timeout.flush();
-          expect(vm.view.showDescription).toBeFalsy();
+          vm.view.toggleShowDescription();
+          expect(vm.view.settings.showDescription).toBeFalsy();
         });
 
       });
@@ -503,20 +505,18 @@
         var vm;
         beforeEach(function () {
           vm = scoreboardController(singlesResponse());
+          vm.view.settings.showGames = false;
         });
 
         it('should toggle to true', function () {
-          vm.view.showGames = false;
-          vm.view.toggleShowGames();
-          // $timeout.flush();
-          expect(vm.view.showGames).toBeTruthy();
+          vm.view.toggleShowGames(true);
+          expect(vm.view.settings.showGames).toBeTruthy();
         });
 
         it('should toggle to false', function () {
-          vm.view.showGames = true;
-          vm.view.toggleShowGames();
-          // $timeout.flush();
-          expect(vm.view.showGames).toBeFalsy();
+          vm.view.toggleShowGames(true);
+          vm.view.toggleShowGames(false);
+          expect(vm.view.settings.showGames).toBeFalsy();
         });
       });
 
@@ -524,26 +524,25 @@
         var vm;
         beforeEach(function () {
           vm = scoreboardController(singlesResponse());
-          vm.keepScore = false;
+          vm.view.settings.keepScore = false;
+          vm.loggedIn = true;
+          vm.view.loggedInChanged();
 
         });
 
         it('should toggle to true', function () {
-          vm.view.keepScore = false;
-          vm.view.toggleKeepScore();
-          // $timeout.flush();
-          expect(vm.view.keepScore).toBeTruthy();
+          vm.view.toggleKeepScore(true);
+          expect(vm.view.settings.keepScore).toBeTruthy();
         });
 
         it('should toggle to false', function () {
-          vm.view.keepScore = true;
-          vm.view.toggleKeepScore();
-          // $timeout.flush();
-          expect(vm.view.keepScore).toBeFalsy();
+          vm.view.toggleKeepScore(true);
+          vm.view.toggleKeepScore(false);
+          expect(vm.view.settings.keepScore).toBeFalsy();
         });
       });
 
-      describe('storage of .expand and .keepingScore', function () {
+      describe('storage of settings', function () {
         var $localStorage;
         beforeEach(function () {
           inject(function (_$localStorage_) {
@@ -553,7 +552,7 @@
 
         it('should have data name', function () {
           var vm = scoreboardController(singlesResponse());
-          expect(vm.view.localDataName).toEqual(jasmine.any(String))
+          expect(vm.view.localDataName()).toEqual(jasmine.any(String))
         });
 
         describe('save data', function () {
@@ -561,35 +560,45 @@
           beforeEach(function () {
             var vm = scoreboardController(singlesResponse());
             view = vm.view;
-            $localStorage[view.localDataName] = undefined;
+            $localStorage[view.localDataName()] = undefined;
           });
 
           it('should have no data when initialized', function () {
-            expect($localStorage[view.localDataName]).toBeUndefined();
+            expect($localStorage[view.localDataName()]).toBeUndefined();
           });
 
-          it('should have data after view changed', function () {
-            view.changed();
-            expect($localStorage[view.localDataName]).not.toBeUndefined();
+          it('should have data stored', function () {
+            view.storeSettings();
+            expect($localStorage[view.localDataName()]).not.toBeUndefined();
           });
         });
 
         describe('load data', function () {
           beforeEach(function () {
+            // Save
             var vm = scoreboardController(singlesResponse());
-            vm.view.showGames = true;
-            vm.view.keepScore = true;
-            vm.view.changed();
+            vm.view.settings.showGames = true;
+            vm.view.settings.keepScore = true;
+            vm.view.settings.showDescription = true;
+            vm.view.storeSettings();
           });
 
           it('should have .showGames', function () {
+            // Load
             var vm = scoreboardController(singlesResponse());
-            expect(vm.view.showGames).toEqual(true);
+            expect(vm.view.settings.showGames).toBe(true);
+          });
+
+          it('should have .showDescription', function () {
+            // Load
+            var vm = scoreboardController(singlesResponse());
+            expect(vm.view.settings.showDescription).toBe(true);
           });
 
           it('should have .keepScore', function () {
+            // Load
             var vm = scoreboardController(singlesResponse());
-            expect(vm.view.keepScore).toBe(true)
+            expect(vm.view.settings.keepScore).toBe(true)
           });
         });
       });
@@ -710,19 +719,19 @@
         describe('.toggleShowGames()', function () {
 
           it('should toggle to true', function () {
-            vm.view.showGames = false;
-            vm.view.toggleShowGames();
+            vm.view.settings.showGames = false;
+            vm.view.toggleShowGames(true);
             $timeout.flush();
             $timeout.flush();
-            expect(vm.view.showGames).toBeTruthy();
+            expect(vm.view.settings.showGames).toBeTruthy();
           });
 
           it('should toggle to false', function () {
-            vm.view.showGames = true;
+            vm.view.settings.showGames = true;
             vm.view.toggleShowGames();
             $timeout.flush();
             $timeout.flush();
-            expect(vm.view.showGames).toBeFalsy();
+            expect(vm.view.settings.showGames).toBeFalsy();
           });
 
         });

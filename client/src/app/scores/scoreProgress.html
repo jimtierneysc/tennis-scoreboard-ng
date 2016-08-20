@@ -3,16 +3,16 @@
 
     <div ng-if="!scores.matchFlags.hiddenProgress" ng-class="{'score-animate': scores.matchFlags.showingProgress}">
 
-      <!--<div ng-class="view.keepingScore() && scores.startingSetOrMatch ? 'col-xs-7-2 col-sm-9' : 'col-xs-12'">-->
-      <div ng-class="{'pull-left progress-left' : view.keepingScore() && scores.startingSetOrMatch}">
+      <div ng-class="{'pull-left score-progress-left' : view.keepingScore && scores.startingSetOrMatch}">
 
         <!--Display a message-->
 
         <div ng-if="scores.actions.win_game">
           Playing game {{scores.currentGame.title}} of the {{scores.currentSet.title}} set
+          <span ng-if="view.showWinButtonHint">. &nbsp;Click <span class="glyphicon glyphicon-ok"></span> button to indicate game winner</span>
         </div>
 
-        <div ng-if="scores.actions.win_tiebreaker">
+        <div ng-if="scores.actions.win_tiebreak">
           Playing the {{scores.currentSet.title}} set tiebreak.
         </div>
 
@@ -46,11 +46,11 @@
               winner="scores.previousGame.winner"
               punctuation="."
             ></fe-score-progress-winner>
-            <span> &nbsp;Waiting for game {{scores.currentGame.title}} to start.</span>
+            <span> &nbsp;Waiting for game {{scores.currentGame.title}} to start</span>
           </div>
         </div>
 
-        <div ng-if="scores.actions.start_tiebreaker">
+        <div ng-if="scores.actions.start_tiebreak">
           <span>Game {{scores.previousGame.title}} won by</span>
           <fe-score-progress-winner
             scores="scores"
@@ -60,7 +60,7 @@
           <span> &nbsp;Waiting for the set tiebreak to start</span>
         </div>
 
-        <div ng-if="scores.actions.start_match_tiebreaker">
+        <div ng-if="scores.actions.start_match_tiebreak">
           <div>Set {{scores.previousSet.title}} won by
             <fe-score-progress-winner
               scores="scores"
@@ -87,8 +87,7 @@
         </div>
       </div>
 
-      <!--<div class="col-xs-4-8 col-sm-3" ng-if="view.keepingScore() && scores.startingSetOrMatch">-->
-      <div class="pull-right" ng-if="view.keepingScore() && scores.startingSetOrMatch">
+      <div class="pull-right" ng-if="view.keepingScore && scores.startingSetOrMatch">
         <!--Display a button-->
         <fe-score-button
           view="view"
