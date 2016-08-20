@@ -23,7 +23,7 @@
       bindToController: true,
       scope: {
         team: '=',
-        punctuation: '@',
+        punctuation: '@'
       }
     };
 
