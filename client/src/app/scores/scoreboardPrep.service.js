@@ -521,7 +521,7 @@
       eachDataItem(
         function (item) {
           setHidden(item, false);
-          clearShowing(item);
+          clearAnimating(item);
         });
     }
 
@@ -570,36 +570,27 @@
       }
     }
 
-    function setHidden(item, value) {
-      if (item.animatingResult)
-        item.hiddenResult = value;
-      if (item.animatingProgress)
-        item.hiddenProgress = value;
-      if (item.animatingServer)
-        item.hiddenServer = value;
-      if (item.animatingTitle)
-        item.hiddenTitle = value;
-      if (item.animatingWinButton)
-        item.hiddenWinButton = value;
-      if (item.animatingStartGameButton)
-        item.hiddenStartGameButton = value;
-      if (item.animatingServersForm)
-        item.hiddenServersForm = value;
-      if (item.animating)
-        item.hidden = value;
+    // If item has a property that starts with "animating", set the corresponding
+    // property that starts with "hidden" (e.g. if animatingTitle then set hiddenTitle).
+    function setHidden(item, hidden) {
+      angular.forEach(item, function(value, key) {
+        if (key.startsWith('animating')) {
+          item['hidden' + key.substr(9)] = hidden;
+        }
+      });
+
     }
 
-    function clearShowing(item) {
-      item.animatingResult = false;
-      item.animatingProgress = false;
-      item.animatingServer = false;
-      item.animatingTitle = false;
-      item.animatingWinButton = false;
-      item.animatingStartGameButton = false;
-      item.animatingServersForm = false;
-      item.animating = false;
+    // Clear all properties that start with "animating"
+    function clearAnimating(item) {
+      angular.forEach(item, function(value, key) {
+        if (key.startsWith('animating')) {
+          item[key] = false;
+        }
+      });
     }
 
+    // Enumerate all the items that may have animating* and hidden* properties.
     function eachDataItem(fn) {
       var items = [sb.previousGame, sb.currentGame, sb.currentSet, sb.previousSet, sb.matchFlags];
       angular.forEach(items,
