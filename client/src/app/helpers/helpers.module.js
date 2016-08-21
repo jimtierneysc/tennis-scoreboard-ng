@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontendHelpers', ['frontendApi', 'frontendComponents', 
+    .module('frontendHelpers', ['frontendApi', 'frontendComponents', 'frontendView',
       'toastr', 'ngResource']);
 
 

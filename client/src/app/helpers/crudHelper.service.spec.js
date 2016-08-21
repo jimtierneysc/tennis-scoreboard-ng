@@ -154,8 +154,8 @@
             $rootScope.$digest(); // process promise
           });
 
-          it('should be .showingEditEntity()', function () {
-            expect(vm.showingEditEntity(entities[0])).toBeTruthy();
+          it('should be .hidingEntity()', function () {
+            expect(vm.hidingEntity(entities[0])).toBeTruthy();
           });
 
           it('should set .editEntity', function () {
@@ -167,16 +167,16 @@
           });
         });
 
-        describe('edit hide', function () {
+        describe('edit cancel', function () {
           beforeEach(function () {
             vm.showEditEntity(entities[0]);
             $rootScope.$digest(); // process promise
             spyOn(editForm, '$setPristine').and.callThrough();
-            vm.hideEditEntity();
+            vm.cancelEditEntity();
           });
 
-          it('should be .showingEditEntity()', function () {
-            expect(vm.showingEditEntity(entities[0])).toBeFalsey;
+          it('should be .hidingEntity()', function () {
+            expect(vm.hidingEntity(entities[0])).toBeFalsey;
           });
 
           it('should call .$setPristine()', function () {
@@ -209,7 +209,7 @@
             vm.showNewEntity();
             $rootScope.$digest(); // process promise
             spyOn(newForm, '$setPristine').and.callThrough();
-            vm.hideNewEntity();
+            vm.cancelNewEntity();
           });
 
           it('should not be .showingNewEntity', function () {
@@ -227,8 +227,8 @@
             expect(vm.showingNewEntity).toBeTruthy();
           });
 
-          it('should not be .showingEditEntity()', function () {
-            expect(vm.showingEditEntity(entities[0])).toBeFalsy();
+          it('should not be .hidingEntity()', function () {
+            expect(vm.hidingEntity(entities[0])).toBeFalsy();
           });
         }
 
@@ -238,8 +238,8 @@
             expect(vm.showingNewEntity).toBeFalsy();
           });
 
-          it('should be .showingEditEntity()', function () {
-            expect(vm.showingEditEntity(entities[0])).toBeTruthy();
+          it('should be .hidingEntity()', function () {
+            expect(vm.hidingEntity(entities[0])).toBeTruthy();
           });
         }
 
@@ -731,11 +731,11 @@
           helper.checkFunction('trashEntity');
           helper.checkFunction('submitNewEntity');
           helper.checkFunction('showNewEntity');
-          helper.checkFunction('hideNewEntity');
+          helper.checkFunction('cancelNewEntity');
           helper.checkFunction('submitEditEntity');
           helper.checkFunction('showEditEntity');
-          helper.checkFunction('hideEditEntity');
-          helper.checkFunction('showingEditEntity');
+          helper.checkFunction('cancelEditEntity');
+          helper.checkFunction('hidingEntity');
           helper.checkFunction('beginWait');
           helper.checkBoolean('showingNewEntity');
           helper.checkObject('newEntity');

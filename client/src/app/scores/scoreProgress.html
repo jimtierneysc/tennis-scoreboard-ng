@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
 
-    <div ng-if="!scores.matchFlags.hiddenProgress" ng-class="{'score-animate': scores.matchFlags.showingProgress}">
+    <div ng-if="!scores.matchFlags.hiddenProgress" ng-class="{'standard-animation': scores.matchFlags.animatingProgress}">
 
       <div ng-class="{'pull-left score-progress-left' : view.keepingScore && scores.startingSetOrMatch}">
 
@@ -9,7 +9,7 @@
 
         <div ng-if="scores.actions.win_game">
           Playing game {{scores.currentGame.title}} of the {{scores.currentSet.title}} set
-          <span ng-if="view.showWinButtonHint">. &nbsp;Click <span class="glyphicon glyphicon-ok"></span> button to indicate game winner</span>
+          <span ng-if="view.showWinButtonHint">. &nbsp;When game {{scores.currentGame.title}} is completed, click the button beneath the winner</span>
         </div>
 
         <div ng-if="scores.actions.win_tiebreak">

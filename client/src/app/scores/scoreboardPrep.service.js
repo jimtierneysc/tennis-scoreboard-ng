@@ -227,7 +227,6 @@
     // Add properties to be used in views
     function insertScores(_opponents) {
       var matchScorePair = [0, 0];
-      // var setScorePairs = [];
       var setScorePair;
 
       function incScore(scoresPair, winner) {
@@ -415,19 +414,19 @@
     function hideOldData() {
       var actionState = new ActionState({oldData: true});
 
-      sb.matchFlags.showingProgress = true;
-      sb.matchFlags.showingServer = true;
+      sb.matchFlags.animatingProgress = true;
+      sb.matchFlags.animatingServer = true;
       if (actionState.winningGame && !actionState.winningSet)
-        sb.currentGame.showingTitle = true;
+        sb.currentGame.animatingTitle = true;
 
       if (actionState.winningGame)
-        sb.currentSet.showingResult = true;
+        sb.currentSet.animatingResult = true;
 
       if (actionState.winningSet)
-        sb.matchFlags.showingResult = true;
+        sb.matchFlags.animatingResult = true;
 
       if (actionState.startingGame && sb.firstServers) {
-        sb.currentGame.showingServersForm = true;
+        sb.currentGame.animatingServersForm = true;
       }
 
       // Apply ng-class of elements before hide elements
@@ -441,15 +440,15 @@
     }
 
     function hideKeepScore() {
-      sb.matchFlags.showingProgress = true;
-      sb.matchFlags.showingServer = true;
+      sb.matchFlags.animatingProgress = true;
+      sb.matchFlags.animatingServer = true;
 
       if (sb.currentGame && sb.currentGame.newGame) {
-        sb.currentGame.showing = true;
+        sb.currentGame.animating = true;
       }
 
       if (sb.currentGame && !sb.currentGame.winner) {
-        sb.currentGame.showing = true;
+        sb.currentGame.animating = true;
       }
 
       // Apply ng-class of elements before hide elements
@@ -465,42 +464,42 @@
 
       var actionState = new ActionState({oldData: false});
 
-      sb.matchFlags.showingProgress = true;
-      sb.matchFlags.showingServer = true;
+      sb.matchFlags.animatingProgress = true;
+      sb.matchFlags.animatingServer = true;
 
       if (actionState.startingGame) {
-        sb.currentGame.showingWinButton = true;
+        sb.currentGame.animatingWinButton = true;
       }
 
       if (actionState.winningGame && sb.firstServers) {
-        sb.currentGame.showingServersForm = true;
+        sb.currentGame.animatingServersForm = true;
       }
 
       if (actionState.winningGame && !actionState.winningSet) {
-        sb.currentGame.showingTitle = true;
-        sb.currentSet.showingResult = true;
-        sb.currentGame.showingStartGameButton = true;
+        sb.currentGame.animatingTitle = true;
+        sb.currentSet.animatingResult = true;
+        sb.currentGame.animatingStartGameButton = true;
       }
 
       if (actionState.winningSet) {
-        sb.matchFlags.showingResult = true;
+        sb.matchFlags.animatingResult = true;
         if (sb.previousSet)
-          sb.previousSet.showingResult = true;
+          sb.previousSet.animatingResult = true;
       }
 
       // Hide game that just got a winner
       if (actionState.winningGame) {
         if (sb.currentGame && sb.currentGame.newGame && sb.previousGame) {
-          sb.currentGame.showingTitle = true;
-          sb.previousGame.showing = true;
+          sb.currentGame.animatingTitle = true;
+          sb.previousGame.animating = true;
         }
       }
 
       // Hide a newly created set and set's first game
       if (actionState.startingSet || actionState.startingMatch) {
         if (sb.currentGame && !sb.currentGame.winner && sb.currentSet.games.length == 1) {
-          sb.currentGame.showing = true;
-          sb.currentSet.showing = true;
+          sb.currentGame.animating = true;
+          sb.currentSet.animating = true;
         }
       }
 
@@ -572,33 +571,33 @@
     }
 
     function setHidden(item, value) {
-      if (item.showingResult)
+      if (item.animatingResult)
         item.hiddenResult = value;
-      if (item.showingProgress)
+      if (item.animatingProgress)
         item.hiddenProgress = value;
-      if (item.showingServer)
+      if (item.animatingServer)
         item.hiddenServer = value;
-      if (item.showingTitle)
+      if (item.animatingTitle)
         item.hiddenTitle = value;
-      if (item.showingWinButton)
+      if (item.animatingWinButton)
         item.hiddenWinButton = value;
-      if (item.showingStartGameButton)
+      if (item.animatingStartGameButton)
         item.hiddenStartGameButton = value;
-      if (item.showingServersForm)
+      if (item.animatingServersForm)
         item.hiddenServersForm = value;
-      if (item.showing)
+      if (item.animating)
         item.hidden = value;
     }
 
     function clearShowing(item) {
-      item.showingResult = false;
-      item.showingProgress = false;
-      item.showingServer = false;
-      item.showingTitle = false;
-      item.showingWinButton = false;
-      item.showingStartGameButton = false;
-      item.showingServersForm = false;
-      item.showing = false;
+      item.animatingResult = false;
+      item.animatingProgress = false;
+      item.animatingServer = false;
+      item.animatingTitle = false;
+      item.animatingWinButton = false;
+      item.animatingStartGameButton = false;
+      item.animatingServersForm = false;
+      item.animating = false;
     }
 
     function eachDataItem(fn) {

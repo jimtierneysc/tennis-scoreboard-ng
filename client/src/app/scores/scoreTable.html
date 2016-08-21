@@ -75,7 +75,7 @@
     <!--Set row-->
 
     <tr ng-if="!set.newSet && !set.hidden"
-        ng-class="{'score-animate' : set.showing}">
+        ng-class="{'standard-animation' : set.animating}">
 
 
     <th class="score-col-1">
@@ -110,8 +110,8 @@
     -->
 
     <tr ng-if="view.canShowGame(game) && !game.hidden"
-        ng-class="game.showing ? 'score-animate' :
-      view.animate.showGames ? 'score-animate' : 'NoOp'">
+        ng-class="game.animating ? 'standard-animation' :
+      view.animate.showGames ? 'standard-animation' : 'NoOp'">
 
       <!--Header column-->
 
@@ -129,7 +129,7 @@
         <div ng-if="view.keepingScore">
           <!--select next server when starting 1st or 2nd game-->
           <div ng-if="scores.firstServers && !game.hiddenServersForm"
-               ng-class="{'score-animate': game.showingServersForm}">
+               ng-class="{'standard-animation': game.animatingServersForm}">
             <fe-score-table-select-server
               scores="scores"
               view="view"

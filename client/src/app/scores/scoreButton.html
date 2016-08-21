@@ -1,15 +1,15 @@
 <div ng-if="scores.actions.win_game && !scores.currentGame.hiddenWinButton"
-     ng-class="{'score-animate': scores.currentGame.showingWinButton}">
+     ng-class="{'standard-animation': scores.currentGame.animatingWinButton}">
   <button   class="btn btn-primary  glyphicon glyphicon-ok" ng-click="view.updateScore('win_game', param)">
   </button>
 </div>
 <div ng-if="scores.actions.win_tiebreak && !scores.currentGame.hiddenWinButton"
- ng-class="{'score-animate': scores.currentGame.showingWinButton}">
+ ng-class="{'standard-animation': scores.currentGame.animatingWinButton}">
   <button   class="btn btn-primary  glyphicon glyphicon-ok" ng-click="view.updateScore('win_tiebreak', param)">
   </button>
 </div>
 <div ng-if="scores.actions.win_match_tiebreak && !scores.currentGame.hiddenWinButton"
-  ng-class="{'score-animate': scores.currentGame.showingWinButton}">
+  ng-class="{'standard-animation': scores.currentGame.animatingWinButton}">
   <button   class="btn btn-primary  glyphicon glyphicon-ok" ng-click="view.updateScore('win_match_tiebreak', param)">
   </button>
 </div>
@@ -18,12 +18,12 @@
   </button>
 </div>
 <div ng-if="scores.actions.start_game  && !scores.currentGame.hiddenStartGameButton"
-     ng-class="{'score-animate': scores.currentGame.showingStartGameButton}">
+     ng-class="{'standard-animation': scores.currentGame.animatingStartGameButton}">
   <button   class="btn btn-primary " ng-click="view.updateScore('start_game', param)">Start Game {{scores.currentGame.title}}
   </button>
 </div>
 <div ng-if="scores.actions.start_tiebreak  && !scores.currentGame.hiddenStartGameButton"
-     ng-class="{'score-animate': scores.currentGame.showingStartGameButton}">
+     ng-class="{'standard-animation': scores.currentGame.animatingStartGameButton}">
   <button   class="btn btn-primary " ng-click="view.updateScore('start_tiebreak')">Start Tiebreak
   </button>
 </div>

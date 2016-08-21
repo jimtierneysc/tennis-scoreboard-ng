@@ -10,7 +10,7 @@
     </div>
 
     <div ng-if="!vm.loading && !vm.loadingFailed">
-      <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+      <div ng-if="vm.loggedIn" class="standard-animation">
         <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
           <span class="glyphicon glyphicon-plus"></span> Match
         </button>
@@ -26,13 +26,13 @@
       <div>
         <ol class="list-group">
           <!--New match-->
-          <li class="list-group-item form-animate-inout" ng-if="vm.showingNewEntity">
+          <li class="list-group-item standard-animation" ng-if="vm.showingNewEntityForm()">
             <div class="row">
               <div class="col-xs-10 ">
                 <fe-matches-form
                   form="vm.newEntityForm"
                   errors="vm.entityCreateErrors"
-                  cancel="vm.hideNewEntity()"
+                  cancel="vm.cancelNewEntity()"
                   submit="vm.submitNewEntity()"
                   entity="vm.newEntity"
                   ok="Add"
@@ -46,12 +46,13 @@
 
 
           <!--Team details-->
-          <li class="list-group-item clearfix item-animate-repeat" ng-repeat="entity in vm.entitys">
+          <li class="list-group-item clearfix standard-animation" ng-repeat="entity in vm.entitys">
 
 
             <div class="row">
               <div class="col-xs-10">
-                <div ng-hide="vm.showingEditEntity(entity)">
+                <div ng-if="!vm.showingEditEntityForm(entity) && !vm.hidingEntity(entity)"
+                     ng-class="{'standard-animation': vm.animatingEntity(entity)}">
                   <div class="h4">
                 <span ng-if="entity.title">
                 {{ entity.title}}
@@ -71,11 +72,11 @@
                 </div>
 
                 <!--Use ng-if so there won't be bunch of forms in the DOM-->
-                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-inout">
+                <div ng-if="vm.showingEditEntityForm(entity)" class="standard-animation">
                   <fe-matches-form
                     form="vm.editEntityForm"
                     errors="vm.entityUpdateErrors"
-                    cancel="vm.hideEditEntity()"
+                    cancel="vm.cancelEditEntity()"
                     submit="vm.submitEditEntity()"
                     entity="vm.editEntity"
                     ok="Save"
@@ -89,16 +90,16 @@
               <div class="col-xs-2">
                 <!--Delete button-->
                 <div class="pull-right">
-                  <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+                  <div ng-if="vm.loggedIn" class="standard-animation">
                     <fe-delete-entity-button
                       entity="entity"
                       delete-entity="vm.trashEntity(entity)"
                     ></fe-delete-entity-button>
                   </div>
-                  <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+                  <div ng-if="vm.loggedIn" class="standard-animation">
                     <fe-edit-entity-button
                       entity="entity"
-                      disable="vm.showingEditEntity(entity)"
+                      disable="vm.showingEditEntityForm(entity)"
                       edit-entity="vm.showEditEntity(entity)"
                     ></fe-edit-entity-button>
                   </div>

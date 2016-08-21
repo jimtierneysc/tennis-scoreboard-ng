@@ -34,17 +34,19 @@
       if (!state.pristine)
         modalConfirm.confirm(state.labels).then(
           function () {
-            emitClose(state);
-            emitConfirmed(state, true);
-            deferredObject.resolve();
+            emitClose(state).then(function () {
+              emitConfirmed(state, true);
+              deferredObject.resolve();
+            });
           },
           function () {
             emitConfirmed(state, false);
             deferredObject.reject();
           });
       else {
-        emitClose(state);
-        deferredObject.resolve();
+        emitClose(state).then(function () {
+          deferredObject.resolve();
+        });
       }
 
       return deferredObject.promise;
@@ -71,17 +73,20 @@
       }
 
       function emitClose(state) {
-        $rootScope.$emit(CLOSE_EVENT, state);
+        var deferred = [];
+        $rootScope.$emit(CLOSE_EVENT, state, deferred);
+        var all = $q.all(deferred);
+        return all;
       }
     }
-    
+
     // Register a callback to retrieve the state of an editor
     // from a controller.
     function registerOnQueryState(scope, queryCallback) {
       registerEvent(scope, QUERY_EVENT, queryCallback);
     }
 
-    // Register a callback to inform a controller that the user was prompted to 
+    // Register a callback to inform a controller that the user was prompted to
     // close the current editor.
     function registerOnConfirmed(scope, callback) {
       registerEvent(scope, CONFIRMED_EVENT, callback);

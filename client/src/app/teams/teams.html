@@ -10,7 +10,7 @@
     </div>
 
     <div ng-if="!vm.loading && !vm.loadingFailed">
-      <div ng-if="vm.loggedIn" class="accessory-animate-inout">
+      <div ng-if="vm.loggedIn" class="standard-animation">
         <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
           <span class="glyphicon glyphicon-plus"></span> Team
         </button>
@@ -25,7 +25,7 @@
 
       <div>
         <ol class="list-group">
-          <li class="list-group-item form-animate-inout" ng-if="vm.showingNewEntity">
+          <li class="list-group-item standard-animation" ng-if="vm.showingNewEntityForm()">
 
             <!--New team-->
             <div class="row">
@@ -33,7 +33,7 @@
                 <fe-teams-form
                   form="vm.newEntityForm"
                   errors="vm.entityCreateErrors"
-                  cancel="vm.hideNewEntity()"
+                  cancel="vm.cancelNewEntity()"
                   submit="vm.submitNewEntity()"
                   entity="vm.newEntity"
                   ok="Add"
@@ -45,11 +45,12 @@
           </li>
 
           <!--Team details-->
-          <li class="list-group-item clearfix item-animate-repeat" ng-repeat="entity in vm.entitys">
+          <li class="list-group-item clearfix standard-animation" ng-repeat="entity in vm.entitys">
 
             <div class="row">
               <div class="col-xs-10">
-                <div ng-hide="vm.showingEditEntity(entity)">
+                <div ng-if="!vm.showingEditEntityForm(entity) && !vm.hidingEntity(entity)"
+                     ng-class="{'standard-animation': vm.animatingEntity(entity)}">
                   <div class="h4">
                     <span ng-if="entity.name">{{ entity.name}}</span>
                     <span ng-if="!entity.name">(unnamed)</span>
@@ -59,12 +60,12 @@
                   </div>
                 </div>
 
-                <div ng-if="vm.showingEditEntity(entity)" class="form-animate-inout">
+                <div ng-if="vm.showingEditEntityForm(entity)" class="standard-animation">
                   <div>
                     <fe-teams-form
                       form="vm.editEntityForm"
                       errors="vm.entityUpdateErrors"
-                      cancel="vm.hideEditEntity()"
+                      cancel="vm.cancelEditEntity()"
                       submit="vm.submitEditEntity()"
                       entity="vm.editEntity"
                       ok="Save"
@@ -76,14 +77,14 @@
               </div>
 
               <div class="col-xs-2">
-                <div class="pull-right" ng-if="vm.loggedIn" class="accessory-animate-inout">
+                <div class="pull-right standard-animation" ng-if="vm.loggedIn">
                   <fe-delete-entity-button
                     entity="entity"
                     delete-entity="vm.trashEntity(entity)"
                   ></fe-delete-entity-button>
                   <fe-edit-entity-button
                     entity="entity"
-                    disable="vm.showingEditEntity(entity)"
+                    disable="vm.showingEditEntityForm(entity)"
                     edit-entity="vm.showEditEntity(entity)"
                   ></fe-edit-entity-button>
                 </div>

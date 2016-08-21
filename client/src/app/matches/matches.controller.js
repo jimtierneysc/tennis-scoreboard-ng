@@ -80,7 +80,6 @@
         var playerCount = vm.playerOptionsList.list.length;
         var teamCount = vm.teamOptionsList.list.length;
         if (playerCount < 2 && teamCount < 2) {
-          // vm.hideNewEntity();
           deferredObject.reject();
           vm.showToast('There must be at least two teams or two players.  ' +
             'Add teams or players and try again.', 'Unable to Add Match', 'warning');

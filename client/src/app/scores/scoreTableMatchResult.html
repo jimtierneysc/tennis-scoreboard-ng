@@ -1,6 +1,6 @@
 <span ng-init="index = (leftmost) ? 0 : 1"
       ng-if="!(scores.matchFlags.hiddenResult && leftmost == scores.matchFlags.hiddenLeftmost)"
-      ng-class="{'score-animate': scores.matchFlags.showingResult}">
+      ng-class="{'standard-animation': scores.matchFlags.animatingResult}">
 
   <span ng-class="{'winner-text': scores.winner === scores.opponents[index] }">
           {{scores.scores[index]}}
