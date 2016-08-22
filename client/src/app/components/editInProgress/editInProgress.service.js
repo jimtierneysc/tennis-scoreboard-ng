@@ -26,32 +26,27 @@
     // progress (e.g.; entering a title for a new entity) and the user chooses not to cancel
     // editing.
     function closeEditors() {
-      var deferredObject = $q.defer();
       var state = emitQuery(name);
       angular.merge(state.labels, {
         cancel: 'No'
       });
+      var promise;
       if (!state.pristine)
-        modalConfirm.confirm(state.labels).then(
+        promise = modalConfirm.confirm(state.labels).then(
           function () {
-            emitClose(state).then(function () {
+            return emitClose(state).then(function () {
               emitConfirmed(state, true);
-              deferredObject.resolve();
             });
           },
           function () {
             emitConfirmed(state, false);
-            deferredObject.reject();
+            return $q.reject();
           });
-      else {
-        emitClose(state).then(function () {
-          deferredObject.resolve();
-        });
-      }
+      else
+        promise = emitClose(state);
 
-      return deferredObject.promise;
-
-
+      return promise;
+      
       function emitQuery() {
         var data = {
           pristine: true,

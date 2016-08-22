@@ -107,17 +107,15 @@
     function postUpdate(action, param) {
       var key = {id: vm.id};
       var body = makePostBody(action, param);
-      var deferred = $q.defer();
-      crudResource.getResource(scoreboardPath).save(key, body,
-        function (response) {
-          deferred.resolve(response);
+
+      return crudResource.getResource(scoreboardPath).save(key, body,
+        function () {
         },
         function (response) {
           $log.error('update error ' + response.status + " " + response.statusText);
-          deferred.reject(response);
         }
-      );
-      return deferred.promise;
+      ).$promise;
+
 
       function makePostBody(action, id) {
         var params = {};

@@ -447,8 +447,6 @@
           it('should have .showDescription', function () {
             expect(view.settings.showDescription).toEqual(jasmine.any(Boolean));
           });
-
-
         });
       });
 
@@ -498,7 +496,6 @@
           vm.view.toggleShowDescription();
           expect(vm.view.settings.showDescription).toBeFalsy();
         });
-
       });
 
       describe('.toggleShowGames()', function () {

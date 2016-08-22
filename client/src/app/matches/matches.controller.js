@@ -65,9 +65,9 @@
       return result;
     }
 
+    // Return a promise
     function beforeShowNewEntity() {
       // TODO: Preserve last selection when add multiple matches
-      var deferredObject = $q.defer();
 
       vm.newEntity.doubles = false;
       vm.newEntity.scoring = 'two_six_game_ten_point';
@@ -75,14 +75,13 @@
       var players = prepareToShowPlayerOptions();
       var all = $q.all([teams, players]);
       var endWait = vm.beginWait();
-      all.then(function () {
-        endWait();
+      var promise = all.then(function () {
         var playerCount = vm.playerOptionsList.list.length;
         var teamCount = vm.teamOptionsList.list.length;
         if (playerCount < 2 && teamCount < 2) {
-          deferredObject.reject();
           vm.showToast('There must be at least two teams or two players.  ' +
-            'Add teams or players and try again.', 'Unable to Add Match', 'warning');
+            'Add teams or players and try again.', 'Unable to Add Match');
+          return $q.reject();
         }
         else {
           if (playerCount < 2)
@@ -95,26 +94,26 @@
             vm.newEntity.select_first_team = vm.teamOptionsList.list[0];
             vm.newEntity.select_second_team = vm.teamOptionsList.list[1];
           }
-          deferredObject.resolve();
+          return $q.resolve();
         }
-      });
+      }).finally(endWait);
 
-      return deferredObject.promise;
+      return promise;
     }
 
+
+    // Return a promise
     function beforeShowEditEntity() {
-      var deferredObject = $q.defer();
       var teams = prepareToShowTeamOptions();
       var players = prepareToShowPlayerOptions();
       var all = $q.all([teams, players]);
       var endWait = vm.beginWait();
-      all.then(function () {
-        endWait();
+      var promise = all.then(function () {
         prepareToEditTeams();
         prepareToEditPlayers();
-        deferredObject.resolve();
-      });
-      return deferredObject.promise;
+        return $q.resolve()
+      }).finally(endWait);
+      return promise;
     }
 
     function getEntityDisplayName(entity) {
@@ -147,45 +146,43 @@
     }
 
     function prepareToShowTeamOptions() {
-      var deferredObject = $q.defer();
+      var promise;
       if (vm.teamOptionsList.list == null) {
-        teamsSelectOptions().then(
+        promise = teamsSelectOptions().then(
           function (list) {
             vm.teamOptionsList.list = list;
           },
           function () {
-            vm.teamOptionsList.list = [];
             $log.error('teamOptionsList');
+            vm.teamOptionsList.list = [];
+            return $q.resolve();
           }
-        ).finally(function() {
-          deferredObject.resolve();
-        });
+        );
       }
       else {
-        deferredObject.resolve();
+        promise = $q.resolve();
       }
-      return deferredObject.promise;
+      return promise;
     }
 
     function prepareToShowPlayerOptions() {
-      var deferredObject = $q.defer();
+      var promise;
       if (vm.playerOptionsList.list == null) {
-        playersSelectOptions().then(
+        promise = playersSelectOptions().then(
           function (list) {
             vm.playerOptionsList.list = list;
           },
           function () {
-            vm.playerOptionsList.list = [];
             $log.error('playerOptionsList')
+            vm.playerOptionsList.list = [];
+            return $q.resolve();
           }
-        ).finally(function() {
-          deferredObject.resolve();
-        });
+        );
       }
       else {
-        deferredObject.resolve();
+        promise = $q.resolve();
       }
-      return deferredObject.promise;
+      return promise;
     }
 
     function prepareToEditPlayers() {
