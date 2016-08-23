@@ -8,8 +8,8 @@
         <!--Display a message-->
 
         <div ng-if="scores.actions.win_game">
-          Playing game {{scores.currentGame.title}} of the {{scores.currentSet.title}} set
-          <span ng-if="view.showWinButtonHint">. &nbsp;When game {{scores.currentGame.title}} is completed, click the button beneath the winner</span>
+          Playing game {{scores.currentGame.title}} of the {{scores.currentSet.title}} set<span ng-if="view.showWinButtonHint && view.keepingScore">. &nbsp;
+          When game {{scores.currentGame.title}} is completed, click the button beneath the winner</span>
         </div>
 
         <div ng-if="scores.actions.win_tiebreak">

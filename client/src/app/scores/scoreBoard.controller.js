@@ -16,7 +16,7 @@
   function Controller($log, $scope, $stateParams, errorsMapper, scoreboardPath,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, toastrHelper, $q,
-                      scoreboardPrep, $timeout, animationIntervals,
+                      scoreboardPrep, scoreboardAnimate, animationTimers,
                       response) {
     var vm = this;
     var updating = false;
@@ -56,19 +56,12 @@
     // Internal methods
     //
 
-    function confirmScoreboardUpdate(action, param, confirm) {
+    function confirmScoreboardUpdate(action, param) {
       vm.clearToast();
 
-      var confirmActions = {
-        discard_play: 'Confirm Clear Scoreboard'
-      };
-
-      if (angular.isUndefined(confirm))
-        confirm = true;
-      confirm = confirm && confirmActions[action];
-      if (confirm) {
+      if (action == 'discard_play') {
         modalConfirm.confirm({
-          title: confirmActions[action], text: 'Are you sure you want to clear scores of match "' +
+          title: 'Confirm Clear', text: 'Are you sure you want to clear all games from match "' +
           vm.scoreboard.title + '"?'
         })
           .then(function () {
@@ -170,10 +163,9 @@
 
       view.animateScoreboardChanges = animateScoreboardChanges;
       view.updateScore = confirmScoreboardUpdate;
-      view.disableAnimations = disableAnimations;
       view.toggleShowDescription = toggleShowDescription;
       view.toggleShowGames = toggleShowGames;
-      view.toggleKeepScore = toggleKeepScore;
+      view.toggleKeepingScore = toggleKeepingScore;
       view.canShowGame = canShowGame;
       view.loggedInChanged = loggedInChanged;
       view.ready = ready;
@@ -187,7 +179,6 @@
         description: true
       };
 
-      var noAnimations = false;
       view.localDataName = function () {
         return DATANAME;
       };
@@ -204,83 +195,57 @@
       }
 
       function loggedInChanged() {
-        if (view.settings.keepScore) {
+        if (view.settings.keepScore)
           animateKeepScore(updateKeepingScore)
-        }
-        else {
+        else
           updateKeepingScore();
-        }
       }
 
       function updateKeepingScore() {
         view.keepingScore = vm.loggedIn && view.settings.keepScore;
       }
 
-      function disableAnimations() {
-        noAnimations = true;
-      }
-
-      function toggleShowDescription() {
-        view.settings.showDescription = !view.settings.showDescription;
-        storeSettings();
-      }
-
-      function animateToggle(toggle, stage1, stage2, stop) {
-        if (noAnimations) {
-          toggle();
-        } else {
-
-          stage1();
-
-          $timeout(function () {
-
-            toggle();
-            stage2();
-
-            $timeout(function () {
-              stop();
-            }, animationIntervals.in);
-
-          }, animationIntervals.out);
+      function toggleShowDescription(showDescription) {
+        if (showDescription != view.settings.showDescription) {
+          view.settings.showDescription = !view.settings.showDescription;
+          storeSettings();
         }
       }
+
 
       function toggleShowGames(showGames) {
         if (showGames != view.settings.showGames) {
           if (!vm.scoreboard.hasCompletedGames) {
             toggle();
+            var title = 'Show Completed Games'
             if (showGames)
-              vm.showToast('This setting has been changed, however there are no completed games to show',
-                'Show Completed Games');
+              vm.showToast('This setting has been turned on, however there are no completed games to show',
+                title);
             else
-              vm.showToast('This setting has been changed, however there are no completed games to hide',
-                'Hide Completed Games');
+              vm.showToast('This setting has been turned off, however there are no completed games to hide',
+                title);
           } else
-            animateShowGames(toggle);
+            animateShowGames();
         }
 
         function toggle() {
           view.settings.showGames = showGames;
           storeSettings();
+          return view.settings.showGames;
         }
 
-      }
-
-      function animateShowGames(toggle) {
-        if (noAnimations) {
-          toggle();
-        } else {
+        function animateShowGames() {
           view.animate.showGames = true;
-          $timeout(function () {
-            toggle();
-            $timeout(function () {
+          animationTimers.digest().then(function () {  // eval ng-class
+            var show = toggle();
+            var delay = show ? animationTimers.delayIn : animationTimers.delayOut;
+            delay().then(function () {
               // Disable animation so that animation will not occur
               // when score table is refreshed
               view.animate.showGames = false;
-            }, view.settings.showGames ? animationIntervals.in : animationIntervals.out);
+            });
           });
         }
-
       }
 
       // Indicate when to show a game in the score table.
@@ -292,14 +257,27 @@
           (game.newGame && view.keepingScore)
       }
 
-      function toggleKeepScore(keepScore) {
+      function toggleKeepingScore(keepScore) {
 
         if (!vm.loggedIn) {
           if (keepScore)
-            vm.showToast('You must be logged in.', "Unable to Keep Score");
+            vm.showToast('You must be logged in order to keep score.', "Unable to Show Score Keeper Commands");
         } else {
-          if (keepScore != view.keepingScore)
-            animateKeepScore(toggle);
+          if (keepScore != view.keepingScore) {
+            if (vm.scoreboard.winner) {
+              toggle();
+              var title = 'Show Score Keeper Commands';
+              if (view.keepingScore)
+                vm.showToast('This setting has been turned on, however there are no commands to show because the match is over',
+                  title);
+              else
+                vm.showToast('This setting has been turned off, however there are no commands to hide because the match is over',
+                  title);
+            }
+            else
+              animateKeepScore(toggle);
+
+          }
         }
         function toggle() {
           view.settings.keepScore = keepScore;
@@ -309,23 +287,18 @@
       }
 
       function animateKeepScore(toggle) {
-
-        animateToggle(toggle, hide, show, stop);
-
         var hideAndShow;
 
-        function hide() {
-          hideAndShow = scoreboardPrep.hideAndShowData(vm.scoreboard);
-          hideAndShow.hideKeepScore();
-        }
+        hideAndShow = scoreboardAnimate(vm.scoreboard);
+        hideAndShow.hideKeepScore();
 
-        function show() {
-          if (hideAndShow) hideAndShow.showKeepScore();
-        }
+        animationTimers.delayOut().then(function () {
+          toggle();
+          hideAndShow.showKeepScore();
 
-        function stop() {
-          if (hideAndShow) hideAndShow.stopHideAndShow();
-        }
+          animationTimers.delayIn().then(hideAndShow.stopHideAndShow);
+
+        });
       }
 
       function storeSettings() {
@@ -339,7 +312,6 @@
         };
 
         $localStorage[DATANAME] = viewData;
-
       }
 
       function loadSettings() {
@@ -353,68 +325,49 @@
 
       function animateScoreboardChanges(update, promise, accept, reject, final) {
 
-        if (noAnimations) {
-          promise.then(
-            function (response) {
-              accept(response)
-            },
-            function (response) {
-              reject(response);
+        // Allow time for old data to hide
+        var timerPromise = animationTimers.delayOut();
+
+        // Promise to wait until time has passed and post has finished
+        var all = $q.all({timer: timerPromise, post: promise});
+
+        // Create object to hide and show data during animation
+        var hideAndShow = scoreboardAnimate(vm.scoreboard, update.action, update.param);
+
+        // Set flags so that old data will be hidden
+        hideAndShow.hideOldData();
+
+        // Wait for data to hide
+        all.then(
+          function (hash) {
+            var response = hash.post;
+            // Update scoreboard
+            accept(response);
+
+            // Set flags so that new data will be hidden, initially
+            hideAndShow.hideNewData();
+            if (update.action.startsWith('win')) {
+              vm.view.showWinButtonHint = false;
             }
-          ).finally(final);
-        }
-        else {
 
-          // Allow time for old data to hide
-          var timerPromise = $timeout(animationIntervals.out);
+            // Let ng-class be processed
+            animationTimers.digest().then(hideAndShow.showNewData);
 
-          // Promise to wait until time has passed and post has finished
-          var all = $q.all({timer: timerPromise, post: promise});
+            // Wait for new data to finish showing
+            animationTimers.delayIn().then(hideAndShow.stopHideAndShow);
 
-          // Create object to hide and show data during animation
-          var hideAndShow = scoreboardPrep.hideAndShowData(vm.scoreboard, update.action, update.param);
-
-          // Set flags so that old data will be hidden
-          hideAndShow.hideOldData();
-
-          // Wait for data to hide
-          all.then(
-            function (hash) {
-              var response = hash.post;
-              // Update scoreboard
-              accept(response);
-
-              // Set flags so that new data will be hidden, initially
-              hideAndShow.hideNewData();
-              if (update.action.startsWith('win')) {
-                vm.view.showWinButtonHint = false;
-              }
-
-              // Let ng-class be processed
-              $timeout(function () {
-                // Show the new data
-                hideAndShow.showNewData();
-              });
-
-              // Wait for new data to finish showing
-              $timeout(function () {
-                // Cleanup flags
-                hideAndShow.stopHideAndShow();
-              }, animationIntervals.in);
-
-            },
-            function (response) {
-              reject(response);
-              hideAndShow.stopHideAndShow();
-            }).finally(final);
-        }
+          },
+          function (response) {
+            reject(response);
+            hideAndShow.stopHideAndShow();
+          }).finally(final);
       }
     }
 
     // prepare scoreboard for viewing
     function prepareScoreboard(sb) {
 
-      scoreboardPrep.prepare(sb);
+      scoreboardPrep(sb);
       // Reverse order of sets and games to
       // display most recent games at top of view.
       reverseOrder();

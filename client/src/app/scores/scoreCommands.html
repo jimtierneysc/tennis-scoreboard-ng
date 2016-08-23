@@ -7,6 +7,35 @@
     <!--Menu<span class="caret"></span>-->
   <!--</button>-->
   <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
+    </li>
+    <!--<li class="divider"></li>-->
+    <li class="dropdown-header">Show</li>
+    <li role="menuitem">
+      <!--Expand all-->
+      <a href ng-click="vm.view.toggleShowDescription(!vm.view.settings.showDescription)" >
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.settings.showDescription }">
+          </span>
+        Match Description
+      </a>
+    </li>
+    <li role="menuitem">
+      <a href ng-click="vm.view.toggleShowGames(!vm.view.settings.showGames)" >
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.settings.showGames }">
+          </span>
+        Completed Games
+      </a>
+    </li>
+    <li role="menuitem">
+      <a href ng-click="vm.view.toggleKeepingScore(!vm.view.keepingScore)">
+          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.keepingScore }">
+          </span>
+        Score Keeper Commands
+      </a>
+    </li>
+
+
+    <li class="divider" ng-if="vm.view.keepingScore"></li>
+    <li class="dropdown-header" ng-if="vm.view.keepingScore">Scoring</li>
     <li role="menuitem" ng-if="vm.view.keepingScore">
       <!--Undo-->
       <a href ng-click="vm.view.updateScore('remove_last_change')"
@@ -14,51 +43,11 @@
         <span class="glyphicon glyphicon-repeat flip-horizontal"></span> Undo
       </a>
     </li>
-    <li ng-if="vm.view.keepingScore" class="divider"></li>
-    <li role="menuitem">
-      <!--Expand all-->
-      <a href ng-click="vm.view.toggleShowDescription()" >
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.settings.showDescription }">
-          </span>
-        Show Description
-      </a>
-    </li>
-    <li class="divider"></li>
-    <li role="menuitem">
-      <a href ng-click="vm.view.toggleKeepScore(true)">
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.keepingScore }">
-          </span>
-        Keep Score
-      </a>
-    </li>
-    <li role="menuitem">
-      <a href ng-click="vm.view.toggleKeepScore(false)" >
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': vm.view.keepingScore }">
-          </span>
-        Follow Score
-      </a>
-    </li>
-    <li class="divider"></li>
-    <li role="menuitem">
-      <a href ng-click="vm.view.toggleShowGames(true)" >
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': !vm.view.settings.showGames }">
-          </span>
-        Show Completed Games
-      </a>
-    </li>
-    <li role="menuitem">
-      <a href ng-click="vm.view.toggleShowGames(false)" >
-          <span class="glyphicon glyphicon-ok" ng-class="{ 'glyphicon-none': vm.view.settings.showGames }">
-          </span>
-        Hide Completed Games
-      </a>
-    </li>
-     <li class="divider" ng-if="vm.view.keepingScore"></li>
     <li role="menuitem" ng-if="vm.view.keepingScore">
       <!--Clear score board-->
       <a href ng-click="vm.view.updateScore('discard_play')"
          ng-class="{'disabled-link' : !loggedIn || !vm.view.keepingScore || !vm.scores.actions.discard_play}">
-        <span class="glyphicon glyphicon-remove"></span> Clear Score Board
+        <span class="glyphicon glyphicon-remove"></span> Clear
       </a>
     </li>
   </ul>
