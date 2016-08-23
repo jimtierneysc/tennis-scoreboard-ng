@@ -10,14 +10,14 @@
   'use strict';
 
   angular
-    .module('frontendView')
+    .module('frontendCrud')
     .directive('feEditEntityButton', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/view/editEntityButton.html',
+      templateUrl: 'app/crud/editEntityButton.html',
       scope: {
         entity: '=',
         disable:'=',

@@ -20,12 +20,7 @@
       restrict: 'E',
       templateUrl: 'app/matches/matchesForm.html',
       scope: {
-        form: '=',
-        errors: '=',
-        cancel: '&',
-        submit: '&',
-        entity: '=',
-        ok: '@',
+        vm: '=',
         teamsList: '=',
         playersList: '='
       }

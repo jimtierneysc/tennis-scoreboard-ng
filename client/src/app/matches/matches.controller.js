@@ -69,8 +69,8 @@
     function beforeShowNewEntity() {
       // TODO: Preserve last selection when add multiple matches
 
-      vm.newEntity.doubles = false;
-      vm.newEntity.scoring = 'two_six_game_ten_point';
+      vm.newEntity.entity.doubles = false;
+      vm.newEntity.entity.scoring = 'two_six_game_ten_point';
       var teams = prepareToShowTeamOptions();
       var players = prepareToShowPlayerOptions();
       var all = $q.all([teams, players]);
@@ -85,14 +85,14 @@
         }
         else {
           if (playerCount < 2)
-            vm.newEntity.doubles = true;
+            vm.newEntity.entity.doubles = true;
           if (playerCount == 2) {
-            vm.newEntity.select_first_player = vm.playerOptionsList.list[0];
-            vm.newEntity.select_second_player = vm.playerOptionsList.list[1];
+            vm.newEntity.entity.select_first_player = vm.playerOptionsList.list[0];
+            vm.newEntity.entity.select_second_player = vm.playerOptionsList.list[1];
           }
           if (teamCount == 2) {
-            vm.newEntity.select_first_team = vm.teamOptionsList.list[0];
-            vm.newEntity.select_second_team = vm.teamOptionsList.list[1];
+            vm.newEntity.entity.select_first_team = vm.teamOptionsList.list[0];
+            vm.newEntity.entity.select_second_team = vm.teamOptionsList.list[1];
           }
           return $q.resolve();
         }
@@ -186,28 +186,28 @@
     }
 
     function prepareToEditPlayers() {
-      if (!vm.editEntity.doubles) {
+      if (!vm.editEntity.entity.doubles) {
         var first_player = null;
         var second_player = null;
         var first_id = null;
         var second_id = null;
-        if (vm.editEntity.first_player)
-          first_id = vm.editEntity.first_player.id;
-        if (vm.editEntity.second_player)
-          second_id = vm.editEntity.second_player.id;
+        if (vm.editEntity.entity.first_player)
+          first_id = vm.editEntity.entity.first_player.id;
+        if (vm.editEntity.entity.second_player)
+          second_id = vm.editEntity.entity.second_player.id;
         $filter('filter')(vm.playerOptionsList.list,
           function (o) {
             if (o.id == first_id)  first_player = o;
             if (o.id == second_id) second_player = o;
             return first_player && second_player;
           });
-        vm.editEntity.select_first_player = first_player;
-        vm.editEntity.select_second_player = second_player;
+        vm.editEntity.entity.select_first_player = first_player;
+        vm.editEntity.entity.select_second_player = second_player;
       } else {
         if (vm.playerOptionsList.list.length == 2) {
           // If user selects doubles then default to only two teams
-          vm.editEntity.select_first_player = vm.playerOptionsList.list[0];
-          vm.editEntity.select_second_player = vm.playerOptionsList.list[1];
+          vm.editEntity.entity.select_first_player = vm.playerOptionsList.list[0];
+          vm.editEntity.entity.select_second_player = vm.playerOptionsList.list[1];
         }
       }
     }
@@ -220,28 +220,28 @@
     }
 
     function prepareToEditTeams() {
-      if (vm.editEntity.doubles) {
+      if (vm.editEntity.entity.doubles) {
         var first_team = null;
         var second_team = null;
         var first_id = null;
         var second_id = null;
-        if (vm.editEntity.first_team)
-          first_id = vm.editEntity.first_team.id;
-        if (vm.editEntity.second_team)
-          second_id = vm.editEntity.second_team.id;
+        if (vm.editEntity.entity.first_team)
+          first_id = vm.editEntity.entity.first_team.id;
+        if (vm.editEntity.entity.second_team)
+          second_id = vm.editEntity.entity.second_team.id;
         $filter('filter')(vm.teamOptionsList.list,
           function (o) {
             if (o.id == first_id)  first_team = o;
             if (o.id == second_id) second_team = o;
             return first_team && second_team;
           });
-        vm.editEntity.select_first_team = first_team;
-        vm.editEntity.select_second_team = second_team;
+        vm.editEntity.entity.select_first_team = first_team;
+        vm.editEntity.entity.select_second_team = second_team;
       } else {
         if (vm.teamOptionsList.list.length == 2) {
           // If user unselects doubles then default to only two teams
-          vm.editEntity.select_first_team = vm.teamOptionsList.list[0];
-          vm.editEntity.select_second_team = vm.teamOptionsList.list[1];
+          vm.editEntity.entity.select_first_team = vm.teamOptionsList.list[0];
+          vm.editEntity.entity.select_second_team = vm.teamOptionsList.list[1];
         }
       }
     }

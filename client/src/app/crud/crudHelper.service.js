@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendHelpers')
+    .module('frontendCrud')
     .factory('crudHelper', factory);
 
   /** @ngInject */
@@ -32,26 +32,33 @@
 
       // Set crud methods and properties
       vm.trashEntity = operations.trashEntity;
-      vm.submitNewEntity = operations.submitNewEntity;
-      vm.showNewEntity = operations.showNewEntity;
-      vm.cancelNewEntity = operations.cancelNewEntity;
-      vm.submitEditEntity = operations.submitEditEntity;
-      vm.showEditEntity = operations.showEditEntity;
-      vm.cancelEditEntity = operations.cancelEditEntity;
       vm.hidingEntity = operations.hidingEntity;
       vm.animatingEntity = operations.animatingEntity;
-      vm.showingEditEntityForm = operations.showingEditEntityForm;
-      vm.showingNewEntityForm = operations.showingNewEntityForm;
       vm.beginWait = waitIndicator.beginWait;
 
-      vm.newEntity = null;
-      vm.editEntity = null;
+      vm.editEntity = {
+          form: null,
+          errors: null,
+          cancel: operations.cancelEditEntity,
+          submit: operations.submitEditEntity,
+          ok: 'Save',
+          entity: null,
+          show: operations.showEditEntity,
+          showingForm: operations.showingEditEntityForm
+      };
+      
+      vm.newEntity = {
+          form: null,
+          errors: null,
+          cancel: operations.cancelNewEntity,
+          submit: operations.submitNewEntity,
+          ok: 'Add',
+          entity: null,
+          show: operations.showNewEntity,
+          showingForm: operations.showingNewEntityForm
+      };
       vm.showingNewEntity = false;
-      vm.newEntityForm = null;
-      vm.editEntityForm = null;
       vm.entitys = [];
-      vm.entityCreateErrors = null;
-      vm.entityUpdateErrors = null;
 
       // Allow new and edit operations to be cancelled
       editInProgress.registerOnQueryState(scope, operations.getEditorState);
@@ -64,12 +71,10 @@
     }
 
     function Operations(vm, options) {
-//       var vm = _vm_;
-//       var options = angular.copy(_controllerOptions_);
       var getResource = function () {
         return crudResource.getResource(options.resourceName)
       };
-      
+
       var CRUD = 'crud';
       var REFOCUS = 'refocus';
 
@@ -83,11 +88,11 @@
       this.getEditorState = function (event, data) {
         var editing = false;
         var message;
-        if (vm.editEntity && vm.editEntityForm && !vm.editEntityForm.$pristine) {
+        if (vm.editEntity.entity && vm.editEntity.form && !vm.editEntity.form.$pristine) {
           editing = true;
-          message = 'You have unsaved edits of ' + options.getEntityDisplayName(vm.editEntity) +
+          message = 'You have unsaved edits of ' + options.getEntityDisplayName(vm.editEntity.entity) +
             '. Do you want to discard your edits?';
-        } else if (vm.newEntity && vm.newEntityForm && !vm.newEntityForm.$pristine) {
+        } else if (vm.newEntity.entity && vm.newEntity.form && !vm.newEntity.form.$pristine) {
           editing = true;
           message = 'You are adding a new ' + options.entityKind +
             '. Do you want to discard your input?';
@@ -134,7 +139,7 @@
       };
 
       this.submitNewEntity = function () {
-        var submitEntity = options.prepareToCreateEntity(vm.newEntity);
+        var submitEntity = options.prepareToCreateEntity(vm.newEntity.entity);
         createEntity(submitEntity);
       };
 
@@ -148,7 +153,7 @@
 
         function show() {
           hideNewForm = false;
-          vm.newEntity = {};
+          vm.newEntity.entity = {};
           options.beforeShowNewEntity().then(showEntity);
 
           function showEntity() {
@@ -163,7 +168,7 @@
       this.cancelNewEntity = resetNewEntity;
 
       this.submitEditEntity = function () {
-        var submit = options.prepareToUpdateEntity(vm.editEntity);
+        var submit = options.prepareToUpdateEntity(vm.editEntity.entity);
         updateEntity(submit);
       };
 
@@ -178,7 +183,7 @@
         function show() {
           hideEditForm = false;
           // Edit a copy, so can discard unless click Save
-          vm.editEntity = angular.copy(entity);
+          vm.editEntity.entity = angular.copy(entity);
           options.beforeShowEditEntity().then(showEntity);
 
           function showEntity() {
@@ -192,14 +197,14 @@
       this.cancelEditEntity = resetEditEntity;
 
       function editingEntity(entity) {
-        return vm.editEntity && (vm.editEntity.id == entity.id);
+        return vm.editEntity.entity && (vm.editEntity.entity.id == entity.id);
       }
 
-      this.hidingEntity = function(entity) {
+      this.hidingEntity = function (entity) {
         return hiddenEntity === entity.id;
       };
 
-      this.animatingEntity = function(entity) {
+      this.animatingEntity = function (entity) {
         return animatedEntity === entity.id;
       };
 
@@ -240,24 +245,24 @@
           return $q.resolve();
 
         function hide() {
-          if (vm.newEntityForm) {
-            vm.newEntityForm.$setPristine();
+          if (vm.newEntity.form) {
+            vm.newEntity.form.$setPristine();
           }
           vm.showingNewEntity = false;
-          vm.newEntity = null;
+          vm.newEntity.entity = null;
           vm.entityCreateErrors = null;
           hideNewForm = false;
         }
       }
 
       function resetEditEntity() {
-        if (vm.editEntity) {
+        if (vm.editEntity.entity) {
           // Trigger animation
           hideEditForm = true;
           // Keep entity hidden until form is hidden
-          hiddenEntity = vm.editEntity.id;
+          hiddenEntity = vm.editEntity.entity.id;
           // Return promise
-          return animationTimers.delayOut().then(function() {
+          return animationTimers.delayOut().then(function () {
             clear();
             if (!animatedEntity)
               hiddenEntity = null;
@@ -267,11 +272,11 @@
           return $q.resolve();
 
         function clear() {
-          if (vm.editEntityForm) {
-            vm.editEntityForm.$setPristine();
+          if (vm.editEntity.form) {
+            vm.editEntity.form.$setPristine();
           }
-          vm.editEntity = null;
-          vm.entityUpdateErrors = null;
+          vm.editEntity.entity = null;
+          vm.editEntity.errors = null;
           hideEditForm = false;
         }
       }
@@ -332,8 +337,8 @@
 
       function entityUpdated(entity) {
         // Animate change to entity
-        hiddenEntity = vm.editEntity.id;
-        animatedEntity = vm.editEntity.id;
+        hiddenEntity = vm.editEntity.entity.id;
+        animatedEntity = vm.editEntity.entity.id;
         resetEditEntity().then(replace).finally(show);
 
         function replace() {
@@ -348,7 +353,7 @@
 
         function show() {
           hiddenEntity = null;
-          animationTimers.delayIn().then(function() {
+          animationTimers.delayIn().then(function () {
             animatedEntity = null;
           });
         }
@@ -361,7 +366,7 @@
 
       function entityUpdateError(entity, response) {
         vm.showHttpErrorToast(response.status);
-        vm.entityUpdateErrors = vm.errorsOfResponse(response);
+        vm.editEntity.errors = vm.errorsOfResponse(response);
       }
 
       function entityRemoved(entity) {

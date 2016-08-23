@@ -70,7 +70,7 @@
       });
     });
 
-    describe('crudHelper', function () {
+    describe('crud', function () {
       var crudMock;
       var selectOptionsMock;
       var vm;
@@ -264,12 +264,12 @@
             });
 
             it('should automatically select first player', function () {
-              expect(vm.newEntity.select_first_player).toEqual(
+              expect(vm.newEntity.entity.select_first_player).toEqual(
                 selectOptionsMock.playerList[0]);
             });
 
             it('should automatically select second player', function () {
-              expect(vm.newEntity.select_second_player).toEqual(
+              expect(vm.newEntity.entity.select_second_player).toEqual(
                 selectOptionsMock.playerList[1]);
             });
           });
@@ -286,7 +286,12 @@
           describe('options lists', function () {
 
             beforeEach(function () {
-              vm.editEntity = {};
+              vm.editEntity
+              {
+                entity: {
+                }
+              }
+              ;
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
@@ -302,20 +307,23 @@
             beforeEach(function () {
               firstPlayer = selectOptionsMock.playerList[0];
               secondPlayer = selectOptionsMock.playerList[1];
-              vm.editEntity = {
-                first_player: firstPlayer,
-                second_player: secondPlayer
+              vm.editEntity =
+              {
+                entity: {
+                  first_player: firstPlayer,
+                  second_player: secondPlayer
+                }
               };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
 
             it('should select first player', function () {
-              expect(vm.editEntity.select_first_player).toEqual(firstPlayer);
+              expect(vm.editEntity.entity.select_first_player).toEqual(firstPlayer);
             });
 
             it('should select second player', function () {
-              expect(vm.editEntity.select_second_player).toEqual(secondPlayer);
+              expect(vm.editEntity.entity.select_second_player).toEqual(secondPlayer);
             });
           });
         });
@@ -337,8 +345,8 @@
 
     function activate(vm, options) {
       _this.options = options;
-      vm.newEntity = {};
-      vm.editEntity = {};
+      vm.newEntity = {entity: {}};
+      vm.editEntity = {entity: {}};
       vm.showToast = function () {
 
       };
@@ -365,7 +373,7 @@
     _this.getPlayersSelectOptions = function () {
       return getSelectOptions(_this.playerList);
     };
-    
+
     _this.reject = false;
     _this.playerList = [];
     _this.setPlayerCount(3);  // default to list of 3

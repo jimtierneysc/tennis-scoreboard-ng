@@ -1,26 +1,24 @@
 (function () {
   'use strict';
 
-  describe('feEditEntityButton directive', function () {
+  describe('feDeleteEntityButton directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontendView'));
+    beforeEach(module('frontendCrud'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.adisable = true;
-      scope.aedit = jasmine.createSpy('onSubmit');
-      scope.aentity = {name: 'abc'};
+      scope.adelete = jasmine.createSpy('onCancel');
+      scope.aentity = {name: 'xxx'}
 
-      var html = ('<fe-edit-entity-button ' +
-      'edit-entity="aedit()" ' +
+      var html = ('<fe-delete-entity-button ' +
       'entity="aentity" ' +
-      'disable="adisable" ' +
-      '></fe-edit-entity-button>');
+      'delete-entity="adelete()" ' +
+      '></fe-delete-entity-button>');
 
       element = angular.element(html);
 
@@ -31,13 +29,9 @@
 
     describe('isolated scope', function () {
 
-      it('should have .editEntity()', function () {
-        isolatedScope.editEntity();
-        expect(scope.aedit).toHaveBeenCalled();
-      });
-
-      it('should have .disable', function () {
-        expect(isolatedScope.disable).toBe(scope.adisable);
+      it('should have .deleteEntity()', function () {
+        isolatedScope.deleteEntity();
+        expect(scope.adelete).toHaveBeenCalled();
       });
 
       it('should have .entity', function () {

@@ -1,104 +1,37 @@
 <div class="container-fluid">
-
-  <div class="row col-xs-12 col-md-8">
-    <div ng-if="vm.loading || vm.loadingFailed">
-      <fe-loading-messages
-        error="vm.loadingError"
-        loading="vm.loading"
-        failed="vm.loadingFailed"
-      ></fe-loading-messages>
-    </div>
-
-
-    <div ng-if="!vm.loading && !vm.loadingFailed">
-      <div ng-if="vm.loggedIn" class="standard-animation">
-        <button ng-disabled="vm.showingNewEntity" class="btn btn-primary " ng-click="vm.showNewEntity()">
-          <span class="glyphicon glyphicon-plus"></span> Player
-        </button>
-      </div>
-
-      <div ng-if="vm.entitys.length == 0 && !vm.showingNewEntity">
-        <fe-empty-list-message
-          logged-in="vm.loggedIn"
-          kind="players"
-        ></fe-empty-list-message>
-      </div>
-
-      <div>
-
-        <ol class="list-group">
-
-          <!--New player-->
-          <li class="list-group-item standard-animation" ng-if="vm.showingNewEntityForm()">
-            <div class="row">
-              <div class="col-xs-10 col-md-8">
-                <fe-players-form
-                  form="vm.newEntityForm"
-                  errors="vm.entityCreateErrors"
-                  cancel="vm.cancelNewEntity()"
-                  submit="vm.submitNewEntity()"
-                  ok="Add"
-                  entity="vm.newEntity"
-                >
-                </fe-players-form>
-              </div>
+  <fe-crud-page
+    kind="player"
+    vm="vm"
+  >
+    <list>
+      <!--Player list-->
+      <li class="list-group-item standard-animation" ng-repeat="entity in vm.entitys">
+        <fe-crud-row
+          vm="vm"
+          entity="entity"
+          kind="player"
+        >
+          <entity>
+            <div class="h4">
+              {{ entity.name}}
             </div>
+          </entity>
+          <edit>
+            <fe-players-form
+              vm="vm.editEntity"
+            >
+            </fe-players-form>
+          </edit>
+        </fe-crud-row>
+      </li>
+    </list>
 
-          </li>
+    <new>
+      <fe-players-form
+        vm="vm.newEntity"
+      >
+      </fe-players-form>
+    </new>
 
-          <!--Player details-->
-          <li class="list-group-item clearfix standard-animation" ng-repeat="entity in vm.entitys">
-
-            <div class="row">
-              <div class="col-xs-10">
-                <div ng-if="!vm.showingEditEntityForm(entity) && !vm.hidingEntity(entity)"
-                ng-class="{'standard-animation': vm.animatingEntity(entity)}">
-                  <div class="h4">
-                    {{ entity.name}}
-                  </div>
-                </div>
-
-                <!--Edit player-->
-
-                <div ng-if="vm.showingEditEntityForm(entity)" class="standard-animation">
-
-                  <fe-players-form
-                    form="vm.editEntityForm"
-                    errors="vm.entityUpdateErrors"
-                    cancel="vm.cancelEditEntity()"
-                    submit="vm.submitEditEntity()"
-                    entity="vm.editEntity"
-                    ok="Save"
-                  >
-                  </fe-players-form>
-
-
-                </div>
-              </div>
-
-              <div class="col-xs-2">
-                <!--Delete button-->
-                <div class="pull-right standard-animation" ng-if="vm.loggedIn">
-                  <fe-delete-entity-button
-                    entity="entity"
-                    delete-entity="vm.trashEntity(entity)"
-                  >
-                  </fe-delete-entity-button>
-                  <fe-edit-entity-button
-                    entity="entity"
-                    disable="vm.showingEditEntityForm(entity)"
-                    edit-entity="vm.showEditEntity(entity)"
-                  >
-                  </fe-edit-entity-button>
-                </div>
-              </div>
-            </div>
-
-          </li>
-
-        </ol>
-
-      </div>
-    </div>
-  </div>
+  </fe-crud-page>
 </div>

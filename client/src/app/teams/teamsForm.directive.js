@@ -19,12 +19,7 @@
       restrict: 'E',
       templateUrl: 'app/teams/teamsForm.html',
       scope: {
-        form: '=',
-        errors: '=',
-        cancel: '&',
-        submit: '&',
-        entity: '=',
-        ok: '@',
+        vm: '=',
         playersList: '='
       }
     };

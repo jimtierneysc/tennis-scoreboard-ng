@@ -80,7 +80,7 @@
       });
     });
 
-    describe('crudHelper', function () {
+    describe('crud', function () {
       var crudMock;
       var selectOptionsMock;
       var vm;
@@ -243,7 +243,7 @@
             beforeEach(function () {
               options.beforeShowNewEntity();
               $rootScope.$digest(); // resolve player and team lists
-              entity = vm.newEntity;
+              entity = vm.newEntity.entity;
             });
 
             it('should default to singles', function () {
@@ -338,12 +338,12 @@
             });
 
             it('should automatically select first player', function () {
-              expect(vm.newEntity.select_first_player).toEqual(
+              expect(vm.newEntity.entity.select_first_player).toEqual(
                 selectOptionsMock.playerList[0]);
             });
 
             it('should automatically select second player', function () {
-              expect(vm.newEntity.select_second_player).toEqual(
+              expect(vm.newEntity.entity.select_second_player).toEqual(
                 selectOptionsMock.playerList[1]);
             });
           });
@@ -356,12 +356,12 @@
             });
 
             it('should automatically select first team', function () {
-              expect(vm.newEntity.select_first_team).toEqual(
+              expect(vm.newEntity.entity.select_first_team).toEqual(
                 selectOptionsMock.teamList[0]);
             });
 
             it('should automatically select second team', function () {
-              expect(vm.newEntity.select_second_team).toEqual(
+              expect(vm.newEntity.entity.select_second_team).toEqual(
                 selectOptionsMock.teamList[1]);
             });
           });
@@ -375,7 +375,7 @@
             });
 
             it('should automatically select doubles', function () {
-              expect(vm.newEntity.doubles).toBeTruthy();
+              expect(vm.newEntity.entity.doubles).toBeTruthy();
             });
           });
         });
@@ -389,7 +389,9 @@
           describe('fills options lists', function () {
 
             beforeEach(function () {
-              vm.editEntity = {};
+              vm.editEntity = {
+                entity: {}
+              };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
@@ -404,20 +406,22 @@
               firstPlayer = selectOptionsMock.playerList[0];
               secondPlayer = selectOptionsMock.playerList[1];
               vm.editEntity = {
-                doubles: false,
-                first_player: firstPlayer,
-                second_player: secondPlayer
+                entity: {
+                  doubles: false,
+                  first_player: firstPlayer,
+                  second_player: secondPlayer
+                }
               };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
 
             it('should select first player', function () {
-              expect(vm.editEntity.select_first_player).toEqual(firstPlayer);
+              expect(vm.editEntity.entity.select_first_player).toEqual(firstPlayer);
             });
 
             it('should select second player', function () {
-              expect(vm.editEntity.select_second_player).toEqual(secondPlayer);
+              expect(vm.editEntity.entity.select_second_player).toEqual(secondPlayer);
             });
           });
 
@@ -428,20 +432,22 @@
               firstTeam = selectOptionsMock.teamList[0];
               secondTeam = selectOptionsMock.teamList[1];
               vm.editEntity = {
-                doubles: true,
-                first_team: firstTeam,
-                second_team: secondTeam
+                entity: {
+                  doubles: true,
+                  first_team: firstTeam,
+                  second_team: secondTeam
+                }
               };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
 
             it('should select first team', function () {
-              expect(vm.editEntity.select_first_team).toEqual(firstTeam);
+              expect(vm.editEntity.entity.select_first_team).toEqual(firstTeam);
             });
 
             it('should select second team', function () {
-              expect(vm.editEntity.select_second_team).toEqual(secondTeam);
+              expect(vm.editEntity.entity.select_second_team).toEqual(secondTeam);
             });
           });
 
@@ -449,21 +455,23 @@
             beforeEach(function () {
               selectOptionsMock.setPlayerCount(2);
               vm.editEntity = {
-                doubles: true,
-                first_team: selectOptionsMock.teamList[0],
-                second_team: selectOptionsMock.teamList[1]
+                entity: {
+                  doubles: true,
+                  first_team: selectOptionsMock.teamList[0],
+                  second_team: selectOptionsMock.teamList[1]
+                }
               };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
 
             it('should select first player', function () {
-              expect(vm.editEntity.select_first_player).toEqual(
+              expect(vm.editEntity.entity.select_first_player).toEqual(
                 selectOptionsMock.playerList[0]);
             });
 
             it('should select second player', function () {
-              expect(vm.editEntity.select_second_player).toEqual(
+              expect(vm.editEntity.entity.select_second_player).toEqual(
                 selectOptionsMock.playerList[1]);
             });
           });
@@ -473,22 +481,24 @@
             beforeEach(function () {
               selectOptionsMock.setTeamCount(2);
               vm.editEntity = {
-                doubles: false,
-                first_player: selectOptionsMock.playerList[0],
-                second_player: selectOptionsMock.playerList[1]
+                entity: {
+                  doubles: false,
+                  first_player: selectOptionsMock.playerList[0],
+                  second_player: selectOptionsMock.playerList[1]
+                }
               };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });
 
             it('should select first team', function () {
-              expect(vm.editEntity.select_first_team).toEqual(
+              expect(vm.editEntity.entity.select_first_team).toEqual(
                 selectOptionsMock.teamList[0]
               );
             });
 
             it('should select second team', function () {
-              expect(vm.editEntity.select_second_team).toEqual(
+              expect(vm.editEntity.entity.select_second_team).toEqual(
                 selectOptionsMock.teamList[1]
               );
             });
@@ -542,8 +552,8 @@
 
     function activate(vm, options) {
       _this.options = options;
-      vm.newEntity = {};
-      vm.editEntity = {};
+      vm.newEntity = {entity: {}};
+      vm.editEntity = {entity: {}};
       vm.showToast = function () {
 
       };

@@ -15,19 +15,18 @@
       okText = 'clickme';
 
       scope = $rootScope.$new();
-      scope.aform = null;
-      scope.aentity = {};
-      scope.aerrors = {};
-      scope.asubmit = jasmine.createSpy('onSubmit');
-      scope.acancel = jasmine.createSpy('onCancel');
+      var vm = {
+        form: null,
+        entity: {},
+        errors: {},
+        submit: jasmine.createSpy('onSubmit'),
+        cancel: jasmine.createSpy('onCancel'),
+        ok: okText
+      };
+      scope.vm = vm;
 
       var html = ('<fe-players-form ' +
-      'form="aform" ' +
-      'errors="aerrors" ' +
-      'cancel="acancel()" ' +
-      'submit="asubmit()" ' +
-      'entity="aentity" ' +
-      'ok="' + okText + '"' +
+      'vm="vm" ' +
       '></fe-players-form>');
 
       element = angular.element(html);
@@ -36,32 +35,10 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-    
+
     describe('isolated scope', function () {
-      it('should have .form', function () {
-        expect(isolatedScope.form).toEqual(scope.aform);
-      });
-
-      it('should have .errors', function () {
-        expect(isolatedScope.errors).toBe(scope.aerrors);
-      });
-
-      it('should have .entity', function () {
-        expect(isolatedScope.entity).toBe(scope.aentity);
-      });
-
-      it('should call .cancel()', function () {
-        isolatedScope.cancel();
-        expect(scope.acancel).toHaveBeenCalled();
-      });
-
-      it('should call .submit()', function () {
-        isolatedScope.submit();
-        expect(scope.asubmit).toHaveBeenCalled();
-      });
-
-      it('should have ok text', function () {
-        expect(isolatedScope.ok).toEqual(okText);
+      it('should have .vm', function () {
+        expect(isolatedScope.vm).toBe(scope.vm);
       });
 
     });

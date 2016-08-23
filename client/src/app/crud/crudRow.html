@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-xs-10">
+    <div ng-if="!vm.editEntity.showingForm(entity) && !vm.hidingEntity(entity)"
+         ng-class="{'standard-animation': vm.animatingEntity(entity)}">
+      <div ng-transclude="entity">
+      </div>
+    </div>
+
+    <!--Edit entity-->
+
+    <div ng-if="vm.editEntity.showingForm(entity)" class="standard-animation">
+      <div ng-transclude="edit">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-2">
+    <!--Delete button-->
+    <div class="pull-right standard-animation" ng-if="vm.loggedIn">
+      <fe-delete-entity-button
+        entity="entity"
+        delete-entity="vm.trashEntity(entity)"
+      >
+      </fe-delete-entity-button>
+      <fe-edit-entity-button
+        entity="entity"
+        disable="vm.editEntity.showingForm(entity)"
+        edit-entity="vm.editEntity.show(entity)"
+      >
+      </fe-edit-entity-button>
+      <div ng-transclude="links">
+
+      </div>
+    </div>
+  </div>
+</div>

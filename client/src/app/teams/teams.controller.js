@@ -73,8 +73,8 @@
         }
         else {
           if (playerCount == 2) {
-            vm.newEntity.select_first_player = vm.playerOptionsList.list[0];
-            vm.newEntity.select_second_player = vm.playerOptionsList.list[1];
+            vm.newEntity.entity.select_first_player = vm.playerOptionsList.list[0];
+            vm.newEntity.entity.select_second_player = vm.playerOptionsList.list[1];
           }
           return $q.resolve();
         }
@@ -125,18 +125,18 @@
       var second_player = null;
       var first_id = null;
       var second_id = null;
-      if (vm.editEntity.first_player)
-        first_id = vm.editEntity.first_player.id;
-      if (vm.editEntity.second_player)
-        second_id = vm.editEntity.second_player.id;
+      if (vm.editEntity.entity.first_player)
+        first_id = vm.editEntity.entity.first_player.id;
+      if (vm.editEntity.entity.second_player)
+        second_id = vm.editEntity.entity.second_player.id;
       $filter('filter')(vm.playerOptionsList.list,
         function (o) {
           if (o.id == first_id)  first_player = o;
           if (o.id == second_id) second_player = o;
           return first_player && second_player;
         });
-      vm.editEntity.select_first_player = first_player;
-      vm.editEntity.select_second_player = second_player;
+      vm.editEntity.entity.select_first_player = first_player;
+      vm.editEntity.entity.select_second_player = second_player;
     }
 
     function prepareToApplyEntity(entity, result) {

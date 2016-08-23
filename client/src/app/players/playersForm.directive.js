@@ -20,12 +20,7 @@
       restrict: 'E',
       templateUrl: 'app/players/playersForm.html',
       scope: {
-        form: '=',
-        errors: '=',
-        cancel: '&',
-        submit: '&',
-        entity: '=',
-        ok: '@'
+        vm: '='
       }
     };
 

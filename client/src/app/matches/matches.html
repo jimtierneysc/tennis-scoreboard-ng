@@ -1,120 +1,61 @@
 <div class="container-fluid">
 
-  <div class="row col-xs-12 col-md-8">
-    <div ng-if="vm.loading || vm.loadingFailed">
-      <fe-loading-messages
-        error="vm.loadingError"
-        loading="vm.loading"
-        failed="vm.loadingFailed"
-      ></fe-loading-messages>
-    </div>
-
-    <div ng-if="!vm.loading && !vm.loadingFailed">
-      <div ng-if="vm.loggedIn" class="standard-animation">
-        <button ng-disabled="vm.showingNewEntity" class="btn btn-primary" ng-click="vm.showNewEntity()">
-          <span class="glyphicon glyphicon-plus"></span> Match
-        </button>
-      </div>
-
-      <div ng-if="vm.entitys.length == 0 && !vm.showingNewEntity">
-        <fe-empty-list-message
-          logged-in="vm.loggedIn"
-          kind="matches"
-        ></fe-empty-list-message>
-      </div>
-
-      <div>
-        <ol class="list-group">
-          <!--New match-->
-          <li class="list-group-item standard-animation" ng-if="vm.showingNewEntityForm()">
-            <div class="row">
-              <div class="col-xs-10 ">
-                <fe-matches-form
-                  form="vm.newEntityForm"
-                  errors="vm.entityCreateErrors"
-                  cancel="vm.cancelNewEntity()"
-                  submit="vm.submitNewEntity()"
-                  entity="vm.newEntity"
-                  ok="Add"
-                  players-list="vm.playerOptionsList"
-                  teams-list="vm.teamOptionsList"
-                >
-                </fe-matches-form>
-              </div>
-            </div>
-          </li>
-
-
-          <!--Team details-->
-          <li class="list-group-item clearfix standard-animation" ng-repeat="entity in vm.entitys">
-
-
-            <div class="row">
-              <div class="col-xs-10">
-                <div ng-if="!vm.showingEditEntityForm(entity) && !vm.hidingEntity(entity)"
-                     ng-class="{'standard-animation': vm.animatingEntity(entity)}">
-                  <div class="h4">
+  <fe-crud-page
+    kind="match"
+    vm="vm"
+  >
+    <list>
+      <!--Match list-->
+      <li class="list-group-item standard-animation" ng-repeat="entity in vm.entitys">
+        <fe-crud-row
+          vm="vm"
+          entity="entity"
+        >
+          <entity>
+            <div class="h4">
                 <span ng-if="entity.title">
                 {{ entity.title}}
                   </span>
-                    <span ng-if="!entity.title">(untitled)</span>
-                  </div>
-                  <div>
-                    <fe-match-opponents match="entity"></fe-match-opponents>
-                  </div>
-                  <div class="space-match-detail">
-                    <fe-match-scoring match="entity"></fe-match-scoring>
-                  </div>
-                  <div class="space-match-detail">
-                    <fe-match-state match="entity"></fe-match-state>
-                  </div>
-
-                </div>
-
-                <!--Use ng-if so there won't be bunch of forms in the DOM-->
-                <div ng-if="vm.showingEditEntityForm(entity)" class="standard-animation">
-                  <fe-matches-form
-                    form="vm.editEntityForm"
-                    errors="vm.entityUpdateErrors"
-                    cancel="vm.cancelEditEntity()"
-                    submit="vm.submitEditEntity()"
-                    entity="vm.editEntity"
-                    ok="Save"
-                    players-list="vm.playerOptionsList"
-                    teams-list="vm.teamOptionsList"
-                  >
-                  </fe-matches-form>
-                </div>
-              </div>
-
-              <div class="col-xs-2">
-                <!--Delete button-->
-                <div class="pull-right">
-                  <div ng-if="vm.loggedIn" class="standard-animation">
-                    <fe-delete-entity-button
-                      entity="entity"
-                      delete-entity="vm.trashEntity(entity)"
-                    ></fe-delete-entity-button>
-                  </div>
-                  <div ng-if="vm.loggedIn" class="standard-animation">
-                    <fe-edit-entity-button
-                      entity="entity"
-                      disable="vm.showingEditEntityForm(entity)"
-                      edit-entity="vm.showEditEntity(entity)"
-                    ></fe-edit-entity-button>
-                  </div>
-                  <a
-                    ui-sref="scores.board({ id: entity.id })">Score
-                  </a>
-
-                </div>
-              </div>
+              <span ng-if="!entity.title">(untitled)</span>
+            </div>
+            <div>
+              <fe-match-opponents match="entity"></fe-match-opponents>
+            </div>
+            <div class="space-match-detail">
+              <fe-match-scoring match="entity"></fe-match-scoring>
+            </div>
+            <div class="space-match-detail">
+              <fe-match-state match="entity"></fe-match-state>
             </div>
 
-          </li>
-        </ol>
+          </entity>
+          <edit>
+            <fe-matches-form
+              vm="vm.editEntity"
+              players-list="vm.playerOptionsList"
+              teams-list="vm.teamOptionsList"
+            >
+            </fe-matches-form>
+          </edit>
 
-      </div>
-    </div>
-  </div>
+          <links>
+            <a ui-sref="scores.board({ id: entity.id })">Score
+            </a>
+          </links>
+        </fe-crud-row>
+      </li>
+    </list>
+
+    <new>
+      <fe-matches-form
+        vm="vm.newEntity"
+        players-list="vm.playerOptionsList"
+        teams-list="vm.teamOptionsList"
+      >
+      </fe-matches-form>
+    </new>
+
+  </fe-crud-page>
+</div>
+
 </div>

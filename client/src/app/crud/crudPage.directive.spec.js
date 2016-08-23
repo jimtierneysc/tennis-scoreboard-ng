@@ -7,7 +7,7 @@
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontendView'));
+    beforeEach(module('frontendCrud'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

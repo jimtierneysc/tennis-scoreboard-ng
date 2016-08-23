@@ -11,7 +11,7 @@
     var modalConfirm;
     var autoFocus;
 
-    beforeEach(module('frontendHelpers'));
+    beforeEach(module('frontendCrud'));
 
     beforeEach(function () {
       module(function ($provide) {
@@ -19,6 +19,23 @@
         // Mock autoFocus service
         $provide.factory('autoFocus', function () {
           return autoFocus;
+        });
+      });
+    });
+
+    function resolvedPromise() {
+      return $q.resolve();
+    }
+
+    beforeEach(function () {
+      module(function ($provide) {
+        // Disable animation delays
+        $provide.factory('animationTimers', function () {
+          return {
+            delayIn: resolvedPromise,
+            delayOut: resolvedPromise,
+            digest: resolvedPromise
+          }
         });
       });
     });
@@ -142,24 +159,24 @@
         beforeEach(function () {
           service(vm, crudOptions);
           editForm = mocks.mockForm();
-          vm.editEntityForm = editForm;
+          vm.editEntity.form = editForm;
           newForm = mocks.mockForm();
-          vm.newEntityForm = newForm;
+          vm.newEntity.form = newForm;
         });
 
         describe('edit show', function () {
           beforeEach(function () {
             autoFocus.calls.reset();
-            vm.showEditEntity(entities[0]);
+            vm.editEntity.show(entities[0]);
             $rootScope.$digest(); // process promise
           });
 
-          it('should be .hidingEntity()', function () {
-            expect(vm.hidingEntity(entities[0])).toBeTruthy();
+          it('should not be .hidingEntity()', function () {
+            expect(vm.hidingEntity(entities[0])).toBeFalsy();
           });
 
           it('should set .editEntity', function () {
-            expect(vm.editEntity).toEqual(entities[0]);
+            expect(vm.editEntity.entity).toEqual(entities[0]);
           });
 
           it('should have set focus', function () {
@@ -169,13 +186,14 @@
 
         describe('edit cancel', function () {
           beforeEach(function () {
-            vm.showEditEntity(entities[0]);
+            vm.editEntity.show(entities[0]);
             $rootScope.$digest(); // process promise
             spyOn(editForm, '$setPristine').and.callThrough();
-            vm.cancelEditEntity();
+            vm.editEntity.cancel();
+            $rootScope.$digest();
           });
 
-          it('should be .hidingEntity()', function () {
+          it('should not be .hidingEntity()', function () {
             expect(vm.hidingEntity(entities[0])).toBeFalsey;
           });
 
@@ -187,7 +205,7 @@
         describe('new show', function () {
           beforeEach(function () {
             autoFocus.calls.reset();
-            vm.showNewEntity();
+            vm.newEntity.show();
             $rootScope.$digest(); // process promise
           });
 
@@ -196,7 +214,7 @@
           });
 
           it('should set .newEntity', function () {
-            expect(vm.newEntity).toEqual({});
+            expect(vm.newEntity.entity).toEqual({});
           });
 
           it('should have set focus', function () {
@@ -206,10 +224,11 @@
 
         describe('new hide', function () {
           beforeEach(function () {
-            vm.showNewEntity();
+            vm.newEntity.show();
             $rootScope.$digest(); // process promise
             spyOn(newForm, '$setPristine').and.callThrough();
-            vm.cancelNewEntity();
+            vm.newEntity.cancel();
+            $rootScope.$digest();
           });
 
           it('should not be .showingNewEntity', function () {
@@ -238,14 +257,14 @@
             expect(vm.showingNewEntity).toBeFalsy();
           });
 
-          it('should be .hidingEntity()', function () {
-            expect(vm.hidingEntity(entities[0])).toBeTruthy();
+          it('should not be .hidingEntity()', function () {
+            expect(vm.hidingEntity(entities[0])).toBeFalsy();
           });
         }
 
         describe('new close', function () {
           beforeEach(function () {
-            vm.showNewEntity();
+            vm.newEntity.show();
             newForm.$pristine = true;
             $rootScope.$digest(); // process promise
           });
@@ -253,7 +272,7 @@
           describe('pristine', function () {
             beforeEach(function () {
               spyOnModalConfirm(true);
-              vm.showEditEntity(entities[0]);
+              vm.editEntity.show(entities[0]);
               $rootScope.$digest(); // process promise
             });
 
@@ -268,7 +287,7 @@
             beforeEach(function () {
               spyOnModalConfirm(true);
               newForm.$pristine = false;
-              vm.showEditEntity(entities[0]);
+              vm.editEntity.show(entities[0]);
               $rootScope.$digest(); // process promise
             });
 
@@ -284,7 +303,7 @@
               spyOnModalConfirm(false);
               newForm.$pristine = false;
               autoFocus.calls.reset();
-              vm.showEditEntity(entities[0]);
+              vm.editEntity.show(entities[0]);
               $rootScope.$digest(); // process promise
             });
 
@@ -303,7 +322,7 @@
 
         describe('edit close', function () {
           beforeEach(function () {
-            vm.showEditEntity(entities[0]);
+            vm.editEntity.show(entities[0]);
             editForm.$pristine = true;
             $rootScope.$digest(); // process promise
           });
@@ -311,7 +330,7 @@
           describe('pristine', function () {
             beforeEach(function () {
               spyOnModalConfirm(true);
-              vm.showNewEntity();
+              vm.newEntity.show();
               $rootScope.$digest(); // process promise
             });
 
@@ -326,7 +345,7 @@
             beforeEach(function () {
               spyOnModalConfirm(true);
               editForm.$pristine = false;
-              vm.showNewEntity();
+              vm.newEntity.show();
               $rootScope.$digest(); // process promise
             });
 
@@ -343,7 +362,7 @@
               spyOnModalConfirm(false);
               editForm.$pristine = false;
               autoFocus.calls.reset();
-              vm.showNewEntity();
+              vm.newEntity.show();
               $rootScope.$digest(); // process promise
             });
 
@@ -359,13 +378,14 @@
           });
         });
       });
-      
+
       describe('crud create success', function () {
         beforeEach(function () {
           service(vm, crudOptions);
           spyOn(crudMethods, 'prepareToCreateEntityImpl').and.callThrough();
-          vm.newEntity = {name: 'four'};
-          vm.submitNewEntity();
+          vm.newEntity.entity = {name: 'four'};
+          vm.newEntity.submit();
+          $rootScope.$digest();
         });
 
         it('should insert entity', function () {
@@ -387,8 +407,8 @@
         beforeEach(function () {
           service(vm, crudOptions);
           mockResource.respondWithError = true;
-          vm.newEntity = {name: 'four'};
-          vm.submitNewEntity();
+          vm.newEntity.entity = {name: 'four'};
+          vm.newEntity.submit();
         });
 
         it('should not change entities', function () {
@@ -405,9 +425,10 @@
         beforeEach(function () {
           service(vm, crudOptions);
           spyOn(crudMethods, 'prepareToUpdateEntityImpl').and.callThrough();
-          vm.editEntity = angular.copy(entities[2]);
-          vm.editEntity.name = 'xyz'
-          vm.submitEditEntity();
+          vm.editEntity.entity = angular.copy(entities[2]);
+          vm.editEntity.entity.name = 'xyz';
+          vm.editEntity.submit();
+          $rootScope.$digest();
         });
 
         it('should have updated entity', function () {
@@ -419,7 +440,7 @@
         });
 
         it('should not have entityUpdateErrors', function () {
-          expect(vm.entityUpdateErrors).toBe(null);
+          expect(vm.editEntity.errors).toBe(null);
         });
 
       });
@@ -428,17 +449,17 @@
         beforeEach(function () {
           service(vm, crudOptions);
           mockResource.respondWithError = true;
-          vm.editEntity = angular.copy(entities[2]);
-          vm.editEntity.name = 'xyz'
-          vm.submitEditEntity();
+          vm.editEntity.entity = angular.copy(entities[2]);
+          vm.editEntity.entity.name = 'xyz';
+          vm.editEntity.submit();
         });
 
         it('should not change entities', function () {
           expect(entities).toEqual(originalEntities);
         });
 
-        it('should have .entityUpdateErrors', function () {
-          expect(vm.entityUpdateErrors).not.toBe(null);
+        it('should have .editEntity.errors', function () {
+          expect(vm.editEntity.errors).not.toBe(null);
         });
 
       });
@@ -729,21 +750,22 @@
           var helper = new MatcherHelper(vm);
 
           helper.checkFunction('trashEntity');
-          helper.checkFunction('submitNewEntity');
-          helper.checkFunction('showNewEntity');
-          helper.checkFunction('cancelNewEntity');
-          helper.checkFunction('submitEditEntity');
-          helper.checkFunction('showEditEntity');
-          helper.checkFunction('cancelEditEntity');
-          helper.checkFunction('hidingEntity');
+          // helper.checkFunction('submitNewEntity');
+          // helper.checkFunction('showNewEntity');
+          // helper.checkFunction('cancelNewEntity');
+          // helper.checkFunction('submitEditEntity');
+          // helper.checkFunction('showEditEntity');
+          // helper.checkFunction('cancelEditEntity');
+          // helper.checkFunction('hidingEntity');
           helper.checkFunction('beginWait');
           helper.checkBoolean('showingNewEntity');
           helper.checkObject('newEntity');
-          helper.checkObject('editEntity', false);
-          helper.checkObject('newEntityForm', false);
-          helper.checkObject('editEntityForm', false);
-          helper.checkObject('entityCreateErrors', false);
-          helper.checkObject('entityUpdateErrors', false);
+          helper.checkObject('editEntity');
+          // helper.checkObject('editEntity', false);
+          // helper.checkObject('newEntityForm', false);
+          // helper.checkObject('editEntityForm', false);
+          // helper.checkObject('entityCreateErrors', false);
+          // helper.checkObject('entityUpdateErrors', false);
 
           return helper.getResult();
         }

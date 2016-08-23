@@ -1,51 +1,51 @@
 <!-- "form" is member of controller-->
-<form name="form"
-      ng-submit="submit()" novalidate ng-keyup="$event.keyCode == 27 && cancel()">
-  <div class="form-group" ng-class="{ 'has-error': errors.doubles }">
+<form name="vm.form"
+      ng-submit="vm.submit()" novalidate ng-keyup="$event.keyCode == 27 && vm.cancel()">
+  <div class="form-group" ng-class="{ 'has-error': vm.errors.doubles }">
     <!--Singles-->
     <div class="radio">
       <label>
-        <input type="radio" name="singles" ng-value="false" ng-model="entity.doubles"
+        <input type="radio" name="singles" ng-value="false" ng-model="vm.entity.doubles"
                ng-disabled="playerslist.list.length < 2">
         Singles
       </label>
     </div>
     <div class="radio">
       <label>
-        <input type="radio" name="doubles" ng-value="true" ng-model="entity.doubles"
+        <input type="radio" name="doubles" ng-value="true" ng-model="vm.entity.doubles"
                ng-disabled="teamslist.list.length < 2">
         Doubles
       </label>
     </div>
     <!--Problems with doubles -->
-    <div ng-show="errors.doubles" ng-repeat="error in errors.doubles">
+    <div ng-show="vm.errors.doubles" ng-repeat="error in vm.errors.doubles">
       <span class="help-block">Doubles {{error}}</span>
     </div>
   </div>
 
-  <div class="form-group" ng-class="{ 'has-error': errors.title }">
+  <div class="form-group" ng-class="{ 'has-error': vm.errors.title }">
 
     <!--Match title-->
     <label for="title" class="sr-only control-label">Team Name</label>
     <div>
       <input fe-auto-focus='refocus' type="text" class="form-control" id="title" name="title"
              placeholder="Match Title (optional)"
-             ng-model="entity.title">
+             ng-model="vm.entity.title">
 
       <!--Problems with title-->
-      <div ng-show="errors.title" ng-repeat="error in errors.title">
+      <div ng-show="vm.errors.title" ng-repeat="error in vm.errors.title">
         <span class="help-block">Name {{error}}</span>
       </div>
     </div>
   </div>
-  <div ng-if="!entity.doubles">
+  <div ng-if="!vm.entity.doubles">
     <!--First Player-->
-    <div class="form-group" ng-class="{ 'has-error': errors.first_player}"
+    <div class="form-group" ng-class="{ 'has-error': vm.errors.first_player}"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
 
       <label for="first_player" class="control-label sr-only">First Player</label>
 
-      <ui-select ng-model="entity.select_first_player" theme="bootstrap" id="first_player" name="first_player"
+      <ui-select ng-model="vm.entity.select_first_player" theme="bootstrap" id="first_player" name="first_player"
                  ng-required="true">
         <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in playersList.list | filter: $select.search">
@@ -54,17 +54,17 @@
         </ui-select-choices>
       </ui-select>
       <!--Problems with first player-->
-      <div ng-show="errors.first_player" ng-repeat="error in errors.first_player">
+      <div ng-show="vm.errors.first_player" ng-repeat="error in vm.errors.first_player">
         <span class="help-block">Player {{error}}</span>
       </div>
 
 
     </div>
     <!--Second player-->
-    <div class="form-group" ng-class="{ 'has-error': errors.second_player }"
+    <div class="form-group" ng-class="{ 'has-error': vm.errors.second_player }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_player" class="control-label sr-only">Second Player</label>
-      <ui-select ng-model="entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
+      <ui-select ng-model="vm.entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
                  ng-required="true">
         <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in playersList.list | filter: $select.search">
@@ -75,7 +75,7 @@
 
 
       <!--Problems with second player-->
-      <div ng-show="errors.second_player" ng-repeat="error in errors.second_player">
+      <div ng-show="vm.errors.second_player" ng-repeat="error in vm.errors.second_player">
         <span class="help-block">Player {{error}}</span>
       </div>
 
@@ -84,14 +84,14 @@
 
 
   <!--TODO: Team select lists should display player names-->
-  <div ng-if="entity.doubles">
+  <div ng-if="vm.entity.doubles">
     <!--First Team-->
-    <div class="form-group" ng-class="{ 'has-error': errors.first_team }"
+    <div class="form-group" ng-class="{ 'has-error': vm.errors.first_team }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
 
       <label for="first_team" class="control-label sr-only">First Team</label>
 
-      <ui-select ng-model="entity.select_first_team" theme="bootstrap" id="first_team" name="first_team"
+      <ui-select ng-model="vm.entity.select_first_team" theme="bootstrap" id="first_team" name="first_team"
                  ng-required="true">
         <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in teamsList.list | filter: $select.search">
@@ -100,7 +100,7 @@
         </ui-select-choices>
       </ui-select>
       <!--Problems with first player-->
-      <div ng-show="errors.first_team" ng-repeat="error in errors.first_team">
+      <div ng-show="vm.errors.first_team" ng-repeat="error in vm.errors.first_team">
         <span class="help-block">Team {{error}}</span>
       </div>
 
@@ -108,10 +108,10 @@
     </div>
 
     <!--Second team-->
-    <div class="form-group" ng-class="{ 'has-error': errors.second_team }"
+    <div class="form-group" ng-class="{ 'has-error': vm.errors.second_team }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_team" class="control-label sr-only">Second Player</label>
-      <ui-select ng-model="entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
+      <ui-select ng-model="vm.entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
                  ng-required="true">
         <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in teamsList.list | filter: $select.search">
@@ -122,24 +122,24 @@
 
 
       <!--Problems with second player-->
-      <div ng-show="errors.second_team" ng-repeat="error in errors.second_team">
+      <div ng-show="vm.errors.second_team" ng-repeat="error in vm.errors.second_team">
         <span class="help-block">Team {{error}}</span>
       </div>
 
     </div>
   </div>
 
-  <div class="form-group" ng-class="{ 'has-error': errors.scoring }">
+  <div class="form-group" ng-class="{ 'has-error': vm.errors.scoring }">
     <!--Doubles-->
     <div class="radio">
       <label>
-        <input type="radio" name="scoring" value="one_eight_game" ng-model="entity.scoring">
+        <input type="radio" name="scoring" value="one_eight_game" ng-model="vm.entity.scoring">
         One eight game pro set
       </label>
     </div>
     <div class="radio">
       <label>
-        <input type="radio" name="scoring" value="two_six_game_ten_point" ng-model="entity.scoring">
+        <input type="radio" name="scoring" value="two_six_game_ten_point" ng-model="vm.entity.scoring">
         Two sets with 10 point tiebreak
       </label>
     </div>
@@ -150,18 +150,18 @@
       </label>
     </div>
     <!--Problems with scoring -->
-    <div ng-show="errors.scoring" ng-repeat="error in errors.scoring">
+    <div ng-show="errors.scoring" ng-repeat="error in vm.errors.scoring">
       <span class="help-block">Scoring {{error}}</span>
     </div>
 
   </div>
 
   <div class="form-group">
-    <button type="submit" class="btn btn-primary" ng-disabled="form.$pristine || form.$invalid">{{ok}}</button>
-    <button type="Button" class="btn btn-info" ng-click="cancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" ng-disabled="vm.form.$pristine || vm.form.$invalid">{{vm.ok}}</button>
+    <button type="Button" class="btn btn-info" ng-click="vm.cancel()">Cancel</button>
   </div>
   <!--Other problems-->
-  <div ng-show="errors.other" ng-repeat="error in errors.other">
+  <div ng-show="errors.other" ng-repeat="error in vm.errors.other">
     <span class="help-block">{{error}}</span>
   </div>
 </form>

@@ -1,0 +1,47 @@
+<div class="row col-xs-12 col-md-8">
+  <div ng-if="vm.loading || vm.loadingFailed">
+    <fe-loading-messages
+      error="vm.loadingError"
+      loading="vm.loading"
+      failed="vm.loadingFailed"
+    ></fe-loading-messages>
+  </div>
+
+
+  <div ng-if="!vm.loading && !vm.loadingFailed">
+    <div ng-if="vm.loggedIn" class="standard-animation">
+      <button ng-disabled="vm.showingNewEntity" class="btn btn-primary " ng-click="vm.newEntity.show()">
+        <span class="glyphicon glyphicon-plus"></span> <span class="text-capitalize">{{kind}}</span>
+      </button>
+    </div>
+
+    <div ng-if="vm.entitys.length == 0 && !vm.showingNewEntity">
+      <fe-empty-list-message
+        logged-in="vm.loggedIn"
+        kind="kind"
+      ></fe-empty-list-message>
+    </div>
+
+    <div>
+
+      <ol class="list-group">
+
+        <!--New entity-->
+        <li class="list-group-item standard-animation" ng-if="vm.newEntity.showingForm()">
+          <div class="row">
+            <div class="col-xs-10 col-md-8">
+              <div ng-transclude="new">
+              </div>
+            </div>
+          </div>
+
+        </li>
+
+        <div ng-transclude="list"></div>
+
+      </ol>
+
+    </div>
+  </div>
+</div>
+

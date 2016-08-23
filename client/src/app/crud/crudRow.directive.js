@@ -10,17 +10,22 @@
   'use strict';
 
   angular
-    .module('frontendView')
-    .directive('feDeleteEntityButton', directive);
+    .module('frontendCrud')
+    .directive('feCrudRow', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/view/deleteEntityButton.html',
+      transclude: {
+        'edit': 'edit',
+        'entity': 'entity',
+        'links': '?links'
+      },
+      templateUrl: 'app/crud/crudRow.html',
       scope: {
-        entity: '=',
-        deleteEntity: '&'
+        vm: '=',
+        entity: '='
       }
     };
 

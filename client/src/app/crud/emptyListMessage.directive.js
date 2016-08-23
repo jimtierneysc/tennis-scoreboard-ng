@@ -10,14 +10,14 @@
   'use strict';
 
   angular
-    .module('frontendView')
+    .module('frontendCrud')
     .directive('feEmptyListMessage', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/view/emptyListMessage.html',
+      templateUrl: 'app/crud/emptyListMessage.html',
       scope: {
         kind: '@',
         loggedIn: '='
