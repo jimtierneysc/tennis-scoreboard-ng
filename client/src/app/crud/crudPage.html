@@ -1,24 +1,22 @@
 <div class="row col-xs-12 col-md-8">
-  <div ng-if="vm.loading || vm.loadingFailed">
+  <div ng-if="loading.loading || loading.failed">
     <fe-loading-messages
-      error="vm.loadingError"
-      loading="vm.loading"
-      failed="vm.loadingFailed"
+      loading="loading"
     ></fe-loading-messages>
   </div>
 
 
-  <div ng-if="!vm.loading && !vm.loadingFailed">
-    <div ng-if="vm.loggedIn" class="standard-animation">
-      <button ng-disabled="vm.showingNewEntity" class="btn btn-primary " ng-click="vm.newEntity.show()">
-        <span class="glyphicon glyphicon-plus"></span> <span class="text-capitalize">{{kind}}</span>
+  <div ng-if="!loading.loading && !loading.failed">
+    <div ng-if="newEntity.allow()" class="standard-animation">
+      <button ng-disabled="newEntity.showing" class="btn btn-primary " ng-click="newEntity.show()">
+        <span class="glyphicon glyphicon-plus"></span> <span class="text-capitalize">{{entityList.kind}}</span>
       </button>
     </div>
 
-    <div ng-if="vm.entitys.length == 0 && !vm.showingNewEntity">
+    <div ng-if="entityList.entitys.length == 0 && !newEntity.showing">
       <fe-empty-list-message
         logged-in="vm.loggedIn"
-        kind="kind"
+        kind="entityList.kind"
       ></fe-empty-list-message>
     </div>
 
@@ -27,7 +25,7 @@
       <ol class="list-group">
 
         <!--New entity-->
-        <li class="list-group-item standard-animation" ng-if="vm.newEntity.showingForm()">
+        <li class="list-group-item standard-animation" ng-if="newEntity.showingForm()">
           <div class="row">
             <div class="col-xs-10 col-md-8">
               <div ng-transclude="new">

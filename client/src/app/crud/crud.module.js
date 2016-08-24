@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud', ['frontendApi', 'frontendComponents', 'frontendView', 'frontendHelpers',
-      'toastr', 'ngResource']);
+    .module('frontendCrud', ['frontendApi', 'frontendComponents', 'frontendAnimation',
+      'ngResource']);
   
 })();

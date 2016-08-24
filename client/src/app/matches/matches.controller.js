@@ -42,9 +42,7 @@
               'first_team',
               'second_team',
               'first_player',
-              'second_player',
-              'doubles',
-              'scoring'
+              'second_player'
             ]
           }
         }

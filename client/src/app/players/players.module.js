@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontendPlayers', ['frontendAuth', 'frontendView', 'frontendCrud'])
+    .module('frontendPlayers', ['frontendAuth', 'frontendCrud'])
     ;
 
 

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feDeleteEntityButton directive', function () {
+  describe('feCrudRow directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -12,13 +12,19 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.adelete = jasmine.createSpy('onCancel');
-      scope.aentity = {name: 'xxx'}
+      scope.aentityList = {};
+      scope.aeditEntity = {};
+      scope.aentity = {}
 
-      var html = ('<fe-delete-entity-button ' +
+      var html = ('<fe-crud-row ' +
+      'vm="avm" ' +
       'entity="aentity" ' +
-      'delete-entity="adelete()" ' +
-      '></fe-delete-entity-button>');
+      'edit-entity="aeditEntity" ' +
+      'entity-list="aentityList" ' +
+      '>' +
+        '<entity>entity content</entity>' +
+        '<edit>edit content</edit>' +
+      '</fe-crud-row>');
 
       element = angular.element(html);
 
@@ -29,16 +35,17 @@
 
     describe('isolated scope', function () {
 
-      it('should have .deleteEntity()', function () {
-        isolatedScope.deleteEntity();
-        expect(scope.adelete).toHaveBeenCalled();
-      });
-
       it('should have .entity', function () {
         expect(isolatedScope.entity).toBe(scope.aentity)
       });
 
-      // TODO: Test form elements
+      it('should have .entityList', function () {
+        expect(isolatedScope.entityList).toBe(scope.aentityList)
+      });
+
+      it('should have .editEntity', function () {
+        expect(isolatedScope.editEntity).toBe(scope.aeditEntity)
+      });
 
     });
   });

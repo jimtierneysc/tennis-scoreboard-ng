@@ -19,12 +19,13 @@
       restrict: 'E',
       transclude: {
         'new': 'new',
-        'list': 'list',
+        'list': 'list'
       },
       templateUrl: 'app/crud/crudPage.html',
       scope: {
-        vm: '=',
-        kind: '@'
+        loading: '=',
+        newEntity: '=',
+        entityList: '='
       }
     };
 

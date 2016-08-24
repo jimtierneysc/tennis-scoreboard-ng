@@ -1,7 +1,7 @@
 <!-- "form" is member of controller-->
 <form name="vm.form"
       ng-submit="vm.submit()" novalidate ng-keyup="$event.keyCode == 27 && vm.cancel()">
-  <div class="form-group" ng-class="{ 'has-error': vm.errors.doubles }">
+  <div class="form-group">
     <!--Singles-->
     <div class="radio">
       <label>
@@ -17,10 +17,7 @@
         Doubles
       </label>
     </div>
-    <!--Problems with doubles -->
-    <div ng-show="vm.errors.doubles" ng-repeat="error in vm.errors.doubles">
-      <span class="help-block">Doubles {{error}}</span>
-    </div>
+
   </div>
 
   <div class="form-group" ng-class="{ 'has-error': vm.errors.title }">
@@ -28,14 +25,17 @@
     <!--Match title-->
     <label for="title" class="sr-only control-label">Team Name</label>
     <div>
-      <input fe-auto-focus='refocus' type="text" class="form-control" id="title" name="title"
+      <input ng-change="vm.clearErrors(['title', 'other'])"
+             fe-auto-focus='refocus' type="text" class="form-control" id="title" name="title"
              placeholder="Match Title (optional)"
              ng-model="vm.entity.title">
 
-      <!--Problems with title-->
-      <div ng-show="vm.errors.title" ng-repeat="error in vm.errors.title">
-        <span class="help-block">Name {{error}}</span>
-      </div>
+      <fe-form-field-errors
+        errors="vm.errors"
+        key="title"
+        prefix="Title"
+      >
+      </fe-form-field-errors>
     </div>
   </div>
   <div ng-if="!vm.entity.doubles">
@@ -45,7 +45,8 @@
 
       <label for="first_player" class="control-label sr-only">First Player</label>
 
-      <ui-select ng-model="vm.entity.select_first_player" theme="bootstrap" id="first_player" name="first_player"
+      <ui-select on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
+                 ng-model="vm.entity.select_first_player" theme="bootstrap" id="first_player" name="first_player"
                  ng-required="true">
         <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in playersList.list | filter: $select.search">
@@ -53,18 +54,23 @@
           <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
         </ui-select-choices>
       </ui-select>
-      <!--Problems with first player-->
-      <div ng-show="vm.errors.first_player" ng-repeat="error in vm.errors.first_player">
-        <span class="help-block">Player {{error}}</span>
-      </div>
+
+      <fe-form-field-errors
+        errors="vm.errors"
+        key="first_player"
+        prefix="Player"
+      >
+      </fe-form-field-errors>
 
 
     </div>
     <!--Second player-->
-    <div class="form-group" ng-class="{ 'has-error': vm.errors.second_player }"
+    <div on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
+         class="form-group" ng-class="{ 'has-error': vm.errors.second_player }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_player" class="control-label sr-only">Second Player</label>
-      <ui-select ng-model="vm.entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
+      <ui-select on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
+                 ng-model="vm.entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
                  ng-required="true">
         <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in playersList.list | filter: $select.search">
@@ -73,17 +79,18 @@
         </ui-select-choices>
       </ui-select>
 
-
-      <!--Problems with second player-->
-      <div ng-show="vm.errors.second_player" ng-repeat="error in vm.errors.second_player">
-        <span class="help-block">Player {{error}}</span>
-      </div>
+      <fe-form-field-errors
+        errors="vm.errors"
+        key="second_player"
+        prefix="Player"
+      >
+      </fe-form-field-errors>
 
     </div>
   </div>
 
 
-  <!--TODO: Team select lists should display player names-->
+  <!--TODO: Team select lists should display player names as detail row-->
   <div ng-if="vm.entity.doubles">
     <!--First Team-->
     <div class="form-group" ng-class="{ 'has-error': vm.errors.first_team }"
@@ -91,7 +98,8 @@
 
       <label for="first_team" class="control-label sr-only">First Team</label>
 
-      <ui-select ng-model="vm.entity.select_first_team" theme="bootstrap" id="first_team" name="first_team"
+      <ui-select on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
+                 ng-model="vm.entity.select_first_team" theme="bootstrap" id="first_team" name="first_team"
                  ng-required="true">
         <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in teamsList.list | filter: $select.search">
@@ -99,11 +107,13 @@
           <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
         </ui-select-choices>
       </ui-select>
-      <!--Problems with first player-->
-      <div ng-show="vm.errors.first_team" ng-repeat="error in vm.errors.first_team">
-        <span class="help-block">Team {{error}}</span>
-      </div>
 
+      <fe-form-field-errors
+        errors="vm.errors"
+        key="first_team"
+        prefix="Team"
+      >
+      </fe-form-field-errors>
 
     </div>
 
@@ -111,7 +121,8 @@
     <div class="form-group" ng-class="{ 'has-error': vm.errors.second_team }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_team" class="control-label sr-only">Second Player</label>
-      <ui-select ng-model="vm.entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
+      <ui-select on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
+                 ng-model="vm.entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
                  ng-required="true">
         <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="item in teamsList.list | filter: $select.search">
@@ -120,16 +131,17 @@
         </ui-select-choices>
       </ui-select>
 
-
-      <!--Problems with second player-->
-      <div ng-show="vm.errors.second_team" ng-repeat="error in vm.errors.second_team">
-        <span class="help-block">Team {{error}}</span>
-      </div>
+      <fe-form-field-errors
+        errors="vm.errors"
+        key="second_team"
+        prefix="Team"
+      >
+      </fe-form-field-errors>
 
     </div>
   </div>
 
-  <div class="form-group" ng-class="{ 'has-error': vm.errors.scoring }">
+  <div class="form-group">
     <!--Doubles-->
     <div class="radio">
       <label>
@@ -145,13 +157,9 @@
     </div>
     <div class="radio">
       <label>
-        <input type="radio" name="scoring" value="three_six_game" ng-model="entity.scoring">
+        <input type="radio" name="scoring" value="three_six_game" ng-model="vm.entity.scoring">
         Three sets
       </label>
-    </div>
-    <!--Problems with scoring -->
-    <div ng-show="errors.scoring" ng-repeat="error in vm.errors.scoring">
-      <span class="help-block">Scoring {{error}}</span>
     </div>
 
   </div>
@@ -161,8 +169,11 @@
     <button type="Button" class="btn btn-info" ng-click="vm.cancel()">Cancel</button>
   </div>
   <!--Other problems-->
-  <div ng-show="errors.other" ng-repeat="error in vm.errors.other">
-    <span class="help-block">{{error}}</span>
-  </div>
+  <fe-form-field-errors
+    errors="vm.errors"
+    key="other"
+    prefix=""
+  >
+  </fe-form-field-errors>
 </form>
 

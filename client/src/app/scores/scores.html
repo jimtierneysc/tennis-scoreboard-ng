@@ -1,15 +1,13 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+    <div class="col-xs-12" ng-if="vm.loading.loading || vm.loading.failed">
       <fe-loading-messages
-        error="vm.loadingError"
         loading="vm.loading"
-        failed="vm.loadingFailed"
       ></fe-loading-messages>
     </div>
 
-    <div class="col-xs-12" ng-if="!vm.loading && !vm.loadingFailed">
+    <div class="col-xs-12" ng-if="!vm.loading.loading && !vm.loading.failed">
 
       <div ng-if="vm.matches.length == 0">
         <fe-empty-list-message

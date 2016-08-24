@@ -28,53 +28,66 @@
       toastrHelper(vm, scope);
       errorsHelper(vm, errorsMap);
 
-      var operations = new Operations(vm, options);
+      // initialize instance properties
 
-      // Set crud methods and properties
-      vm.trashEntity = operations.trashEntity;
-      vm.hidingEntity = operations.hidingEntity;
-      vm.animatingEntity = operations.animatingEntity;
       vm.beginWait = waitIndicator.beginWait;
 
+      vm.entityList = {
+        deleteItem: deleteEntity,
+        hidingItem: hidingEntity,
+        animatingItem: animatingEntity,
+        entitys: [],
+        kind: options.entityKind,
+        allowDelete: function () {
+          return vm.loggedIn;
+        }
+      };
+
       vm.editEntity = {
-          form: null,
-          errors: null,
-          cancel: operations.cancelEditEntity,
-          submit: operations.submitEditEntity,
-          ok: 'Save',
-          entity: null,
-          show: operations.showEditEntity,
-          showingForm: operations.showingEditEntityForm
+        form: null,
+        errors: null,
+        cancel: cancelEditEntity,
+        submit: submitEditEntity,
+        ok: 'Save',
+        entity: null,
+        show: showEditEntity,
+        showingForm: showingEditEntityForm,
+        allow: function () {
+          return vm.loggedIn;
+        },
+        clearErrors: function (names) {
+          clearErrors(vm.editEntity.errors, names);
+        }
       };
-      
+
       vm.newEntity = {
-          form: null,
-          errors: null,
-          cancel: operations.cancelNewEntity,
-          submit: operations.submitNewEntity,
-          ok: 'Add',
-          entity: null,
-          show: operations.showNewEntity,
-          showingForm: operations.showingNewEntityForm
+        form: null,
+        errors: null,
+        cancel: cancelNewEntity,
+        submit: submitNewEntity,
+        ok: 'Add',
+        entity: null,
+        show: showNewEntity,
+        showingForm: showingNewEntityForm,
+        showing: false,
+        allow: function () {
+          return vm.loggedIn;
+        },
+        clearErrors: function (names) {
+          clearErrors(vm.newEntity.errors, names);
+        }
       };
-      vm.showingNewEntity = false;
-      vm.entitys = [];
 
       // Allow new and edit operations to be cancelled
-      editInProgress.registerOnQueryState(scope, operations.getEditorState);
-      editInProgress.registerOnClose(scope, operations.closeEditors);
+      editInProgress.registerOnQueryState(scope, getEditorState);
+      editInProgress.registerOnClose(scope, closeEditors);
 
       if (angular.isArray(response))
-        operations.entityLoadingHasCompleted(response);
+        entityLoadingHasCompleted(response);
       else
-        operations.entityLoadHasFailed(response);
-    }
+        entityLoadHasFailed(response);
 
-    function Operations(vm, options) {
-      var getResource = function () {
-        return crudResource.getResource(options.resourceName)
-      };
-
+      // Unique identifiers
       var CRUD = 'crud';
       var REFOCUS = 'refocus';
 
@@ -85,7 +98,7 @@
       var animatedEntity = null;
 
       // Provide information used to cancel editing
-      this.getEditorState = function (event, data) {
+      function getEditorState(event, data) {
         var editing = false;
         var message;
         if (vm.editEntity.entity && vm.editEntity.form && !vm.editEntity.form.$pristine) {
@@ -105,45 +118,60 @@
           data.autoFocus = REFOCUS;
           data.autoFocusScope = options.scope;
         }
+      }
 
-      };
 
       // Method to close editors.  May be called to close new form when edit button is clicked.
       // May also be called when leaving view.
-      this.closeEditors = function (event, state, defer) {
+      function closeEditors(event, state, defer) {
         if (state.name == CRUD) {
           // add promises to array parameter
           defer.push(resetNewEntity(), resetEditEntity());
         }
-      };
+      }
 
       //
       // Methods called from view
       //
-      this.trashEntity = function (entity, confirmDelete) {
-        vm.clearToast();
-        if (angular.isUndefined(confirmDelete))
-          confirmDelete = true;
-        if (confirmDelete) {
-          modalConfirm.confirm({
-            title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
-            options.getEntityDisplayName(entity) + '"?'
-          })
-            .then(function () {
-              removeEntity(entity)
-            });
-        }
-        else {
-          removeEntity(entity)
-        }
-      };
 
-      this.submitNewEntity = function () {
+      function clearErrors(errors, names) {
+        if (errors) {
+          angular.forEach(names, function (name) {
+            if (errors[name])
+              errors[name] = null;
+          });
+        }
+      }
+
+      function deleteEntity(entity, confirmDelete) {
+        vm.clearToast();
+
+        editInProgress.closeEditors().then(del);
+
+        function del() {
+          if (angular.isUndefined(confirmDelete))
+            confirmDelete = true;
+          if (confirmDelete) {
+            modalConfirm.confirm({
+              title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
+              options.getEntityDisplayName(entity) + '"?'
+            })
+              .then(function () {
+                removeEntity(entity)
+              });
+          }
+          else {
+            removeEntity(entity)
+          }
+        }
+      }
+
+      function submitNewEntity() {
         var submitEntity = options.prepareToCreateEntity(vm.newEntity.entity);
         createEntity(submitEntity);
-      };
+      }
 
-      this.showNewEntity = function () {
+      function showNewEntity() {
 
         vm.clearToast();
 
@@ -157,22 +185,24 @@
           options.beforeShowNewEntity().then(showEntity);
 
           function showEntity() {
-            vm.showingNewEntity = true;
+            vm.newEntity.showing = true;
             // new entity form should have an element with the following attribute.
             // fe-auto-focus='refocus'
             autoFocus(options.scope, REFOCUS);
           }
         }
-      };
+      }
 
-      this.cancelNewEntity = resetNewEntity;
+      function cancelNewEntity() {
+        resetNewEntity();
+      }
 
-      this.submitEditEntity = function () {
+      function submitEditEntity() {
         var submit = options.prepareToUpdateEntity(vm.editEntity.entity);
         updateEntity(submit);
-      };
+      }
 
-      this.showEditEntity = function (entity) {
+      function showEditEntity(entity) {
 
         vm.clearToast();
 
@@ -192,50 +222,55 @@
             autoFocus(options.scope, REFOCUS);
           }
         }
-      };
+      }
 
-      this.cancelEditEntity = resetEditEntity;
+      function cancelEditEntity() {
+        resetEditEntity();
+      }
 
       function editingEntity(entity) {
         return vm.editEntity.entity && (vm.editEntity.entity.id == entity.id);
       }
 
-      this.hidingEntity = function (entity) {
+      function hidingEntity(entity) {
         return hiddenEntity === entity.id;
-      };
+      }
 
-      this.animatingEntity = function (entity) {
+      function animatingEntity(entity) {
         return animatedEntity === entity.id;
-      };
+      }
 
-      this.showingEditEntityForm = function (entity) {
+      function showingEditEntityForm(entity) {
         return editingEntity(entity) && !hideEditForm;
-      };
+      }
 
-      this.showingNewEntityForm = function () {
-        return vm.showingNewEntity && !hideNewForm;
-      };
-
+      function showingNewEntityForm() {
+        return vm.newEntity.showing && !hideNewForm;
+      }
 
       //
       // Methods called after load
       //
-      this.entityLoadingHasCompleted = function (response) {
-        vm.entitys = response;
-        vm.loadingHasCompleted();
-      };
+      function entityLoadingHasCompleted(response) {
+        vm.entityList.entitys = response;
+        vm.loading.hasCompleted();
+      }
 
-      this.entityLoadHasFailed = function (response) {
+      function entityLoadHasFailed(response) {
         $log.error('data error ' + response.status + " " + response.statusText);
-        vm.loadingHasFailed(response);
-      };
+        vm.loading.hasFailed(response);
+      }
 
       //
       // Internal methods
       //
 
+      function getResource() {
+        return crudResource.getResource(options.resourceName)
+      }
+
       function resetNewEntity() {
-        if (vm.showingNewEntity) {
+        if (vm.newEntity.showing) {
           // Trigger animation
           hideNewForm = true;
           // Return promise
@@ -248,9 +283,9 @@
           if (vm.newEntity.form) {
             vm.newEntity.form.$setPristine();
           }
-          vm.showingNewEntity = false;
+          vm.newEntity.showing = false;
           vm.newEntity.entity = null;
-          vm.entityCreateErrors = null;
+          vm.newEntity.errors = null;
           hideNewForm = false;
         }
       }
@@ -331,7 +366,7 @@
         resetNewEntity().then(insert);
 
         function insert() {
-          vm.entitys.splice(0, 0, entity);
+          vm.entityList.entitys.splice(0, 0, entity);
         }
       }
 
@@ -343,7 +378,7 @@
 
         function replace() {
           var id = entity.id;
-          var found = $filter('filter')(vm.entitys, function (o) {
+          var found = $filter('filter')(vm.entityList.entitys, function (o) {
             return o.id === id;
           });
           if (found && found.length === 1) {
@@ -361,7 +396,7 @@
 
       function entityCreateError(entity, response) {
         vm.showHttpErrorToast(response.status);
-        vm.entityCreateErrors = vm.errorsOfResponse(response);
+        vm.newEntity.errors = vm.errorsOfResponse(response);
       }
 
       function entityUpdateError(entity, response) {
@@ -370,10 +405,9 @@
       }
 
       function entityRemoved(entity) {
-        vm.entityRemoveErrors = null;
-        var i = vm.entitys.indexOf(entity);
+        var i = vm.entityList.entitys.indexOf(entity);
         if (i >= 0) {
-          vm.entitys.splice(i, 1);
+          vm.entityList.entitys.splice(i, 1);
         }
       }
 
@@ -392,7 +426,8 @@
       }
     }
   }
-})();
+})
+();
 
 
 

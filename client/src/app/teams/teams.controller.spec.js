@@ -286,12 +286,11 @@
           describe('options lists', function () {
 
             beforeEach(function () {
-              vm.editEntity
+              vm.editEntity =
               {
                 entity: {
                 }
-              }
-              ;
+              };
               options.beforeShowEditEntity();
               $rootScope.$digest(); // resolve player and team lists
             });

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feDeleteEntityButton directive', function () {
+  describe('feCrudPage directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -12,13 +12,19 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.adelete = jasmine.createSpy('onCancel');
-      scope.aentity = {name: 'xxx'}
+      scope.aloading = {};
+      scope.aentityList = {};
+      scope.anewEntity = {};
 
-      var html = ('<fe-delete-entity-button ' +
-      'entity="aentity" ' +
-      'delete-entity="adelete()" ' +
-      '></fe-delete-entity-button>');
+      var html = ('<fe-crud-page ' +
+      'loading="aloading" ' +
+      'entity-list="aentityList" ' +
+      'new-entity="anewEntity" ' +
+      '>' +
+      '<new>new content</new>' +
+      '<list>list content</list>' +
+      '</fe-crud-page>');
+
 
       element = angular.element(html);
 
@@ -29,16 +35,17 @@
 
     describe('isolated scope', function () {
 
-      it('should have .deleteEntity()', function () {
-        isolatedScope.deleteEntity();
-        expect(scope.adelete).toHaveBeenCalled();
+      it('should have .entityList', function () {
+        expect(isolatedScope.entityList).toBe(scope.aentityList)
       });
 
-      it('should have .entity', function () {
-        expect(isolatedScope.entity).toBe(scope.aentity)
+      it('should have .newEntity', function () {
+        expect(isolatedScope.newEntity).toBe(scope.anewEntity)
       });
 
-      // TODO: Test form elements
+      it('should have .loading', function () {
+        expect(isolatedScope.loading).toBe(scope.aloading)
+      });
 
     });
   });

@@ -24,7 +24,8 @@
       },
       templateUrl: 'app/crud/crudRow.html',
       scope: {
-        vm: '=',
+        editEntity: '=',
+        entityList: '=',
         entity: '='
       }
     };

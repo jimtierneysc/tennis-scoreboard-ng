@@ -1,18 +1,21 @@
 <form name="vm.form"
       ng-submit="vm.submit()" novalidate ng-keyup="$event.keyCode == 27 && vm.cancel()">
   <div class="form-group"
-       ng-class="{ 'has-error' : (vm.errors || vm.form.name.$error.required) && !vm.form.name.$pristine }">
+       ng-class="{ 'has-error' : (vm.errors.name || vm.form.name.$error.required) && !vm.form.name.$pristine }">
     <label for="name" class="sr-only control-label">Entity Name</label>
     <div>
-      <input fe-auto-focus='refocus' type="text" class="form-control" id="name" name="name"
+      <input ng-change="vm.clearErrors(['name', 'other'])" fe-auto-focus='refocus' type="text" class="form-control" id="name" name="name"
              placeholder="Player Name"
              ng-model="vm.entity.name" required>
             <span ng-show="vm.form.name.$error.required && !vm.form.name.$pristine"
                   class="help-block">Player name is required.</span>
 
-      <div ng-show="vm.errors.name" ng-repeat="error in vm.errors.name">
-        <span class="help-block">Name {{error}}</span>
-      </div>
+      <fe-form-field-errors
+        errors="vm.errors"
+        key="name"
+        prefix="Name"
+      >
+      </fe-form-field-errors>
     </div>
   </div>
   <div class="form-group">
@@ -20,7 +23,10 @@
     <button type="Button" class="btn btn-info" ng-click="vm.cancel()">Cancel</button>
   </div>
   <!--Other problems-->
-  <div ng-show="vm.errors.other" ng-repeat="error in vm.errors.other">
-    <span class="help-block">{{error}}</span>
-  </div>
+  <fe-form-field-errors
+    errors="vm.errors"
+    key="other"
+    prefix=""
+  >
+  </fe-form-field-errors>
 </form>

@@ -1,13 +1,15 @@
 <div class="container-fluid">
   <fe-crud-page
-    kind="team"
-    vm="vm"
+    loading="vm.loading"
+    new-entity="vm.newEntity"
+    entity-List="vm.entityList"
   >
     <list>
       <!--Team list-->
-      <li class="list-group-item standard-animation" ng-repeat="entity in vm.entitys">
+      <li class="list-group-item standard-animation" ng-repeat="entity in vm.entityList.entitys">
         <fe-crud-row
-          vm="vm"
+          edit-entity="vm.editEntity"
+          entity-list="vm.entityList"
           entity="entity"
         >
           <entity>
