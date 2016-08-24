@@ -3,7 +3,7 @@
 
   describe('toastrHelper service', function () {
 
-    beforeEach(module('frontendHelpers'));
+    beforeEach(module('frontendComponents'));
 
     var service;
 

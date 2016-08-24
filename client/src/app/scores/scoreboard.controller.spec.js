@@ -512,45 +512,161 @@
       });
 
       describe('.toggleShowGames()', function () {
-        var vm;
-        beforeEach(function () {
-          vm = scoreboardController(singlesResponse());
-          vm.view.settings.showGames = false;
+        describe('when no games to show or hide', function() {
+          var vm;
+          beforeEach(function () {
+            vm = scoreboardController(singlesResponse());
+          });
+
+          describe('and show', function() {
+            beforeEach(function() {
+              vm.view.settings.showGames = false;
+              vm.view.toggleShowGames(true);
+            });
+
+            it('should toggle', function () {
+              expect(vm.view.settings.showGames).toBeTruthy();
+            });
+
+            it('should show toast', function () {
+              expect(vm).toHaveToast();
+            });
+          });
+
+          describe('and hide', function() {
+            beforeEach(function() {
+              vm.view.settings.showGames = true;
+              vm.view.toggleShowGames(false);
+            });
+
+            it('should toggle', function () {
+              expect(vm.view.settings.showGames).toBeFalsy();
+            });
+
+            it('should show toast', function () {
+              expect(vm).toHaveToast();
+            });
+          });
         });
 
-        it('should toggle to true', function () {
-          vm.view.toggleShowGames(true);
-          expect(vm.view.settings.showGames).toBeTruthy();
-        });
+        describe('when games to show or hide', function() {
+          var vm;
+          beforeEach(function () {
+            var sb = singlesResponse();
+            sb.sets[0].games[0].winner = 1;
+            vm = scoreboardController(sb);
+          });
 
-        it('should toggle to false', function () {
-          vm.view.toggleShowGames(true);
-          vm.view.toggleShowGames(false);
-          expect(vm.view.settings.showGames).toBeFalsy();
+          describe('and show', function() {
+            beforeEach(function() {
+              vm.view.settings.showGames = false;
+              vm.view.toggleShowGames(true);
+              $rootScope.$digest();
+            });
+
+            it('should toggle', function () {
+              expect(vm.view.settings.showGames).toBeTruthy();
+            });
+
+            it('should not show toast', function () {
+              expect(vm).not.toHaveToast();
+            });
+          });
+
+          describe('and hide', function() {
+            beforeEach(function() {
+              vm.view.settings.showGames = true;
+              vm.view.toggleShowGames(false);
+              $rootScope.$digest();
+            });
+
+            it('should toggle', function () {
+              expect(vm.view.settings.showGames).toBeFalsy();
+            });
+
+            it('should not show toast', function () {
+              expect(vm).not.toHaveToast();
+            });
+          });
+
         });
       });
 
       describe('.toggleKeepingScore()', function () {
-        var vm;
-        beforeEach(function () {
-          vm = scoreboardController(singlesResponse());
-          vm.view.settings.keepScore = false;
-          vm.loggedIn = true;
-          vm.view.loggedInChanged();
 
+        describe('when not logged in', function() {
+          var vm;
+          beforeEach(function () {
+            vm = scoreboardController(singlesResponse());
+            vm.view.settings.keepScore = false;
+            vm.loggedIn = false;
+            vm.view.loggedInChanged();
+            vm.view.toggleKeepingScore(true);
+          });
+
+          it('should not change', function () {
+            expect(vm.view.settings.keepScore).toBeFalsy();
+          });
+
+          it('should show toast', function () {
+            expect(vm).toHaveToast();
+          });
         });
 
-        it('should toggle to true', function () {
-          vm.view.toggleKeepingScore(true);
-          $rootScope.$digest();
-          expect(vm.view.settings.keepScore).toBeTruthy();
+        describe('when logged in', function () {
+          var vm;
+
+          beforeEach(function() {
+            vm = scoreboardController(singlesResponse());
+            vm.loggedIn = true;
+            vm.view.loggedInChanged();
+            vm.view.settings.keepScore = false;
+          });
+
+          describe('when match over', function() {
+            beforeEach(function () {
+              vm.scoreboard.winner = 1;
+              vm.view.toggleKeepingScore(true);
+              $rootScope.$digest();
+            });
+
+            it('should toggle to true', function () {
+              expect(vm.view.settings.keepScore).toBeTruthy();
+            });
+
+            it('should toggle to false', function () {
+              vm.view.toggleKeepingScore(false);
+              $rootScope.$digest();
+              expect(vm.view.settings.keepScore).toBeFalsy();
+            });
+
+            it('should show toast', function () {
+              expect(vm).toHaveToast();
+            });
+          });
+
+          describe('when match in progress', function() {
+            beforeEach(function () {
+              vm.view.toggleKeepingScore(true);
+              $rootScope.$digest();
+            });
+
+            it('should toggle to true', function () {
+              expect(vm.view.settings.keepScore).toBeTruthy();
+            });
+
+            it('should toggle to false', function () {
+              vm.view.toggleKeepingScore(false);
+              $rootScope.$digest();
+              expect(vm.view.settings.keepScore).toBeFalsy();
+            });
+
+            it('should not show toast', function () {
+              expect(vm).not.toHaveToast();
+            });
+          });
         });
 
-        it('should toggle to false', function () {
-          vm.view.toggleKeepingScore(true);
-          vm.view.toggleKeepingScore(false);
-          expect(vm.view.settings.keepScore).toBeFalsy();
-        });
       });
 
       describe('storage of settings', function () {

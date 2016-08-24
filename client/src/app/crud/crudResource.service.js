@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendHelpers')
+    .module('frontendCrud')
     .service('crudResource', Service);
 
   /** @ngInject */

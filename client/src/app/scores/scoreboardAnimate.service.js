@@ -38,7 +38,6 @@
     this.hideKeepScore = hideKeepScore;
     this.showKeepScore = showNewData;
 
-
     function hideOldData() {
       var actionState = new ActionState({oldData: true});
 
@@ -62,7 +61,7 @@
 
       // Apply ng-class of elements before hide elements
       animationTimers.digest().then(function () {
-        eachDataItem(
+        eachFlaggedObject(
           function (item) {
             item.hiddenLeftmost = actionState.leftmost;
             setHidden(item, true);
@@ -74,17 +73,13 @@
       sb.matchFlags.animatingProgress = true;
       sb.matchFlags.animatingServer = true;
 
-      // if (sb.currentGame && sb.currentGame.newGame) {
-      //   sb.currentGame.animating = true;
-      // }
-
       if (sb.currentGame && !sb.currentGame.winner) {
         sb.currentGame.animating = true;
       }
 
       // Apply ng-class of elements before hide elements
       animationTimers.digest().then(function () {
-        eachDataItem(
+        eachFlaggedObject(
           function (item) {
             setHidden(item, true);
           });
@@ -104,17 +99,12 @@
         if (actionState.startingGame)
           sb.currentGame.animatingWinButton = true;
 
-
         if (actionState.winningGame && sb.firstServers)
           sb.currentGame.animatingServersForm = true;
 
-
         if (actionState.winningGame && !actionState.winningSet) {
-          // if (sb.currentGame) {
           sb.currentGame.animatingTitle = true;
           sb.currentGame.animatingStartGameButton = true;
-          // }
-          // if (sb.currentSet)
           sb.currentSet.animatingResult = true;
         }
 
@@ -135,14 +125,11 @@
       }
 
       if (sb.previousSet) {
-        if (actionState.winningSet) {
-          // sb.matchFlags.animatingResult = true;
-          // if (sb.previousSet)
+        if (actionState.winningSet)
           sb.previousSet.animatingResult = true;
-        }
       }
 
-      eachDataItem(
+      eachFlaggedObject(
         function (item) {
           item.hiddenLeftmost = actionState.leftmost;
           setHidden(item, true);
@@ -150,14 +137,14 @@
     }
 
     function showNewData() {
-      eachDataItem(
+      eachFlaggedObject(
         function (item) {
           setHidden(item, false);
         });
     }
 
     function stopHideAndShow() {
-      eachDataItem(
+      eachFlaggedObject(
         function (item) {
           setHidden(item, false);
           clearAnimating(item);
@@ -229,8 +216,8 @@
       });
     }
 
-    // Enumerate all the items that may have animating* and hidden* properties.
-    function eachDataItem(fn) {
+    // Enumerate all the objects that may have animating* and hidden* flags.
+    function eachFlaggedObject(fn) {
       var items = [sb.previousGame, sb.currentGame, sb.currentSet, sb.previousSet, sb.matchFlags];
       angular.forEach(items,
         function (item) {

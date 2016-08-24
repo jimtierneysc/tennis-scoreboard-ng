@@ -3,14 +3,13 @@
 function MatcherHelper(_vm_) {
   'use strict';
   
-  var _this = this;
   var vm = _vm_;
-  _this.checkObject = checkObject;
-  _this.checkBoolean = checkBoolean;
-  _this.checkString = checkString;
-  _this.checkFunction = checkFunction;
-  _this.getResult = getResult;
-  _this.fail = fail;
+  this.checkObject = checkObject;
+  this.checkBoolean = checkBoolean;
+  this.checkString = checkString;
+  this.checkFunction = checkFunction;
+  this.getResult = getResult;
+  this.fail = fail;
   
   var pass = true;
   var messages = [];

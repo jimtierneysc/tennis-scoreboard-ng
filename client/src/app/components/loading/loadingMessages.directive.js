@@ -10,18 +10,16 @@
   'use strict';
 
   angular
-    .module('frontendView')
+    .module('frontendComponents')
     .directive('feLoadingMessages', directive);
 
   /** @ngInject */
   function directive() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/view/loadingMessages.html',
+      templateUrl: 'app/components/loading/loadingMessages.html',
       scope: {
-        loading: '=',
-        error: '=',
-        failed: '='
+        loading: '='
       }
     };
 

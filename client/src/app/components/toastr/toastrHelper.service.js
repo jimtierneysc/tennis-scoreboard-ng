@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendHelpers')
+    .module('frontendComponents')
     .factory('toastrHelper', factory);
 
   /** @ngInject */

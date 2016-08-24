@@ -8,7 +8,7 @@
     var $resource = null;
     var path = null;
 
-    beforeEach(module('frontendHelpers'));
+    beforeEach(module('frontendCrud'));
 
     beforeEach(inject(function (crudResource, _$httpBackend_) {
       $resource = crudResource.getResource(resourceName);

@@ -40,21 +40,19 @@
       authHelper(vm, $scope, vm.view.loggedInChanged);
       loadingHelper(vm);
       toastrHelper(vm, $scope);
+      
+      vm.view.loadSettings();
 
       if (response.id) {
         applyResponseToScoreboard(response);
-        vm.loadingHasCompleted();
+        vm.loading.hasCompleted();
       }
       else {
         $log.error('data error ' + response.status + " " + response.statusText);
-        vm.loadingHasFailed(response);
+        vm.loading.hasFailed(response);
       }
-      vm.view.ready();
     }
 
-    //
-    // Internal methods
-    //
 
     function confirmScoreboardUpdate(action, param) {
       vm.clearToast();
@@ -152,7 +150,7 @@
 
     function showError(response) {
       if (!vm.showHttpErrorToast(response.status))
-        vm.loadingHasFailed(response);
+        vm.loading.hasFailed(response);
     }
 
     function View() {
@@ -168,7 +166,10 @@
       view.toggleKeepingScore = toggleKeepingScore;
       view.canShowGame = canShowGame;
       view.loggedInChanged = loggedInChanged;
-      view.ready = ready;
+      view.loadSettings = function () {
+        loadSettings();
+        updateKeepingScore();
+      };
 
       // Show hint first time win button is shown
       view.showWinButtonHint = true;
@@ -188,11 +189,6 @@
         keepScore: false,
         showDescription: false
       };
-
-      function ready() {
-        loadSettings();
-        updateKeepingScore();
-      }
 
       function loggedInChanged() {
         if (view.settings.keepScore)
@@ -217,7 +213,7 @@
         if (showGames != view.settings.showGames) {
           if (!vm.scoreboard.hasCompletedGames) {
             toggle();
-            var title = 'Show Completed Games'
+            var title = 'Show Completed Games';
             if (showGames)
               vm.showToast('This setting has been turned on, however there are no completed games to show',
                 title);

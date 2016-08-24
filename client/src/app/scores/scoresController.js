@@ -37,13 +37,13 @@
 
     function getMatchesHasSucceeded(response) {
       vm.matches = response;
-      vm.loadingHasCompleted();
+      vm.loading.hasCompleted();
       selectMatch();
     }
 
     function getMatchesHasFailed(response) {
       $log.error('data error ' + response.status + " " + response.statusText);
-      vm.loadingHasFailed(response);
+      vm.loading.hasFailed(response);
     }
 
     function selectMatch() {

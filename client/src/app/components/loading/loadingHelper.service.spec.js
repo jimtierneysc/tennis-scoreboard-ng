@@ -4,7 +4,7 @@
   describe('loadingHelper service', function () {
     var service;
 
-    beforeEach(module('frontendHelpers'));
+    beforeEach(module('frontendComponents'));
 
     beforeEach(function () {
       inject(function (_loadingHelper_) {
@@ -38,11 +38,11 @@
         var response;
         beforeEach(function () {
           response = {statusText: 'text', status: 500, data: 'message'};
-          vm.loadingHasFailed(response);
+          vm.loading.hasFailed(response);
         });
 
         it('should have .loadingError', function () {
-          expect(vm.loadingError).toEqual(response);
+          expect(vm.loading.error).toEqual(response);
         });
 
         it('should have failed', function () {
@@ -53,7 +53,7 @@
 
       describe('loading completed', function () {
         beforeEach(function () {
-          vm.loadingHasCompleted();
+          vm.loading.hasCompleted();
         });
 
         it('should not have failed', function () {
@@ -72,9 +72,9 @@
         return {
           compare: function (vm) {
             var helper = new MatcherHelper(vm);
-            if (vm.loading)
+            if (vm.loading.loading)
               helper.fail('expect not to be .loading');
-            if (!vm.loadingFailed)
+            if (!vm.loading.failed)
               helper.fail('expect to be .loadingFailed');
             return helper.getResult();
           }
@@ -84,7 +84,7 @@
         return {
           compare: function (vm) {
             var helper = new MatcherHelper(vm);
-            if (!vm.loading)
+            if (!vm.loading.loading)
               helper.fail('expect to be .loading');
             return helper.getResult();
           }
@@ -100,11 +100,12 @@
         function compare(vm) {
           var helper = new MatcherHelper(vm);
 
-          helper.checkFunction('loadingHasCompleted');
-          helper.checkFunction('loadingHasFailed');
-          helper.checkBoolean('loading');
-          helper.checkBoolean('loadingFailed');
-          helper.checkObject('loadingError');
+          // helper.checkFunction('loadingHasCompleted');
+          // helper.checkFunction('loadingHasFailed');
+          helper.checkObject('loading');
+          // helper.checkBoolean('loading');
+          // helper.checkBoolean('loadingFailed');
+          // helper.checkObject('loadingError');
 
           return helper.getResult();
         }

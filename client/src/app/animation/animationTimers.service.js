@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendView')
+    .module('frontendAnimation')
     .factory('animationTimers', factory);
 
   /** @ngInject */

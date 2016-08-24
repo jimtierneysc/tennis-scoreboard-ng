@@ -1,10 +1,10 @@
-<div ng-if="loading">
+<div ng-if="loading.loading">
   <h4>'Loading...'</h4>
 </div>
 
-<div ng-if="failed">
+<div ng-if="loading.failed">
   <fe-response-error
-    error="error"
+    error="loading.error"
   >
   </fe-response-error>
 </div>

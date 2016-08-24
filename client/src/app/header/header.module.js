@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-    .module('frontendHeader', ['frontendAuth', 'frontendComponents', 'frontendHelpers']);
+    .module('frontendHeader', ['frontendAuth', 'frontendComponents']);
   
 })();

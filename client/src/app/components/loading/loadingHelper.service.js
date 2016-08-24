@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendHelpers')
+    .module('frontendComponents')
     .factory('loadingHelper', factory);
 
   /** @ngInject */
@@ -17,19 +17,20 @@
     return activate;
 
     function activate(vm) {
-      // var helper = new Helper(vm);
-      vm.loading = true;
-      vm.loadingFailed = false;
-      vm.loadingError = null;
-      vm.loadingHasCompleted =  function () {
-        vm.loading = false;
-        vm.loadingFailed = false;
-        vm.loadingError = null;
+      vm.loading = {
+        loading: true,
+        failed: false,
+        error: null
       };
-      vm.loadingHasFailed = function (response) {
-        vm.loading = false;
-        vm.loadingFailed = true;
-        vm.loadingError = {
+      vm.loading.hasCompleted = function () {
+        vm.loading.loading = false;
+        vm.loading.failed = false;
+        vm.error = null;
+      };
+      vm.loading.hasFailed = function (response) {
+        vm.loading.loading = false;
+        vm.loading.failed = true;
+        vm.loading.error = {
           statusText: response.statusText,
           status: response.status,
           data: response.data
