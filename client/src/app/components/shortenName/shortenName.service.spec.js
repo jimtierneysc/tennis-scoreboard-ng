@@ -31,13 +31,13 @@
 
     });
 
-    describe('when initialized names', function () {
-      it('should not shorten when first name is initialized', function () {
+    describe('when initialled names', function () {
+      it('should not shorten when first name is initialled', function () {
         var value = 'J. Smith';
         expect(service(value)).toEqual(value);
       });
 
-      it('should not shorten when last name is initialized', function () {
+      it('should not shorten when last name is initialled', function () {
         var value = 'John S.';
         expect(service(value)).toEqual(value);
       });
