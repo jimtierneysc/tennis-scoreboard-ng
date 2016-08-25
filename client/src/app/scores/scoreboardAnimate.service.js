@@ -14,147 +14,242 @@
 
   /** @ngInject */
   function factory(animationTimers) {
-
-    return function (sb, action, param) {
-      return new AnimateHideAndShow(sb, action, param, animationTimers);
-    };
+    
+    return {
+      animateAction: function(sb, action, param) {
+        return new Animations(sb, animationTimers).animateAction(action, param);
+      },
+      animateKeepScore: function(sb, keepScore) {
+        return new Animations(sb, animationTimers).animateKeepScore(keepScore);
+      }
+    }
   }
 
   // Set and clear flags on the scoreboard object to trigger animation while
   // hiding and showing elements of the scoreboard view.
   // The scoreboard object must be prepared using the scoreboardPrep service, prior
   // to using this class.
-  function AnimateHideAndShow(_sb_, _action_, _param_, _animationTimers_) {
+  function Animations(_sb_, _animationTimers_) {
 
     var sb = _sb_;
-    var action = _action_;
-    var param = _param_;
     var animationTimers = _animationTimers_;
+    
+    // Hide and show elements while changing the mode between keeping score and 
+    // following score.
+    this.animateKeepScore = function(keepScore) {
+      return {
+        hideChanging: function() {
+          keepScoreHideChanging(keepScore);
+        },
+        hideChanged: function() {
+          keepScoreHideChanged(!keepScore);
+        },
+        showChanged: showChanged,
+        stop: stopHideAndShow
+      }
+    };
 
-    this.hideOldData = hideOldData;
-    this.hideNewData = hideNewData;
-    this.stopHideAndShow = stopHideAndShow;
-    this.showNewData = showNewData;
-    this.hideKeepScore = hideKeepScore;
-    this.showKeepScore = showNewData;
+    // Hide and show elements while posting an action, like win_game
+    this.animateAction = function(action, param) {
+      return {
+        hideChanging: function() {
+          actionHideChanging(action, param);
+        },
+        hideChanged: function() {
+          actionHideChanged(action, param)
+        },
+        showChanged: showChanged,
+        stop: stopHideAndShow
+      }
+    };
+    
+    function actionHideChanging(action, param) {
+      var transitions = new ScoreTransitions(action, param, {before: true});
 
-    function hideOldData() {
-      var actionState = new ActionState({oldData: true});
+      var list = new AnimationList();
 
-      sb.matchFlags.animatingProgress = true;
-      sb.matchFlags.animatingServer = true;
-      if (actionState.winningSet)
-        sb.matchFlags.animatingResult = true;
+      list.add('Progress', sb.matchFlags);
+      list.add('Server', sb.matchFlags);
+
+      if (transitions.winningSet)
+        list.add('Result', sb.matchFlags);
 
       if (sb.currentGame && sb.currentSet) {
 
-        if (actionState.winningGame && !actionState.winningSet)
-          sb.currentGame.animatingTitle = true;
+        if (transitions.winningGame && !transitions.winningSet)
+          list.add('Title', sb.currentGame);
 
-        if (actionState.winningGame)
-          sb.currentSet.animatingResult = true;
+        if (transitions.winningGame)
+          list.add('Result', sb.currentSet);
 
-        if (actionState.startingGame && sb.firstServers)
-          sb.currentGame.animatingServersForm = true;
-
+        if (transitions.startingGame && sb.firstServers)
+          list.add('ServersForm', sb.currentGame);
       }
 
-      // Apply ng-class of elements before hide elements
+      enableAnimation(list);
+      // Allow ng-class of elements to apply before hiding elements
       animationTimers.digest().then(function () {
-        eachFlaggedObject(
-          function (item) {
-            item.hiddenLeftmost = actionState.leftmost;
-            setHidden(item, true);
-          });
+        hideForAnimation(list, {leftmost: transitions.leftmost});
       });
     }
 
-    function hideKeepScore() {
-      sb.matchFlags.animatingProgress = true;
-      sb.matchFlags.animatingServer = true;
-
-      if (sb.currentGame && !sb.currentGame.winner) {
-        sb.currentGame.animating = true;
+    function addKeepScoreGameAnimations(list, keepScore, game) {
+      if (game.newGame) {
+        list.add('', game, keepScore);
+      } else if (!sb.currentGame.winner) {
+        list.add('WinButton', game, keepScore);
+        list.add('RowStatus', game, !keepScore);
       }
+    }
 
-      // Apply ng-class of elements before hide elements
+    function keepScoreHideChanging(keepScore) {
+      var list = new AnimationList();
+
+      list.add('Progress', sb.matchFlags);
+      if (sb.currentGame)
+        addKeepScoreGameAnimations(list, keepScore, sb.currentGame);
+
+      enableAnimation(list);
+      // Allow ng-class to be applied
       animationTimers.digest().then(function () {
-        eachFlaggedObject(
-          function (item) {
-            setHidden(item, true);
-          });
+        hideForAnimation(list);
       });
     }
 
-    function hideNewData() {
+    function keepScoreHideChanged(keepScore) {
+      var list = new AnimationList();
 
-      var actionState = new ActionState({oldData: false});
+      list.add('Progress', sb.matchFlags);
+      if (sb.currentGame)
+        addKeepScoreGameAnimations(list, keepScore, sb.currentGame);
+      hideForAnimation(list)
+    }
 
-      sb.matchFlags.animatingProgress = true;
-      sb.matchFlags.animatingServer = true;
-      if (actionState.winningSet)
-        sb.matchFlags.animatingResult = true;
+
+    function actionHideChanged(action, param) {
+
+      var transitions = new ScoreTransitions(action, param, {before: false});
+
+      var list = new AnimationList();
+
+      list.add('Progress', sb.matchFlags);
+      list.add('Server', sb.matchFlags);
+
+      if (transitions.winningSet)
+        list.add('Result', sb.matchFlags);
 
       if (sb.currentGame && sb.currentSet) {
-        if (actionState.startingGame)
-          sb.currentGame.animatingWinButton = true;
+        if (transitions.startingGame)
+          list.add('WinButton', sb.currentGame);
 
-        if (actionState.winningGame && sb.firstServers)
-          sb.currentGame.animatingServersForm = true;
+        if (transitions.winningGame && sb.firstServers)
+          list.add('ServersForm', sb.currentGame);
 
-        if (actionState.winningGame && !actionState.winningSet) {
-          sb.currentGame.animatingTitle = true;
-          sb.currentGame.animatingStartGameButton = true;
-          sb.currentSet.animatingResult = true;
+        if (transitions.winningGame && !transitions.winningSet) {
+          list.add('Title', sb.currentGame);
+          list.add('StartGameButton', sb.currentGame);
+          list.add('Result', sb.currentSet);
         }
 
         // Hide a newly created set and set's first game
-        if ((actionState.startingSet || actionState.startingMatch) &&
+        if ((transitions.startingSet || transitions.startingMatch) &&
           (!sb.currentGame.winner && sb.currentSet.games.length == 1)) {
-          sb.currentGame.animating = true;
-          sb.currentSet.animating = true;
+          list.add('', sb.currentGame);
+          list.add('', sb.currentSet);
         }
       }
 
       if (sb.currentGame && sb.previousGame) {
         // Hide game that just got a winner
-        if (actionState.winningGame && sb.currentGame.newGame) {
-          sb.currentGame.animatingTitle = true;
-          sb.previousGame.animating = true;
+        if (transitions.winningGame && sb.currentGame.newGame) {
+          list.add('Title', sb.currentGame);
+          list.add('', sb.previousGame);
         }
       }
 
       if (sb.previousSet) {
-        if (actionState.winningSet)
-          sb.previousSet.animatingResult = true;
+        if (transitions.winningSet)
+          list.add('Result', sb.previousSet);
       }
 
-      eachFlaggedObject(
-        function (item) {
-          item.hiddenLeftmost = actionState.leftmost;
-          setHidden(item, true);
-        });
+      enableAnimation(list);
+      hideForAnimation(list, {leftmost: transitions.leftmost});
     }
 
-    function showNewData() {
-      eachFlaggedObject(
-        function (item) {
-          setHidden(item, false);
-        });
+    function showChanged() {
+      clearFlags(['hidden']);
     }
 
     function stopHideAndShow() {
+      clearFlags(['hidden', 'animating']);
+    }
+
+
+    function AnimationList() {
+      var items = [];
+      this.items = items;
+      this.add = function (key, value, hide) {
+        if (angular.isUndefined(hide))
+          hide = true;
+        items.push({key: key, value: value, hide: hide});
+      }
+    }
+
+
+    function clearFlags(prefixes) {
       eachFlaggedObject(
         function (item) {
-          setHidden(item, false);
-          clearAnimating(item);
+          angular.forEach(prefixes, function (prefix) {
+            clear(item, prefix)
+          });
+        });
+
+      // Clear all properties that start with a prefix like "animating"
+      function clear(item, prefix) {
+        angular.forEach(item, function (value, key) {
+          if (key.startsWith(prefix)) {
+            item[key] = false;
+          }
+        });
+      }
+    }
+
+    function enableAnimation(list) {
+      angular.forEach(list.items, function (item) {
+        // Set property such as animatingServersForm
+        item.value['animating' + item.key] = true;
+      });
+    }
+
+    function hideForAnimation(list, options) {
+      options = options || {};
+      var leftmost = options.leftmost;
+      angular.forEach(list.items, function (item) {
+        if (item.hide) {
+          // Set property such as hiddenServersForm
+          item.value['hidden' + item.key] = true;
+          if (angular.isDefined(leftmost))
+            item.value.hiddenLeftmost = leftmost;
+        }
+      });
+    }
+
+    // Enumerate all the objects that may have animating* and hidden* flags.
+    function eachFlaggedObject(fn) {
+      var items = [sb.previousGame, sb.currentGame, sb.currentSet, sb.previousSet, sb.matchFlags];
+      angular.forEach(items,
+        function (item) {
+          if (item)
+            fn(item)
         });
     }
 
-    function ActionState(data) {
+    // Collect some information about the state of the scoreboard before or after executing
+    // an action
+    function ScoreTransitions(action, param, stateOf) {
       this.winningGame = winningGame(action);
-      this.winningSet = data.oldData ? predictWinningSet() : winningSet();
-      this.winningMatch = data.oldData ? predictWinningMatch() : winningMatch();
+      this.winningSet = stateOf.before ? predictWinningSet() : winningSet();
+      this.winningMatch = stateOf.before ? predictWinningMatch() : winningMatch();
       this.startingGame = startingGame(action);
       this.startingSet = startingSet(action);
       this.startingMatch = action == 'start_play';
@@ -194,36 +289,6 @@
       function startingGame() {
         return ['start_game', 'start_tiebreak'].indexOf(action) >= 0;
       }
-    }
-
-    // If item has a property that starts with "animating", set the corresponding
-    // property that starts with "hidden" (e.g. if animatingTitle then set hiddenTitle).
-    function setHidden(item, hidden) {
-      angular.forEach(item, function (value, key) {
-        if (key.startsWith('animating')) {
-          item['hidden' + key.substr(9)] = hidden;
-        }
-      });
-
-    }
-
-    // Clear all properties that start with "animating"
-    function clearAnimating(item) {
-      angular.forEach(item, function (value, key) {
-        if (key.startsWith('animating')) {
-          item[key] = false;
-        }
-      });
-    }
-
-    // Enumerate all the objects that may have animating* and hidden* flags.
-    function eachFlaggedObject(fn) {
-      var items = [sb.previousGame, sb.currentGame, sb.currentSet, sb.previousSet, sb.matchFlags];
-      angular.forEach(items,
-        function (item) {
-          if (item)
-            fn(item)
-        });
     }
   }
 

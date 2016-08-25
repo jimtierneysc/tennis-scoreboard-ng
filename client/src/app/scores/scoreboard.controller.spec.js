@@ -426,8 +426,8 @@
           expect(view.updateScore).toEqual(jasmine.any(Function));
         });
 
-        it('should have .animateScoreboardChanges()', function () {
-          expect(view.animateScoreboardChanges).toEqual(jasmine.any(Function));
+        it('should have .animateScoreboardUpdate()', function () {
+          expect(view.animateScoreboardUpdate).toEqual(jasmine.any(Function));
         });
 
         it('should have .toggleShowGames()', function () {
@@ -442,8 +442,24 @@
           expect(view.toggleKeepingScore).toEqual(jasmine.any(Function));
         });
 
+        it('should have .canShowGame()', function () {
+          expect(view.canShowGame).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .loggedInChanged()', function () {
+          expect(view.loggedInChanged).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .loadSettings()', function () {
+          expect(view.loadSettings).toEqual(jasmine.any(Function));
+        });
+
         it('should have .storeSettings()', function () {
           expect(view.storeSettings).toEqual(jasmine.any(Function));
+        });
+
+        it('should have .showWinButtonHint', function () {
+          expect(view.showWinButtonHint).toEqual(jasmine.any(Boolean));
         });
 
         describe('.settings', function () {
@@ -512,14 +528,14 @@
       });
 
       describe('.toggleShowGames()', function () {
-        describe('when no games to show or hide', function() {
+        describe('when no games to show or hide', function () {
           var vm;
           beforeEach(function () {
             vm = scoreboardController(singlesResponse());
           });
 
-          describe('and show', function() {
-            beforeEach(function() {
+          describe('and show', function () {
+            beforeEach(function () {
               vm.view.settings.showGames = false;
               vm.view.toggleShowGames(true);
             });
@@ -533,8 +549,8 @@
             });
           });
 
-          describe('and hide', function() {
-            beforeEach(function() {
+          describe('and hide', function () {
+            beforeEach(function () {
               vm.view.settings.showGames = true;
               vm.view.toggleShowGames(false);
             });
@@ -549,7 +565,7 @@
           });
         });
 
-        describe('when games to show or hide', function() {
+        describe('when games to show or hide', function () {
           var vm;
           beforeEach(function () {
             var sb = singlesResponse();
@@ -557,8 +573,8 @@
             vm = scoreboardController(sb);
           });
 
-          describe('and show', function() {
-            beforeEach(function() {
+          describe('and show', function () {
+            beforeEach(function () {
               vm.view.settings.showGames = false;
               vm.view.toggleShowGames(true);
               $rootScope.$digest();
@@ -573,8 +589,8 @@
             });
           });
 
-          describe('and hide', function() {
-            beforeEach(function() {
+          describe('and hide', function () {
+            beforeEach(function () {
               vm.view.settings.showGames = true;
               vm.view.toggleShowGames(false);
               $rootScope.$digest();
@@ -594,7 +610,7 @@
 
       describe('.toggleKeepingScore()', function () {
 
-        describe('when not logged in', function() {
+        describe('when not logged in', function () {
           var vm;
           beforeEach(function () {
             vm = scoreboardController(singlesResponse());
@@ -616,14 +632,14 @@
         describe('when logged in', function () {
           var vm;
 
-          beforeEach(function() {
+          beforeEach(function () {
             vm = scoreboardController(singlesResponse());
             vm.loggedIn = true;
             vm.view.loggedInChanged();
             vm.view.settings.keepScore = false;
           });
 
-          describe('when match over', function() {
+          describe('when match over', function () {
             beforeEach(function () {
               vm.scoreboard.winner = 1;
               vm.view.toggleKeepingScore(true);
@@ -645,7 +661,7 @@
             });
           });
 
-          describe('when match in progress', function() {
+          describe('when match in progress', function () {
             beforeEach(function () {
               vm.view.toggleKeepingScore(true);
               $rootScope.$digest();
@@ -666,7 +682,78 @@
             });
           });
         });
+      });
 
+      describe('.showWinButtonHint', function() {
+        var view;
+        beforeEach(function () {
+          var vm = scoreboardController(singlesResponse());
+          view = vm.view;
+        });
+
+        it('should be true initially', function() {
+          expect(view.showWinButtonHint).toBeTruthy();
+        });
+
+        it('should be false after win action', function() {
+          view.updateScore('win_game');
+          $rootScope.$digest();
+          expect(view.showWinButtonHint).toBeFalsy();
+        })
+      });
+
+      describe('.canShowGame', function () {
+        var newGame;
+        var gameWithWinner;
+        var view;
+        beforeEach(function () {
+          var vm = scoreboardController(singlesResponse());
+          view = vm.view;
+          view.settings.keepScore = true;
+          view.settings.showGames = true;
+          vm.loggedIn = true;
+          view.loggedInChanged();
+          $rootScope.$digest();
+
+          newGame = {newGame: true};
+          gameWithWinner = {winner: 1};
+        });
+
+        describe('when setting', function () {
+          describe('.showGames off', function () {
+            beforeEach(function () {
+              view.settings.showGames = false;
+            });
+
+            it('should not show game with winner', function () {
+              expect(view.canShowGame(gameWithWinner)).not.toBeTruthy();
+            })
+          });
+
+          describe('.showGames on', function () {
+            it('should show game with winner', function () {
+              expect(view.canShowGame(gameWithWinner)).toBeTruthy();
+            })
+          });
+
+          describe('.keepingScore off', function () {
+            beforeEach(function () {
+              view.settings.keepScore = false;
+              view.loggedInChanged();
+              $rootScope.$digest;
+            });
+
+            it('should not show new game', function () {
+              expect(view.canShowGame(newGame)).toBeFalsy();
+            })
+          });
+
+          describe('.keepingScore on', function () {
+            it('should show new game', function () {
+              expect(view.canShowGame(newGame)).toBeTruthy();
+            })
+          });
+        })
       });
 
       describe('storage of settings', function () {
@@ -701,35 +788,53 @@
         });
 
         describe('load data', function () {
+          var vm;
           beforeEach(function () {
             // Save
-            var vm = scoreboardController(singlesResponse());
+            vm = scoreboardController(singlesResponse());
             vm.view.settings.showGames = true;
             vm.view.settings.keepScore = true;
             vm.view.settings.showDescription = true;
             vm.view.storeSettings();
+            // Load
+            vm = scoreboardController(singlesResponse());
           });
 
           it('should have .showGames', function () {
-            // Load
-            var vm = scoreboardController(singlesResponse());
             expect(vm.view.settings.showGames).toBe(true);
           });
 
           it('should have .showDescription', function () {
-            // Load
-            var vm = scoreboardController(singlesResponse());
             expect(vm.view.settings.showDescription).toBe(true);
           });
 
           it('should have .keepScore', function () {
-            // Load
-            var vm = scoreboardController(singlesResponse());
             expect(vm.view.settings.keepScore).toBe(true)
           });
+
+          describe('.loadSettings', function () {
+            beforeEach(function () {
+              vm.view.settings.showGames = false;
+              vm.view.settings.keepScore = false;
+              vm.view.settings.showDescription = false;
+              vm.view.loadSettings();
+            });
+
+            it('should have .showGames', function () {
+              expect(vm.view.settings.showGames).toBe(true);
+            });
+
+            it('should have .showDescription', function () {
+              expect(vm.view.settings.showDescription).toBe(true);
+            });
+
+            it('should have .keepScore', function () {
+              expect(vm.view.settings.keepScore).toBe(true)
+            });
+
+          })
         });
       });
-
     });
 
     describe('confirm change', function () {
@@ -836,7 +941,7 @@
         });
       });
 
-     });
+    });
 
     function MockResource() {
 

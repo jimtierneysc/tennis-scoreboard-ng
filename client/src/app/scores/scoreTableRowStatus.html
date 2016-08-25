@@ -2,7 +2,9 @@
  Display a message on a score table row.  Message is shown following the score rather than
  when keeping score.
  -->
-<em class="score-em">
+<div ng-if="!scores.currentGame.hiddenRowStatus"
+     ng-class="{'standard-animation': scores.currentGame.animatingRowStatus}">
+  <em class="score-em">
 <span ng-if="scores.actions.win_game">
   Game {{scores.currentGame.title}} is in progress
 </span>
@@ -12,4 +14,5 @@
 <span ng-if="scores.actions.win_match_tiebreak">
   Match tiebreak is in progress
 </span>
-</em>
+  </em>
+</div>

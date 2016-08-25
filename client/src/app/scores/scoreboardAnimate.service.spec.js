@@ -2,83 +2,351 @@
   'use strict';
 
   describe('scoreboardAnimate service', function () {
+    var service;
+    var $timeout;
+    var $rootScope;
+    var scoreboardPrep;
+    var scores;
+    var animate;
+    var sampleScores = {
+      state: 'in_progress',
+      first_player: {id: 100},
+      second_player: {id: 200},
+      servers: [],
+      near_winners: {
+        set: [],
+        match: []
+      },
+      sets: [
+        {
+          games: [
+            {}
+          ]
+        }
+      ]
+    };
 
     beforeEach(module('frontendScores'));
 
-    var service;
-    var $timeout;
-    var scoreboardPrep;
-
     beforeEach(function () {
-
-      inject(function (_scoreboardAnimate_, _scoreboardPrep_, _$timeout_) {
+      inject(function (_scoreboardAnimate_, _scoreboardPrep_, _$timeout_, _$rootScope_) {
         service = _scoreboardAnimate_;
         scoreboardPrep = _scoreboardPrep_;
         $timeout = _$timeout_;
+        $rootScope = _$rootScope_;
       })
     });
 
     describe('members', function () {
-      it('should be an function', function () {
-        expect(service).toEqual(jasmine.any(Function));
+      it('should have .animateAction()', function () {
+        expect(service.animateAction).toEqual(jasmine.any(Function));
+      });
+
+      it('should have .animateKeepScore()', function () {
+        expect(service.animateKeepScore).toEqual(jasmine.any(Function));
       });
     });
 
-    describe('.hideAndShowData()', function () {
+    function checkAnimateMembers() {
+      it('should have .hideChanging()', function () {
+        expect(animate.hideChanging).toEqual(jasmine.any(Function));
+      });
 
-      var hideAndShow;
-      var scores;
+      it('should have .hideChanged()', function () {
+        expect(animate.hideChanged).toEqual(jasmine.any(Function));
+      });
 
-      var sampleScores = {
-        state: 'in_progress',
-        first_player: {id: 100},
-        second_player: {id: 200},
-        servers: [],
-        near_winners: {
-          set: [],
-          match: []
-        },
-        sets: [
-          {
-            games: [
-              {}
-            ]
-          }
-        ]
-      };
+      it('should have .stop()', function () {
+        expect(animate.stop).toEqual(jasmine.any(Function));
+      });
 
+      it('should have .showChanged()', function () {
+        expect(animate.showChanged).toEqual(jasmine.any(Function));
+      });
+    }
 
-      function createHideAndShow(sample, action, param) {
+    function checkStop() {
+
+      beforeEach(function () {
+        scores.matchFlags.animatingFoo = true;
+        scores.matchFlags.hiddenFoo = true;
+      });
+
+      it('should clear animating', function () {
+        animate.stop();
+        expect(scores.matchFlags.animatingFoo).toBeFalsy();
+      });
+
+      it('should clear hiding', function () {
+        animate.stop();
+        expect(scores.matchFlags.hiddenFoo).toBeFalsy();
+      });
+
+    }
+
+    describe('animateKeepScore()', function () {
+
+      var animateKeepScore;
+
+      function createAnimateKeepScore(sample, keepScore) {
         sample = sample || sampleScores;
-        action = action || 'some_action';
         scores = scoreboardPrep(angular.copy(sample));
-        hideAndShow = service(scores, action, param);
+        animateKeepScore = service.animateKeepScore(scores, keepScore);
       }
 
       describe('members', function () {
         beforeEach(function () {
-          createHideAndShow();
+          createAnimateKeepScore();
+          animate = animateKeepScore;
         });
 
-        it('should have .hideOldData()', function () {
-          expect(hideAndShow.hideOldData).toEqual(jasmine.any(Function));
-        });
-
-        it('should have .hideNewData()', function () {
-          expect(hideAndShow.hideNewData).toEqual(jasmine.any(Function));
-        });
-
-        it('should have .stopHideAndShow()', function () {
-          expect(hideAndShow.stopHideAndShow).toEqual(jasmine.any(Function));
-        });
-
-        it('should have .showNewData()', function () {
-          expect(hideAndShow.showNewData).toEqual(jasmine.any(Function));
-        });
+        checkAnimateMembers();
 
       });
 
-      describe('.hideOldData()', function () {
+      describe('.stop', function () {
+        beforeEach(function () {
+          createAnimateKeepScore(null, false);
+          animate = animateKeepScore;
+        });
+
+        checkStop();
+      });
+
+      describe('hides progress', function () {
+        beforeEach(function () {
+          createAnimateKeepScore(null, false);
+        });
+
+        describe('.hideChanging', function () {
+          beforeEach(function () {
+            animateKeepScore.hideChanging();
+            $timeout.flush();
+          });
+
+          it('should hide', function () {
+            expect(scores.matchFlags.hiddenProgress).toBeTruthy();
+          });
+
+          it('should animate', function () {
+            expect(scores.matchFlags.animatingProgress).toBeTruthy();
+          });
+        });
+
+        describe('.hideChanged', function () {
+          beforeEach(function () {
+            animateKeepScore.hideChanged();
+          });
+
+          it('should hide', function () {
+            expect(scores.matchFlags.hiddenProgress).toBeTruthy();
+          });
+
+          describe('.showChanged', function () {
+            beforeEach(function () {
+              animateKeepScore.showChanged();
+            });
+
+            it('should show', function () {
+              expect(scores.matchFlags.hiddenProgress).toBeFalsy();
+            });
+
+          });
+        });
+      });
+
+      describe('hides when starting game', function () {
+        var newGame;
+        (function () {
+          newGame = angular.copy(sampleScores);
+          newGame.actions = {start_game: true};
+        })();
+
+        describe('when turn on keep score', function () {
+
+          beforeEach(function () {
+            createAnimateKeepScore(newGame, true);
+          });
+
+          describe('.hideChanging', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanging();
+              $timeout.flush();
+            });
+
+            it('should animate current game', function () {
+              expect(scores.currentGame.animating).toBeTruthy();
+            });
+
+            it('should hide currrent game', function () {
+              expect(scores.currentGame.hidden).toBeTruthy();
+            });
+          });
+
+        });
+
+        describe('when turn off keep score', function () {
+
+          beforeEach(function () {
+            createAnimateKeepScore(newGame, false);
+          });
+
+          describe('.hideChanging', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanging();
+              $timeout.flush();
+            });
+
+            it('should animate current game', function () {
+              expect(scores.currentGame.animating).toBeTruthy();
+            });
+          });
+
+          describe('.hideChanged', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanged();
+            });
+
+            it('should hide game', function () {
+              expect(scores.currentGame.hidden).toBeTruthy();
+            });
+
+            describe('.showChanged', function () {
+              beforeEach(function () {
+                animateKeepScore.showChanged();
+              });
+
+              it('should no hide game', function () {
+                expect(scores.currentGame.hidden).toBeFalsy();
+              });
+
+            });
+          });
+        });
+
+
+      });
+
+      describe('hides when game in progress', function () {
+        var gameInProgress;
+        (function () {
+          gameInProgress = angular.copy(sampleScores, false);
+          gameInProgress.actions = {win_game: true};
+        })();
+
+        describe('when turn on keep score', function () {
+
+          beforeEach(function () {
+            createAnimateKeepScore(gameInProgress, true);
+          });
+
+          describe('.hideChanging', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanging();
+              $timeout.flush();
+            });
+
+            it('should animate win button', function () {
+              expect(scores.currentGame.animatingWinButton).toBeTruthy();
+            });
+
+            it('should hide win button', function () {
+              expect(scores.currentGame.hiddenWinButton).toBeTruthy();
+            });
+
+          });
+
+          describe('.hideChanged', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanged();
+            });
+
+            it('should hide row status', function () {
+              expect(scores.currentGame.hiddenRowStatus).toBeTruthy();
+            });
+
+            describe('.showChanged', function () {
+              beforeEach(function () {
+                animateKeepScore.showChanged();
+              });
+
+              it('should not hide row status', function () {
+                expect(scores.currentGame.hiddenRowStatus).toBeFalsy();
+              });
+
+            });
+          });
+        });
+
+
+        describe('when turn off keep', function () {
+
+          beforeEach(function () {
+            createAnimateKeepScore(gameInProgress, false);
+          });
+
+          describe('.hideChanging', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanging();
+              $timeout.flush();
+            });
+
+            it('should hide row status', function () {
+              expect(scores.currentGame.hiddenRowStatus).toBeTruthy();
+            });
+
+            it('should animate row status', function () {
+              expect(scores.currentGame.animatingRowStatus).toBeTruthy();
+            });
+          });
+
+          describe('.hideChanged', function () {
+            beforeEach(function () {
+              animateKeepScore.hideChanged();
+            });
+
+            it('should hide win button', function () {
+              expect(scores.currentGame.hiddenWinButton).toBeTruthy();
+            });
+
+            describe('.showChanged', function () {
+              beforeEach(function () {
+                animateKeepScore.showChanged();
+              });
+
+              it('should not hide win button', function () {
+                expect(scores.currentGame.hiddenWinButton).toBeFalsy();
+              });
+
+            });
+          });
+        });
+      });
+    });
+
+
+    describe('animateAction()', function () {
+
+      var animateAction;
+
+      function createAnimateAction(sample, action, param) {
+        sample = sample || sampleScores;
+        action = action || 'some_action';
+        scores = scoreboardPrep(angular.copy(sample));
+        animateAction = service.animateAction(scores, action, param);
+      }
+
+      describe('members', function () {
+        beforeEach(function () {
+          createAnimateAction();
+          animate = animateAction;
+        });
+
+        checkAnimateMembers();
+
+      });
+
+      describe('.hideChanging()', function () {
 
         var winGame;
         (function () {
@@ -101,17 +369,36 @@
             nearWinMatch.near_winners.set;
         })();
 
+        var servingGame;
+        (function() {
+          servingGame = angular.copy(sampleScores);
+          servingGame.actions = {'start_game': true};
+          servingGame.firstServers = [1, 2];
+        })();
+
+        describe('hides server form when staring game', function() {
+          beforeEach(function() {
+            createAnimateAction(servingGame, 'start_game', 0);
+            animateAction.hideChanging();
+            $timeout.flush();
+          });
+
+          it('should hide servers form', function() {
+            expect(scores.currentGame.hiddenServersForm).toBeTruthy();
+          });
+        });
+
         describe('hides match score when winning set', function () {
 
           it('should not be hidden initially', function () {
-            createHideAndShow(winGame);
+            createAnimateAction(winGame);
             expect(scores.matchFlags.hiddenResult).toBeFalsy();
           });
 
           describe('left side', function () {
             beforeEach(function () {
-              createHideAndShow(nearWinMatch, 'win_game', 0);
-              hideAndShow.hideOldData();
+              createAnimateAction(nearWinMatch, 'win_game', 0);
+              animateAction.hideChanging();
               $timeout.flush();
             });
 
@@ -127,8 +414,8 @@
 
           describe('right side', function () {
             beforeEach(function () {
-              createHideAndShow(nearWinMatch, 'win_game', 1);
-              hideAndShow.hideOldData();
+              createAnimateAction(nearWinMatch, 'win_game', 1);
+              animateAction.hideChanging();
               $timeout.flush();
             });
 
@@ -145,14 +432,14 @@
         describe('hides set score when winning game', function () {
 
           it('should not be hidden initially', function () {
-            createHideAndShow(winGame);
+            createAnimateAction(winGame);
             expect(scores.currentSet.hiddenResult).toBeFalsy();
           });
 
           describe('left', function () {
             beforeEach(function () {
-              createHideAndShow(nearWinSet, 'win_game', 0);
-              hideAndShow.hideOldData();
+              createAnimateAction(nearWinSet, 'win_game', 0);
+              animateAction.hideChanging();
               $timeout.flush();
             });
 
@@ -167,8 +454,8 @@
 
           describe('right', function () {
             beforeEach(function () {
-              createHideAndShow(nearWinSet, 'win_game', 1);
-              hideAndShow.hideOldData();
+              createAnimateAction(nearWinSet, 'win_game', 1);
+              animateAction.hideChanging();
               $timeout.flush();
             });
 
@@ -185,14 +472,14 @@
         describe('hides game title when winning game', function () {
 
           it('should not be hidden initially', function () {
-            createHideAndShow(winGame);
+            createAnimateAction(winGame);
             expect(scores.currentGame.hiddenTitle).toBeFalsy();
           });
 
           describe('hide', function () {
             beforeEach(function () {
-              createHideAndShow(winGame, 'win_game', 0);
-              hideAndShow.hideOldData();
+              createAnimateAction(winGame, 'win_game', 0);
+              animateAction.hideChanging();
               $timeout.flush();
             });
 
@@ -204,7 +491,7 @@
 
         describe('hides progress for any action', function () {
           beforeEach(function () {
-            createHideAndShow();
+            createAnimateAction();
           });
 
           it('should not be hidden initially', function () {
@@ -212,14 +499,14 @@
           });
 
           it('should be hidden', function () {
-            hideAndShow.hideOldData();
+            animateAction.hideChanging();
             $timeout.flush();
             expect(scores.matchFlags.hiddenProgress).toBeTruthy();
           })
         });
       });
 
-      describe('.hideNewData()', function () {
+      describe('.hideChanged()', function () {
         var startGame;
         (function () {
           startGame = angular.copy(sampleScores);
@@ -238,8 +525,8 @@
 
             describe('left', function () {
               beforeEach(function () {
-                createHideAndShow(winMatch, 'win_game', 0);
-                hideAndShow.hideNewData();
+                createAnimateAction(winMatch, 'win_game', 0);
+                animateAction.hideChanged();
               });
 
               it('should hide result', function () {
@@ -254,8 +541,8 @@
 
             describe('right', function () {
               beforeEach(function () {
-                createHideAndShow(winMatch, 'win_game', 1);
-                hideAndShow.hideNewData();
+                createAnimateAction(winMatch, 'win_game', 1);
+                animateAction.hideChanged();
               });
 
               it('should hide result', function () {
@@ -277,8 +564,8 @@
             })();
 
             beforeEach(function () {
-              createHideAndShow(winSet, 'win_game', 0);
-              hideAndShow.hideNewData();
+              createAnimateAction(winSet, 'win_game', 0);
+              animateAction.hideChanged();
             });
 
             it('should hide result', function () {
@@ -294,8 +581,8 @@
 
             describe('left', function () {
               beforeEach(function () {
-                createHideAndShow(startGame, 'win_game', 0);
-                hideAndShow.hideNewData();
+                createAnimateAction(startGame, 'win_game', 0);
+                animateAction.hideChanged();
               });
 
               it('should hide result of current set', function () {
@@ -309,8 +596,8 @@
 
             describe('right', function () {
               beforeEach(function () {
-                createHideAndShow(startGame, 'win_game', 1);
-                hideAndShow.hideNewData();
+                createAnimateAction(startGame, 'win_game', 1);
+                animateAction.hideChanged();
               });
 
               it('should hide result of current set', function () {
@@ -335,8 +622,8 @@
             })();
 
             beforeEach(function () {
-              createHideAndShow(startSecondSet, 'win_game', 1);
-              hideAndShow.hideNewData();
+              createAnimateAction(startSecondSet, 'win_game', 1);
+              animateAction.hideChanged();
             });
 
             it('should hide result of previous set', function () {
@@ -348,14 +635,14 @@
         describe('hides game title', function () {
 
           it('should not be hidden initially', function () {
-            createHideAndShow(startGame);
+            createAnimateAction(startGame);
             expect(scores.currentGame.hiddenTitle).toBeFalsy();
           });
 
           describe('hides when start game', function () {
             beforeEach(function () {
-              createHideAndShow(startGame, 'win_game', 0);
-              hideAndShow.hideNewData();
+              createAnimateAction(startGame, 'win_game', 0);
+              animateAction.hideChanged();
             });
 
             it('should hide title', function () {
@@ -366,16 +653,16 @@
 
         describe('hides progress for any action', function () {
           beforeEach(function () {
-            createHideAndShow();
+            createAnimateAction();
           });
 
           it('should be hidden', function () {
-            hideAndShow.hideNewData();
+            animateAction.hideChanged();
             expect(scores.matchFlags.hiddenProgress).toBeTruthy();
           })
         });
 
-        describe('hides game after win', function () {
+        describe('hides game before show', function () {
           var winGame;
           (function () {
             winGame = angular.copy(sampleScores);
@@ -383,8 +670,8 @@
           })();
 
           beforeEach(function () {
-            createHideAndShow(winGame, 'win_game', 0);
-            hideAndShow.hideNewData();
+            createAnimateAction(winGame, 'win_game', 0);
+            animateAction.hideChanged();
           });
 
           it('should hide game', function () {
@@ -392,7 +679,24 @@
           });
         });
 
-        describe('hides new set and game', function () {
+        describe('hides win button before show', function () {
+          var winGame;
+          (function () {
+            winGame = angular.copy(sampleScores);
+            winGame.actions = {'win_game': true};
+          })();
+
+          beforeEach(function () {
+            createAnimateAction(winGame, 'start_game', 0);
+            animateAction.hideChanged();
+          });
+
+          it('should hide win button', function () {
+            expect(scores.currentGame.hiddenWinButton).toBeTruthy();
+          });
+        });
+
+        describe('hides new set and game before show', function () {
           describe('when start match', function () {
             var startMatch;
             (function () {
@@ -401,8 +705,8 @@
             })();
 
             beforeEach(function () {
-              createHideAndShow(startMatch, 'start_play', 0);
-              hideAndShow.hideNewData();
+              createAnimateAction(startMatch, 'start_play', 0);
+              animateAction.hideChanged();
             });
 
             it('should hide game', function () {
@@ -422,8 +726,8 @@
             })();
 
             beforeEach(function () {
-              createHideAndShow(startSet, 'start_set', 0);
-              hideAndShow.hideNewData();
+              createAnimateAction(startSet, 'start_set', 0);
+              animateAction.hideChanged();
             });
 
             it('should hide game', function () {
@@ -436,7 +740,7 @@
           });
         });
       });
-    });
+    })
   })
 })();
 

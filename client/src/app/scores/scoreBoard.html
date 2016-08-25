@@ -1,14 +1,12 @@
 <div>
 
-  <div class="col-xs-12" ng-if="vm.loading || vm.loadingFailed">
+  <div class="col-xs-12" ng-if="vm.loading.loading || vm.loading.failed">
     <fe-loading-messages
-      error="vm.loadingError"
       loading="vm.loading"
-      failed="vm.loadingFailed"
     ></fe-loading-messages>
   </div>
 
-  <div ng-if="!vm.loading && !vm.loadingFailed">
+  <div ng-if="!vm.loading.loading && !vm.loading.failed">
 
     <div class="panel panel-default score-panel score-panel-details">
 
