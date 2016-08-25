@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/scores/scoreboardAnimate.service.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/scores/</a> scoreboardAnimate.service.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>143/143</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.63% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>86/89</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>41/41</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>143/143</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">147×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91×</span>
+<span class="cline-any cline-yes">91×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91×</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91×</span>
+<span class="cline-any cline-yes">57×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">29×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">31×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">103×</span>
+<span class="cline-any cline-yes">103×</span>
+<span class="cline-any cline-yes">103×</span>
+<span class="cline-any cline-yes">265×</span>
+<span class="cline-any cline-yes">244×</span>
+<span class="cline-any cline-yes">265×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">187×</span>
+<span class="cline-any cline-yes">280×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">280×</span>
+<span class="cline-any cline-yes">965×</span>
+<span class="cline-any cline-yes">162×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">84×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">236×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">102×</span>
+<span class="cline-any cline-yes">102×</span>
+<span class="cline-any cline-yes">102×</span>
+<span class="cline-any cline-yes">263×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">254×</span>
+<span class="cline-any cline-yes">254×</span>
+<span class="cline-any cline-yes">136×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-yes">62×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">310×</span>
+<span class="cline-any cline-yes">187×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-yes">30×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">34×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">256×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">64×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * @ngdoc factory
+ * @name scoreboardAnimateHideAndShow
+ * @description
+ * Set flags on the scoreboard object to trigger animations.
+ */
+&nbsp;
+(function () {
+  'use strict';
+&nbsp;
+  angular
+    .module('frontendScores')
+    .factory('scoreboardAnimate', factory);
+&nbsp;
+  /** @ngInject */
+  function factory(animationTimers) {
+    
+    return {
+      animateAction: function(sb, action, param) {
+        return new Animations(sb, animationTimers).animateAction(action, param);
+      },
+      animateKeepScore: function(sb, keepScore) {
+        return new Animations(sb, animationTimers).animateKeepScore(keepScore);
+      }
+    }
+  }
+&nbsp;
+  // Set and clear flags on the scoreboard object to trigger animation while
+  // hiding and showing elements of the scoreboard view.
+  // The scoreboard object must be prepared using the scoreboardPrep service, prior
+  // to using this class.
+  function Animations(_sb_, _animationTimers_) {
+&nbsp;
+    var sb = _sb_;
+    var animationTimers = _animationTimers_;
+    
+    // Hide and show elements while changing the mode between keeping score and 
+    // following score.
+    this.animateKeepScore = function(keepScore) {
+      return {
+        hideChanging: function() {
+          keepScoreHideChanging(keepScore);
+        },
+        hideChanged: function() {
+          keepScoreHideChanged(!keepScore);
+        },
+        showChanged: showChanged,
+        stop: stopHideAndShow
+      }
+    };
+&nbsp;
+    // Hide and show elements while posting an action, like win_game
+    this.animateAction = function(action, param) {
+      return {
+        hideChanging: function() {
+          actionHideChanging(action, param);
+        },
+        hideChanged: function() {
+          actionHideChanged(action, param)
+        },
+        showChanged: showChanged,
+        stop: stopHideAndShow
+      }
+    };
+    
+    function actionHideChanging(action, param) {
+      var transitions = new ScoreTransitions(action, param, {before: true});
+&nbsp;
+      var list = new AnimationList();
+&nbsp;
+      list.add('Progress', sb.matchFlags);
+      list.add('Server', sb.matchFlags);
+&nbsp;
+      if (transitions.winningSet)
+        list.add('Result', sb.matchFlags);
+&nbsp;
+      if (sb.currentGame &amp;&amp; sb.currentSet) {
+&nbsp;
+        if (transitions.winningGame &amp;&amp; !transitions.winningSet)
+          list.add('Title', sb.currentGame);
+&nbsp;
+        if (transitions.winningGame)
+          list.add('Result', sb.currentSet);
+&nbsp;
+        if (transitions.startingGame &amp;&amp; sb.firstServers)
+          list.add('ServersForm', sb.currentGame);
+      }
+&nbsp;
+      enableAnimation(list);
+      // Allow ng-class of elements to apply before hiding elements
+      animationTimers.digest().then(function () {
+        hideForAnimation(list, {leftmost: transitions.leftmost});
+      });
+    }
+&nbsp;
+    function addKeepScoreGameAnimations(list, keepScore, game) {
+      if (game.newGame) {
+        list.add('', game, keepScore);
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (!sb.currentGame.winner) {
+        list.add('WinButton', game, keepScore);
+        list.add('RowStatus', game, !keepScore);
+      }
+    }
+&nbsp;
+    function keepScoreHideChanging(keepScore) {
+      var list = new AnimationList();
+&nbsp;
+      list.add('Progress', sb.matchFlags);
+      if (sb.currentGame)
+        addKeepScoreGameAnimations(list, keepScore, sb.currentGame);
+&nbsp;
+      enableAnimation(list);
+      // Allow ng-class to be applied
+      animationTimers.digest().then(function () {
+        hideForAnimation(list);
+      });
+    }
+&nbsp;
+    function keepScoreHideChanged(keepScore) {
+      var list = new AnimationList();
+&nbsp;
+      list.add('Progress', sb.matchFlags);
+      if (sb.currentGame)
+        addKeepScoreGameAnimations(list, keepScore, sb.currentGame);
+      hideForAnimation(list)
+    }
+&nbsp;
+&nbsp;
+    function actionHideChanged(action, param) {
+&nbsp;
+      var transitions = new ScoreTransitions(action, param, {before: false});
+&nbsp;
+      var list = new AnimationList();
+&nbsp;
+      list.add('Progress', sb.matchFlags);
+      list.add('Server', sb.matchFlags);
+&nbsp;
+      if (transitions.winningSet)
+        list.add('Result', sb.matchFlags);
+&nbsp;
+      if (sb.currentGame &amp;&amp; sb.currentSet) {
+        if (transitions.startingGame)
+          list.add('WinButton', sb.currentGame);
+&nbsp;
+        if (transitions.winningGame &amp;&amp; sb.firstServers)
+          list.add('ServersForm', sb.currentGame);
+&nbsp;
+        if (transitions.winningGame &amp;&amp; !transitions.winningSet) {
+          list.add('Title', sb.currentGame);
+          list.add('StartGameButton', sb.currentGame);
+          list.add('Result', sb.currentSet);
+        }
+&nbsp;
+        // Hide a newly created set and set's first game
+        if ((transitions.startingSet || transitions.startingMatch) &amp;&amp;
+          (!sb.currentGame.winner &amp;&amp; sb.currentSet.games.length == 1)) {
+          list.add('', sb.currentGame);
+          list.add('', sb.currentSet);
+        }
+      }
+&nbsp;
+      if (sb.currentGame &amp;&amp; sb.previousGame) {
+        // Hide game that just got a winner
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (transitions.winningGame &amp;&amp; sb.currentGame.newGame) {
+          list.add('Title', sb.currentGame);
+          list.add('', sb.previousGame);
+        }
+      }
+&nbsp;
+      if (sb.previousSet) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (transitions.winningSet)
+          list.add('Result', sb.previousSet);
+      }
+&nbsp;
+      enableAnimation(list);
+      hideForAnimation(list, {leftmost: transitions.leftmost});
+    }
+&nbsp;
+    function showChanged() {
+      clearFlags(['hidden']);
+    }
+&nbsp;
+    function stopHideAndShow() {
+      clearFlags(['hidden', 'animating']);
+    }
+&nbsp;
+&nbsp;
+    function AnimationList() {
+      var items = [];
+      this.items = items;
+      this.add = function (key, value, hide) {
+        if (angular.isUndefined(hide))
+          hide = true;
+        items.push({key: key, value: value, hide: hide});
+      }
+    }
+&nbsp;
+&nbsp;
+    function clearFlags(prefixes) {
+      eachFlaggedObject(
+        function (item) {
+          angular.forEach(prefixes, function (prefix) {
+            clear(item, prefix)
+          });
+        });
+&nbsp;
+      // Clear all properties that start with a prefix like "animating"
+      function clear(item, prefix) {
+        angular.forEach(item, function (value, key) {
+          if (key.startsWith(prefix)) {
+            item[key] = false;
+          }
+        });
+      }
+    }
+&nbsp;
+    function enableAnimation(list) {
+      angular.forEach(list.items, function (item) {
+        // Set property such as animatingServersForm
+        item.value['animating' + item.key] = true;
+      });
+    }
+&nbsp;
+    function hideForAnimation(list, options) {
+      options = options || {};
+      var leftmost = options.leftmost;
+      angular.forEach(list.items, function (item) {
+        if (item.hide) {
+          // Set property such as hiddenServersForm
+          item.value['hidden' + item.key] = true;
+          if (angular.isDefined(leftmost))
+            item.value.hiddenLeftmost = leftmost;
+        }
+      });
+    }
+&nbsp;
+    // Enumerate all the objects that may have animating* and hidden* flags.
+    function eachFlaggedObject(fn) {
+      var items = [sb.previousGame, sb.currentGame, sb.currentSet, sb.previousSet, sb.matchFlags];
+      angular.forEach(items,
+        function (item) {
+          if (item)
+            fn(item)
+        });
+    }
+&nbsp;
+    // Collect some information about the state of the scoreboard before or after executing
+    // an action
+    function ScoreTransitions(action, param, stateOf) {
+      this.winningGame = winningGame(action);
+      this.winningSet = stateOf.before ? predictWinningSet() : winningSet();
+      this.winningMatch = stateOf.before ? predictWinningMatch() : winningMatch();
+      this.startingGame = startingGame(action);
+      this.startingSet = startingSet(action);
+      this.startingMatch = action == 'start_play';
+      this.leftmost = winningGame(action) ? param == 0 : undefined;
+&nbsp;
+      function predictWinningSet() {
+        var nearWinners = sb.near_winners.set;
+        var opponent = sb.opponents[param];
+        return winningGame() &amp;&amp; nearWinners.indexOf(opponent) &gt;= 0;
+      }
+&nbsp;
+      function predictWinningMatch() {
+        var nearWinners = sb.near_winners.match;
+        var opponent = sb.opponents[param];
+        return winningGame() &amp;&amp; nearWinners.indexOf(opponent) &gt;= 0
+      }
+&nbsp;
+      function winningSet() {
+        // if match is finished then must have won a set.
+        // Otherwise, if there is a new set then the previous set was won
+        return winningGame() &amp;&amp; (sb.winner ||
+          (sb.currentSet &amp;&amp; sb.currentSet.newSet &amp;&amp; sb.previousSet));
+      }
+&nbsp;
+      function winningMatch() {
+        return winningGame() &amp;&amp; sb.winner;
+      }
+&nbsp;
+      function winningGame() {
+        return action &amp;&amp; action.startsWith('win');
+      }
+&nbsp;
+      function startingSet() {
+        return ['start_set', 'start_match_tiebreak', 'start_match'].indexOf(action) &gt;= 0;
+      }
+&nbsp;
+      function startingGame() {
+        return ['start_game', 'start_tiebreak'].indexOf(action) &gt;= 0;
+      }
+    }
+  }
+&nbsp;
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 24 2016 22:11:46 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
