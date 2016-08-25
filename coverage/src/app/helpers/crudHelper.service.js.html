@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/app/helpers/crudHelper.service.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">src/app/helpers/</a> crudHelper.service.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.57% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>137/148</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>13/26</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90.63% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>29/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">93.84% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>137/146</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-yes">45×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">50×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * @ngdoc factory
+ * @name crudHelper
+ * @description
+ * Common functionality shared by CRUD controllers
+ *
+ */
+(function () {
+  'use strict';
+&nbsp;
+  angular
+    .module('frontend')
+    .factory('crudHelper', factory);
+&nbsp;
+  /** @ngInject */
+  function factory($log, $q, modalConfirm, toastr,
+                   $filter, loadingHelper, errorsHelper, toastrHelper,
+                   waitIndicator, crudResource) {
+    var service = {
+      activate: activate
+    };
+    return service;
+&nbsp;
+    function activate(vm, options) {
+      var response = options.response;
+      var errorCategories = options.errorCategories;
+      var scope = options.scope;
+&nbsp;
+      // Aggregate functionality from other helpers
+      loadingHelper.activate(vm);
+      toastrHelper.activate(vm, scope);
+      errorsHelper.activate(vm, errorCategories);
+&nbsp;
+      var operations = new Operations(vm, options);
+&nbsp;
+      vm.supportsCrud = true;
+      // Aggregate crud methods and properties
+      vm.trashEntity = operations.trashEntity;
+      vm.submitNewEntity = operations.submitNewEntity;
+      vm.showNewEntity = operations.showNewEntity;
+      vm.hideNewEntity = operations.hideNewEntity;
+      vm.submitEditEntity = operations.submitEditEntity;
+      vm.showEditEntity = operations.showEditEntity;
+      vm.hideEditEntity = operations.hideEditEntity;
+      vm.showingEditEntityForm = operations.showingEditEntityForm;
+&nbsp;
+      vm.newEntity = {};
+      vm.editEntity = null;
+      vm.showingNewEntityForm = false;
+      vm.newEntityForm = null;
+      vm.editEntityForm = null;
+      vm.entitys = [];
+      vm.entityCreateErrors = null;
+      vm.entityUpdateErrors = null;
+&nbsp;
+      if (angular.isArray(response))
+        operations.entityLoaded(response);
+      else
+        operations.entityLoadFailed(response);
+    }
+&nbsp;
+    // Execute code in context of vm
+    function Operations(_vm_, controllerOptions) {
+      var helper = this;
+      var vm = _vm_
+      var getResource = function() {
+        return crudResource.getResource(controllerOptions.resourceName)
+      };
+      var prepareToCreateEntity = controllerOptions.prepareToCreateEntity;
+      var prepareToUpdateEntity = controllerOptions.prepareToUpdateEntity;
+      var beforeshowNewEntity = controllerOptions.beforeShowNewEntity;
+      var beforeShowEditEntity = controllerOptions.beforeShowEditEntity;
+      var getEntityDisplayName = controllerOptions.getEntityDisplayName;
+      var makeEntityBody = controllerOptions.makeEntityBody;
+&nbsp;
+      helper.trashEntity = function (entity, confirmDelete) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (angular.isUndefined(confirmDelete))
+<span class="cstat-no" title="statement not covered" >          confirmDelete = true;</span>
+        if (confirmDelete) {
+          modalConfirm.confirm({
+            title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
+            getEntityDisplayName(entity) + '"?'
+          })
+            .then(function () {
+              removeEntity(entity)
+            });
+        }
+        else {
+          removeEntity(entity)
+        }
+      };
+&nbsp;
+      helper.submitNewEntity = function () {
+        var submitEntity = prepareToCreateEntity(vm.newEntity);
+        createEntity(submitEntity);
+      };
+&nbsp;
+      helper.showNewEntity = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        if (beforeShowNewEntity) <span class="cstat-no" title="statement not covered" >beforeShowNewEntity();</span></span>
+<span class="cstat-no" title="statement not covered" >        vm.showingNewEntityForm = true;</span>
+      };
+&nbsp;
+      helper.hideNewEntity = function () {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (vm.newEntityForm) {
+<span class="cstat-no" title="statement not covered" >          vm.newEntityForm.$setPristine();</span>
+        }
+        vm.showingNewEntityForm = false;
+        vm.newEntity = {};
+        vm.entityCreateErrors = null;
+      };
+&nbsp;
+      helper.submitEditEntity = function () {
+        var submit = prepareToUpdateEntity(vm.editEntity);
+        updateEntity(submit);
+      };
+&nbsp;
+      helper.showEditEntity = <span class="fstat-no" title="function not covered" >function (entity) {</span>
+        // Edit a copy, so can discard unless click Save
+<span class="cstat-no" title="statement not covered" >        vm.editEntity = angular.copy(entity);</span>
+<span class="cstat-no" title="statement not covered" >        if (beforeShowEditEntity) <span class="cstat-no" title="statement not covered" >beforeShowEditEntity();</span></span>
+      };
+&nbsp;
+      helper.hideEditEntity = function () {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (vm.editEntityForm) {
+<span class="cstat-no" title="statement not covered" >          vm.editEntityForm.$setPristine();</span>
+        }
+        vm.editEntity = null;
+        vm.entityUpdateErrors = null;
+      };
+&nbsp;
+      helper.showingEditEntityForm = <span class="fstat-no" title="function not covered" >function (entity) {</span>
+<span class="cstat-no" title="statement not covered" >        return vm.editEntity &amp;&amp; (vm.editEntity.id == entity.id);</span>
+      };
+&nbsp;
+      helper.entityLoaded = function (response) {
+        vm.entitys = response;
+        vm.loadingHasCompleted();
+      }
+&nbsp;
+      helper.entityLoadFailed = function (response) {
+        $log.error('data error ' + response.status + " " + response.statusText);
+        vm.loadingHasFailed(response);
+      }
+&nbsp;
+      //
+      // Internal methods
+      //
+&nbsp;
+      function createEntity(entity) {
+        var body = makeEntityBody(entity);
+        var endWait = waitIndicator.beginWait();
+        getResource().save(body,
+          function (response) {
+            endWait();
+            var newEntity = angular.copy(entity);
+            angular.merge(newEntity, response);
+            entityCreated(newEntity);
+          },
+          function (response) {
+            $log.error('create error ' + response.status + " " + response.statusText);
+            endWait();
+            entityCreateError(entity, response);
+          }
+        );
+      }
+&nbsp;
+      function updateEntity(entity) {
+        var id = entity.id;
+        var key = {id: id};
+        var body = makeEntityBody(entity);
+        var endWait = waitIndicator.beginWait();
+        getResource().update(key, body,
+          function (response) {
+            endWait();
+            var updatedEntity = angular.copy(entity);
+            angular.merge(updatedEntity, response);
+            entityUpdated(updatedEntity);
+          },
+          function (response) {
+            $log.error('update error ' + response.status + " " + response.statusText);
+            endWait();
+            entityUpdateError(entity, response);
+          }
+        );
+      }
+&nbsp;
+      function removeEntity(entity) {
+        var id = entity.id;
+        var key = {id: id};
+        var endWait = waitIndicator.beginWait();
+        getResource().remove(key,
+          function () {
+            endWait();
+            entityRemoved(entity);
+          },
+          function (response) {
+            $log.error('remove entity error ' + response.status + " " + response.statusText);
+            endWait();
+            entityRemoveError(entity, response);
+          }
+        );
+&nbsp;
+      }
+&nbsp;
+      function entityCreated(entity) {
+        helper.hideNewEntity();
+        vm.entitys.splice(0, 0, entity);
+        vm.entityCreateErrors = null;
+      }
+&nbsp;
+      function entityUpdated(entity) {
+        helper.hideEditEntity();
+        var id = entity.id;
+        var found = $filter('filter')(vm.entitys, function (o) {
+          return o.id === id;
+        });
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (found &amp;&amp; found.length === 1) {
+          angular.copy(entity, found[0]);
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >          $log.error('id not found: ' + id);</span>
+        }
+      }
+&nbsp;
+      function entityCreateError(entity, response) {
+        var errors = vm.errorsOfResponse(response);
+        vm.entityCreateErrors = errors;
+      }
+&nbsp;
+      function entityUpdateError(entity, response) {
+        var errors = vm.errorsOfResponse(response);
+        vm.entityUpdateErrors = errors;
+      }
+&nbsp;
+      function entityRemoved(entity) {
+        vm.entityRemoveErrors = null;
+        var i = vm.entitys.indexOf(entity);
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (i &gt;= 0) {
+          vm.entitys.splice(i, 1);
+        }
+      }
+&nbsp;
+      function entityRemoveError(entity, response) {
+        var message = "";
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isObject(response.data)) {
+          var errors = vm.errorsOfResponse(response);
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isDefined(errors.other))
+            message = errors.other;
+        }
+        vm.showToastrError(message, "Delete Error");
+      }
+    }
+  }
+})();
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jul 01 2016 12:52:30 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

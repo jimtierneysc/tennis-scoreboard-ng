@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/scores/scoreboard.controller.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/scores/</a> scoreboard.controller.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>185/185</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.88% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>58/66</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>40/40</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>185/185</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">84×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">89×</span>
+<span class="cline-any cline-yes">89×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">119×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-yes">108×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * @ngdoc controller
+ * @name ScoreboardController
+ * @description
+ * Controller for displaying a match score
+ *
+ */
+(function () {
+  'use strict';
+&nbsp;
+  angular
+    .module('frontendScores')
+    .controller('ScoreboardController', Controller);
+&nbsp;
+  /** @ngInject */
+  function Controller($log, $scope, $stateParams, errorsMapper, scoreboardPath,
+                      modalConfirm, $localStorage, loadingHelper, crudResource,
+                      authHelper, toastrHelper, $q,
+                      scoreboardPrep, scoreboardAnimate, animationTimers,
+                      response) {
+    var vm = this;
+    var updating = false;
+&nbsp;
+    activate();
+&nbsp;
+    function activate() {
+      vm.id = $stateParams.id;
+      vm.scoreboard = {};
+      vm.view = new View();
+&nbsp;
+      // Set ScoresController.vmScoreboard.  Needed by &lt;fe-score-commands&gt;.
+      var scoresController = $scope.$parent;
+      var vmScoreboard = {view: vm.view, scores: vm.scoreboard};
+      scoresController.vmScoreboard = vmScoreboard;
+      $scope.$on('$destroy', function () {
+        if (scoresController.vmScoreboard == vmScoreboard)
+          scoresController.vmScoreboard = null
+      });
+&nbsp;
+      authHelper(vm, $scope, vm.view.loggedInChanged);
+      loadingHelper(vm);
+      toastrHelper(vm, $scope);
+&nbsp;
+      vm.view.loadSettings();
+&nbsp;
+      if (response.id) {
+        applyResponseToScoreboard(response);
+        vm.loading.hasCompleted();
+      }
+      else {
+        $log.error('data error ' + response.status + " " + response.statusText);
+        vm.loading.hasFailed(response);
+      }
+    }
+    
+    function confirmScoreboardUpdate(action, param) {
+      vm.clearToast();
+&nbsp;
+      if (action == 'discard_play') {
+        modalConfirm.confirm({
+          title: 'Confirm Clear', text: 'Are you sure you want to clear all games from match "' +
+          vm.scoreboard.title + '"?'
+        })
+          .then(function () {
+            scoreboardUpdate(action, param);
+          });
+      }
+      else {
+        scoreboardUpdate(action, param);
+      }
+    }
+&nbsp;
+    function scoreboardUpdate(action, param) {
+&nbsp;
+      if (updating)  // Prevent re-enter
+        return;
+&nbsp;
+      var promise = postUpdate(action, param);
+      updating = true;
+      vm.view.animateScoreboardUpdate(action, param, promise,
+        function (response) {
+          applyResponseToScoreboard(response);
+        },
+        function (response) {
+          showError(response);
+        },
+        function () {
+          updating = false;
+          if (action.startsWith('win')) {
+            // User has clicked win button
+            vm.view.showWinButtonHint = false;
+          }
+        });
+    }
+&nbsp;
+    function postUpdate(action, param) {
+      var key = {id: vm.id};
+      var body = makePostBody(action, param);
+      var deferred = $q.defer();
+      crudResource.getResource(scoreboardPath).save(key, body,
+        function (response) {
+          deferred.resolve(response);
+        },
+        function (response) {
+          $log.error('update error ' + response.status + " " + response.statusText);
+          deferred.reject(response);
+        }
+      );
+      return deferred.promise;
+&nbsp;
+      function makePostBody(action, id) {
+        var params = {};
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (vm.scoreboard.version)
+          params.version = vm.scoreboard.version;
+        if (action == 'start_game') {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (id) {
+            // player to serve next
+            params.player = id;
+          }
+        }
+        else if (action.startsWith('win')) {
+          if (id == 0 || id == 1) {
+            var opponent = vm.scoreboard.opponents[id];
+            if (vm.scoreboard.doubles)
+              params.team = opponent;
+            else
+              params.player = opponent;
+          }
+        }
+&nbsp;
+        params.action = action;
+        return {match_score_board: params};
+      }
+    }
+&nbsp;
+    function applyResponseToScoreboard(response) {
+      var sb = response;
+      if (sb.errors &amp;&amp; !angular.equals({}, sb.errors)) {
+        var errors = errorsMapper(sb.errors);
+        var message = 'Unable to update score';
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (errors.other[0])
+          message = errors.other[0];
+        vm.showToast(message)
+      }
+      angular.copy(sb, vm.scoreboard);
+      prepareScoreboard(vm.scoreboard);
+    }
+&nbsp;
+    function showError(response) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!vm.showHttpErrorToast(response.status))
+        vm.loading.hasFailed(response);
+    }
+&nbsp;
+    function View() {
+&nbsp;
+      var DATANAME = 'scoreboardView';
+&nbsp;
+      var view = this; // eslint-disable-line
+&nbsp;
+      view.animateScoreboardUpdate = animateScoreboardUpdate;
+      view.updateScore = confirmScoreboardUpdate;
+      view.toggleShowDescription = toggleShowDescription;
+      view.toggleShowGames = toggleShowGames;
+      view.toggleKeepingScore = toggleKeepingScore;
+      view.canShowGame = canShowGame;
+      view.loggedInChanged = loggedInChanged;
+      view.loadSettings = function () {
+        loadSettings();
+        updateKeepingScore();
+      };
+&nbsp;
+      // Show hint first time win button is shown
+      view.showWinButtonHint = true;
+&nbsp;
+      view.keepingScore = false;
+      view.animate = {
+        showGames: false,
+        description: true
+      };
+&nbsp;
+      view.localDataName = function () {
+        return DATANAME;
+      };
+      view.storeSettings = storeSettings;
+      view.settings = {
+        showGames: false,
+        keepScore: false,
+        showDescription: false
+      };
+&nbsp;
+      function loggedInChanged() {
+        if (view.settings.keepScore)
+          animateKeepScore(updateKeepingScore);
+        else
+          updateKeepingScore();
+      }
+&nbsp;
+      function updateKeepingScore() {
+        view.keepingScore = vm.loggedIn &amp;&amp; view.settings.keepScore;
+      }
+&nbsp;
+      function toggleShowDescription(showDescription) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (showDescription != view.settings.showDescription) {
+          view.settings.showDescription = !view.settings.showDescription;
+          storeSettings();
+        }
+      }
+&nbsp;
+&nbsp;
+      function toggleShowGames(showGames) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (showGames != view.settings.showGames) {
+          if (!vm.scoreboard.hasCompletedGames) {
+            toggle();
+            var title = 'Show Completed Games';
+            if (showGames)
+              vm.showToast('This setting has been turned on, however there are no completed games to show',
+                title);
+            else
+              vm.showToast('This setting has been turned off, however there are no completed games to hide',
+                title);
+          } else
+            animateShowGames();
+        }
+&nbsp;
+        function toggle() {
+          view.settings.showGames = showGames;
+          storeSettings();
+          return view.settings.showGames;
+        }
+&nbsp;
+        function animateShowGames() {
+          view.animate.showGames = true;
+          animationTimers.digest().then(function () {  // eval ng-class
+            var show = toggle();
+            var delay = show ? animationTimers.delayIn : animationTimers.delayOut;
+            delay().then(function () {
+              // Disable animation so that animation will not occur
+              // when score table is refreshed
+              view.animate.showGames = false;
+            });
+          });
+        }
+      }
+&nbsp;
+      // Indicate when to show a game in the score table.
+      // Depends on whether user is keeping score or following score, and
+      // whether sets and games are shown or just sets,
+      function canShowGame(game) {
+        return (view.settings.showGames &amp;&amp; !game.newGame) ||
+          (!game.winner &amp;&amp; !game.newGame) ||
+          (game.newGame &amp;&amp; view.keepingScore)
+      }
+&nbsp;
+      function toggleKeepingScore(keepScore) {
+&nbsp;
+        if (!vm.loggedIn) {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (keepScore)
+            vm.showToast('You must be logged in order to keep score.', "Unable to Show Score Keeper Commands");
+        } else {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (keepScore != view.keepingScore) {
+            if (vm.scoreboard.winner) {
+              toggle();
+              var title = 'Show Score Keeper Commands';
+              if (view.keepingScore)
+                vm.showToast('This setting has been turned on, however there are no commands to show because the match is over',
+                  title);
+              else
+                vm.showToast('This setting has been turned off, however there are no commands to hide because the match is over',
+                  title);
+            }
+            else
+              animateKeepScore(toggle);
+          }
+        }
+&nbsp;
+        function toggle() {
+          view.settings.keepScore = keepScore;
+          storeSettings();
+          updateKeepingScore();
+        }
+      }
+&nbsp;
+      function storeSettings() {
+&nbsp;
+        var viewData = {
+          settings: {
+            showGames: view.settings.showGames,
+            keepScore: view.settings.keepScore,
+            showDescription: view.settings.showDescription
+          }
+        };
+&nbsp;
+        $localStorage[DATANAME] = viewData;
+      }
+&nbsp;
+      function loadSettings() {
+        var data = $localStorage[DATANAME] || {};
+        if (data.settings) {
+          view.settings.showGames = data.settings.showGames;
+          view.settings.keepScore = data.settings.keepScore;
+          view.settings.showDescription = data.settings.showDescription;
+        }
+      }
+&nbsp;
+      function animateKeepScore(toggle) {
+        var hideAndShow;
+&nbsp;
+        hideAndShow = scoreboardAnimate.animateKeepScore(vm.scoreboard, view.keepingScore);
+&nbsp;
+        // Set flags so that old values will be hidden
+        hideAndShow.hideChanging();
+&nbsp;
+        animationTimers.delayOut().then(function () {
+&nbsp;
+          toggle();
+&nbsp;
+          // Set flags so that new elements will be hidden, initially
+          hideAndShow.hideChanged();
+&nbsp;
+          // Let ng-class be processed
+          animationTimers.digest().then(hideAndShow.showChanged);
+&nbsp;
+          // Wait for new elements to finish showing
+          animationTimers.delayIn().then(hideAndShow.stop);
+&nbsp;
+        });
+      }
+&nbsp;
+      function animateScoreboardUpdate(action, param, promise, accept, reject, final) {
+&nbsp;
+        // Allow time for old data to hide
+        var timerPromise = animationTimers.delayOut();
+&nbsp;
+        // Promise to wait until time has passed and post has finished
+        var all = $q.all({timer: timerPromise, post: promise});
+&nbsp;
+        // Create object to hide and show elements during animation
+        var hideAndShow = scoreboardAnimate.animateAction(vm.scoreboard, action, param);
+&nbsp;
+        // Set flags so that changing values will be hidden
+        hideAndShow.hideChanging();
+&nbsp;
+        // Wait for data to hide
+        all.then(
+          function (hash) {
+            var response = hash.post;
+            // Update scoreboard
+            accept(response);
+&nbsp;
+            // Set flags so that new elements will be hidden, initially
+            hideAndShow.hideChanged();
+&nbsp;
+            // Let ng-class be processed
+            animationTimers.digest().then(hideAndShow.showChanged);
+&nbsp;
+            // Wait for new elements to finish showing
+            animationTimers.delayIn().then(hideAndShow.stop);
+&nbsp;
+          },
+          function (response) {
+            reject(response);
+            hideAndShow.stop();
+          }).finally(final);
+      }
+    }
+&nbsp;
+    // prepare scoreboard for viewing
+    function prepareScoreboard(sb) {
+&nbsp;
+      scoreboardPrep(sb);
+      // Reverse order of sets and games to
+      // display most recent games at top of view.
+      reverseOrder();
+&nbsp;
+      function reverseOrder() {
+        // Reverse order of sets and games to
+        // displays most recent games at top of view.
+        // Once the set is complete, display in ascending order
+        // if (sb.state != 'complete') {
+        angular.forEach(sb.sets, function (set) {
+          set.games.reverse();
+        });
+        sb.sets.reverse();
+      }
+    }
+  }
+})();
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Aug 24 2016 22:11:46 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
