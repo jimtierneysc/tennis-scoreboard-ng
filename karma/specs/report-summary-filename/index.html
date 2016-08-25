@@ -1,0 +1,4852 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>report-summary-filename</title>
+<style>
+body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
+#HTMLReporter h1 { font-size: 12px; font-weight: normal; text-align: right; margin: 10px 0 10px 0 !important; }
+#HTMLReporter { font-size: 11px; font-family: Monaco, "Lucida Console", monospace; line-height: 14px; color: #333333; }
+#HTMLReporter a { text-decoration: none; }
+#HTMLReporter a:hover { text-decoration: underline; }
+#HTMLReporter p, #HTMLReporter h1, #HTMLReporter h2, #HTMLReporter h3, #HTMLReporter h4, #HTMLReporter h5, #HTMLReporter h6 { margin: 0; line-height: 14px; }
+#HTMLReporter .banner, #HTMLReporter .symbolSummary, #HTMLReporter .summary, #HTMLReporter .resultMessage, #HTMLReporter .specDetail .description, #HTMLReporter .alert .bar, #HTMLReporter .stackTrace { padding-left: 9px; padding-right: 9px; }
+
+#HTMLReporter #jasmine_content { position: fixed; right: 100%; }
+#HTMLReporter .version { color: #aaaaaa; }
+#HTMLReporter .banner { margin-top: 14px; }
+#HTMLReporter .duration { color: #aaaaaa; float: right; }
+#HTMLReporter .exceptions { color: #fff; float: right; margin-top: 5px; margin-right: 5px; }
+#HTMLReporter .bar { line-height: 28px; font-size: 14px; display: block; color: #eee; }
+#HTMLReporter .runningAlert { background-color: #666666; }
+#HTMLReporter .skippedAlert { background-color: #aaaaaa; }
+#HTMLReporter .skippedAlert:first-child { background-color: #333333; }
+#HTMLReporter .skippedAlert:hover { text-decoration: none; color: white; text-decoration: underline; }
+#HTMLReporter .passingAlert { background-color: #a6b779; }
+#HTMLReporter .passingAlert:first-child { background-color: #5e7d00; }
+#HTMLReporter .failingAlert { background-color: #cf867e; }
+#HTMLReporter .failingAlert:first-child { background-color: #b03911; }
+#HTMLReporter .results { margin-top: 14px; }
+#HTMLReporter #details { display: none; }
+#HTMLReporter .resultsMenu { color: #999; background-color: #fff; }
+
+#HTMLReporter .summaryMenuItem { font-weight: normal; text-decoration: none; margin-right: 5px; color: #333; }
+#HTMLReporter .detailsMenuItem { font-weight: normal; text-decoration: none; margin-left: 5px; color: #999; }
+
+#HTMLReporter.showDetails .summaryMenuItem { color: #999; }
+#HTMLReporter.showDetails .detailsMenuItem { color: #333; }
+#HTMLReporter.showDetails .summaryMenuItem:hover { text-decoration: underline; }
+#HTMLReporter             .detailsMenuItem:hover { text-decoration: underline; }
+
+
+#HTMLReporter.showDetails .summary { display: none; }
+#HTMLReporter.showDetails #details { display: block; }
+#HTMLReporter .summary { margin-top: 14px; margin-bottom: 40px; }
+#HTMLReporter .summary .suite .suite, #HTMLReporter .summary .specSummary { margin-left: 14px; }
+#HTMLReporter .summary .specSummary.passed { color: #5e7d00; }
+#HTMLReporter .summary .specSummary.failed { color: #b03911; }
+#HTMLReporter .summary .specSummary.skipped { color: #ba9d37; }
+#HTMLReporter .description + .suite { margin-top: 0; }
+#HTMLReporter .suite { margin-top: 14px; }
+#HTMLReporter .suite a { color: #333333; }
+#HTMLReporter #details .specDetail { margin-bottom: 28px; }
+#HTMLReporter #details .specDetail .description { display: block; color: white; background-color: #b03911; }
+#HTMLReporter .resultMessage { padding-top: 14px; color: #333333; }
+#HTMLReporter .resultMessage span.result { display: block; }
+#HTMLReporter .stackTrace { margin: 5px 0 0 0; max-height: 224px; overflow: auto; 
+    line-height: 18px; color: #666666; border: 1px solid #ddd; background: white; white-space: pre; }
+
+
+.fold-buttons { float: right; }
+.fold-buttons a { color: #fff; font-size: 12px; }
+.fold-buttons { display: none } 
+#HTMLReporter .br { margin-top: 8px; }
+#HTMLReporter .section-starter { font-size: 14px; line-height: 18px }
+#HTMLReporter .summary-section { 
+  cursor: -webkit-zoom-out; cursor: -moz-zoom-out; cursor: zoom-out; 
+  background: #fafafa; 
+  padding: 10px; 
+  border-bottom: #eaeaea 1px solid; }
+#HTMLReporter .summary-section.folded { 
+  cursor: -webkit-zoom-in; cursor: -moz-zoom-in; cursor: zoom-in; 
+  padding-bottom: 8px;
+}
+#HTMLReporter .summary-section.folded div { display: none }
+#HTMLReporter .summary-section.folded div.section-starter { display: block }
+/*#HTMLReporter .summary-section:hover { background: #e9e9e9; }*/
+#HTMLReporter .summary-section:hover { background: #f5f5f5; }
+#HTMLReporter .summary-section-totals { 
+  font-size: 11px;
+  display: none; 
+  margin-left: 11px; 
+  overflow: hidden; 
+  position: relative;
+  top: -1px; 
+}
+#HTMLReporter .summary-section.folded .summary-section-totals { display: inline; }
+#HTMLReporter .summary-section-total { color: #fff; vertical-align: baseline; padding: 1px 8px; }
+#HTMLReporter .summary-section-total.passed { background: #5e7d00;  }
+#HTMLReporter .summary-section-total.failed { background: #b03911;  }
+#HTMLReporter .summary-section-total.skipped { background: #ba9d37;  }
+
+#HTMLReporter { font-size: 12px; line-height: 18px; } /*larget font-size*/
+
+</style>
+</head>
+
+<body id="HTMLReporter" class="html-reporter">
+<h1>Tested in PhantomJS 2.1.1 (Mac OS X 0.0.0) on Wed Aug 24 2016</h1>
+
+<div class="alert">
+
+
+
+  
+  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
+  <a href="#" onclick="unfold();">Unfold</a></span>733 specs, 0 failed, 0 pending</span>
+  
+
+
+</div>
+<div class="results">
+  <div class="summary">
+  
+  
+  
+  
+  
+    <div class="suite passed">
+      <span class="description">animationTimers service members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .delayIn()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .delayOut()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .digest()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">animationTimers service promises</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute .delayIn()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute .delayOut()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should execute .digest()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">api constants</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .apiPath</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamsPath</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .sessionsPath</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playersPath</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .matchesPath</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scoreboardPath</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .authHeaderName</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">authHelper service members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support auth</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">authHelper service authentication</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should get .userName when .setCredentials()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be .loggedIn when .setCredentials</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be .loggedIn when .clearCredentials</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be .loggedIn after .logOut()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear credentials when unauthorized</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feCredentialsForm directive</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .submit()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .submit()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should two-way bind .errors</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should two-way bind .entity</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feCredentialsForm directive elements</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have button</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have button text</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoginForm directive</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have fe-credentials-form element</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoginForm directive controller members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .errors</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .submit()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoginForm directive controller input elements</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have user name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have password</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoginForm directive controller .submit() with button</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have button</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .submit() when click()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoginForm directive controller .submit() sets credentials</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be logged in</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoginForm directive controller .submit() has password error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have expected .errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">sessionResource service .path</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .path</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">sessionResource service .getSession()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .getSession()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should resolve when OK</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should reject when error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userResource service .path</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .path</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userResource service .getUser()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .getUser()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should resolve when OK</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should reject when error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be logged in initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service storage</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .localDataName</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service storage sets data</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be null</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have data object</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service storage clears data</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have no data</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service storage loads valid credentials</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have user name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be logged in</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service storage loads invalid credentials</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be logged in</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service .setCredentials()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be logged in</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be correct username</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set http header</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service .clearCredentials()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be logged out</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have blank username</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear http header</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">userCredentials service .subscribeChanged()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should call event when set credentials</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call event when clear credentials</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call event when load credentials</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">validateCredentials service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">validateCredentials service validate when no http error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should validate when token is correct</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should update user name when token is correct</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">validateCredentials service validate</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not validate when HTTP error</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not validate when no credentials</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">authHttpInterceptor service members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .responseError()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .subscribeUnauthorized()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">authHttpInterceptor service when .subscribeUnauthorized()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be notified when 401</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be notified when 403</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feAutoFocus directive attribute with no value</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have input elements</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have focus</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feAutoFocus directive attribute with value</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have input elements</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feAutoFocus directive attribute with value initial state</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have focus</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feAutoFocus directive attribute with value use autoFocus service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have focus</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">editInProgress service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be an object</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .closeEditors()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .registerOnQueryState()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .registerOnConfirmed()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .registerOnClose()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">editInProgress service closeEditors when edit in progress do close</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should send close event</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should send confirmed event</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not set focus after close</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">editInProgress service closeEditors when edit in progress reject close</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not send close event</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should send confirmed event</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set focus after reject</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">editInProgress service closeEditors when edit not in progress</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should send close event</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should  send confirmed event</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsHelper service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsHelper service operation</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsHelper service operation errors in response.data</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have expected errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsHelper service operation errors in response.data.errors</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have expected errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsHelper service operation errors in response.statusText</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have expected errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsHelper service operation errors in response no statusText</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have expected errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">errorsMapper service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a function</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support nested errors object</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match names</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should substitute names</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should use default key name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should cleanup prefix</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should override default key name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not prefix with &quot;other&quot;</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feFormFieldErrors directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .errors</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .key</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .prefix</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">loadingHelper service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">loadingHelper service activate</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support loading</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be loading initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">loadingHelper service activate loading failed</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loadingError</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have failed</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">loadingHelper service activate loading completed</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have failed</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feLoadingMessages directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loading</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">modalConfirm service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .confirm()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .open()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call $uibModal.open()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">modalConfirm form elements</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have &lt;article&gt;</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">modalConfirm button click</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have buttons</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should confirm when click()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should cancel when click()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">modalConfirm form encoding</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should html encode text</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">modalConfirm controller</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .ok()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .cancel()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feResponseError directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .status()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .statusText()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .message()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return .hasMessage()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feResponseError directive html message</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have message</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feResponseError directive simple message</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have message</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should equal message</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feResponseError directive json message array</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have message</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should equal message</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feResponseError directive json message string</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have message</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should equal message</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">shortenName service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">shortenName service when canonical name</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should initialize last name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should ignore spaces</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">shortenName service when initialled names</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not shorten when first name is initialled</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not shorten when last name is initialled</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">shortenName service when last name is not proper nown</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not shorten</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">shortenName service when last name is short</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not shorten</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">shortenName service when not two names</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not shorten when one name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not shorten when more than two names</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">toastrHelper service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be a function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">toastrHelper service activate members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showToast()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showHttpErrorToast()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .lastToast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">toastrHelper service activate .showToast</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should close toast when scope destroyed</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">toastrHelper service activate .showHttpErrorToast error 401</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return true</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">toastrHelper service activate .showHttpErrorToast error 403</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return false</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">waitIndicator constants</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .waitInterval</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feWaitIndicator directive elements</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have div</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be centered</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feWaitIndicator directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .waiting</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feWaitIndicator directive using waitIndicator service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should set .waiting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear .waiting</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">waitIndicator service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be waiting initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">waitIndicator service .beginWait()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should set .waiting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear .waiting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should ignore underflow</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">waitIndicator service change notification</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should notify when .beginWait()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should notify when clear waiting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should notify once when .beginWait() twice</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should notify once when clear waiting twice</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">waitIndicator service nested waiting</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be waiting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should still be waiting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be waiting</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activate with error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should fail to load</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated initialized</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support loading</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support errors</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support toastr</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support crud</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not fail to load</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated animate entity</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be animating initially</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be hiding initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated clear errors from edit form when null errors</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated clear errors from edit form when errors exist</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should remove errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated clear errors from edit form when errors don't exist</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated clear errors from new form when null errors</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated clear errors from new form when errors exist</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should remove errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated clear errors from new form when errors don't exist</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated allow edit entity</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not allow when not loggedIn</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should allow when loggedIn</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated allow new entity</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not allow when not loggedIn</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should allow when loggedIn</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated allow delete entity</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not allow when not loggedIn</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should allow when loggedIn</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms edit show</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing form</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set .entity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set focus</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms edit cancel</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be showing form</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .$setPristine()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new show</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing form</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set .newEntity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set focus</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new hide</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be showing form</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call $setPristine()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new form close when pristine when delete</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be showing new form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new form close when pristine when edit</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing edit form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new form close when not pristine resolve when delete</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be showing new form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new form close when not pristine resolve when edit</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing edit form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new form close when not pristine reject when delete</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have restored focus</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing new form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms new form close when not pristine reject when edit</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have restored focus</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing new form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms edit close pristine</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing new form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms edit close not pristine resolve</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing new form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated forms edit close not pristine reject</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have confirmed close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be showing edit form</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have restored focus</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated crud create success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should insert entity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have called prepareToCreateEntity()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have .newEntity.errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated crud create error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change entities</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .newEntity.errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated crud update success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have updated entity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have called .prepareToUpdateEntity()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have entityUpdateErrors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated crud update error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change entities</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .editEntity.errors</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated crud delete success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change entities</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated crud delete error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change entities</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have called .showToastrError() with error message</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated confirm delete open modal</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .getEntityDisplayName()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .confirm()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated confirm delete confirm delete</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .confirm()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should change entities</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudHelper service activated confirm delete confirm cancel</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should call .confirm()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change entities</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feCrudPage directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entityList</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .newEntity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loading</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have path</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service query</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return an error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service query item</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return an error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service create</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return an error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service save item</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return an error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service remove item</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return an error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">crudResource service update item</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return data</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return an error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feCrudRow directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entity</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entityList</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .editEntity</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feDeleteEntityButton directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .deleteEntity()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entity</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feEditEntityButton directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .editEntity()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .disable</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entity</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feEmptyListMessage directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have scope</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .kind</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loggedIn</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">HeaderController</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support auth</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should create login form initially</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should collapse navbar initially</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should create login form when showing</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should destroy login form when close</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set focus when login form is shown</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should collapse when resolve close edit in progress</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should collapse when reject close edit in progress</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">HeaderController members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .isCollapsed</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .createLoginForm()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showingLogin()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showLogin()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">HomeController</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have controller</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentPlayer directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerName()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .suffix()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentPlayer directive short player name with period (test 0)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentPlayer directive short player name without period (test 1)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentPlayer directive long player name with period (test 2)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentPlayer directive long player name without period (test 3)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponents directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .match</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .shortPlayerNames</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .match</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .shortPlayerNames</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeam directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamName()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .suffix()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeam directive with period (test 0)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name without period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeam directive without period (test 1)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name without period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeamPlayers directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .team</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .shortPlayerNames</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .punctuation</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeams directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .match</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeamsPlayers directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .match</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .shortPlayerNames</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchScoring directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .match</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchState directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .match</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController supports</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support Auth</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support Crud</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController options lists</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamOptionsList</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerObjectsList</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController loading</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not fail</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should fail</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be activated</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be crud options</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .resourceName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entityKind</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .getEntityDisplayName()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return (untitled)</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .makeEntityBody()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return value</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options prepare to change entities .prepareToCreateEntity() doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be prepared</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options prepare to change entities .prepareToCreateEntity() singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be prepared</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options prepare to change entities .prepareToUpdateEntity() doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be prepared</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options prepare to change entities .prepareToUpdateEntity() singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be prepared</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() not called</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be null .playerOptionsList.list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be null .teamOptionsList.list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() sets default values</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should default to singles</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should to default to two_six_game_ten_point</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() fills select options</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerOptionsList.list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamOptionsList.list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() memoize select options</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have empty .playerOptionsList.list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have empty .teamOptionsList.list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() select options empty if rejected</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have empty .playerOptionsList.list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have empty .teamOptionsList.list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() not enough players or teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should reject</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() enough players and teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() exactly two players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select first player</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select second player</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() exactly two teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select first team</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select second team</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowNewEntity() not enough players but enough teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select doubles</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowEditEntity() not called</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be null .playerOptionsList.list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be null .teamOptionsList.list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowEditEntity() fills options lists</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerOptionsList.list</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamOptionsList.list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowEditEntity() selects players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should select first player</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should select second player</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowEditEntity() selects teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should select first team</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should select second team</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowEditEntity() when only two singles players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should select first player</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should select second player</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">MatchesController crud options .beforeShowEditEntity() when only two doubles teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should select first team</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should select second team</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchesForm directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playersList</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamsList</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">matchesSelectOptions service request success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return expected options list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">matchesSelectOptions service request failure</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should call failure function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController supports</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support Auth</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support Crud</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController loading</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not fail</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should fail</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be activated</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have options</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be crud options</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .resourceName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entityKind</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options .getEntityDisplayName()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return name</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options .makeEntityBody()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return object</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options .prepareToCreateEntity()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should prepare</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options .beforeShowNewEntity()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return resolved promise</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options .beforeShowEditEntity()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return resolved promise</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">PlayersController crud options .prepareToUpdateEntity()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should prepare</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerForm directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">playersSelectOptions request success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have expected options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">playersSelectOptions request failure</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should call fail function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig templates state home</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should match url</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match templateUrl</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig templates state players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should match url</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match templateUrl</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig templates state teams</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should match url</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match templateUrl</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig templates state matches</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should match url</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match templateUrl</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig templates state scores</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should match url</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match templateUrl</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig templates state scores.board</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should match url</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match templateUrl</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should match resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response ok state &quot;home&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass success response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response ok state &quot;players&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass success response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response ok state &quot;teams&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass success response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response ok state &quot;matches&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass success response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response ok state &quot;scores&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass success response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response ok state &quot;scores.board&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass success response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response error state &quot;home&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass error response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response error state &quot;players&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass error response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response error state &quot;teams&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass error response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response error state &quot;matches&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass error response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response error state &quot;scores&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass error response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">routerConfig resolve response error state &quot;scores.board&quot;</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should change $state</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should pass error response</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">loadCredentials run</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have called .loadCredentials()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">logProvider config</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have enabled debug</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreButton directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .param</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreCommands directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm.scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loggedIn</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm.view</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreProgress directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreProgressWinner directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .winner</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .matchWinner</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .punctuation</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTable directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableGameResult directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .leftmost</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableGameTitle directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableMatchResult directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .leftmost</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableOpponent directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .opponent</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .leftmost</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreStatus directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableSelectServer directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableSetResult directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scores</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .leftmost</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feScoreTableSetTitle directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support auth</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support loading</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support toastr</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .id</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .view</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .scoreboard</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController loading</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should load</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should fail</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController scoreboard prepare</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .opponents</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have .server</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have .firstServers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController scoreboard newGame</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have newGame</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .firstServers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController scoreboard newSet</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have newSet</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController scoreboard sort order</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should order sets descending</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should order games descending</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController update when success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have updated</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController update when re-entered</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have updated</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have ignored second update</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController update with param singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for win_game action</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for win_match action</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for win_tiebreaker action</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for start_game action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController update with param doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for win_game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for win_match</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have valid params for win_tiebreaker</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController update data error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should save with error</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should fail loading</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController update HTTP error</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show loading error</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .updateScore()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .animateScoreboardUpdate()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .toggleShowGames()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .toggleShowDescription()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .toggleKeepingScore()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .canShowGame()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loggedInChanged()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .loadSettings()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .storeSettings()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showWinButtonHint</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view members .settings</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showGames</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .keepScore</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showDescription</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .keepingScore</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be false when clear credentials</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be true when set credentials</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .showDescription</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle to true</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle to false</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleShowGames() when no games to show or hide and show</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleShowGames() when no games to show or hide and hide</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleShowGames() when games to show or hide and show</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleShowGames() when games to show or hide and hide</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleKeepingScore() when not logged in</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not change</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleKeepingScore() when logged in when match over</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle to true</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle to false</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .toggleKeepingScore() when logged in when match in progress</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle to true</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should toggle to false</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .showWinButtonHint</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be true initially</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be false after win action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .canShowGame when setting .showGames off</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show game with winner</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .canShowGame when setting .showGames on</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should show game with winner</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .canShowGame when setting .keepingScore off</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show new game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view .canShowGame when setting .keepingScore on</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should show new game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view storage of settings</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have data name</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view storage of settings save data</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have no data when initialized</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have data stored</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view storage of settings load data</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showGames</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showDescription</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .keepScore</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController .view storage of settings load data .loadSettings</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showGames</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showDescription</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .keepScore</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController confirm change open modal discard_play</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should open modal for discard_play action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController confirm change open modal start_set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not open modal for start_set action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController confirm change confirm action discard_play</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should confirm discard_play action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController confirm change cancel action discard_play</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should cancel change for discard_play action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoreboardController confirm change cancel action start_set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not cancel change for start_set action</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .animateAction()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .animateKeepScore()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .hideChanging()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .hideChanged()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .stop()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showChanged()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() .stop</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear animating</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should clear hiding</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides progress .hideChanging</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should animate</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides progress .hideChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides progress .hideChanged .showChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should show</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when starting game when turn on keep score .hideChanging</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should animate current game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide currrent game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when starting game when turn off keep score .hideChanging</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should animate current game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when starting game when turn off keep score .hideChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when starting game when turn off keep score .hideChanged .showChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should no hide game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when game in progress when turn on keep score .hideChanging</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should animate win button</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide win button</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when game in progress when turn on keep score .hideChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide row status</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when game in progress when turn on keep score .hideChanged .showChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not hide row status</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when game in progress when turn off keep .hideChanging</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide row status</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should animate row status</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when game in progress when turn off keep .hideChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide win button</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateKeepScore() hides when game in progress when turn off keep .hideChanged .showChanged</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not hide win button</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .hideChanging()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .hideChanged()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .stop()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .showChanged()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides server form when staring game</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide servers form</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides match score when winning set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be hidden initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides match score when winning set left side</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide left</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides match score when winning set right side</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide right</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides set score when winning game</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be hidden initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides set score when winning game left</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide left</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides set score when winning game right</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide right</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides game title when winning game</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be hidden initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides game title when winning game hide</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanging() hides progress for any action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be hidden initially</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be hidden</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides match score when win match left</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide left</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides match score when win match right</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide right</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides match score when win set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides set score when start game in current set left</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result of current set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide left</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides set score when start game in current set right</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result of current set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide right</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides set score when start second set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide result of previous set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides game title</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be hidden initially</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides game title hides when start game</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides progress for any action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be hidden</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides game before show</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides win button before show</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide win button</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides new set and game before show when start match</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardAnimate service animateAction() .hideChanged() hides new set and game before show when start set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should hide set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service when prepared hasCompletedGames</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have completed games when no winners</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have completed games when previous game winner</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have completed games when currentGame winner</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service when prepared .currentGame</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have current game when no games</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have current game when one game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have current game when not playing game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service when prepared .previousGame</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have previous game when no games</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have previous game when one game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have previous game when two games</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have previous game when set complete</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service when prepared .currentSet</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have current set when no sets</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have current set when one set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have current set when complete</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service when prepared .previousSet</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have previous set when no sets</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have previous set when one set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have previous set when complete</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have previous set when two sets</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .startingSetOrMatch</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not be starting</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be starting set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be starting match</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .opponents doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should build opponents</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .opponents singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should build opponents</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .server</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have server when in_progress</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have server when winner</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have server when no games</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have server when no sets</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have server when match not in progress </span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted short names singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should shorten first player name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should shorten second player name</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted short names doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should shorten first player name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should shorten second player name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should shorten third player name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should shorten fourth player name</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted scores set scores singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should add two winners</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add one winner</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add no winner</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add empty set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted scores set scores doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should add two winners</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted scores match singles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should count match score</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted scores match doubles</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should count match score</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted titles game</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have game 1 title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have game 2 title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have tiebreak title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service inserted titles set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set 1 title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set 2 title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set 3 title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set 4 title</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have tiebreak title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service new game for start_game action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should create new game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service new game for start_tiebreak action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should create new game</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service new game for win_game action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not create new game</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .firstServers singles match</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have list when no server</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have list when server</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .firstServers doubles match</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should list all when no server</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should list none when two servers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .firstServers doubles match when one server is player 1</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should list two servers</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should list correct servers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .firstServers doubles match when one server is player 2</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should list two servers</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should list correct servers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .firstServers doubles match when one server is player 3</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should list two servers</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should list correct servers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service .firstServers doubles match when one server is player 4</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should list two servers</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should list correct servers</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service new set for start_set action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should create new set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service new set for start_match_tiebreak action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should create new set</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have title</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">scoreboardPrep service new set for win_game action</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not create new set</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoresController supports</span>
+    
+      <div class="specSummary passed">
+      <span class="description">supports auth</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">supports loading</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoresController loading</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not fail</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should fail</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoresController loading select match</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should set selectedMatch when $state identifies match</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should not set selectedMatch when $state identifies unknown match</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">ScoresController .selectMatchChange()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should set params</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should set state</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support auth</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support crud</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerOptionsList</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController loading</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not .loadingFailed</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should .loadingFailed</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should activate</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be crud options</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .resourceName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .entityKind</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .getEntityDisplayName()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return name</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should return (unnamed)</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .makeEntityBody()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return value</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options prepare .prepareToCreateEntity()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should prepare</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options prepare .prepareToUpdateEntity()</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should prepare</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() not called</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have player select options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() select options filled</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have player select options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() memoize select options</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have player select options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() select options empty</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have player select options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() not enough players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should reject</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() enough players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should resolve</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowNewEntity() exactly two players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select first player</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should automatically select second player</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowEditEntity() not called</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not have player select options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowEditEntity() options lists</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have player select options</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">TeamsController crud options .beforeShowEditEntity() select players</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should select first player</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should select second player</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feTeamsForm directive isolated scope</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playersList</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">teamsSelectOptions service request success</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have list</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">teamsSelectOptions service request failure</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have empty list</span>
+      </div>
+    
+    </div>
+  
+  
+</div>
+
+<div id="details">
+  
+</div>
+
+<script>
+
+var folded = false;
+
+document.body.onkeypress = function (e) {
+  if (!e || !e.keyCode) return;
+  switch (e.keyCode) {
+    case 102: toggleFold(); break;
+    case 49: showSummary(); break;
+    
+  }
+};
+
+function showSummary() { document.body.className = "html-reporter showSummary"; }
+function showFailures() { document.body.className = "html-reporter showDetails"; }
+
+function toggleSection(el) {
+  el.className = el.className === 'summary-section' ? 'summary-section folded' : 'summary-section';
+}
+
+function toggleFold() { (folded) ? unfold() : fold(); }
+function fold() {
+  var els = document.querySelectorAll('.summary-section');
+  for (var i = 0; i < els.length; i++) {
+    els[i].className = 'summary-section folded';
+  }
+  folded = true;
+}
+function unfold() {
+  var els = document.querySelectorAll('.summary-section');
+  for (var i = 0; i < els.length; i++) {
+    els[i].className = 'summary-section';
+  }
+  folded = false;
+}
+
+</script>
+
+
+</body>
+</html>
+
