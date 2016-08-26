@@ -4,7 +4,6 @@
   describe('scoreboardAnimate service', function () {
     var service;
     var $timeout;
-    var $rootScope;
     var scoreboardPrep;
     var scores;
     var animate;
@@ -29,11 +28,10 @@
     beforeEach(module('frontendScores'));
 
     beforeEach(function () {
-      inject(function (_scoreboardAnimate_, _scoreboardPrep_, _$timeout_, _$rootScope_) {
+      inject(function (_scoreboardAnimate_, _scoreboardPrep_, _$timeout_) {
         service = _scoreboardAnimate_;
         scoreboardPrep = _scoreboardPrep_;
         $timeout = _$timeout_;
-        $rootScope = _$rootScope_;
       })
     });
 
