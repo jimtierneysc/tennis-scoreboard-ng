@@ -174,15 +174,15 @@
             service(vm, crudOptions);
             vm.editEntity.show(entities[0]);
             $rootScope.$digest();
-            spyOn(entityList, 'hidingEntity');
-            spyOn(entityList, 'animatingEntity');
+            spyOn(vm.entityList, 'hidingEntity');
+            spyOn(vm.entityList, 'animatingEntity');
 
             it('should checked for hidden entity', function() {
-              expect(entityList.hidingItem).toHaveBeenCalled();
+              expect(vm.entityList.hidingItem).toHaveBeenCalled();
             });
             
             it('should checked for animating entity', function() {
-              expect(entityList.animatingEntity).toHaveBeenCalled();
+              expect(vm.entityList.animatingEntity).toHaveBeenCalled();
             });
           });
 
