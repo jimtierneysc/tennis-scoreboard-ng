@@ -1,0 +1,9 @@
+<!--visible: {{visible}}-->
+<!--leftmost: {{leftmost}}-->
+<div style="position: absolute" ng-if="visible && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
+      <span ng-if="leftmost" class="icon-tennis"></span>
+      <span ng-if="!leftmost" class="icon-tennis flip-horizontal"></span>
+</div>
+<!--<div ng-if="!(visible) && !scores.matchFlags.hiddenServer">-->
+      <!--<span>x</span>-->
+<!--</div>-->
