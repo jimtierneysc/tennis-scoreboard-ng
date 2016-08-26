@@ -20,7 +20,7 @@
 
           <div class="pull-left score-select-list">
             <label for="team" class="control-label sr-only">Team</label>
-            <ui-select autofocus ng-model="vm.selectedMatch"
+            <ui-select xxautofocus ng-model="vm.selectedMatch"
                        theme="bootstrap" id="team" name="team"
                        ng-required="true" on-select="vm.selectedMatchChange()">
               <ui-select-match placeholder="Select a match">{{$select.selected.title}}</ui-select-match>
