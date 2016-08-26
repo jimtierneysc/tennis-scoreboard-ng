@@ -13,11 +13,10 @@
       
       scope = $rootScope.$new();
       scope.ascores = {};
-      scope.aplayer = 10;
 
       var html = ('<fe-score-table-server-glyph ' +
       'scores="ascores" ' +
-      'player="aplayer" ' +
+      'show="true" ' +
       'leftmost="true" ' +
       '></fe-score-table-server-glyph>');
 
@@ -35,7 +34,7 @@
       });
 
       it('should have .player', function () {
-        expect(isolatedScope.opponent).toEqual(scope.aplayer);
+        expect(isolatedScope.show).toBeTruthy();
       });
 
       it('should have .leftmost', function () {

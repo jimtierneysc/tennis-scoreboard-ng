@@ -28,7 +28,7 @@
               winner="scores.previousSet.winner"
               punctuation="."
             ></fe-score-progress-winner>
-            <span>&nbsp; The {{scores.currentSet.title}} set is next</span>
+            <span>&nbsp;&nbsp;The {{scores.currentSet.title}} set is next</span>
           </div>
         </div>
 
@@ -46,7 +46,7 @@
               winner="scores.previousGame.winner"
               punctuation="."
             ></fe-score-progress-winner>
-            <span> &nbsp;Game {{scores.currentGame.title}} is next</span>
+            <span>&nbsp;&nbsp;Game {{scores.currentGame.title}} is next</span>
           </div>
         </div>
 
@@ -57,7 +57,7 @@
             winner="scores.previousGame.winner"
             punctuation="."
           ></fe-score-progress-winner>
-          <span> &nbsp;The set tiebreak is next</span>
+          <span>&nbsp;&nbsp;The set tiebreak is next</span>
         </div>
 
         <div ng-if="scores.actions.start_match_tiebreak">
@@ -67,7 +67,7 @@
               winner="scores.previousSet.winner"
               punctuation="."
             ></fe-score-progress-winner>
-            <span> &nbsp;The match tiebreak is next</span>
+            <span>&nbsp;&nbsp;The match tiebreak is next</span>
           </div>
         </div>
 
@@ -93,7 +93,6 @@
           view="view"
           scores="scores"
         ></fe-score-button>
-        <!--</div>-->
       </div>
     </div>
   </div>

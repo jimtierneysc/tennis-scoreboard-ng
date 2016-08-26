@@ -19,7 +19,7 @@
       templateUrl: 'app/scores/scoreTableServerGlyph.html',
       scope: {
         scores: '=',
-        visible: '@',
+        show: '@',
         leftmost: '@'
       }
     };
