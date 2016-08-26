@@ -1,18 +1,18 @@
-## Tennis scoreboard ng
+## Tennis Scoreboard
 
 ### Summary
 
 A Rails API application and AngularJS application to keep score of tennis matches.  
 
-### Two Applications
+### Rails API Application
 
 The root directory contains a Rails API application.  This application implements a REST API for managing
 information associated with tennis matches.
+
+### AngularJS Application
   
 The client subdirectory contains an AngularJS/Gulp application.  This application communicates with the
-Rails API application by making HTTP requests.
-
-The two application are built independently.    
+Rails API application by making HTTP requests.   
 
 ### Download
 
@@ -78,13 +78,14 @@ the db:seed command.  Login is only required to edit or keep score.  Login is no
 
 * Choose a link in the navbar.
 * Each view supports add, delete and edit.
-* The Matches view has a link to the score.
+* The Matches view has a link to the match score.
 
 #### Scores view
 
 * Choose "Scores" in the navbar or the "Score" link in the Matches view.
 * A drop down list is used to select a match.
-* A drop down menu has commands to change the view and the score.
-* The "Keep Score" command may be used to enable scoring.  This command is 
-    enabled when the user in logged in.
+* When a match is selected, the score board is shown
+* A drop down menu has commands to show or hide visual elements
+    * If you want to keep score, choose the command to show score keeper commands
+
 
