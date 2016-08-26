@@ -7,8 +7,12 @@ class V1::SessionsController < ApplicationController
     user = user_username.present? && User.find_by(username: user_username)
 
     if user && user.valid_password?(user_password)
-      user.generate_authentication_token!
-      user.save!
+      # The following two lines prevent a user from being logged in
+      # on multiple devices.
+
+      # user.generate_authentication_token!
+      # user.save!
+
       render json: V1::SessionSerializer.new(user, root: false)
     else
       render json: { errors: "Invalid username or password" }, status: 422
