@@ -14,7 +14,7 @@
 
   /** @ngInject */
   function factory(animationTimers) {
-    
+
     return {
       animateAction: function(sb, action, param) {
         return new Animations(sb, animationTimers).animateAction(action, param);
@@ -33,8 +33,8 @@
 
     var sb = _sb_;
     var animationTimers = _animationTimers_;
-    
-    // Hide and show elements while changing the mode between keeping score and 
+
+    // Hide and show elements while changing the mode between keeping score and
     // following score.
     this.animateKeepScore = function(keepScore) {
       return {
@@ -62,7 +62,7 @@
         stop: stopHideAndShow
       }
     };
-    
+
     function actionHideChanging(action, param) {
       var transitions = new ScoreTransitions(action, param, {before: true});
 
@@ -75,7 +75,7 @@
         list.add('Result', sb.matchFlags);
 
       if (sb.currentGame && sb.currentSet) {
-
+        
         if (transitions.winningGame && !transitions.winningSet)
           list.add('Title', sb.currentGame);
 
