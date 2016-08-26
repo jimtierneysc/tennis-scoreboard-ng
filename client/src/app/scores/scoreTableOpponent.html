@@ -1,6 +1,89 @@
+<!--<div ng-if="scores.doubles" ng-init="inProgress=scores.state=='in_progress'">-->
+  <!--&lt;!&ndash;First doubles player&ndash;&gt;-->
+  <!--<div ng-if="true" class="current-server-right col-xs-2-7 col-sm-2" style="border: red 1px solid">-->
+    <!--&lt;!&ndash;<span ng-if="scores.server == opponent.first_player.id && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&nbsp;&ndash;&gt;-->
+
+    <!--<fe-score-table-server-glyph-->
+      <!--scores="scores"-->
+      <!--visible="{{scores.server == opponent.first_player.id && !leftmost?'1':''}}"-->
+      <!--leftmost="{{leftmost}}"-->
+    <!--&gt;</fe-score-table-server-glyph>-->
+  <!--</div>-->
+  <!--<div class="player-col-2" ng-class="true ? 'col-xs-6-6 col-sm-8' : 'col-xs-12'">-->
+    <!--{{opponent.first_player.shortName}}-->
+  <!--</div>-->
+  <!--<div ng-if="true" class="current-server-left col-xs-2-7 col-sm-2" style="border: blue 1px solid">-->
+    <!--&lt;!&ndash;<span ng-if="scores.server == opponent.first_player.id && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span class="text-right" ng-class="{'icon-tennis': leftmost}"></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&nbsp;&ndash;&gt;-->
+    <!--<fe-score-table-server-glyph-->
+      <!--scores="scores"-->
+      <!--visible="{{scores.server == opponent.first_player.id && leftmost?'1':''}}"-->
+      <!--leftmost="{{leftmost}}"-->
+    <!--&gt;</fe-score-table-server-glyph>-->
+  <!--</div>-->
+
+  <!--&lt;!&ndash;Second doubles player&ndash;&gt;-->
+  <!--<div row ng-if="true" class="current-server-right col-xs-2-7 col-sm-2" style="border: green 1px solid">-->
+    <!--&lt;!&ndash;<span ng-if="scores.server == opponent.second_player.id && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&nbsp;&ndash;&gt;-->
+    <!--<fe-score-table-server-glyph-->
+      <!--scores="scores"-->
+      <!--visible="{{scores.server == opponent.second_player.id && !leftmost?'1':''}}"-->
+      <!--leftmost="{{leftmost}}"-->
+    <!--&gt;</fe-score-table-server-glyph>-->
+  <!--</div>-->
+  <!--<div class="player-col-2"-->
+       <!--ng-class="true ? 'col-xs-6-6  col-sm-8' : 'col-xs-12'">-->
+    <!--{{opponent.second_player.shortName}}-->
+  <!--</div>-->
+  <!--<div ng-if="true" class="current-server-left col-xs-2-7 col-sm-2" style="border: yellow 1px solid">-->
+    <!--&lt;!&ndash;<span ng-if="scores.server == opponent.second_player.id && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-class="{'icon-tennis': leftmost}"></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&nbsp;&ndash;&gt;-->
+    <!--<fe-score-table-server-glyph-->
+      <!--scores="scores"-->
+      <!--visible="{{scores.server == opponent.second_player.id && leftmost?'1':''}}"-->
+      <!--leftmost="{{leftmost}}"-->
+    <!--&gt;</fe-score-table-server-glyph>-->
+  <!--</div>-->
+
+<!--</div>-->
+
+<!--<div ng-if="!scores.doubles" ng-init="inProgress=scores.state=='in_progress'">-->
+  <!--&lt;!&ndash;Singles player&ndash;&gt;-->
+  <!--<div ng-if="inProgress" class="current-server-right col-xs-2-7 col-sm-2">-->
+    <!--&lt;!&ndash;<span ng-if="scores.server == opponent.id!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--<fe-score-table-server-glyph-->
+      <!--scores="scores"-->
+      <!--visible="{{scores.server == opponent.id && !leftmost?'1':''}}"-->
+      <!--leftmost="{{leftmost}}"-->
+    <!--&gt;</fe-score-table-server-glyph>-->
+  <!--</div>-->
+  <!--<div class="player-col-2" ng-class="inProgress ? 'col-xs-6-6 col-md-8' : 'col-xs-12'">-->
+    <!--{{opponent.shortName}}-->
+  <!--</div>-->
+  <!--<div ng-if="inProgress" class="current-server-left col-xs-2-7 col-sm-2">-->
+    <!--&lt;!&ndash;<span ng-if="scores.server == opponent.id && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-class="{'icon-tennis': leftmost}"></span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--<fe-score-table-server-glyph-->
+      <!--scores="scores"-->
+      <!--visible="{{scores.server == opponent.id && leftmost?'1':''}}"-->
+      <!--leftmost="{{leftmost}}"-->
+    <!--&gt;</fe-score-table-server-glyph>-->
+  <!--</div>-->
+
+<!--</div>-->
+
 <div ng-if="scores.doubles">
   <!--First doubles player-->
-  <div ng-if="scores.server == opponent.first_player.id" class="current-server-right col-xs-2-7 col-sm-2">
+  <div ng-if="scores.server == opponent.first_player.id" class="current-server-right col-xs-2-7 col-md-2">
     <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
     </span>
@@ -8,14 +91,14 @@
   <div class="player-col-2" ng-class="scores.server == opponent.first_player.id ? 'col-xs-6-6 col-md-8' : 'col-xs-12'">
     {{opponent.first_player.shortName}}
   </div>
-  <div ng-if="scores.server == opponent.first_player.id" class="current-server-left col-xs-2-7 col-sm-2">
+  <div ng-if="scores.server == opponent.first_player.id" class="current-server-left col-xs-2-7 col-md-2">
     <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span class="text-right" ng-class="{'icon-tennis': leftmost}"></span>
     </span>
   </div>
 
   <!--Second doubles player-->
-  <div ng-if="scores.server == opponent.second_player.id" class="current-server-right col-xs-2-7 col-sm-2">
+  <div ng-if="scores.server == opponent.second_player.id" class="current-server-right col-xs-2-7 col-md-2">
     <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
     </span>
@@ -24,7 +107,7 @@
        ng-class="scores.server == opponent.second_player.id ? 'col-xs-6-6  col-md-8' : 'col-xs-12'">
     {{opponent.second_player.shortName}}
   </div>
-  <div ng-if="scores.server == opponent.second_player.id" class="current-server-left col-xs-2-7 col-sm-2">
+  <div ng-if="scores.server == opponent.second_player.id" class="current-server-left col-xs-2-7 col-md-2">
     <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span ng-class="{'icon-tennis': leftmost}"></span>
     </span>
@@ -34,7 +117,7 @@
 
 <div ng-if="!scores.doubles">
   <!--Singles player-->
-  <div ng-if="scores.server == opponent.id" class="current-server-right col-xs-2-7 col-sm-2">
+  <div ng-if="scores.server == opponent.id" class="current-server-right col-xs-2-7 col-md-2">
     <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span ng-class="{'icon-tennis flip-horizontal': !leftmost}"></span>
     </span>
@@ -42,7 +125,7 @@
   <div class="player-col-2" ng-class="scores.server == opponent.id ? 'col-xs-6-6 col-md-8' : 'col-xs-12'">
     {{opponent.shortName}}
   </div>
-  <div ng-if="scores.server == opponent.id" class="current-server-left col-xs-2-7 col-sm-2">
+  <div ng-if="scores.server == opponent.id" class="current-server-left col-xs-2-7 col-md-2">
     <span ng-if="!scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span ng-class="{'icon-tennis': leftmost}"></span>
     </span>

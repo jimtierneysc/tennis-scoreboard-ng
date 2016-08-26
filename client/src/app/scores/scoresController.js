@@ -15,7 +15,7 @@
 
   /** @ngInject */
   function Controller($filter, $log, $scope, $state, crudResource, $q, loadingHelper,
-                      authHelper, response) {
+                      authHelper, $timeout, $document, response) {
 
     var vm = this;
 
@@ -58,19 +58,17 @@
     }
 
     function selectedMatchChange() {
-      // $log.info('selectedMatchChange');
-      // // Kill focus so that keyboard doesn't show on mobile devices
-      // // See https://github.com/angular-ui/ui-select/issues/818
-      // var timer = $timeout(function () {
-      //   var active = $document.prop('activeElement');
-      //   if (active.type == 'text') {
-      //     $log.info('kill focus');
-      //     active.blur();
-      //   }
-      // }, 1, false);
-      // $scope.$on('$destroy', function () {
-      //   $timeout.cancel(timer);
-      // });
+      // Kill focus so that keyboard doesn't show on mobile devices
+      // See https://github.com/angular-ui/ui-select/issues/818
+      var timer = $timeout(function () {
+        var active = $document.prop('activeElement');
+        if (active.type == 'text') {
+          active.blur();
+        }
+      }, 1, false);
+      $scope.$on('$destroy', function () {
+        $timeout.cancel(timer);
+      });
       $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
     }
   }
