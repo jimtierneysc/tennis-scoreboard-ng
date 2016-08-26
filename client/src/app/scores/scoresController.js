@@ -58,18 +58,22 @@
     }
 
     function selectedMatchChange() {
-      // Kill focus so that keyboard doesn't show on mobile devices
-      // See https://github.com/angular-ui/ui-select/issues/818
-      var timer = $timeout(function () {
-        var active = $document.prop('activeElement');
-        if (active.type == 'text') {
-          active.blur();
-        }
-      }, 1, false);
-      $scope.$on('$destroy', function () {
-        $timeout.cancel(timer);
-      });
-      $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
+      
+      // Try to delay to see if works better on mobile
+      $timeout(function() {
+        // Kill focus so that keyboard doesn't show on mobile devices
+        // See https://github.com/angular-ui/ui-select/issues/818
+        var timer = $timeout(function () {
+          var active = $document.prop('activeElement');
+          if (active.type == 'text') {
+            active.blur();
+          }
+        }, 1, false);
+        $scope.$on('$destroy', function () {
+          $timeout.cancel(timer);
+        });
+        $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
+      }, 1000);
     }
   }
 })();
