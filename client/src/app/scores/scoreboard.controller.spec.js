@@ -620,13 +620,18 @@
             vm.view.toggleKeepingScore(true);
           });
 
-          it('should not change', function () {
-            expect(vm.view.settings.keepScore).toBeFalsy();
+          it('should change setting', function () {
+            expect(vm.view.settings.keepScore).toBeTruthy();
           });
 
           it('should show toast', function () {
             expect(vm).toHaveToast();
+          })
+
+          it('should not change score board', function () {
+            expect(vm.view.keepingScore).toBeFalsy();
           });
+          
         });
 
         describe('when logged in', function () {

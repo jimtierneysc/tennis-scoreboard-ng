@@ -54,8 +54,8 @@
         expect(animate.hideChanged).toEqual(jasmine.any(Function));
       });
 
-      it('should have .stop()', function () {
-        expect(animate.stop).toEqual(jasmine.any(Function));
+      it('should have .reset()', function () {
+        expect(animate.reset).toEqual(jasmine.any(Function));
       });
 
       it('should have .showChanged()', function () {
@@ -63,7 +63,7 @@
       });
     }
 
-    function checkStop() {
+    function checkReset() {
 
       beforeEach(function () {
         scores.matchFlags.animatingFoo = true;
@@ -71,15 +71,14 @@
       });
 
       it('should clear animating', function () {
-        animate.stop();
+        animate.reset();
         expect(scores.matchFlags.animatingFoo).toBeFalsy();
       });
 
       it('should clear hiding', function () {
-        animate.stop();
+        animate.reset();
         expect(scores.matchFlags.hiddenFoo).toBeFalsy();
       });
-
     }
 
     describe('animateKeepScore()', function () {
@@ -108,7 +107,7 @@
           animate = animateKeepScore;
         });
 
-        checkStop();
+        checkReset();
       });
 
       describe('hides progress', function () {
@@ -221,8 +220,6 @@
             });
           });
         });
-
-
       });
 
       describe('hides when game in progress', function () {
@@ -271,7 +268,6 @@
               it('should not hide row status', function () {
                 expect(scores.currentGame.hiddenRowStatus).toBeFalsy();
               });
-
             });
           });
         });

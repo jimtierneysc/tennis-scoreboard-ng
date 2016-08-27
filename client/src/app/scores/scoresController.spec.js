@@ -5,6 +5,7 @@
     var $controller;
     var $scope;
     var $state;
+    var $timeout;
 
     var sampleResponse = [
       {
@@ -15,10 +16,11 @@
 
     beforeEach(module('frontendScores'));
 
-    beforeEach(inject(function (_$controller_, $rootScope) {
+    beforeEach(inject(function (_$controller_, $rootScope, _$timeout_) {
       $controller = _$controller_;
       $scope = $rootScope.$new();
       $state = new MockState();
+      $timeout = _$timeout_;
     }));
 
 
@@ -90,6 +92,7 @@
         vm = scoreController(sampleResponse);
         vm.selectedMatch = selected;
         vm.selectedMatchChange();
+        $timeout.flush();
       });
 
       it('should set params', function () {

@@ -16,8 +16,8 @@
   function Controller($log, $scope, $stateParams, errorsMapper, scoreboardPath,
                       modalConfirm, $localStorage, loadingHelper, crudResource,
                       authHelper, toastrHelper, $q,
-                      scoreboardPrep, scoreboardAnimate, animationTimers,
-                      response) {
+                      scoreboardPrep, scoreboardAnimate,
+                      animateChange, response) {
     var vm = this;
     var updating = false;
 
@@ -52,7 +52,7 @@
         vm.loading.hasFailed(response);
       }
     }
-    
+
     function confirmScoreboardUpdate(action, param) {
       vm.clearToast();
 
@@ -205,8 +205,7 @@
           storeSettings();
         }
       }
-
-
+      
       function toggleShowGames(showGames) {
         if (showGames != view.settings.showGames) {
           if (!vm.scoreboard.hasCompletedGames) {
@@ -229,16 +228,16 @@
         }
 
         function animateShowGames() {
-          view.animate.showGames = true;
-          animationTimers.digest().then(function () {  // eval ng-class
-            var show = toggle();
-            var delay = show ? animationTimers.delayIn : animationTimers.delayOut;
-            delay().then(function () {
-              // Disable animation so that animation will not occur
-              // when score table is refreshed
+
+          animateChange.toggleShow(toggle,
+            function () {
+              // Hide before change
+              view.animate.showGames = true;
+            },
+            function () {
+              // Show after change
               view.animate.showGames = false;
             });
-          });
         }
       }
 
@@ -254,8 +253,9 @@
       function toggleKeepingScore(keepScore) {
 
         if (!vm.loggedIn) {
-          if (keepScore)
-            vm.showToast('You must be logged in order to keep score.', "Unable to Show Score Keeper Commands");
+          vm.showToast('You must be logged in order to keep score.', "Unable to Show Score Keeper Commands");
+          keepScore = true;
+          toggle();  // Now score keeper commands will show in case the user logs in later
         } else {
           if (keepScore != view.keepingScore) {
             if (vm.scoreboard.winner) {
@@ -303,66 +303,18 @@
       }
 
       function animateKeepScore(toggle) {
-        var hideAndShow;
+        var hideAndShow = scoreboardAnimate.animateKeepScore(vm.scoreboard, view.keepingScore);
 
-        hideAndShow = scoreboardAnimate.animateKeepScore(vm.scoreboard, view.keepingScore);
-
-        // Set flags so that old values will be hidden
-        hideAndShow.hideChanging();
-
-        animationTimers.delayOut().then(function () {
-
-          toggle();
-
-          // Set flags so that new elements will be hidden, initially
-          hideAndShow.hideChanged();
-
-          // Let ng-class be processed
-          animationTimers.digest().then(hideAndShow.showChanged);
-
-          // Wait for new elements to finish showing
-          animationTimers.delayIn().then(hideAndShow.stop);
-
-        });
+        animateChange.hideThenShow(toggle, hideAndShow);
       }
 
       function animateScoreboardUpdate(action, param, promise, accept, reject, final) {
-
-        // Allow time for old data to hide
-        var timerPromise = animationTimers.delayOut();
-
-        // Promise to wait until time has passed and post has finished
-        var all = $q.all({timer: timerPromise, post: promise});
-
-        // Create object to hide and show elements during animation
         var hideAndShow = scoreboardAnimate.animateAction(vm.scoreboard, action, param);
 
-        // Set flags so that changing values will be hidden
-        hideAndShow.hideChanging();
-
-        // Wait for data to hide
-        all.then(
-          function (hash) {
-            var response = hash.post;
-            // Update scoreboard
-            accept(response);
-
-            // Set flags so that new elements will be hidden, initially
-            hideAndShow.hideChanged();
-
-            // Let ng-class be processed
-            animationTimers.digest().then(hideAndShow.showChanged);
-
-            // Wait for new elements to finish showing
-            animationTimers.delayIn().then(hideAndShow.stop);
-
-          },
-          function (response) {
-            reject(response);
-            hideAndShow.stop();
-          }).finally(final);
+        animateChange.promiseHideThenShow(promise, accept, hideAndShow, reject, final);
       }
     }
+
 
     // prepare scoreboard for viewing
     function prepareScoreboard(sb) {

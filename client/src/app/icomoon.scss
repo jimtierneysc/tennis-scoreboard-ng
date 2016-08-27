@@ -12,34 +12,23 @@
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
-  //speak: none;
-  //font-style: normal;
-  //font-weight: bold;
-  //font-variant: normal;
-  //text-transform: none;
-  //line-height: 1;
-  //
-  ////background-color: blue;
-  ////color: red;
-  //
-  ///* Better Font Rendering =========== */
-  //-webkit-font-smoothing: antialiased;
-  //-moz-osx-font-smoothing: grayscale;
-
 
   position: relative;
   top: 1px;
   display: inline-block;
-  //font-family: 'Glyphicons Halflings';
   font-style: normal;
   font-weight: bold;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
 }
 
 .icon-tennis:before {
   content: "\e900";
+}
+
+.icon-tennis-placeholder:before {
+  content: "\e900";
+  color: transparent !important;
 }
 

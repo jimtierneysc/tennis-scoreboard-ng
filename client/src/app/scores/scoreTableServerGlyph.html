@@ -1,11 +1,9 @@
-<!--visible: {{show}}-->
-<!--leftmost: {{leftmost}}-->
-<div style="position: absolute; left:0; top: 5px" ng-if="show && !scores.matchFlags.hiddenServer" ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
+<!--Abolute positioned glyph, so that layout is not affected when glyph is hidden -->
+<span class="server-glyph"
+     ng-if="show && !scores.matchFlags.hiddenServer"
+     ng-class="{'standard-animation': scores.matchFlags.animatingServer}">
       <span ng-if="leftmost" class="icon-tennis"></span>
       <span ng-if="!leftmost" class="icon-tennis flip-horizontal"></span>
-  visible: {{show}}
-  leftmost: {{leftmost}}
-</div>
-<!--<div ng-if="!(visible) && !scores.matchFlags.hiddenServer">-->
-      <!--<span>x</span>-->
-<!--</div>-->
+</span>
+<!--Take up space for glyph -->
+<span class="icon-tennis-placeholder"></span>

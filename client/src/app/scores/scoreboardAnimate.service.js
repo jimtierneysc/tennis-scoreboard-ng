@@ -45,7 +45,7 @@
           keepScoreHideChanged(!keepScore);
         },
         showChanged: showChanged,
-        stop: stopHideAndShow
+        reset: resetHideAndShow
       }
     };
 
@@ -59,7 +59,7 @@
           actionHideChanged(action, param)
         },
         showChanged: showChanged,
-        stop: stopHideAndShow
+        reset: resetHideAndShow
       }
     };
 
@@ -180,7 +180,7 @@
       clearFlags(['hidden']);
     }
 
-    function stopHideAndShow() {
+    function resetHideAndShow() {
       clearFlags(['hidden', 'animating']);
     }
 

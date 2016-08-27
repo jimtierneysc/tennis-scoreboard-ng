@@ -155,20 +155,6 @@ $side_margin: 30px;
   color: $score_color;
 }
 
-.player-col-3 {
-  @include hide-overflow-padding;
-  text-align: left;
-}
-
-.player-col-1 {
-  @include hide-overflow-padding;
-  text-align: right;
-}
-
-.player-col-2 {
-  @include hide-overflow-padding;
-}
-
 // css to flip glyph icon
 .flip-horizontal {
   -moz-transform: scaleX(-1);
@@ -207,7 +193,7 @@ $side_margin: 30px;
 }
 
 //Take up space but don't show
-.glyphicon-none:before {
+.glyphicon-placeholder:before {
   content: "\2122";
   color: transparent !important;
 }
@@ -233,3 +219,23 @@ div.current-server-right {
   @include make-xs-column(6.6)
 }
 
+.server-glyph-container-left
+{
+  float: left;
+  position: relative;
+}
+
+.server-player-mid {
+  margin-left: auto;
+  margin-right: auto;
+  @include hide-overflow-padding;
+}
+
+.server-glyph-container-right {
+  float: right;
+  position: relative;
+}
+
+.server-glyph {
+  position: absolute;
+}
