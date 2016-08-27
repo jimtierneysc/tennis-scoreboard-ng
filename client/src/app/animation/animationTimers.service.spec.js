@@ -10,7 +10,7 @@
 
     beforeEach(function () {
 
-      inject(function (_animationTimers_, _$rootScope_, _$timeout_) {
+      inject(function (_animationTimers_, _$timeout_) {
         service = _animationTimers_;
         $timeout = _$timeout_;
       });

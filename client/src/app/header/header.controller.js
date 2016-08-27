@@ -25,7 +25,7 @@
       vm.showingLogin = showingLogin;
       vm.showLogin = showLogin;
 
-      // Add auth support like (e.g.; loggedIn property)
+      // Add loggedIn property
       authHelper(vm, $scope);
 
       // close responsive drop down if the user is prompted to close an editor
