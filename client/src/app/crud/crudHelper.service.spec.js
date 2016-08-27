@@ -22,11 +22,7 @@
         });
       });
     });
-
-    function resolvedPromise() {
-      return $q.resolve();
-    }
-
+    
     beforeEach(function () {
       module(function ($provide) {
         // Disable animation delays
@@ -38,6 +34,11 @@
           }
         });
       });
+
+      function resolvedPromise() {
+        return $q.resolve();
+      }
+
     });
 
     beforeEach(function () {
@@ -177,16 +178,16 @@
             spyOn(vm.entityList, 'hidingEntity');
             spyOn(vm.entityList, 'animatingEntity');
 
-            it('should checked for hidden entity', function() {
+            it('should checked for hidden entity', function () {
               expect(vm.entityList.hidingItem).toHaveBeenCalled();
             });
-            
-            it('should checked for animating entity', function() {
+
+            it('should checked for animating entity', function () {
               expect(vm.entityList.animatingEntity).toHaveBeenCalled();
             });
           });
 
-         });
+        });
       });
 
       describe('clear errors', function () {
@@ -197,7 +198,6 @@
 
         var sampleErrors = {'one': [], 'two': [], 'three': []};
         var existNames = ['one', 'three'];
-        var nonExistNames = ['a', 'b'];
         var expected = {'one': null, 'two': [], three: null};
 
         beforeEach(function () {
@@ -234,21 +234,10 @@
                 expect(object.errors).toEqual(expected);
               });
             });
-
-            describe('when errors don\'t exist', function () {
-              beforeEach(function () {
-                object.errors = angular.copy(sampleErrors);
-                object.clearErrors(nonExistNames);
-              });
-
-              it('should not change errors', function () {
-                expect(object.errors).toEqual(sampleErrors);
-              });
-            });
           })
         });
-
       });
+      
       describe('allow', function () {
         var items = [
           {name: 'edit entity'},

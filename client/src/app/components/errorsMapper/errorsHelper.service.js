@@ -29,6 +29,14 @@
           result = errorsMapper({'errors': response.statusText ? response.statusText : 'Unexpected error'});
         return result;
       };
+      vm.clearErrors = function(errors, names) {
+        if (errors) {
+          angular.forEach(names, function (name) {
+            if (errors[name])
+              errors[name] = null;
+          });
+        }
+      };
     }
   }
 })();

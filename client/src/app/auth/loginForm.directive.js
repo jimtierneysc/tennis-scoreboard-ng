@@ -19,13 +19,15 @@
     var directive = {
       restrict: 'E',
       templateUrl: 'app/auth/loginForm.html',
+      scope: {
+      },
       controller: Controller,
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      bindToController: true
     };
 
     return directive;
   }
-
 
   /** @ngInject */
   function Controller(sessionResource, userCredentials, errorsHelper, waitIndicator, $log) {
@@ -36,7 +38,7 @@
     function activate() {
       vm.entity = {username: "", password: ""};
       vm.errors = {};
-      vm.submit = submit;
+      vm.submit = updateEntity;
 
       errorsHelper(vm,
         {
@@ -45,10 +47,6 @@
             'password'
           ]
         });
-    }
-
-    function submit() {
-      updateEntity();
     }
 
     function updateEntity() {

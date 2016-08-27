@@ -56,7 +56,7 @@
           return vm.loggedIn;
         },
         clearErrors: function (names) {
-          clearErrors(vm.editEntity.errors, names);
+          vm.clearErrors(vm.editEntity.errors, names);
         }
       };
 
@@ -74,7 +74,7 @@
           return vm.loggedIn;
         },
         clearErrors: function (names) {
-          clearErrors(vm.newEntity.errors, names);
+          vm.clearErrors(vm.newEntity.errors, names);
         }
       };
 
@@ -133,15 +133,6 @@
       //
       // Methods called from view
       //
-
-      function clearErrors(errors, names) {
-        if (errors) {
-          angular.forEach(names, function (name) {
-            if (errors[name])
-              errors[name] = null;
-          });
-        }
-      }
 
       function deleteEntity(entity, confirmDelete) {
         vm.clearToast();
