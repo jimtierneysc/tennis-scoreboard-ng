@@ -41,7 +41,7 @@
     });
 
     it('should have .scoreboardPath', function () {
-      expect(scoreboardPath).toEqual('match_score_board');
+      expect(scoreboardPath).toEqual('match_scoreboard');
     });
 
     it('should have .authHeaderName', function () {

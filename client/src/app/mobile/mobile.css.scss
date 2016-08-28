@@ -1,0 +1,7 @@
+// Prevent problem with bootstrap modal zooming page
+//http://stackoverflow.com/questions/32675849/screen-zooms-in-when-a-bootstrap-modal-is-opened-on-ios-9-safari
+
+.modal-open {
+  overflow-y: auto;
+  padding-right: 0 !important
+}

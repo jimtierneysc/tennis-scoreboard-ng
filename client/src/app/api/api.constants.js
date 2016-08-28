@@ -9,7 +9,7 @@
     .constant('playersPath', 'players')
     .constant('teamsPath', 'teams')
     .constant('matchesPath', 'matches')
-    .constant('scoreboardPath', 'match_score_board')
+    .constant('scoreboardPath', 'match_scoreboard')
     .constant('authHeaderName', 'Authorization');
 
 })();

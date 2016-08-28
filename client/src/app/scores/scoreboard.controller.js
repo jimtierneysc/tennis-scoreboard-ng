@@ -129,7 +129,7 @@
         }
 
         params.action = action;
-        return {match_score_board: params};
+        return {match_scoreboard: params};
       }
     }
 

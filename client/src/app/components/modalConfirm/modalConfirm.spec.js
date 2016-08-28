@@ -34,7 +34,7 @@
 
       it('should call $uibModal.open()', function () {
         var fakeOpen = function (settings) {
-          expect(settings.resolve.data).toEqual(labels);
+          expect(settings.resolve.labels).toEqual(labels);
           return {}
         };
         spyOn($uibModal, 'open').and.callFake(fakeOpen);
@@ -127,8 +127,8 @@
         expect(vm).not.toEqual(null);
       });
 
-      it('should have .data', function () {
-        expect(vm.data).toEqual(labels);
+      it('should have .labels', function () {
+        expect(vm.labels).toEqual(labels);
       });
 
       it('should have .ok()', function () {

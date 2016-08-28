@@ -8,8 +8,7 @@
 
 (function () {
   'use strict';
-
-
+  
   angular
     .module('frontendComponents')
     .factory('modalConfirm', factory);
@@ -39,26 +38,26 @@
       return open(labels).result; // promise
     }
 
-    function open(labels) {
+    function open(customLabels) {
       var settings = angular.copy(modalSettings);
-      settings.resolve = {data: angular.extend({}, defaultLabels, labels || {})};
+      settings.resolve = {labels: angular.extend({}, defaultLabels, customLabels || {})};
 
       return $uibModal.open(settings);
     }
   }
 
   /** @ngInject */
-  function Controller($uibModalInstance, data) {
+  function Controller($uibModalInstance, labels) {
     var vm = this;
-    vm.data = data;
-    vm.ok = closeFunc;
-    vm.cancel = cancelFunc;
+    vm.labels = labels;
+    vm.ok = ok;
+    vm.cancel = cancel;
 
-    function closeFunc(closeMessage) {
+    function ok(closeMessage) {
       $uibModalInstance.close(closeMessage);
     }
 
-    function cancelFunc(dismissMessage) {
+    function cancel(dismissMessage) {
       if (angular.isUndefined(dismissMessage)) {
         dismissMessage = 'cancel';
       }

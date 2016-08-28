@@ -1,17 +1,17 @@
 <header class="modal-header">
   <div class="modal-title">
-    {{vm.data.title}}
+    {{vm.labels.title}}
   </div>
 </header>
 <article class="modal-body">
-  {{vm.data.text}}
+  {{vm.labels.text}}
 </article>
 <footer class="modal-footer centered">
   <button class="btn btn-primary" ng-click="vm.ok()">
-    {{vm.data.ok}}
+    {{vm.labels.ok}}
   </button>
   <button class="btn btn-default" autofocus ng-click="vm.cancel()">
-    {{vm.data.cancel}}
+    {{vm.labels.cancel}}
   </button>
 </footer>
 

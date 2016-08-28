@@ -277,7 +277,7 @@
 
         function startNextGameParams(id) {
           return {
-            match_score_board: {
+            match_scoreboard: {
               player: id,
               action: 'start_game',
               version: 100
@@ -292,7 +292,7 @@
 
           function addParams(action) {
             params[action] = {
-              match_score_board: {
+              match_scoreboard: {
                 player: playerId,
                 action: action,
                 version: 100
@@ -336,7 +336,7 @@
 
           function addParams(action) {
             params[action] = {
-              match_score_board: {
+              match_scoreboard: {
                 team: 200,
                 action: action,
                 version: 100
@@ -630,7 +630,7 @@
           it('should not change score board', function () {
             expect(vm.view.keepingScore).toBeFalsy();
           });
-          
+
         });
 
         describe('when logged in', function () {
@@ -955,7 +955,7 @@
       _this.respondWithDataError = false;
       _this.params = null;
       _this.lastAction = function () {
-        return _this.params ? _this.params.match_score_board.action : null;
+        return _this.params ? _this.params.match_scoreboard.action : null;
       };
 
       _this.getResource = function () {
