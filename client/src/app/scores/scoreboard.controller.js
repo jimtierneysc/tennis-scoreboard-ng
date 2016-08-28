@@ -184,7 +184,7 @@
       view.storeSettings = storeSettings;
       view.settings = {
         showGames: false,
-        keepScore: false,
+        keepScore: true,
         showDescription: false
       };
 
