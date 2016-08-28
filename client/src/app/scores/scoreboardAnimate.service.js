@@ -16,10 +16,10 @@
   function factory(animationTimers) {
 
     return {
-      animateAction: function(sb, action, param) {
+      animateAction: function (sb, action, param) {
         return new Animations(sb, animationTimers).animateAction(action, param);
       },
-      animateKeepScore: function(sb, keepScore) {
+      animateKeepScore: function (sb, keepScore) {
         return new Animations(sb, animationTimers).animateKeepScore(keepScore);
       }
     }
@@ -36,12 +36,12 @@
 
     // Hide and show elements while changing the mode between keeping score and
     // following score.
-    this.animateKeepScore = function(keepScore) {
+    this.animateKeepScore = function (keepScore) {
       return {
-        hideChanging: function() {
+        hideChanging: function () {
           keepScoreHideChanging(keepScore);
         },
-        hideChanged: function() {
+        hideChanged: function () {
           keepScoreHideChanged(!keepScore);
         },
         showChanged: showChanged,
@@ -50,12 +50,12 @@
     };
 
     // Hide and show elements while posting an action, like win_game
-    this.animateAction = function(action, param) {
+    this.animateAction = function (action, param) {
       return {
-        hideChanging: function() {
+        hideChanging: function () {
           actionHideChanging(action, param);
         },
-        hideChanged: function() {
+        hideChanged: function () {
           actionHideChanged(action, param)
         },
         showChanged: showChanged,
@@ -74,24 +74,15 @@
       if (transitions.winningSet)
         list.add('Result', sb.matchFlags);
 
-      if (sb.currentGame && sb.currentSet) {
-<<<<<<< HEAD
-        
-=======
-
-        // Add animation class now.  Need it for actionHideChanged.
-        list.add('WinButton', sb.currentGame, false);
-
->>>>>>> 5409ee6f2e16e56212a9013d78ca96c5acc38e19
+      if (sb.currentGame && sb.currentSet)
         if (transitions.winningGame && !transitions.winningSet)
           list.add('Title', sb.currentGame);
 
-        if (transitions.winningGame)
-          list.add('Result', sb.currentSet);
+      if (transitions.winningGame)
+        list.add('Result', sb.currentSet);
 
-        if (transitions.startingGame && sb.firstServers)
-          list.add('ServersForm', sb.currentGame);
-      }
+      if (transitions.startingGame && sb.firstServers)
+        list.add('ServersForm', sb.currentGame);
 
       enableAnimation(list);
       // Allow ng-class of elements to apply before hiding elements
@@ -299,4 +290,5 @@
     }
   }
 
-})();
+})
+();
