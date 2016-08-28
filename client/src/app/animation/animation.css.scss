@@ -1,34 +1,26 @@
-$default_speed: 3s;
+$default_speed: .20s;
 
 @mixin ease_in_out($speed:$default_speed) {
   transition: $speed ease-in-out all;
   -webkit-transition: all $speed ease-in-out;
 }
 
+// Slight animation when enter a new view
 
-// view animations
-
-.view-animate.ng-enter,
-.xview-animate.ng-leave {
+.view-animation.ng-enter {
   @include ease_in_out;
 }
 
-.view-animate.ng-enter {
-  opacity: .5;
+.view-animation.ng-enter {
+  opacity: .8;
 }
 
-.view-animate.ng-enter-active {
+.view-animation.ng-enter-active {
   opacity: 1;
 }
 
-.xview-animate.ng-leave {
-  opacity: 1;
-}
 
-.view-animate.ng-leave-active {
-  opacity: 0;
-}
-
+// Animation for hiding and showing elements such as forms and scores
 
 .standard-animation.ng-enter,
 .standard-animation.ng-leave {

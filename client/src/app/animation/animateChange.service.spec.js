@@ -4,7 +4,6 @@
   describe('animateChange service', function () {
 
     var service;
-    var $timeout;
     var animationTimers;
     var $rootScope;
     var $q;
@@ -30,9 +29,8 @@
 
     beforeEach(function () {
 
-      inject(function (_$q_, _animateChange_, _$timeout_, _animationTimers_, _$rootScope_) {
+      inject(function (_$q_, _animateChange_, _animationTimers_, _$rootScope_) {
         service = _animateChange_;
-        $timeout = _$timeout_;
         animationTimers = _animationTimers_;
         $rootScope = _$rootScope_;
         $q = _$q_;

@@ -3,6 +3,6 @@
 
   angular
     .module('frontendAnimation')
-    .constant('animationIntervals', {in: 3000, out: 3000});
+    .constant('animationIntervals', {in: 200, out: 200});
 
 })();
