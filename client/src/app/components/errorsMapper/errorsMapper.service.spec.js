@@ -43,8 +43,8 @@
     });
 
     it('should cleanup prefix', function () {
-      var value = {remove_underbars: ['one'], remove_underbars_and_id: 'two'}
-      var expected = {other: ['Remove underbars one', 'Remove underbars and two']}
+      var value = {remove_underbars: ['one'], remove_underbars_and_id: 'two'};
+      var expected = {other: ['Remove underbars one', 'Remove underbars and two']};
       expect(service(value)).toEqual(expected);
     });
 

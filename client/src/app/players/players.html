@@ -4,7 +4,7 @@
     new-entity="vm.newEntity"
     entity-List="vm.entityList"
   >
-    <list>
+    <main>
       <!--Player list-->
       <li class="list-group-item standard-animation" ng-repeat="entity in vm.entityList.entitys">
         <fe-crud-row
@@ -12,27 +12,27 @@
           entity-list="vm.entityList"
           entity="entity"
         >
-          <entity>
+          <main>
             <div class="h4">
               {{ entity.name}}
             </div>
-          </entity>
-          <edit>
+          </main>
+          <section>
             <fe-players-form
               vm="vm.editEntity"
             >
             </fe-players-form>
-          </edit>
+          </section>
         </fe-crud-row>
       </li>
-    </list>
+    </main>
 
-    <new>
+    <section>
       <fe-players-form
         vm="vm.newEntity"
       >
       </fe-players-form>
-    </new>
+    </section>
 
   </fe-crud-page>
 </div>

@@ -106,7 +106,7 @@ $side_margin: 30px;
 
 }
 
-// override with minumum size
+// override with minimum size
 @media only screen and (max-width: $table_min_width + $side_margin) {
   .score-panel {
     width: $table_min_width;
@@ -134,8 +134,8 @@ $side_margin: 30px;
 
 @mixin hide-overflow-padding {
   @include hide-overflow;
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .game-col-3 {
@@ -161,8 +161,6 @@ $side_margin: 30px;
   -webkit-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
-  -ms-filter: fliph; /*IE*/
-  filter: fliph; /*IE*/
 }
 
 // Display a score in a green ellipse
@@ -210,14 +208,14 @@ div.current-server-right {
   text-align: left;
 }
 
-// Custom grid sizes
-.col-xs-2-7 {
-  @include make-xs-column(2.7)
-}
-
-.col-xs-6-6 {
-  @include make-xs-column(6.6)
-}
+//// Custom grid sizes
+//.col-xs-2-7 {
+//  @include make-xs-column(2.7)
+//}
+//
+//.col-xs-6-6 {
+//  @include make-xs-column(6.6)
+//}
 
 .server-glyph-container-left
 {

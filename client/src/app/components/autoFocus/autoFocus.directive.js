@@ -11,7 +11,7 @@
 
   angular
     .module('frontendComponents')
-    .directive('feAutoFocus', directive)
+    .directive('feAutoFocus', directive);
 
   /** @ngInject */
   function directive($timeout) {

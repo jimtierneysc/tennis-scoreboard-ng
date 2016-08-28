@@ -21,8 +21,8 @@
       'entity-list="aentityList" ' +
       'new-entity="anewEntity" ' +
       '>' +
-      '<new>new content</new>' +
-      '<list>list content</list>' +
+      '<section>new content</section>' +
+      '<main>list content</main>' +
       '</fe-crud-page>');
 
 

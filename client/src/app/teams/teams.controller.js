@@ -109,7 +109,7 @@
           },
           function () {
             vm.playerOptionsList.list = [];
-            $log.error('playerOptionsList')
+            $log.error('playerOptionsList');
             return $q.resolve();
           }
         );

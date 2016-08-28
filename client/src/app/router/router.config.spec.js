@@ -9,7 +9,7 @@
 
     (function () {
       var stateDescriptions = {
-        home: {url: '/', noResponse: true},
+        home: {url: '/', noResponse: true, view: 'home'},
         players: {},
         teams: {},
         matches: {},
@@ -28,6 +28,7 @@
           templateUrl: value.templateUrl || 'app/' + key + '/' + key + '.html',
           controllerAs: 'vm',
           response: !value.noResponse,
+          view: value.view || 'content',
           controller:
           value.controller || key.charAt(0).toUpperCase() + key.slice(1) + 'Controller'
         }
@@ -61,14 +62,14 @@
 
           it('should match templateUrl', function () {
             if (state.views)
-              expect(state.views.content.templateUrl).toEqual(value.templateUrl);
+              expect(state.views[value.view].templateUrl).toEqual(value.templateUrl);
             else
               expect(state.templateUrl).toEqual(value.templateUrl);
           });
 
           it('should match controller', function () {
             if (state.views)
-              expect(state.views.content.controller).toEqual(value.controller);
+              expect(state.views[value.view].controller).toEqual(value.controller);
             else
               expect(state.controller).toEqual(value.controller);
           });
@@ -167,7 +168,7 @@
         methods = {
           query: queryResource,
           get: getResource
-        }
+        };
       else
         methods = {
           query: queryResourceError,

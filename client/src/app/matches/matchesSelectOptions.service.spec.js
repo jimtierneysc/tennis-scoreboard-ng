@@ -46,21 +46,21 @@
     });
 
     describe('request failure', function () {
-      var failed = false;
+      var failed;
       beforeEach(function () {
         $httpBackend.expect('GET', path).respond(500);
         service().then(
           function() {
           },
-          function(value) {
-            failed = value;
+          function() {
+            failed = true;
           });
         $httpBackend.flush();
         $rootScope.$digest();
       });
 
       it('should call failure function', function () {
-        expect(failed).toBeTruthy;
+        expect(failed).toBeTruthy();
       })
     });
 

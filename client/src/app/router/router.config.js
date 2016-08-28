@@ -19,7 +19,7 @@
         url: '/',
         views: {
           'header': header,
-          'content': {
+          'home': {
             templateUrl: 'app/home/home.html',
             controller: 'HomeController',
             controllerAs: 'vm',
@@ -124,7 +124,6 @@
       return makeGetPromise($injector, scoreboardPath, $stateParams.id);
     }
 
-
     // Return promise
     function makeDiscardEditsPromise($injector, makeNestedPromise) {
       return $injector.invoke(makePromise);
@@ -160,7 +159,7 @@
           },
           function (response) {
             $log.error('data error ' + response.status + " " + response.statusText);
-            // Resolved even if error making http request
+            // Resolve even if an error occurs when making http request
             deferred.resolve(response);
           }
         );

@@ -604,7 +604,7 @@
     function getSelectOptions(list) {
       var deferred = $q.defer();
       if (_this.reject)
-        deferred.reject()
+        deferred.reject();
       else
         deferred.resolve(list);
       return deferred.promise;

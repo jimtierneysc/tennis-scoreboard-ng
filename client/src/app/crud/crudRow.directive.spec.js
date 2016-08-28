@@ -14,7 +14,7 @@
       scope = $rootScope.$new();
       scope.aentityList = {};
       scope.aeditEntity = {};
-      scope.aentity = {}
+      scope.aentity = {};
 
       var html = ('<fe-crud-row ' +
       'vm="avm" ' +
@@ -22,8 +22,8 @@
       'edit-entity="aeditEntity" ' +
       'entity-list="aentityList" ' +
       '>' +
-        '<entity>entity content</entity>' +
-        '<edit>edit content</edit>' +
+        '<main>entity content</main>' +
+        '<section>edit content</section>' +
       '</fe-crud-row>');
 
       element = angular.element(html);

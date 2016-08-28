@@ -329,7 +329,7 @@
           });
 
           it('should be showing form', function () {
-            expect(vm.newEntity.showingForm()).toBeTruthy;
+            expect(vm.newEntity.showingForm()).toBeTruthy();
           });
 
           it('should set .newEntity', function () {

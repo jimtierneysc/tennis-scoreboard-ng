@@ -5,7 +5,7 @@
     new-entity="vm.newEntity"
     entity-List="vm.entityList"
   >
-    <list>
+    <main>
       <!--Match list-->
       <li class="list-group-item standard-animation" ng-repeat="entity in vm.entityList.entitys">
         <fe-crud-row
@@ -13,7 +13,7 @@
           entity-list="vm.entityList"
           entity="entity"
         >
-          <entity>
+          <main>
             <div class="h4">
                 <span ng-if="entity.title">
                 {{ entity.title}}
@@ -30,32 +30,32 @@
               <fe-match-state match="entity"></fe-match-state>
             </div>
 
-          </entity>
-          <edit>
+          </main>
+          <section>
             <fe-matches-form
               vm="vm.editEntity"
               players-list="vm.playerOptionsList"
               teams-list="vm.teamOptionsList"
             >
             </fe-matches-form>
-          </edit>
+          </section>
 
-          <links>
+          <nav>
             <a ui-sref="scores.board({ id: entity.id })">Score
             </a>
-          </links>
+          </nav>
         </fe-crud-row>
       </li>
-    </list>
+    </main>
 
-    <new>
+    <section>
       <fe-matches-form
         vm="vm.newEntity"
         players-list="vm.playerOptionsList"
         teams-list="vm.teamOptionsList"
       >
       </fe-matches-form>
-    </new>
+    </section>
 
   </fe-crud-page>
 </div>

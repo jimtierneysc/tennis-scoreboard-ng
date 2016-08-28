@@ -4,7 +4,7 @@
     new-entity="vm.newEntity"
     entity-List="vm.entityList"
   >
-    <list>
+    <main>
       <!--Team list-->
       <li class="list-group-item standard-animation" ng-repeat="entity in vm.entityList.entitys">
         <fe-crud-row
@@ -12,7 +12,7 @@
           entity-list="vm.entityList"
           entity="entity"
         >
-          <entity>
+          <main>
             <div class="h4">
               <span ng-if="entity.name">{{ entity.name}}</span>
               <span ng-if="!entity.name">(unnamed)</span>
@@ -21,25 +21,25 @@
               {{ entity.first_player.name}} and {{ entity.second_player.name }}
             </div>
 
-          </entity>
-          <edit>
+          </main>
+          <section>
             <fe-teams-form
               vm="vm.editEntity"
               players-list="vm.playerOptionsList"
             >
             </fe-teams-form>
-          </edit>
+          </section>
         </fe-crud-row>
       </li>
-    </list>
+    </main>
 
-    <new>
+    <section>
       <fe-teams-form
         vm="vm.newEntity"
         players-list="vm.playerOptionsList"
       >
       </fe-teams-form>
-    </new>
+    </section>
 
   </fe-crud-page>
 

@@ -103,8 +103,7 @@
         $stateParams: {id: scoresResponse.id},
         crudResource: mockResource
       };
-      var result = $controller('ScoreboardController', locals);
-      return result;
+      return $controller('ScoreboardController', locals);
     }
 
     describe('members', function () {
@@ -626,7 +625,7 @@
 
           it('should show toast', function () {
             expect(vm).toHaveToast();
-          })
+          });
 
           it('should not change score board', function () {
             expect(vm.view.keepingScore).toBeFalsy();
@@ -745,7 +744,7 @@
             beforeEach(function () {
               view.settings.keepScore = false;
               view.loggedInChanged();
-              $rootScope.$digest;
+              $rootScope.$digest();
             });
 
             it('should not show new game', function () {

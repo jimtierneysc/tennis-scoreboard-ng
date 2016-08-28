@@ -17,11 +17,8 @@
   top: 50%;
   left: 50%;
   border: 1px solid green;
-  //border: 1px solid rgb(204,204,204);
   border-left-color: rgb(0,0,0);
   border-radius: 974px;
-  -o-border-radius: 974px;
-  -ms-border-radius: 974px;
   -webkit-border-radius: 974px;
   -moz-border-radius: 974px;
 }
@@ -32,7 +29,6 @@
   width: 49px;
   animation: cssload-rotate 1150ms linear infinite;
   -o-animation: cssload-rotate 1150ms linear infinite;
-  -ms-animation: cssload-rotate 1150ms linear infinite;
   -webkit-animation: cssload-rotate 1150ms linear infinite;
   -moz-animation: cssload-rotate 1150ms linear infinite;
 }
@@ -44,7 +40,6 @@
   width: 43px;
   animation: cssload-rotate 1150ms linear infinite;
   -o-animation: cssload-rotate 1150ms linear infinite;
-  -ms-animation: cssload-rotate 1150ms linear infinite;
   -webkit-animation: cssload-rotate 1150ms linear infinite;
   -moz-animation: cssload-rotate 1150ms linear infinite;
 }
@@ -56,7 +51,6 @@
   width: 55px;
   animation: cssload-rotate 2300ms linear infinite;
   -o-animation: cssload-rotate 2300ms linear infinite;
-  -ms-animation: cssload-rotate 2300ms linear infinite;
   -webkit-animation: cssload-rotate 2300ms linear infinite;
   -moz-animation: cssload-rotate 2300ms linear infinite;
 }

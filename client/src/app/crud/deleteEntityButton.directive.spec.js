@@ -13,7 +13,7 @@
 
       scope = $rootScope.$new();
       scope.adelete = jasmine.createSpy('onCancel');
-      scope.aentity = {name: 'xxx'}
+      scope.aentity = {name: 'xxx'};
 
       var html = ('<fe-delete-entity-button ' +
       'entity="aentity" ' +

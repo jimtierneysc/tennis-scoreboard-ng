@@ -97,7 +97,7 @@
 
     function backendExpectData(verb, id, fn, code, data) {
       code = code || 200;
-      $httpBackend.expect(verb, makePath(id)).respond(200, data);
+      $httpBackend.expect(verb, makePath(id)).respond(code, data);
       var result = null;
       fn(makeKey(id), data,
         function (response) {

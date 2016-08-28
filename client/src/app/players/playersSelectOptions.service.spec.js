@@ -52,15 +52,15 @@
         service().then(
           function() {
           },
-          function(value) {
-            failed = value;
+          function() {
+            failed = true;
           });
         $httpBackend.flush();
         $rootScope.$digest();
       });
 
       it('should call fail function', function () {
-        expect(failed).toBeTruthy;
+        expect(failed).toBeTruthy();
       })
     });
 

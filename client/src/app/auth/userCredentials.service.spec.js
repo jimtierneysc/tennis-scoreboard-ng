@@ -172,7 +172,7 @@
 
         inject(function ($rootScope) {
           scope = $rootScope.$new();
-          changed = jasmine.createSpy('dummy')
+          changed = jasmine.createSpy('dummy');
           service.subscribeChanged(scope, changed);
         })
       });

@@ -78,7 +78,7 @@
           ok = true;
         });
         btns[0].click();
-        $rootScope.$digest;
+        $rootScope.$digest();
         expect(ok).toBeTruthy();
       });
 
@@ -92,7 +92,7 @@
           }
         );
         btns[1].click();
-        $rootScope.$digest;
+        $rootScope.$digest();
         expect(cancel).toBeTruthy();
       });
 

@@ -18,9 +18,9 @@
     var directive = {
       restrict: 'E',
       transclude: {
-        'edit': 'edit',
-        'entity': 'entity',
-        'links': '?links'
+        'edit': 'section',
+        'entity': 'main',
+        'links': '?nav'
       },
       templateUrl: 'app/crud/crudRow.html',
       scope: {

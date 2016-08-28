@@ -18,8 +18,8 @@
     var directive = {
       restrict: 'E',
       transclude: {
-        'new': 'new',
-        'list': 'list'
+        'new': 'section',
+        'list': 'main'
       },
       templateUrl: 'app/crud/crudPage.html',
       scope: {

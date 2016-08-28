@@ -171,7 +171,7 @@
             vm.playerOptionsList.list = list;
           },
           function () {
-            $log.error('playerOptionsList')
+            $log.error('playerOptionsList');
             vm.playerOptionsList.list = [];
             return $q.resolve();
           }

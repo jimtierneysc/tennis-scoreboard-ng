@@ -80,7 +80,7 @@
             expect(errorsOfResponse).toEqual({other: ['Unexpected error']});
           });
         });
-      })
+      });
 
       describe('.clearErrors()', function () {
 

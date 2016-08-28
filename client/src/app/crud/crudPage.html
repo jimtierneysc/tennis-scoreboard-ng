@@ -1,44 +1,46 @@
-<div class="row col-xs-12 col-md-8">
-  <div ng-if="loading.loading || loading.failed">
-    <fe-loading-messages
-      loading="loading"
-    ></fe-loading-messages>
-  </div>
-
-
-  <div ng-if="!loading.loading && !loading.failed">
-    <div ng-if="newEntity.allow()" class="standard-animation">
-      <button ng-disabled="newEntity.showing" class="btn btn-primary " ng-click="newEntity.show()">
-        <span class="glyphicon glyphicon-plus"></span> <span class="text-capitalize">{{entityList.kind}}</span>
-      </button>
+<div class="row">
+  <div class="col-xs-12 col-md-10 col-lg-8">
+    <div ng-if="loading.loading || loading.failed">
+      <fe-loading-messages
+        loading="loading"
+      ></fe-loading-messages>
     </div>
 
-    <div ng-if="entityList.entitys.length == 0 && !newEntity.showing">
-      <fe-empty-list-message
-        logged-in="vm.loggedIn"
-        kind="entityList.kind"
-      ></fe-empty-list-message>
-    </div>
+    <div ng-if="!loading.loading && !loading.failed">
+      <div ng-if="newEntity.allow()" class="standard-animation">
+        <button ng-disabled="newEntity.showing" class="btn btn-primary " ng-click="newEntity.show()">
+          <span class="glyphicon glyphicon-plus"></span> <span class="text-capitalize">{{entityList.kind}}</span>
+        </button>
+      </div>
 
-    <div>
+      <div ng-if="entityList.entitys.length == 0 && !newEntity.showing">
+        <fe-empty-list-message
+          logged-in="vm.loggedIn"
+          kind="entityList.kind"
+        ></fe-empty-list-message>
+      </div>
 
-      <ol class="list-group">
+      <div>
 
-        <!--New entity-->
-        <li class="list-group-item standard-animation" ng-if="newEntity.showingForm()">
-          <div class="row">
-            <div class="col-xs-10 col-md-8">
-              <div ng-transclude="new">
+        <ol class="list-group">
+
+          <!--New entity-->
+          <li class="list-group-item standard-animation" ng-if="newEntity.showingForm()">
+            <div class="row">
+              <div class="col-xs-10 col-md-8">
+                <div ng-transclude="new">
+                </div>
               </div>
             </div>
-          </div>
 
-        </li>
+          </li>
 
-        <div ng-transclude="list"></div>
+          <!-- <div> is not valid under <ol> but <li> changes layout -->
+          <div ng-transclude="list"></div>
 
-      </ol>
+        </ol>
 
+      </div>
     </div>
   </div>
 </div>
