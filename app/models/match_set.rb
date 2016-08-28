@@ -1,10 +1,10 @@
-# Model for a set in a match.
-# #
-# A set may has a state: in progress and complete.
+# Model for a set in a match
 #
-# A match tiebreak is a special kind of set with only one game.
+# A set may has a state: in progress and complete
 #
-# A set has an ordinal.  The first set in the match has ordinal 1.
+# A match tiebreak is a special kind of set with only one game
+#
+# A set has an ordinal.  The first set in the match has ordinal 1
 #
 class MatchSet < ActiveRecord::Base
   has_many :set_games, dependent: :destroy
@@ -43,7 +43,7 @@ class MatchSet < ActiveRecord::Base
   end
 
   # Identify teams that can win set with one more game win
-  def near_team_winner? team
+  def near_team_winner?(team)
     unless completed?
       lookup = lookup_games_won
       first_won = lookup[match.first_team_id][0]
@@ -60,12 +60,12 @@ class MatchSet < ActiveRecord::Base
 
   def win_threshold
     case scoring.to_sym
-    when :six_game
-      6
     when :eight_game
       8
     when :ten_point
       1
+    else # :six_game
+      6
     end
   end
 

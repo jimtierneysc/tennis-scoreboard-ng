@@ -1,6 +1,9 @@
+# Application controller
+#
+# Base class for controllers
+#
 class ApplicationController < ActionController::API
   respond_to :json
-  rescue_from ::Exceptions::LoginRequired, with: :rescue_login_required
   rescue_from ::ActiveRecord::RecordNotFound, with: :rescue_record_not_found
   include ::ActionController::Serialization
 
@@ -14,10 +17,6 @@ class ApplicationController < ActionController::API
   include Authenticable
 
   protected
-
-  def rescue_login_required
-    render json: { errors: 'Login required' }, status: :forbidden
-  end
 
   def rescue_record_not_found
     render json: { errors: 'Record not found' }, status: :not_found

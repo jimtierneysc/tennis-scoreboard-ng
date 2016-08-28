@@ -1,14 +1,14 @@
 # Model for a game
 #
-# Every game is in a set.
+# Every game is in a set
 #
-# Every game has an ordinal.  The first game in the set has ordinal 1.
+# Every game has an ordinal.  The first game in the set has ordinal 1
 #
 # A game may have a winning team
 #
-# A tiebreak is a special kind of game that occurs at the end of a set.
+# A tiebreak is a special kind of game that occurs at the end of a set
 #
-# Normal games have a serving player.  Tiebreaks do not have a serving player.
+# Normal games have a serving player.  Tiebreaks do not have a serving player
 #
 class SetGame < ActiveRecord::Base
   belongs_to :match_set

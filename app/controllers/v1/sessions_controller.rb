@@ -1,3 +1,9 @@
+# Controller for a user session
+#
+# Validates credentials and returns authentication token
+#
+# Regenerates the authentication token
+#
 class V1::SessionsController < ApplicationController
 
   def create
@@ -15,7 +21,7 @@ class V1::SessionsController < ApplicationController
 
       render json: V1::SessionSerializer.new(user, root: false)
     else
-      render json: { errors: "Invalid username or password" }, status: 422
+      render json: { errors: 'Invalid username or password' }, status: 422
     end
   end
 

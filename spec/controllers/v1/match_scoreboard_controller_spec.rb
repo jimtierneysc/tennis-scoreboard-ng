@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'controllers/controllers_shared'
 
-RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
+RSpec.describe V1::MatchScoreboardController, { type: :controller } do
 
   let(:new_user) { FactoryGirl.create :user }
   let(:doubles_match) { FactoryGirl.create :doubles_match }
@@ -33,7 +33,7 @@ RSpec.describe V1::MatchScoreBoardController, { type: :controller } do
     def post_action(id, action, param = nil)
       params = { action: action }
       params.merge!(param) if param
-      post :update, id: id, match_score_board: params
+      post :update, id: id, match_scoreboard: params
     end
 
     context 'when authorized' do

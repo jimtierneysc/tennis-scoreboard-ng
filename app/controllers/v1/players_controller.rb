@@ -1,9 +1,15 @@
 # Controller for players
-# Renders a list of players.
+#
+# Renders a list of players
+#
 # Renders a single player
-# Creates a new player.
-# Updates a player.
-# Deletes a player.
+#
+# Creates a new player
+#
+# Updates a player
+#
+# Deletes a player
+#
 class V1::PlayersController < ApplicationController
   before_action :authorize_user!, only: [:update, :create, :destroy]
   before_action :set_player, only: [:show, :update, :destroy]

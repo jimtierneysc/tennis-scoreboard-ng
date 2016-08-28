@@ -1,9 +1,15 @@
-# Controller for matches.
-# Renders a list of matches.
-# Renders a single match.
-# Creates new doubles matches and new singles matches.
-# Updates a match.
-# Deletes a match.
+# Controller for matches
+#
+# Renders a list of matches
+#
+# Renders a single match
+#
+# Creates new doubles matches and new singles matches
+#
+# Updates a match
+#
+# Deletes a match
+#
 class V1::MatchesController < ApplicationController
   before_action :authorize_user!, only: [:create, :update, :destroy]
   before_action :set_match, only: [:show, :update, :destroy]

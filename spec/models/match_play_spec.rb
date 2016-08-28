@@ -176,8 +176,8 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
     context 'single set match' do
       subject do
-        FactoryGirl.build(:play_singles_match, scoring: :one_eight_game,
-                          scores: [[8, 0]])
+        FactoryGirl.build(:play_singles_match,
+                          scoring: :two_six_game_ten_point, scores: [[6, 0], [0, 6]])
       end
 
       it_behaves_like 'a match with complete set'
@@ -598,6 +598,20 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
     end
 
+  end
+
+  describe '#compute_team_winner' do
+    context 'match complete' do
+      subject do
+        FactoryGirl.build(:play_singles_match, scoring: :one_eight_game,
+                          scores: [[8, 0]])
+      end
+
+      it 'should have winner' do
+        expect(subject.compute_team_winner).to eql subject.team_winner
+      end
+
+    end
   end
 
   describe 'near winners' do

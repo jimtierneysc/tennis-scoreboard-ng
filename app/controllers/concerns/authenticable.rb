@@ -8,10 +8,10 @@ module Authenticable
   def authorize_user!
     if header_token.blank?
       # Anonymous users can't request current user
-      render json: { errors: "Login required" }, status: :forbidden
+      render json: { errors: 'Login required' }, status: :forbidden
     else
       # Token may be invalid
-      render json: { errors: "Not authorized" }, status: :unauthorized unless user_signed_in?
+      render json: { errors: 'Not authorized' }, status: :unauthorized unless user_signed_in?
     end
   end
 

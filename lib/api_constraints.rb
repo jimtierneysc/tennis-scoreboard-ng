@@ -4,7 +4,18 @@ class ApiConstraints
     @default = options[:default]
   end
 
+  PREFIX = 'application/tennis.scoreboard.v'
+
   def matches?(req)
-    @default || req.headers['Accept'].include?("application/tennis.scoreboard.v#{@version}")
+    accept = req.headers['Accept']
+    if accept.nil?
+      @default
+    else
+      if @default && !accept.include?(PREFIX)
+        true
+      else
+        accept.include?("#{PREFIX}#{@version}")
+      end
+    end
   end
 end

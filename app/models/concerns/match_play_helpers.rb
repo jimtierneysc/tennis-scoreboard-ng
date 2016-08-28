@@ -1,5 +1,12 @@
+# Match Play Helpers
+#
+# Classes to play a match
+#
+# Classes to validate a match
+#
 module MatchPlayHelpers
 
+  # Class to start a match, start a game, win a game, etc.
   class PlayMethods
 
     def initialize(match)
@@ -70,7 +77,7 @@ module MatchPlayHelpers
       start_next_helper.start_game?
     end
 
-    def start_game! player_server = nil
+    def start_game!(player_server = nil)
       if player_server
         update_first_or_second_player_server!(player_server)
       end
@@ -193,8 +200,6 @@ module MatchPlayHelpers
           # If multiple sets, then last set must be in complete state
           match.last_set.completed?
         else
-          # If only one set then don't make user complete it.  Can just
-          # complete match.
           true
         end
       end
@@ -357,7 +362,8 @@ module MatchPlayHelpers
     end
 
 
-    # Class to remove last state change
+    # Class to remove last state change.  For example, after a game has been started, this
+    # class will remove the game.
     class RemoveLastScoringChange
       def initialize(match)
         @match = match
@@ -389,23 +395,18 @@ module MatchPlayHelpers
       def remove_last_set_change(last_set_var)
         if last_set_var.team_winner
           remove_last_set_complete(last_set_var)
-        elsif last_set_var.ordinal == 1 && last_set_var.set_games.count == 0
+        elsif last_set_var.set_games.count == 0
+          # First set may have zero games.  Other sets always start with one.
           undo_start_match(last_set_var)
-        elsif last_set_var.last_game
-          remove_last_game_change(last_set_var.last_game)
         else
-          # Undo start set
-          destroy_list << last_set_var
+          remove_last_game_change(last_set_var.last_game)
         end
       end
 
       def remove_last_set_complete(last_set_var)
         last_set_var.team_winner = nil
         save_list << last_set_var
-        # if match.min_sets_to_play == 1
-        #   # only one set, so remove one more change
         remove_last_game_change(last_set_var.last_game)
-        # end
       end
 
       def undo_start_match(last_set_var)
@@ -525,7 +526,8 @@ module MatchPlayHelpers
       end
 
 
-      # Class to manage first servers
+      # Class to manage first servers.  At the beginning of a match a particular
+      # player must server first.
       class PlayerServersHelper
         def initialize(match)
           @match = match
@@ -606,8 +608,6 @@ module MatchPlayHelpers
       end
 
       def win_tiebreak?
-        # last_set_var = match.last_set
-        # last_set_var && !last_set_var.tiebreak? &&
         win_game_kind?(:tiebreak)
       end
 

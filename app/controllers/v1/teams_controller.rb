@@ -1,9 +1,15 @@
 # Controller for teams
-# Renders a list of teams.
-# Renders a single team.
-# Creates a new team.
-# Updates a team.
-# Deletes a team.
+#
+# Renders a list of teams
+#
+# Renders a single team
+#
+# Creates a new team
+#
+# Updates a team
+#
+# Deletes a team
+#
 class V1::TeamsController < ApplicationController
   before_action :authorize_user!,  only: [:update, :create, :destroy]
   before_action :set_team, only: [:show, :update, :destroy]
@@ -23,7 +29,7 @@ class V1::TeamsController < ApplicationController
   # POST /teams.json
   def create
     json = team_params
-    json[:doubles] = true;
+    json[:doubles] = true
     @team = Team.new(json)
 
     if @team.save

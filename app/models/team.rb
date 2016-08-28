@@ -1,14 +1,14 @@
-# Model for a team.
+# Model for a team
 #
-# A team may be an opponent in a match.
+# A team may be an opponent in a match
 #
-# A team may be the winner of a game, a match or a set.
+# A team may be the winner of a game, a match or a set
 #
-# A doubles team has two players.
+# A doubles team has two players
 #
 # A singles team has one player.
 # Singles teams are created as needed to allow a
-# player to be an opponent in a match.
+# player to be an opponent in a match
 #
 class Team < ActiveRecord::Base
   belongs_to :first_player,
@@ -16,7 +16,7 @@ class Team < ActiveRecord::Base
   belongs_to :second_player,
              class_name: 'Player', foreign_key: :second_player_id
   before_validation { self.name = nil if self.name.blank? }
-  # rundendant
+  # redundant
   # validates :first_player_id, presence: true
   validates_uniqueness_of :name, allow_nil: true
   validate :that_is_valid_first_player
@@ -42,7 +42,7 @@ class Team < ActiveRecord::Base
   def that_can_destroy_team
     if team_in_match?
       errors.add :errors, 'Can\'t delete a team in a match'
-      return false # discard destroy
+      false # discard destroy
     end
   end
 

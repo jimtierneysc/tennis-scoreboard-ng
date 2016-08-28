@@ -1,13 +1,13 @@
-# Model for a player.
+# Model for a player
 #
-# A player may be on a doubles team or a singles team.
+# A player may be on a doubles team or a singles team
 #
 # A singles team is a special kind of team with only one player.
-# Singles teams represent players in singles matches.
+# Singles teams represent players in singles matches
 #
-# A player may be the first or second server in a match.
+# A player may be the first or second server in a match
 #
-# A player may be the server of a game.
+# A player may be the server of a game
 #
 class Player < ActiveRecord::Base
   validates :name, presence: true
@@ -36,7 +36,7 @@ class Player < ActiveRecord::Base
     clean_singles_team
     if on_any_team?
       errors.add :errors, 'Can\'t delete a player in a match or on a team'
-      return false
+      false
     end
   end
 

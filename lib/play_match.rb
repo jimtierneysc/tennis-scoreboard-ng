@@ -59,6 +59,7 @@ class PlayMatch
   end
 
   def start_set_game
+    # Starting set also starts first game
     match.play_match! :start_set
   end
 

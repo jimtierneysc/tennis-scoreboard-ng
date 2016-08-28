@@ -1,4 +1,4 @@
-class V1::MatchScoreBoardSerializer < V1::MatchSerializer
+class V1::MatchScoreboardSerializer < V1::MatchSerializer
   attributes :id, :title, :scoring, :doubles, :state, :winner, :sets, :actions, :errors, :servers,
              :near_winners
 
@@ -36,7 +36,7 @@ class V1::MatchScoreBoardSerializer < V1::MatchSerializer
 
   private
 
-  def add_near_winner team, set, result
+  def add_near_winner(team, set, result)
     if set.near_team_winner? team
       id = opponent_id team
       result[:set].push id

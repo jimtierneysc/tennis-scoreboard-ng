@@ -1,16 +1,16 @@
 # Model for a tennis match
 #
-# A match may be a singles match or a doubles match.
+# A match may be a singles match or a doubles match
 #
 # A match has two opponent teams.  The teams may be doubles teams, or
-# singles teams (a singles team has only one player).
+# singles teams (a singles team has only one player)
 #
 # A match may be in different states: not started, in progress,
-# and complete. Complete matches have a winner.
+# and complete. Complete matches have a winner
 #
 # A match may have first servers.  These are the players that serve
 # the first game or two.  For a singles match, there is one
-# first server; two for a doubles match.
+# first server; two for a doubles match
 #
 class Match < ActiveRecord::Base
   belongs_to :first_player_server,
@@ -61,7 +61,7 @@ class Match < ActiveRecord::Base
   #   Win the current set tiebreak.  A team parameter identifies the
   #   doubles team or singles team to win
   # :win_match_tiebreak
-  #   Win the current match tiebreak.  A team parameter identies the
+  #   Win the current match tiebreak.  A team parameter identifies the
   #   doubles team or singles team to win
   # === Options
   # [:version]
@@ -103,7 +103,7 @@ class Match < ActiveRecord::Base
   end
 
   # Can action be applied?
-  def play_match? action
+  def play_match?(action)
     methods = play_methods.lookup_method(action)
     if methods
       methods[:query].call
@@ -178,7 +178,7 @@ class Match < ActiveRecord::Base
       3
     when :one_eight_game
       1
-    when :three_six_game
+    else # :three_six_game
       3
     end
   end
@@ -206,7 +206,7 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def near_team_winner? team
+  def near_team_winner?(team)
     unless completed?
       sets_won(team) + 1 == min_sets_to_play
     end
@@ -218,7 +218,7 @@ class Match < ActiveRecord::Base
       ordinal == 3 ? :ten_point : :six_game
     when :one_eight_game
       :eight_game
-    when :three_six_game
+    else # :three_six_game
       :six_game
     end
   end

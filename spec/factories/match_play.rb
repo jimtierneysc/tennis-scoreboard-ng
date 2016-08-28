@@ -41,7 +41,6 @@ def after_build(subject, factory)
   end
   if factory.start_set_game
     PlayMatch.new(subject).start_set_game
-
   end
 end
 

@@ -1,7 +1,10 @@
-# Controller for  match scoreboard.
-# Renders the current state of the match.
-# Handles commands to change the state of the match.
-class V1::MatchScoreBoardController < ApplicationController
+# Controller for a match scoreboard
+#
+# Renders the current state of the match
+#
+# Handles commands to play the match
+#
+class V1::MatchScoreboardController < ApplicationController
   include MatchLoader
 
   rescue_from ::Exceptions::UnknownOperation, with: :when_unknown_operation
@@ -9,12 +12,12 @@ class V1::MatchScoreBoardController < ApplicationController
   before_action :set_match_eager_load, only: [:show, :update]
 
   def show
-    render json: V1::MatchScoreBoardSerializer.new(@match, root: false)
+    render json: V1::MatchScoreboardSerializer.new(@match, root: false)
   end
 
-  # POST change to score /match_score_board/1
+  # POST change to score /match_scoreboard/1
   def update
-    request_params = match_score_board_params
+    request_params = match_scoreboard_params
     action = request_params[:action].to_sym
     version = request_params[:version]
     team_id = request_params[:team]
@@ -40,8 +43,8 @@ class V1::MatchScoreBoardController < ApplicationController
     render json: { errors: exception.message }, status: :unprocessable_entity
   end
 
-  def match_score_board_params
-    params.require(:match_score_board).permit(:action,
+  def match_scoreboard_params
+    params.require(:match_scoreboard).permit(:action,
                                               :team,
                                               :player,
                                               :version)
@@ -53,17 +56,19 @@ class V1::MatchScoreBoardController < ApplicationController
       # TODO: Notify clients
       reload_match
     rescue ::Exceptions::UnknownOperation
+      # raise HTTP error
       raise
         # redundant
         # rescue ::ActiveRecord::RecordInvalid => e
         #   reload_match e.record.errors
     rescue => e
+      # render the scoreboard with an error
       reload_match ({ other: e.message })
     end
-    render json: V1::MatchScoreBoardSerializer.new(@match, root: false)
+    render json: V1::MatchScoreboardSerializer.new(@match, root: false)
   end
 
-  def reload_match errors=nil
+  def reload_match(errors=nil)
     @match = self.class.eager_load_match params[:id]
     @match.errors.messages.merge! errors if errors
   end

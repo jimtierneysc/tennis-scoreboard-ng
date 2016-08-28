@@ -9,8 +9,8 @@ Rails.application.routes.draw do
       resources :players, except: [:new, :edit]
       resources :teams, except: [:new, :edit]
       resources :matches, except: [:new, :edit]
-      resources :match_score_board, only: [:show]
-      post 'match_score_board/:id' => 'match_score_board#update'
+      resources :match_scoreboard, only: [:show]
+      post 'match_scoreboard/:id' => 'match_scoreboard#update'
     end
   end
 

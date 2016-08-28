@@ -6,33 +6,24 @@ module Request
   end
 
   module HeadersHelpers
-    # # TODO: Identify api version
-    # def api_header(version = 1)
-    #   request.headers['Accept'] = "application/tennis.v#{version}"
-    # end
-    #
-    # def api_response_format(format = Mime::JSON)
-    #   request.headers['Accept'] = "#{request.headers['Accept']},#{format}"
-    #   request.headers['Content-Type'] = format.to_s
-    # end
+    def api_accept_header_version(version = 1)
+      api_accept_header "application/tennis.scoreboard.v#{version}"
+    end
+
+    def api_accept_header(value)
+      request.headers['Accept'] = value
+    end
 
     def api_authorization_header(token)
       request.headers['Authorization'] = token
     end
 
     def include_default_accept_headers
-      api_header
       api_response_format
     end
 
-    private
-    # TODO: Identify api version
-    def api_header(version = 1)
-      # request.headers['Accept'] = "application/tennis.v#{version}"
-    end
-
+    # private
     def api_response_format(format = Mime::JSON)
-      request.headers['Accept'] = "#{request.headers['Accept']},#{format}"
       request.headers['Content-Type'] = format.to_s
     end
 
