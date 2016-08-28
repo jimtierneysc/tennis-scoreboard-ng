@@ -75,7 +75,14 @@
         list.add('Result', sb.matchFlags);
 
       if (sb.currentGame && sb.currentSet) {
+<<<<<<< HEAD
         
+=======
+
+        // Add animation class now.  Need it for actionHideChanged.
+        list.add('WinButton', sb.currentGame, false);
+
+>>>>>>> 5409ee6f2e16e56212a9013d78ca96c5acc38e19
         if (transitions.winningGame && !transitions.winningSet)
           list.add('Title', sb.currentGame);
 
