@@ -1,6 +1,6 @@
 {
   "name": "Tennis-scoreboard-ng",
-  "tagline": "Tennis Scoreboard Application using Rails API and AngularJS",
-  "body": "\r\n### Reports\r\n* Karma/Jasmine AngularJS\r\n  * [Specs](http://jimtierneysc.github.io/tennis-scoreboard-ng/karma/specs/report-summary-filename/index/html)\r\n  * [Coverage](http://jimtierneysc.github.io/tennis-scoreboard-ng/karma/coverage/index.html)\r\n* RSpec Rails\r\n  * [Specs](http://jimtierneysc.github.io/tennis-scoreboard-ng/rspec/coverage/index.html)\r\n  * [Coverage](http://jimtierneysc.github.io/tennis-scoreboard-ng/rspec/rspec_results.html)\r\n\r\n\r\n",
+  "tagline": "Tennis Scoreboard SPA",
+  "body": "### Summary\r\n\r\nProject to implement an SPA to keep score of tennis matches. The backend is\r\na Rails API application and the frontend is an AngularJS application.\r\n\r\n### Test Results\r\n\r\n[Jasmine Spec Summary](http://jimtierneysc.github.io/tennis-scoreboard-ng/karma/specs/report-summary-filename/index.html)\r\n\r\n[Jasmine Coverage Report](http://jimtierneysc.github.io/tennis-scoreboard-ng/karma/coverage/index.html)\r\n\r\n[RSpec Code Examples](http://jimtierneysc.github.io/tennis-scoreboard-ng/rspec/specs/rspec_results.html)\r\n\r\n[RSpec Coverage Report](http://jimtierneysc.github.io/tennis-scoreboard-ng/rspec/coverage/index.html)\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
