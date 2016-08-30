@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feMatchOpponentTeam
+ * @name frontendMatches:feMatchOpponentTeam
+ * @restrict E
  * @description
- * Display a team opponent in a match
+ * Display the name of a team in a match
  *
  */
 

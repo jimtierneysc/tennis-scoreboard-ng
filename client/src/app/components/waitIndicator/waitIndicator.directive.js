@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feWaitIndicator
+ * @restrict E
  * @description
  * Display animation while waiting
  *

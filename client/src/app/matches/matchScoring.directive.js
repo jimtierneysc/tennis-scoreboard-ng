@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feMatchScoring
+ * @name frontendMatches:feMatchScoring
+ * @restrict E
  * @description
- * Display how match is scored
+ * Display how the match is scored (e.g.; two sets of six)
  *
  */
 

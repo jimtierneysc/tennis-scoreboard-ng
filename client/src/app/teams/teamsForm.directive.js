@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feTeamsForm
+ * @name frontendTeams:feTeamsForm
+ * @restrict E
  * @description
- * Form for new player and editing player
+ * Form for adding a new team and editing an existing team
  *
  */
 

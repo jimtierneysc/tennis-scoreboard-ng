@@ -1,8 +1,8 @@
 /**
- * @ngdoc factory
- * @name authHelper
+ * @ngdoc service
+ * @name frontendAuth:authHelper
  * @description
- * Add authentication functionality to a controller
+ * Add authorization functionality to a controller
  *
  */
 (function () {
@@ -17,7 +17,23 @@
 
     return activate;
 
-    // Initialize controller
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf frontendAuth:authHelper
+     * @description
+     * Add members to a controller that support authorization:
+     * * loggedIn
+     * * userName
+     * * logOut()
+     *
+     * @param {Object} vm
+     * Controller instance
+     * @param {Object} scope
+     * Controller scope
+     * @param {Function} loggedInChanged
+     * Callback when login or logout
+     */
     function activate(vm, scope, loggedInChanged) {
       vm.loggedIn = userCredentials.loggedIn;
       vm.userName = userCredentials.userName;
@@ -26,7 +42,7 @@
         editInProgress.closeEditors().then(
           userCredentials.clearCredentials)
       };
-      
+
       userCredentials.subscribeChanged(scope, function () {
         vm.loggedIn = userCredentials.loggedIn;
         vm.userName = userCredentials.userName;

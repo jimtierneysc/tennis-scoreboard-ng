@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreStatus
+ * @restrict E
  * @description
  * Score status messages
  *

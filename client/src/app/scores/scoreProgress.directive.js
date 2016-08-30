@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreProgress
+ * @restrict E
  * @description
  * Score progress messages
  *

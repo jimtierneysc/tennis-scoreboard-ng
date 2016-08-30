@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableSetResult
+ * @restrict E
  * @description
  * Display the result of a set in the score table
  */

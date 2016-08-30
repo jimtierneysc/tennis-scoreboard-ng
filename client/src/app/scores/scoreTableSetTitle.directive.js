@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableSetTitle
+ * @restrict E
  * @description
  * Display title of a set in the score table
  */

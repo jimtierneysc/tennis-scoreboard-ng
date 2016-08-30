@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
  * @name fePlayersForm
+ * @restrict E
  * @description
- * Form for new player and edit player
+ * Form for adding a new player and editing an existing player
  *
  */
 

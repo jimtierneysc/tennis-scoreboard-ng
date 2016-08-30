@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name TeamsController
+ * @name frontendTeams:TeamsController
  * @description
  * Controller for displaying and editing teams
  *
@@ -18,10 +18,19 @@
 
     activate();
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf frontendTeams:TeamsController
+     * @description
+     * Initialize the controller:
+     * * Add playerOptionsList object
+     * * Call the crudHelper service with team-specific options.
+     */
     function activate() {
       vm.playerOptionsList = {list: null};
 
-      authHelper(vm, $scope);
+      // authHelper(vm, $scope);
       crudHelper(vm,
         {
           response: response,

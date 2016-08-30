@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @name validateCredentials
+ * @description
+ * Service to validate local user credentials by making a REST API request
+ *
+ */
 (function () {
   'use strict';
 
@@ -7,9 +14,21 @@
 
   /** @ngInject */
   function factory($http, $log, userResource, authHeaderName, $q) {
-    return validateCredentials;
+    return validate;
 
-    function validateCredentials(currentUser) {
+    /**
+     * @ngdoc function
+     * @name validate
+     * @methodOf validateCredentials
+     * @description
+     * Make a REST API request using the token.
+     * @param {Object} currentUser
+     * username and token
+     * @returns {Object} a promise
+     * * The promise is resolved with a valid username and token.
+     * * The promise is rejected if the token is not valid.
+     */
+    function validate(currentUser) {
       var deferred = $q.defer();
       if (currentUser) {
         $http.defaults.headers.common[authHeaderName] = currentUser.token;

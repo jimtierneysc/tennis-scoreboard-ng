@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name shortenName
  * @description
  * Shortens a full firstname and full lastname to full first name and last initial.

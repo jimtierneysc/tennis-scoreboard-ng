@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name modalConfirm
  * @description
  * Display a confirmation dialog box

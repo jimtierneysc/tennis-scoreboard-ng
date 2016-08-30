@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feDeleteEntityButton
+ * @name frontendCrud:feDeleteEntityButton
+ * @restrict E
  * @description
- * Button to delete player, match or team
+ * Button to delete an entity
  *
  */
 

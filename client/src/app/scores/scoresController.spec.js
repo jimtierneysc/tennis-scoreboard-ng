@@ -92,7 +92,6 @@
         vm = scoreController(sampleResponse);
         vm.selectedMatch = selected;
         vm.selectedMatchChange();
-        $timeout.flush();
       });
 
       it('should set params', function () {

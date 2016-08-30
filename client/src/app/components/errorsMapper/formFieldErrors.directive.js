@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feFormFieldErrors
+ * @restrict E
  * @description
  * Displays error messages in a form
  *

@@ -1,9 +1,8 @@
 /**
  * @ngdoc controller
- * @name PlayersController
+ * @name frontendPlayers:PlayersController
  * @description
  * Controller for displaying and editing players
- *
  */
 
 (function () {
@@ -20,8 +19,16 @@
 
     activate();
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf frontendPlayers:PlayersController
+     * @description
+     * Initialize the controller:
+     * * Call the crudHelper service with player-specific options.
+     */
     function activate() {
-      authHelper(vm, $scope);
+      // authHelper(vm, $scope);
       crudHelper(vm,
         {
           response: response,

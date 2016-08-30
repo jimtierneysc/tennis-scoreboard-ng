@@ -1,11 +1,10 @@
 /**
  * @ngdoc directive
  * @name feScoreCommands
+ * @restrict E
  * @description
  * Commands to change view
  *
- * @example:
- <fe-score-commands></fe-score-commands>
  */
 
 (function () {

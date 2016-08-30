@@ -1,11 +1,11 @@
 /**
  * @ngdoc directive
- * @name feMatchState
+ * @name frontendMatches:feMatchState
+ * @restrict E
  * @description
- * Displays whether match is in progress, complete or not started
+ * Displays a message about the state of the match (in progress, complete or not started)
  *
  */
-
 
 (function () {
   'use strict';

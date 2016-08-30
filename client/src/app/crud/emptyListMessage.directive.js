@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feEmptyListMessage
+ * @name frontendCrud:feEmptyListMessage
+ * @restrict E
  * @description
- * Displays a message about an empty list
+ * Displays a message about an empty entity list
  *
  */
 

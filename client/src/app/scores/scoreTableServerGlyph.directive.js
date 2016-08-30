@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableServerGlyph
+ * @restrict E
  * @description
  * Displays a glyph beside the current server
  */

@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feMatchOpponentTeamPlayers
+ * @name frontendMatches:feMatchOpponentTeamPlayers
+ * @restrict E
  * @description
- * Display the players on a team
+ * Display the two players on a team
  *
  */
 

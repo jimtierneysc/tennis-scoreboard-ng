@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableSelectServer
+ * @restrict E
  * @description
  * Select the server when starting a new game
  */

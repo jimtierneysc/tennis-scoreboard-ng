@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name toastrHelper
  * @description
  * Adds popup toast functionality to a controller

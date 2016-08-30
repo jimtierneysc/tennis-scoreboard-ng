@@ -1,9 +1,8 @@
 /**
  * @ngdoc service
- * @name matchesSelectOptions
+ * @name frontendMatches:matchesSelectOptions
  * @description
- * Provide a list of matches to populate a select list
- *
+ * Provides a list of matches to populate a select list
  */
 (function() {
   'use strict';
@@ -17,6 +16,18 @@
 
     return getSelectOptions;
 
+    /**
+     * @ngdoc function
+     * @name getSelectOptions
+     * @methodOf frontendMatches:matchesSelectOptions
+     * @description
+     * Makes a REST API request to retrieve a list of matches.
+     * Creates an array of match titles from the response.
+     *
+     * @returns {Object} promise
+     * * Resolved with an array when the REST API request succeeds
+     * * Rejected when the REST API request fails
+     */
     function getSelectOptions() {
       var deferred = $q.defer();
       crudResource.getResource(matchesPath).query(

@@ -1,11 +1,17 @@
 /**
  * @ngdoc service
- * @name teamsSelectOptions
+ * @name frontendTeams:teamsSelectOptions
  * @description
- * Provide list of teams for select list
+ * Provide a list of teams for populating a select list
  *
  */
-(function () {
+/**
+ * @ngdoc service
+ * @name frontendTeams:teamsSelectOptions
+ * @description
+ * Provide a list of teams for populating a select list
+ *
+ */(function () {
   'use strict';
 
   angular
@@ -17,7 +23,18 @@
 
     return getSelectOptions;
 
-    // Return a promise
+    /**
+     * @ngdoc function
+     * @name getSelectOptions
+     * @methodOf frontendTeams:teamsSelectOptions
+     * @description
+     * Makes a REST API request to retrieve a list of teams.
+     * Creates an array of team names from the response.
+     *
+     * @returns {Object} promise
+     * * Resolved with an array when the REST API request succeeds
+     * * Rejected when the REST API request fails
+     */
     function getSelectOptions() {
       var deferredObject = $q.defer();
       crudResource.getResource(teamsPath).query(

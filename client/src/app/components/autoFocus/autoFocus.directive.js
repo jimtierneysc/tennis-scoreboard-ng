@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feAutoFocus
+ * @restrict E
  * @description
  * Set focus to an HTML element
  *

@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTable
+ * @restrict E
  * @description
  * Table to display match scoring
  *

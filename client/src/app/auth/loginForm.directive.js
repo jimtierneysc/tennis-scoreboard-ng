@@ -1,11 +1,10 @@
 /**
  * @ngdoc directive
- * @name feLoginForm
+ * @name frontendAuth:feLoginForm
+ * @restrict E
  * @description
  * Form for login
- *
  */
-
 
 (function () {
   'use strict';

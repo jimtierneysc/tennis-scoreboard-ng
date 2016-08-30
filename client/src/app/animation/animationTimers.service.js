@@ -1,9 +1,8 @@
 /**
- * @ngdoc factory
- * @name animationTiming
+ * @ngdoc service
+ * @name frontendAnimation:animationTimers
  * @description
  * Provide delays when animating visual elements, like forms.
- *
  */
 (function () {
   'use strict';
@@ -15,15 +14,36 @@
   /** @ngInject */
   function factory($timeout, animationIntervals) {
     return {
-      // Delay while showing something
+      /**
+       * @ngdoc function
+       * @name delayIn
+       * @methodOf frontendAnimation:animationTimers
+       * @description
+       * Delay while showing elements.
+       * @returns {Object} a promise.
+      */
       delayIn: function() {
         return $timeout(animationIntervals.in);
       },
-      // Delay while hiding something
+      /**
+       * @ngdoc function
+       * @name delayOut
+       * @methodOf frontendAnimation:animationTimers
+       * @description
+       * Delay while hiding elements.
+       * @returns {Object} a promise.
+       */     
       delayOut: function() {
         return $timeout(animationIntervals.out);
       },
-      // Allow evaulation of ng-class to prepare for animation
+      /**
+       * @ngdoc function
+       * @name digest
+       * @methodOf frontendAnimation:animationTimers
+       * @description
+       * Allow evaulation of ng-class before hiding or showing elements.
+       * @returns {Object} a promise.
+       */
       digest: function() {
         return $timeout(0);
       }

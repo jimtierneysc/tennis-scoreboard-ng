@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableGameResult
+ * @restrict E
  * @description
  * Display the result of a game in the score table
  */

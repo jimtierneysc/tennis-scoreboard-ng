@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name HomeController
+ * @name frontendHome:HomeController
  * @description
  * Controller for home page
  *

@@ -1,8 +1,8 @@
 /**
  * @ngdoc service
- * @name playersSelectOptions
+ * @name frontendPlayers:playersSelectOptions
  * @description
- * Provide list of players for select list
+ * Provide a list of players for populating a select list
  *
  */
 (function() {
@@ -17,7 +17,18 @@
 
     return getSelectOptions;
 
-    // Return a promise
+    /**
+     * @ngdoc function
+     * @name getSelectOptions
+     * @methodOf frontendPlayers:playersSelectOptions
+     * @description
+     * Makes a REST API request to retrieve a list of matches.
+     * Creates an array of player names from the response.
+     *
+     * @returns {Object} promise
+     * * Resolved with an array when the REST API request succeeds
+     * * Rejected when the REST API request fails
+     */
     function getSelectOptions() {
       var deferredObject = $q.defer();
       crudResource.getResource(playersPath).query(

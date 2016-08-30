@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableGameTitle
+ * @restrict E
  * @description
  * Display title of a game in the score table
  */

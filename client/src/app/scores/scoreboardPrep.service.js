@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name scoreboardPrep
  * @description
  * To make it easier to display and update the score, add more

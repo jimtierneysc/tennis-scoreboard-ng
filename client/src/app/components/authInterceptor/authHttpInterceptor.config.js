@@ -1,5 +1,5 @@
 /**
- * @ngdoc config
+ * @ngdoc object
  * @name authHttpInterceptor
  * @description
  * Allow authHttpInterceptor service to receive http errors.

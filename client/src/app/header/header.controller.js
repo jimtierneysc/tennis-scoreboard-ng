@@ -1,9 +1,8 @@
 /**
  * @ngdoc controller
- * @name HeaderController
+ * @name frontendHeader:HeaderController
  * @description
- * Controller for navbar
- *
+ * Controller for navbar (and login form)
  */
 
 (function () {

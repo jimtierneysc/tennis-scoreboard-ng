@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feLoadingMessage
+ * @restrict E
  * @description
  * Displays message about loading
  *

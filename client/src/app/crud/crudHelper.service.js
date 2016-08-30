@@ -1,6 +1,6 @@
 /**
- * @ngdoc factory
- * @name crudHelper
+ * @ngdoc service
+ * @name frontendCrud:crudHelper
  * @description
  * Add CRUD functionality to a controller
  *
@@ -14,16 +14,43 @@
 
   /** @ngInject */
   function factory($log, modalConfirm, $timeout, $q,
-                   $filter, loadingHelper, errorsHelper, toastrHelper,
+                   $filter, loadingHelper, errorsHelper, toastrHelper, authHelper,
                    waitIndicator, crudResource, editInProgress, autoFocus, animationTimers) {
     return activate;
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf frontendCrud:crudHelper
+     * @description
+     * Add members to a controller that may be used by the controller and views:
+     * * beginWait()
+     * * entityList
+     * * editEntity
+     * * newEntity
+     * @param {Object} vm
+     * Controller instance
+     * @param {Object} options
+     * Controller specific information and callbacks
+     * * response array
+     * * resourceName
+     * * prepareToCreateEntity()
+     * * prepareToUpdateEntity()
+     * * beforeShowNewEntity()
+     * * beforeShowEditEntity()
+     * * getEntityDisplayName()
+     * * makeEntityBody()
+     * * scope
+     * * entityKind
+     * * errorsMap
+    */
     function activate(vm, options) {
       var response = options.response;
       var errorsMap = options.errorsMap;
       var scope = options.scope;
 
       // Aggregate functionality from other helpers
+      authHelper(vm, scope);
       loadingHelper(vm);
       toastrHelper(vm, scope);
       errorsHelper(vm, errorsMap);

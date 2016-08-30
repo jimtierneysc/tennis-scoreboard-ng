@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feEditEntityButton
+ * @name frontendCrud:feEditEntityButton
+ * @restrict E
  * @description
- * Button to edit player, match or team
+ * Button to edit an entity
  *
  */
 

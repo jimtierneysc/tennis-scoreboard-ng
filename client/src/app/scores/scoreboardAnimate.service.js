@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name scoreboardAnimateHideAndShow
  * @description
  * Set flags on the scoreboard object to trigger animations.

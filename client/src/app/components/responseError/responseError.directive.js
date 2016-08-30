@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feResponseError
+ * @restrict E
  * @description
  * Displays an http error response
  *

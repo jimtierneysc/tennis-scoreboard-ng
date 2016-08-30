@@ -1,8 +1,8 @@
 /**
  * @ngdoc service
- * @name crudResource
+ * @name frontendCrud:crudResource
  * @description
- * Make CRUD HTTP requests
+ * Make CRUD REST API requests
  *
  */
 (function () {
@@ -10,15 +10,27 @@
 
   angular
     .module('frontendCrud')
-    .service('crudResource', Service);
+    .factory('crudResource', factory);
 
   /** @ngInject */
-  function Service($resource, apiPath) {
+  function factory($resource, apiPath) {
 
-    var service = this;
+    var service = {
+      getPath: getPath,
+      /**
+       * @ngdoc function
+       * @name getResource
+       * @methodOf frontendCrud:crudResource
+       * @description
+       * Get a $resource for making a REST API request to a particular resource
+       * @param {String} resourcePath
+       * (e.g.; 'players')
+       * @returns {Object} $resource
+       */
+      getResource: getResource
+    };
 
-    service.getPath = getPath;
-    service.getResource = getResource;
+    return service;
 
     function getPath(resourcePath) {
       return apiPath + resourcePath;

@@ -1,8 +1,9 @@
 /**
  * @ngdoc directive
- * @name feMatchOpponentTeamsPlayers
+ * @name frontendMatches:feMatchOpponentTeamsPlayers
+ * @restrict E
  * @description
- * Display the players on both teams of a doubles match
+ * Display the four players in a doubles match
  *
  */
 

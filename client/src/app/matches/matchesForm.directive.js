@@ -1,11 +1,11 @@
 /**
  * @ngdoc directive
- * @name feMatchesForm
+ * @name frontendMatches:feMatchesForm
+ * @restrict E
  * @description
- * Form for new player and editing player
+ * Form for adding a new match and editing an existing match
  *
  */
-
 
 (function () {
   'use strict';

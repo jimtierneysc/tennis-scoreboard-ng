@@ -1,9 +1,9 @@
 /**
- * @ngdoc factory
- * @name animateChange
+ * @ngdoc service
+ * @name frontendAnimation:animateChange
  * @description
- * Allow elements in a view to animate by creating
- * delays between changes to the view.
+ * Methods to animate some elements in a view by controlling a sequence of
+ * delays and state changes.
  */
 (function () {
   'use strict';
@@ -23,6 +23,7 @@
     /**
      * @ngdoc function
      * @name promiseHideThenShow
+     * @methodOf frontendAnimation:animateChange
      * @description
      * Given a promise and some callbacks,
      * animate the elements before and after making a change.
@@ -85,6 +86,7 @@
     /**
      * @ngdoc function
      * @name hideThenShow
+     * @methodOf frontendAnimation:animateChange
      * @description
      * Given a change function and some other callbacks,
      * animate the elements before and after making a change.
@@ -115,13 +117,16 @@
     /**
      * @ngdoc function
      * @name toggleShow
+     * @methodOf frontendAnimation:animateChange
      * @description
      * Given a toggle function and two other callbacks, animate the
      * elements that are to be shown or hidden by toggling a setting.
      * @param {Function} toggle
      * Function to toggle a setting
      * @param {Function} enableNgClass
+     * Function to set flags to enable animation
      * @param {Function} reset
+     * Function to set flags to disable animation
      */
     function toggleShow(toggle, enableNgClass, reset) {
       // Set flags to enable  ng-class

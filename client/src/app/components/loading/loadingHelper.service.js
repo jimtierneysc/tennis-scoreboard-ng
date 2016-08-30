@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name loadingHelper
  * @description
  * Adds loading functionality to a controller

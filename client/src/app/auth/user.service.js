@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name userResource
  * @description
- * Service to access current user by HTTP request
+ * Service to access the current user by REST API request
  *
  */
 (function() {
@@ -18,6 +18,14 @@
 
     var service = {
       path: path,
+      /**
+       * @ngdoc function
+       * @name getUser
+       * @methodOf userResource
+       * @description
+       * Get a $resource for making a REST API request
+       * @returns {Object} $resource
+       */
       getUser: getUser
     };
 

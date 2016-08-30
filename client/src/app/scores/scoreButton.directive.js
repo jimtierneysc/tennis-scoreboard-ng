@@ -1,11 +1,10 @@
 /**
  * @ngdoc directive
  * @name feScoreButton
+ * @restrict E
  * @description
  * Button to change score
  *
- * @example:
- <fe-score-button></fe-score-button>
  */
 
 

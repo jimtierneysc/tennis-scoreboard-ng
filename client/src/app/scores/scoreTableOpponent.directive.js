@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feScoreTableOpponent
+ * @restrict E
  * @description
  * Table heading for opponent
  */

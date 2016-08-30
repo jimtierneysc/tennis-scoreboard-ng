@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name errorsHelper
  * @description
  * Add error processing to a controller

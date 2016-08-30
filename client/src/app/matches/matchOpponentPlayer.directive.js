@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
- * @name feMatchOpponentPlayer
+ * @name frontendMatches:feMatchOpponentPlayer
+ * @restrict E
  * @description
  * Display a player opponent in a match
  *

@@ -1,8 +1,11 @@
 /**
  * @ngdoc directive
- * @name feDeleteEntityButton
+ * @name frontendCrud:feCrudRow
+ * @restrict E
  * @description
- * Button to delete player, match or team
+ * Directive to display an entity row.
+ * A row includes the entity data, a (hidden) edit form, 
+ * and buttons to delete and edit the entity.
  *
  */
 

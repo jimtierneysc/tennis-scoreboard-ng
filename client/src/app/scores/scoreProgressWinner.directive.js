@@ -1,6 +1,7 @@
 /**
  * @ngdoc directive
  * @name feMatchStatus
+ * @restrict E
  * @description
  * Display game, set or match winner
  *

@@ -1,5 +1,5 @@
 /**
- * @ngdoc config
+ * @ngdoc object
  * @name waitIndicator 
  * @description
  * Automatically display wait indicator during HTTP requests

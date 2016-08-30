@@ -18,6 +18,14 @@
 
     var service = {
       path: path,
+      /**
+       * @ngdoc function
+       * @name getSession
+       * @methodOf sessionResource
+       * @description
+       * Get a $resource for making a REST API request
+       * @returns {Object} $resource
+       */
       getSession: getSession
     };
 

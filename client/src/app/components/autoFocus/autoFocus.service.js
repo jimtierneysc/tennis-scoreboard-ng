@@ -1,5 +1,5 @@
 /**
- * @ngdoc factory
+ * @ngdoc service
  * @name autoFocus
  * @description
  * Use with feAutoFocus direcitve to set focus after linking
