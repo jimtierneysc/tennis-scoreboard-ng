@@ -2,7 +2,8 @@
 
 ### Summary
 
-A Rails API application and AngularJS application to keep score of tennis matches.  
+This project implements an SPA to keep score of tennis matches. The backend is
+a Rails API application and the frontend is an AngularJS application.  
 
 ### Rails API Application
 
