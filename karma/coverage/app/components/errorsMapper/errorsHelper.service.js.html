@@ -89,7 +89,51 @@
 44
 45
 46
-47</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -107,9 +151,40 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">103×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">102×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">102×</span>
 <span class="cline-any cline-yes">12×</span>
 <span class="cline-any cline-yes">12×</span>
@@ -119,6 +194,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">102×</span>
 <span class="cline-any cline-yes">7×</span>
@@ -136,8 +224,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * @ngdoc factory
- * @name errorsHelper
+ * @ngdoc service
+ * @name app.components.errorsHelper
  * @description
  * Add error processing to a controller
  *
@@ -146,16 +234,47 @@
   'use strict';
 &nbsp;
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .factory('errorsHelper', factory);
 &nbsp;
   /** @ngInject */
   function factory($log, errorsMapper) {
     return activate;
 &nbsp;
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf app.components.errorsHelper
+     * @description
+     * Adds members to a controller:
+     * * errorsOfResponse()
+     * * clearErrors()
+     *
+     * @param {Object} vm
+     * Controller instance
+     * @param {Object} errorsMap
+     * Options to identify how errors should be handled:
+     * * names
+     * * map
+     *
+     * See {@link app.components.errorsMapper errorsMapper}.
+     */
     function activate(_vm_, errorsMap) {
       // Initialize controller
       var vm = _vm_;
+      /**
+       * @ngdoc function
+       * @name errorsOfResponse
+       * @methodOf app.components.errorsHelper
+       * @description
+       * Categorize error messages from an HTTP response
+       *
+       * @param {Object} response
+       * HTTP response
+       * @returns {Object}
+       * Hash of categorized error messages created by
+       * {@link app.components.errorsMapper errorsMapper}
+       */
       vm.errorsOfResponse = function (response) {
         var result;
         if (angular.isObject(response.data)) {
@@ -166,6 +285,19 @@
           result = errorsMapper({'errors': response.statusText ? response.statusText : 'Unexpected error'});
         return result;
       };
+      /**
+       * @ngdoc function
+       * @name clearErrors
+       * @methodOf app.components.errorsHelper
+       * @description
+       * Clear categories of errors.  Use, for example, to clear a "username" errors
+       * when the user types in a different username.
+       *
+       * @param {Object} errors
+       * Categories arrays
+       * @param {Array} names
+       * Names of categories to clear
+       */
       vm.clearErrors = function(errors, names) {
         if (errors) {
           angular.forEach(names, function (name) {
@@ -187,7 +319,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 28 2016 14:20:36 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Aug 30 2016 20:20:47 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

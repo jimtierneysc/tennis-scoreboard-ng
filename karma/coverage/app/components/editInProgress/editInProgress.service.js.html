@@ -148,7 +148,51 @@
 103
 104
 105
-106</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,13 +219,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">98×</span>
 <span class="cline-any cline-yes">98×</span>
+<span class="cline-any cline-yes">98×</span>
+<span class="cline-any cline-yes">20×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">98×</span>
-<span class="cline-any cline-yes">98×</span>
 <span class="cline-any cline-yes">20×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8×</span>
@@ -191,6 +243,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12×</span>
 <span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">78×</span>
@@ -227,14 +280,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">91×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,16 +337,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @ngdoc service
- * @name editInProgress
+ * @name app.components.editInProgress
  * @description
- * Prompt the user to cancel the edit in progress, and notify controllers
- * whether cancelled or not.
+ * Prompt the user to cancel the edit in progress.  Notify controllers of the
+ * outcome.
+ * 
+ * An edit is in progress when the user has chosen a command to show a data entry form and
+ * has changed the value of a form field.
  */
 (function () {
   'use strict';
 &nbsp;
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .service('editInProgress', Service);
 &nbsp;
   /** @ngInject */
@@ -277,16 +362,24 @@
     service.registerOnConfirmed = registerOnConfirmed;
     service.registerOnClose = registerOnClose;
 &nbsp;
-    // Return a promise.  The promise will be rejected when there is an edit in-
-    // progress (e.g.; entering a title for a new entity) and the user chooses not to cancel
-    // editing.
+    /**
+     * @ngdoc function
+     * @name closeEditors
+     * @methodOf app.components.editInProgress
+     * @description
+     * If an edit is in progress, display a modal prompt to cancel the edit. 
+     *
+     * @returns {Object} promise
+     * * Resolved when the edit is cancelled or when there is no edit in progress
+     * * Reject if the edit is not cancelled (by the user)
+     */
     function closeEditors() {
       var state = emitQuery(name);
-      angular.merge(state.labels, {
-        cancel: 'No'
-      });
       var promise;
-      if (!state.pristine)
+      if (!state.pristine) {
+        angular.merge(state.labels, {
+          cancel: 'No'
+        });
         promise = modalConfirm.confirm(state.labels).then(
           function () {
             return emitClose(state).then(function () {
@@ -297,11 +390,12 @@
             emitConfirmed(state, false);
             return $q.reject();
           });
+      }
       else
         promise = emitClose(state);
 &nbsp;
       return promise;
-      
+&nbsp;
       function emitQuery() {
         var data = {
           pristine: true,
@@ -330,19 +424,48 @@
       }
     }
 &nbsp;
-    // Register a callback to retrieve the state of an editor
-    // from a controller.
-    function registerOnQueryState(scope, queryCallback) {
-      registerEvent(scope, QUERY_EVENT, queryCallback);
+    /**
+     * @ngdoc function
+     * @name registerOnQueryState
+     * @methodOf app.components.editInProgress
+     * @description
+     * Called by a controller to register a callback to return the state of an editor.
+     * @param {Object} scope
+     * Controller scope
+     * @param {Object} callback
+     * Controller callback
+     */
+    function registerOnQueryState(scope, callback) {
+      registerEvent(scope, QUERY_EVENT, callback);
     }
 &nbsp;
-    // Register a callback to inform a controller that the user was prompted to
-    // close the current editor.
+    /**
+     * @ngdoc function
+     * @name registerOnConfirmed
+     * @methodOf app.components.editInProgress
+     * @description
+     * Called by a controller to register a callback to inform the controller that the user was prompted to
+     * close the current editor.
+     * @param {Object} scope
+     * Controller scope
+     * @param {Object} callback
+     * Controller callback
+     */
     function registerOnConfirmed(scope, callback) {
       registerEvent(scope, CONFIRMED_EVENT, callback);
     }
 &nbsp;
-    // Register a callback to inform a controller that it's editors should be closed.
+    /**
+     * @ngdoc function
+     * @name registerOnClose
+     * @methodOf app.components.editInProgress
+     * @description
+     * Register a callback to inform a controller that it's editors should be closed.
+     * @param {Object} scope
+     * Controller scope
+     * @param {Object} callback
+     * Controller callback
+     */
     function registerOnClose(scope, callback) {
       registerEvent(scope, CLOSE_EVENT, callback);
     }
@@ -364,7 +487,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 28 2016 14:20:36 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Aug 30 2016 20:20:47 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

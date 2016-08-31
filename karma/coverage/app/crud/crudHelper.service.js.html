@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>196/196</span>
+        <span class='fraction'>197/197</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">87.76% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>196/196</span>
+        <span class='fraction'>197/197</span>
       </div>
     </div>
   </div>
@@ -468,7 +468,34 @@
 423
 424
 425
-426</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -488,12 +515,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-yes">83×</span>
@@ -894,8 +948,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * @ngdoc factory
- * @name crudHelper
+ * @ngdoc service
+ * @name app.crud.crudHelper
  * @description
  * Add CRUD functionality to a controller
  *
@@ -904,21 +958,48 @@
   'use strict';
 &nbsp;
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .factory('crudHelper', factory);
 &nbsp;
   /** @ngInject */
   function factory($log, modalConfirm, $timeout, $q,
-                   $filter, loadingHelper, errorsHelper, toastrHelper,
+                   $filter, loadingHelper, errorsHelper, toastrHelper, authHelper,
                    waitIndicator, crudResource, editInProgress, autoFocus, animationTimers) {
     return activate;
 &nbsp;
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf app.crud.crudHelper
+     * @description
+     * Add members to a controller that may be used by the controller and views:
+     * * beginWait()
+     * * entityList
+     * * editEntity
+     * * newEntity
+     * @param {Object} vm
+     * Controller instance
+     * @param {Object} options
+     * Controller specific information and callbacks
+     * * response array
+     * * resourceName
+     * * prepareToCreateEntity()
+     * * prepareToUpdateEntity()
+     * * beforeShowNewEntity()
+     * * beforeShowEditEntity()
+     * * getEntityDisplayName()
+     * * makeEntityBody()
+     * * scope
+     * * entityKind
+     * * errorsMap
+    */
     function activate(vm, options) {
       var response = options.response;
       var errorsMap = options.errorsMap;
       var scope = options.scope;
 &nbsp;
       // Aggregate functionality from other helpers
+      authHelper(vm, scope);
       loadingHelper(vm);
       toastrHelper(vm, scope);
       errorsHelper(vm, errorsMap);
@@ -1324,7 +1405,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 28 2016 14:20:36 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Aug 30 2016 20:20:47 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>
