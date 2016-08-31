@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: matches
+#
+#  id                      :integer          not null, primary key
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  first_team_id           :integer          not null
+#  second_team_id          :integer          not null
+#  scoring                 :string           not null
+#  started                 :boolean          default(FALSE), not null
+#  doubles                 :boolean          default(FALSE), not null
+#  first_player_server_id  :integer
+#  second_player_server_id :integer
+#  title                   :string
+#  team_winner_id          :integer
+#  play_version            :integer
+#
+
 require 'rails_helper'
 
 RSpec.describe Match, { type: :model } do

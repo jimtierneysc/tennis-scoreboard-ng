@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: set_games
+#
+#  id               :integer          not null, primary key
+#  ordinal          :integer          not null
+#  match_set_id     :integer          not null
+#  team_winner_id   :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  player_server_id :integer
+#  tiebreaker       :boolean          default(FALSE), not null
+#
+
 FactoryGirl.define do
 
   factory :set_game, class: SetGame do

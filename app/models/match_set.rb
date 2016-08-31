@@ -1,11 +1,37 @@
 # Model for a set in a match
+# == Overview
+# * A set belongs to a Match
 #
-# A set may has a state: in progress and complete
+# * A set has a state:
+#   * +:in_progress+
+#   * +:complete+
 #
-# A match tiebreak is a special kind of set with only one game
+# * A set has a scoring kind
+#   * +:eight_game+
+#   * +:ten_point+
+#   * +:six_game+
 #
-# A set has an ordinal.  The first set in the match has ordinal 1
+# +:ten_point+ indicate a match tiebreak set.
+# A tiebreak set has only one game
 #
+# * A set has an ordinal.
+# The first set in the match has ordinal 1
+#
+# * A complete set has a winning team
+#
+# == Schema Information
+#
+# Table name: match_sets
+#
+#  id             :integer          not null, primary key
+#  match_id       :integer          not null
+#  ordinal        :integer          not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  scoring        :string           not null
+#  team_winner_id :integer
+#
+
 class MatchSet < ActiveRecord::Base
   has_many :set_games, dependent: :destroy
   belongs_to :first_player_server,
@@ -19,10 +45,16 @@ class MatchSet < ActiveRecord::Base
   validate :that_scoring_is_known
   default_scope { order('ordinal ASC') }
 
+  # Indicate whether the match has a winner
+  # * *Returns* : Boolean
   def completed?
     team_winner
   end
 
+  # Get the state of the match
+  # * *Returns* : state
+  #   * +:in_progress+
+  #   * +:complete+
   def state
     if completed?
       :complete
@@ -31,6 +63,9 @@ class MatchSet < ActiveRecord::Base
     end
   end
 
+  # Compute the winner of the set, if any, based
+  # on the games won and the scoring kind
+  # * *Returns* : Team or nil
   def compute_team_winner
     if completed?
       team_winner
@@ -42,7 +77,11 @@ class MatchSet < ActiveRecord::Base
     end
   end
 
-  # Identify teams that can win set with one more game win
+  # Indicate whether a team can win the set if the team
+  # wins one more game
+  # * *Args*    :
+  #   - +team+ -> Team
+  # * *Returns* : Boolean
   def near_team_winner?(team)
     unless completed?
       lookup = lookup_games_won
@@ -54,10 +93,16 @@ class MatchSet < ActiveRecord::Base
     end
   end
 
+  # Get the last game of the set
+  # * *Returns* : Game
   def last_game
     set_games.last
   end
 
+  # Get the minimum number of games that an opponent
+  # must win in order to win the set, based on the scoring
+  # kind.
+  # * *Returns* : count
   def win_threshold
     case scoring.to_sym
     when :eight_game
@@ -69,16 +114,24 @@ class MatchSet < ActiveRecord::Base
     end
   end
 
+  # Indicate if this set is a match tiebreak
+  # * *Returns* : Boolean
   def tiebreak?
     scoring.to_sym == :ten_point
   end
 
+  # Indicate whether a particular game is a tiebreak.
+  # A game may be a tiebreak because the set is tied
+  # (e.g. 6-6), or because the set is a match tiebreak.
+  # * *Args*    :
+  #   - +game_ordinal+ -> ordinal
+  # * *Returns* : Boolean
   def tiebreak_game?(game_ordinal)
     tiebreak_ordinal = (win_threshold == 1) ? 1 : win_threshold * 2 + 1
     game_ordinal == tiebreak_ordinal
   end
 
-  # Notification to clear cached values
+  # Clear cached scores.  For internal use.
   def score_changed
     @games_won_by_team = nil
   end

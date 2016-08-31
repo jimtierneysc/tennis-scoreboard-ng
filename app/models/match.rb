@@ -1,16 +1,41 @@
 # Model for a tennis match
-#
-# A match may be a singles match or a doubles match
-#
-# A match has two opponent teams.  The teams may be doubles teams, or
-# singles teams (a singles team has only one player)
-#
-# A match may be in different states: not started, in progress,
-# and complete. Complete matches have a winner
-#
-# A match may have first servers.  These are the players that serve
+# == Overview
+# * A match may be a singles match or a doubles match
+# * A match has two opponent teams:
+#   * The teams may be doubles teams, or
+#   * singles teams (a singles team has only one player)
+# * A match may be in different states:
+#   * +:not_started+
+#   * +:in_progress+
+#   * +:complete+
+# * A match may have first servers
+# First server are the players that serve
 # the first game or two.  For a singles match, there is one
 # first server; two for a doubles match
+# * A match has sets, once the match has started
+# * A match has a scoring kind
+#   * +:two_six_game_ten_point+
+#   * +:one_eight_game+
+#   * +:three_six_game+
+# * A complete match has a winner
+#
+# == Schema Information
+#
+# Table name: matches
+#
+#  id                      :integer          not null, primary key
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  first_team_id           :integer          not null
+#  second_team_id          :integer          not null
+#  scoring                 :string           not null
+#  started                 :boolean          default(FALSE), not null
+#  doubles                 :boolean          default(FALSE), not null
+#  first_player_server_id  :integer
+#  second_player_server_id :integer
+#  title                   :string
+#  team_winner_id          :integer
+#  play_version            :integer
 #
 class Match < ActiveRecord::Base
   belongs_to :first_player_server,
@@ -36,47 +61,48 @@ class Match < ActiveRecord::Base
     ValidationHelper.new(self).validate(errors)
   end
 
-  # play_match!
+  # Execute an action on the match, such as +:win_game+
   #
-  # === action
-  # :start_play
-  #   Start playing
-  # :discard_play
-  #   Discard all scoring
-  # :start_set
-  #   Start the next set
-  # :start_game [player]
-  #   Start the next game.  The first one or two games require
-  #   a player parameter to identify the server
-  # :start_tiebreak
-  #   Start game tiebreak
-  # :remove_last_change
-  #   Back up to the previous state
-  # :start_match_tiebreak
-  #   Start the match tiebreak
-  # :win_game team
-  #   Win the current game.  A team parameter identifies the
-  #   doubles team or singles team to win
-  # :win_tiebreak
-  #   Win the current set tiebreak.  A team parameter identifies the
-  #   doubles team or singles team to win
-  # :win_match_tiebreak
-  #   Win the current match tiebreak.  A team parameter identifies the
-  #   doubles team or singles team to win
+  # * *Args*    :
+  #   - +action+ -> the action to execute
+  #   - +options+ -> hash of action options
+  # * *Raises* :
+  #   - +UnknownOperation+ -> if the action is unknown
+  #   - +InvalidOperation+ -> if the action is not permitted
+  #
+  # === Actions
+  # * +:start_play+ - Start playing
+  # * +:discard_play+ - Discard all scoring
+  # * +:start_set+ - Start the next set
+  # * +:start_game+ - Start the next game
+  # The first one or two games require
+  # a player parameter to identify the server
+  # * +:start_tiebreak+ - Start game tiebreak
+  # * +:remove_last_change+ - Back up to the previous state
+  # * +:start_match_tiebreak+ - Start the match tiebreak
+  # * +:win_game+ - Win the current game
+  # The option parameter identifies the
+  # The option parameter identifies the
+  # doubles team or singles team to win
+  # * +:win_tiebreak+ - Win the current set tiebreak.
+  # The option parameter identifies the
+  # doubles team or singles team to win
+  # * +:win_match_tiebreak+ - Win the current match tiebreak.
+  # The option parameter identifies the
+  # doubles team or singles team to win
   # === Options
-  # [:version]
-  #   Version number from client.  If provided, it will be compared to the
-  #   current match play version number.  An exception may be
-  #   raised if not equal.
-  # [:player]
-  #   Player parameter. Used by :win_* actions and by :start_game
-  # :team
-  #   Team parameter.  Used by :win_* actions.
-  # :opponent
-  #   Team or player.  Used by :win_* actions.   Convenient alternative to
-  #   :team or :player options.
+  # * +:version+ Version number from client.
+  # If provided, it will be compared to the
+  # current match play version number.  An exception may be
+  # raised if not equal.
+  # * +:player+ - Player parameter.
+  # Used by +:win_*+ actions and by +:start_game+
+  # * +:team+ = Team parameter.
+  # Used by +:win_*+ actions.
+  # * +:opponent+ - Team or player.
+  # Used by +:win_*+ actions.   Convenient alternative to
+  # +:team+ or +:player+ options.
   #
-
   def play_match!(action, options = nil)
     method = play_methods.lookup_method(action)
     if method
@@ -102,7 +128,8 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Can action be applied?
+  # Indicate if an action can be executed.  For example,
+  # +:win_game+ can be executed if a game has started
   def play_match?(action)
     methods = play_methods.lookup_method(action)
     if methods
@@ -112,35 +139,50 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Return hash of valid actions, for example {start_game: true}
+  # Return a hash of valid actions
+  # === Example
+  #   {
+  #     start_game: true,
+  #     discard_play: true,
+  #     remove_last_change: true
+  #   }
   def play_actions
     play_methods.valid_actions
   end
 
-  # Retrieve information about the match
-
+  # Indicate if the match is completed.
   def completed?
     team_winner
   end
 
-  # The opponents in a match are teams.  For singles matches,
-  # each team has a single player.
+  # Get the first player opponent in a singles match
+  # * *Returns* : Player
   def first_player
     singles_player_of_team first_team
   end
 
+  # Set the first player opponent in a singles match.
+  # A new team may be created to hold the player
   def first_player=(player)
     self.first_team = singles_player_team(player)
   end
 
+  # Get the second player opponent in a singles match
+  # * *Returns* : Player
   def second_player
     singles_player_of_team second_team
   end
 
+  # Set the second player opponent in a singles match.
+  # A new team may be created to hold the player
   def second_player=(player)
     self.second_team = singles_player_team(player)
   end
 
+  # Get the state of the match
+  # * :complete
+  # * :in_progress
+  # * :not_started
   def state
     if completed?
       :complete
@@ -151,6 +193,12 @@ class Match < ActiveRecord::Base
     end
   end
 
+  # Calculate the number of sets won by a team
+  #
+  # * *Args*    :
+  #   - +team+ -> Team
+  # * *Returns* :
+  #   - the number of sets won
   def sets_won(team)
     match_sets.reduce(0) do |sum, set|
       winner = set.compute_team_winner
@@ -158,20 +206,30 @@ class Match < ActiveRecord::Base
     end
   end
 
+  # Get the first set of a match
+  # * *Returns* : Set
   def first_set
     match_sets.first
   end
 
+  # Get the last set of a match
+  # * *Returns* : Set
   def last_set
     match_sets.last
   end
 
+  # Get the minimum number of sets that will be
+  # played in this match, based on the match scoring kind
+  # * *Returns* : Minimum number of sets
   def min_sets_to_play
     max = max_sets_to_play
     raise Exceptions::ApplicationError, 'Unexpected game count' if max.even?
     (max + 1) / 2
   end
 
+  # Get the maximum number of sets that will be
+  # played in this match, based on the match scoring kind
+  # * *Returns* : Maximum number of sets
   def max_sets_to_play
     case scoring.to_sym
     when :two_six_game_ten_point
@@ -183,15 +241,26 @@ class Match < ActiveRecord::Base
     end
   end
 
+  # Get the origin of the next game to play in the
+  # match.
+  # The lowest ordinal is 1, which indicates the
+  # first game in set.
+  # * *Returns* : next ordinal
   def next_game_ordinal
     last_set ? last_set.set_games.count + 1 : 0
   end
 
+  # Indicate whether a set is a match tiebreak
+  # * *Args*    :
+  #   - +ordinal+ -> set ordinal
+  # * *Returns* : Boolean
   def tiebreak_set?(ordinal)
     scoring_of_set_ordinal(ordinal) == :ten_point
   end
 
-  # return the winner of the match, if any
+  # Compute the winner of the match based on
+  # #scoring and sets won
+  # * *Returns* : Team or nil
   def compute_team_winner
     if completed?
       team_winner
@@ -206,12 +275,24 @@ class Match < ActiveRecord::Base
     end
   end
 
+  # Determine whether a team can win the match by
+  # winning one more game
+  # * *Args*    :
+  #   - +team+ -> Team
+  # * *Returns* : Boolean
   def near_team_winner?(team)
     unless completed?
       sets_won(team) + 1 == min_sets_to_play
     end
   end
 
+  # Get the scoring kind of a set
+  # * *Args*    :
+  #   - +ordinal+ -> set ordinal
+  # * *Returns* : scoring
+  #   * +:six_game+
+  #   * +:eight_game+
+  #   * +:ten_point+  (tiebreak)
   def scoring_of_set_ordinal(ordinal)
     case scoring.to_sym
     when :two_six_game_ten_point
@@ -223,6 +304,10 @@ class Match < ActiveRecord::Base
     end
   end
 
+  # Get the opponent team that includes a player
+  # * *Args*    :
+  #   - +player+ -> Player
+  # * *Returns* : Team
   def team_of_player(player)
     if player
       if first_team.include_player?(player)
@@ -270,5 +355,6 @@ class Match < ActiveRecord::Base
     @play_methods ||= PlayMethods.new(self)
   end
 
-  include MatchPlayHelpers
+  include MatchPlay
+  include MatchValidation
 end

@@ -1,32 +1,40 @@
 # Controller for players
 #
-# Renders a list of players
-#
-# Renders a single player
-#
-# Creates a new player
-#
-# Updates a player
-#
-# Deletes a player
+# * Renders a list of all players
+# * Renders one player
+# * Creates a new player
+# * Updates a player
+# * Deletes a player
+# Players may not be deleted if they are in a match or
+# on a team
 #
 class V1::PlayersController < ApplicationController
   before_action :authorize_user!, only: [:update, :create, :destroy]
   before_action :set_player, only: [:show, :update, :destroy]
 
-  # GET /players
+  # Get a list of all players,
+  # sorted by player name
+  # * *Response*
+  #   * List of players
   def index
     @players = Player.order 'lower(name)'
     render json: @players
   end
 
-  # GET /players/1
+  # Get a particular player
+  # * *Params*
+  #   * +:id+ - player id
+  # * *Response*
+  #   * Player
   def show
     render json: @player
   end
 
-  # POST /players
-  # POST /players.json
+  # Create a player
+  # * *Request*
+  #   * +:name+ - player name
+  # * *Response*
+  #   * Player or HTTP error
   def create
     @player = Player.new(player_params)
 
@@ -37,7 +45,13 @@ class V1::PlayersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /players/1
+  # Update a player
+  # * *Params*
+  #   * +:id+ - player id
+  # * *Request*
+  #   * +:name+ - different player name
+  # * *Response*
+  #   * Player or HTTP error
   def update
     if @player.update(player_params)
       render json: @player, status: :ok
@@ -46,7 +60,13 @@ class V1::PlayersController < ApplicationController
     end
   end
 
-  # DELETE /players/1
+  # Delete a player
+  # A player in a match or on a team may not be
+  # deleted.
+  # * *Params*
+  #   * +:id+ - player id
+  # * *Response*
+  #   * +:no_content+ or HTTP error
   def destroy
     if @player.destroy
       head :no_content

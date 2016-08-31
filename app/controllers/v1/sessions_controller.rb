@@ -1,8 +1,7 @@
 # Controller for a user session
 #
-# Validates credentials and returns authentication token
-#
-# Regenerates the authentication token
+# * Validates credentials and returns user attributes
+# * Regenerates the authentication token of a user
 #
 class V1::SessionsController < ApplicationController
 

@@ -1,14 +1,25 @@
 # Model for a team
 #
-# A team may be an opponent in a match
+# == Overview
 #
-# A team may be the winner of a game, a match or a set
-#
-# A doubles team has two players
-#
-# A singles team has one player.
+# # A team may be an opponent in a match
+# # A team may be the winner of a game, a match or a set
+# # A doubles team has two players
+# # A singles team has one player
 # Singles teams are created as needed to allow a
-# player to be an opponent in a match
+# player to be an opponent in a match.
+#
+# == Schema Information
+#
+# Table name: teams
+#
+#  id               :integer          not null, primary key
+#  name             :string
+#  first_player_id  :integer          not null
+#  second_player_id :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  doubles          :boolean          default(FALSE), not null
 #
 class Team < ActiveRecord::Base
   belongs_to :first_player,
@@ -28,11 +39,18 @@ class Team < ActiveRecord::Base
   # If a name is not provided when match is created, generate name
   before_create { self.name = next_team_name if self.doubles && self.name.blank? }
 
-  # indicate whether team includes a set of players
+  # Indicate whether team includes a all players in a list
+  # * *Args*    :
+  #   - +players+ -> array of players
+  # * *Returns* : Boolean
   def include_players?(players)
     players == [first_player, second_player] & players.compact
   end
 
+  # Indicate whether team includes a particular player
+  # * *Args*    :
+  #   - +player+ -> Player
+  # * *Returns* : Boolean
   def include_player?(player)
     include_players?([player])
   end

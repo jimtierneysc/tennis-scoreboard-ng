@@ -33,9 +33,10 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'simplecov'
-  gem "factory_girl_rails"
+  gem 'factory_girl_rails'
   gem 'ffaker'
-  gem "shoulda-matchers"
+  gem 'shoulda-matchers'
+  gem 'annotate'
 end
 
 gem "devise"

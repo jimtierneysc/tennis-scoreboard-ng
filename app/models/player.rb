@@ -1,24 +1,32 @@
 # Model for a player
+# == Overview
+# * A player may be on a team
+# * A player may be the first or second server in a match
+# * A player may be the server of a game
 #
-# A player may be on a doubles team or a singles team
+# == Schema Information
 #
-# A singles team is a special kind of team with only one player.
-# Singles teams represent players in singles matches
+# Table name: players
 #
-# A player may be the first or second server in a match
-#
-# A player may be the server of a game
+#  id         :integer          not null, primary key
+#  name       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Player < ActiveRecord::Base
   validates :name, presence: true
   validates_uniqueness_of :name
   before_destroy :that_can_destroy
 
+  # Find the singles team associated with this player
+  # * *Returns* : Team or nil
   def singles_team
     Team.find_by_doubles_and_first_player_id(false, self.id)
   end
 
-  # Force a player to have a unique singles team
+  # Force a player to have an associated singles team.  Create a new
+  # Team if needed.
+  # * *Returns* : Team
   def singles_team!
     team = singles_team
     unless team

@@ -1,32 +1,46 @@
 # Controller for matches
 #
-# Renders a list of matches
-#
-# Renders a single match
-#
-# Creates new doubles matches and new singles matches
-#
-# Updates a match
-#
-# Deletes a match
+# * Renders a list of all matches
+# * Renders one particular match
+# * Creates a new match
+# * Updates a match
+# Some updates are not allowed if the match has started.
+# * Deletes a match
 #
 class V1::MatchesController < ApplicationController
   before_action :authorize_user!, only: [:create, :update, :destroy]
   before_action :set_match, only: [:show, :update, :destroy]
 
   @match = nil
-  # GET /matches
+  # Get a list of all matches,
+  # sorted by match title
+  # * *Response*
+  #   * List of matches
   def index
     @matches = Match.order 'lower(title)'
     render json: @matches
   end
 
-  # GET /matches/1
+  # Get a particular match
+  # * *Params*
+  #   * +:id+ - match id
+  # * *Response*
+  #   * Match
   def show
     render json: @match
   end
 
-  # POST /matches
+  # Create a match
+  # * *Request*
+  #   * +:title+ - match title
+  #   * +:scoring+ - scoring kind
+  #   * +:doubles+ - true for doubles
+  #   * +:first_team_id+ - for doubles match
+  #   * +:second_team_id+ - for doubles match
+  #   * +:first_player_id+ - for singles match
+  #   * +:second_player_id+ - for singles match
+  # * *Response*
+  #   * Match or HTTP error
   def create
     @match = create_match
     if @match.save
@@ -36,7 +50,19 @@ class V1::MatchesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /matches/1
+  # Update a match
+  # * *Params*
+  #   * +:id+ - match id
+  # * *Request*
+  #   * +:title+ - different title
+  #   * +:scoring+ - different scoring kind
+  #   * +:doubles+ - change doubles
+  #   * +:first_team_id+ - change first team
+  #   * +:second_team_id+ - change second team
+  #   * +:first_player_id+ - change first player
+  #   * +:second_player_id+ - change second player
+  # * *Response*
+  #   * Match or HTTP error
   def update
     doubles = match_params_doubles?(@match.doubles)
     update_sym = if doubles
@@ -51,7 +77,11 @@ class V1::MatchesController < ApplicationController
     end
   end
 
-  # DELETE /matches/1
+  # Delete a match
+  # * *Params*
+  #   * +:id+ - match id
+  # * *Response*
+  #   * +:no_content+ or HTTP error
   def destroy
     @match.destroy
     head :no_content
@@ -124,11 +154,12 @@ class V1::MatchesController < ApplicationController
     player_id_to_team_id(new_params, 'second')
   end
 
-  # Requests to create a singles match include first_player_id and
+  # Requests to create a singles match includes first_player_id and
   # second_player_id.
   # However, match model expects first_team_id and second_team_id.
   # So, replace first_player_id with first_team_id, for example.
-  # Player.#singles_team! may create a team to represent a singles player.
+  # If necessary, Player.#singles_team! will create a team to
+  # represent a singles player.
   def player_id_to_team_id(params_var, prefix)
     player_id_sym = "#{prefix}_player_id".to_sym
     player_id = params_var[player_id_sym]
