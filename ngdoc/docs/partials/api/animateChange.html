@@ -1,0 +1,37 @@
+<h1><code ng:non-bindable="">animateChange</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="animatechange-page"><p>Methods to animate some elements in a view by controlling a sequence of
+delays and state changes.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_hidethenshow">hideThenShow(change, hideAndShow)</h3>
+<div class="hidethenshow"><div class="hidethenshow-page"><p>Given a change function and some other callbacks,
+animate the elements before and after making a change.</p>
+</div><h5 id="methods_hidethenshow_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>change</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="hidethenshow-page"><p>function to make the change</p>
+</div></td></tr><tr><td>hideAndShow</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="hidethenshow-page"><p>Contains Function members: hideChanging, hideChanged, showChanged and reset.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_promisehidethenshow">promiseHideThenShow(promise, change, hideAndShow, reject, final)</h3>
+<div class="promisehidethenshow"><div class="promisehidethenshow-page"><p>Given a promise and some callbacks,
+animate the elements before and after making a change.</p>
+</div><h5 id="methods_promisehidethenshow_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>promise</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="promisehidethenshow-page"><p>A promise to complete before make a change</p>
+</div></td></tr><tr><td>change</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="promisehidethenshow-page"><p>Function to make the change</p>
+</div></td></tr><tr><td>hideAndShow</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="promisehidethenshow-page"><p>Contains Function members: hideChanging, hideChanged, showChanged and reset.</p>
+</div></td></tr><tr><td>reject</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="promisehidethenshow-page"><p>Function called when promise is rejected</p>
+</div></td></tr><tr><td>final</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="promisehidethenshow-page"><p>Function called when promise is finalized</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_toggleshow">toggleShow(toggle, enableNgClass, reset)</h3>
+<div class="toggleshow"><div class="toggleshow-page"><p>Given a toggle function and two other callbacks, animate the
+elements that are to be shown or hidden by toggling a setting.</p>
+</div><h5 id="methods_toggleshow_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>toggle</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="toggleshow-page"><p>Function to toggle a setting</p>
+</div></td></tr><tr><td>enableNgClass</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="toggleshow-page"><p>Function to set flags to enable animation</p>
+</div></td></tr><tr><td>reset</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="toggleshow-page"><p>Function to set flags to disable animation</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>
