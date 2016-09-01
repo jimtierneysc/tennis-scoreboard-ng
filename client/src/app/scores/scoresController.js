@@ -71,7 +71,7 @@
       //   $timeout.cancel(timer);
       // });
 
-      // $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
+      $state.transitionTo('scores.board', {id: vm.selectedMatch.id});
     }
   }
 })();
