@@ -58,7 +58,7 @@
 
       if (action == 'discard_play') {
         modalConfirm.confirm({
-          title: 'Confirm Clear', text: 'Are you sure you want to clear all games from match "' +
+          title: 'Confirm Clear', message: 'Are you sure you want to clear all games from match "' +
           vm.scoreboard.title + '"?'
         })
           .then(function () {
@@ -205,7 +205,7 @@
           storeSettings();
         }
       }
-      
+
       function toggleShowGames(showGames) {
         if (showGames != view.settings.showGames) {
           if (!vm.scoreboard.hasCompletedGames) {

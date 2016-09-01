@@ -64,7 +64,7 @@
           pristine: true,
           labels: {
             title: 'Discard Changes',
-            text: 'Do you want to discard changes on this page?'
+            message: 'Do you want to discard changes on this page?'
           }
         };
         $rootScope.$emit(QUERY_EVENT, data);
