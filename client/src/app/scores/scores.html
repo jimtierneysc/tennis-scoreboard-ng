@@ -18,7 +18,7 @@
 
       <div class="score-panel clearfix" ng-if="vm.matches.length > 0">
 
-          <div class="pull-left score-select-list">
+          <form class="pull-left score-select-list">
             <label for="team" class="control-label sr-only">Team</label>
             <ui-select autofocus ng-model="vm.selectedMatch"
                        theme="bootstrap" id="team" name="team"
@@ -29,7 +29,7 @@
                 <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
               </ui-select-choices>
             </ui-select>
-          </div>
+          </form>
 
 
           <div  class="pull-right">
