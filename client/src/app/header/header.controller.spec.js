@@ -7,7 +7,7 @@
     var $timeout;
     var $rootScope;
 
-    beforeEach(module('frontendHeader'));
+    beforeEach(module('app.header'));
 
     beforeEach(function () {
 

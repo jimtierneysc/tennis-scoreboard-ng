@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name frontendCrud:crudHelper
+ * @name app.crud.crudHelper
  * @description
  * Add CRUD functionality to a controller
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .factory('crudHelper', factory);
 
   /** @ngInject */
@@ -21,7 +21,7 @@
     /**
      * @ngdoc function
      * @name activate
-     * @methodOf frontendCrud:crudHelper
+     * @methodOf app.crud.crudHelper
      * @description
      * Add members to a controller that may be used by the controller and views:
      * * beginWait()

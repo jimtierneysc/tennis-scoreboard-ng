@@ -1,9 +1,9 @@
 /**
  * @ngdoc overview
- * @name frontendMatches
+ * @name app.matches
  * @description
  *
- * # frontendMatches
+ * # app.matches
  *
  * Module to support viewing matches.
  */
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendMatches', ['frontendApi', 'frontendPlayers', 'frontendTeams'])
+    .module('app.matches', ['app.api', 'app.players', 'app.teams'])
     ;
 
 

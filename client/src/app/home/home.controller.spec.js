@@ -4,7 +4,7 @@
   describe('HomeController', function () {
     var vm;
 
-    beforeEach(module('frontendHome'));
+    beforeEach(module('app.home'));
 
     beforeEach(function () {
 

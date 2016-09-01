@@ -1,15 +1,15 @@
 /**
  * @ngdoc overview
- * @name frontendApi
+ * @name app.api
  * @description
  *
- * # frontendApi
+ * # app.api
  *
- * The `frontendApi` module provides support for making REST API requests
+ * The `app.api` module provides support for making REST API requests
  */
 (function() {
   'use strict';
 
-  angular.module('frontendApi', []);
+  angular.module('app.api', []);
 
 })();

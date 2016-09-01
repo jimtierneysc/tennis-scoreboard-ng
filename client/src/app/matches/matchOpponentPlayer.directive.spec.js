@@ -10,7 +10,7 @@
     var $compile;
     var player = {};
 
-    beforeEach(module('frontendMatches'));
+    beforeEach(module('app.matches'));
 
 
     function createElement(shortPlayerName, period) {

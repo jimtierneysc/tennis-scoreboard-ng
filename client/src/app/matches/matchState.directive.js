@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendMatches:feMatchState
+ * @name app.matches.directive:feMatchState
  * @restrict E
  * @description
  * Displays a message about the state of the match (in progress, complete or not started)
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendMatches')
+    .module('app.matches')
     .directive('feMatchState', directive);
 
   /** @ngInject */

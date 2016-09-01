@@ -16,7 +16,7 @@
       {name: 'team2', id: 2}
     ];
 
-    beforeEach(module('frontendTeams'));
+    beforeEach(module('app.teams'));
 
     beforeEach(function () {
       inject(function (_crudResource_, _teamsPath_,

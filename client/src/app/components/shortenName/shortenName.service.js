@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name shortenName
+ * @name app.components.shortenName
  * @description
  * Shortens a full firstname and full lastname to full first name and last initial.
  */
@@ -8,7 +8,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .factory('shortenName', factory);
 
   /** @ngInject */
@@ -16,6 +16,15 @@
 
     return shortenName;
 
+    /**
+     * @ngdoc function
+     * @name shortenName
+     * @methodOf app.components.shortenName
+     *
+     * @param {String} name
+     * Overrides for HTML content (ok button, cancel button, message, title)
+     * @returns {String} name
+     */
     function shortenName(name) {
       var result = name;
 

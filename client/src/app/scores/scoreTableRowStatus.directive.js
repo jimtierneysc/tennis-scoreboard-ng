@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreStatus
+ * @name app.scores.directive:feScoreStatus
  * @restrict E
  * @description
  * Score status messages
@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableRowStatus', directive);
 
   /** @ngInject */

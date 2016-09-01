@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name frontendCrud:crudResource
+ * @name app.crud.crudResource
  * @description
  * Make CRUD REST API requests
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .factory('crudResource', factory);
 
   /** @ngInject */
@@ -20,7 +20,7 @@
       /**
        * @ngdoc function
        * @name getResource
-       * @methodOf frontendCrud:crudResource
+       * @methodOf app.crud.crudResource
        * @description
        * Get a $resource for making a REST API request to a particular resource
        * @param {String} resourcePath

@@ -6,7 +6,7 @@
     var service;
     var $timeout;
 
-    beforeEach(module('frontendAnimation'));
+    beforeEach(module('app.animation'));
 
     beforeEach(function () {
 

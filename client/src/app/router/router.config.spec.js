@@ -39,7 +39,7 @@
       });
     })();
 
-    beforeEach(module('frontendRouter'));
+    beforeEach(module('app.router'));
 
     beforeEach(function () {
       inject(function (_$rootScope_, _$state_) {

@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendMatches:feMatchScoring
+ * @name app.matches.directive:feMatchScoring
  * @restrict E
  * @description
  * Display how the match is scored (e.g.; two sets of six)
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendMatches')
+    .module('app.matches')
     .directive('feMatchScoring', directiveFunc);
 
   /** @ngInject */

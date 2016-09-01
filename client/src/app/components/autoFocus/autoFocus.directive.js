@@ -1,9 +1,9 @@
 /**
  * @ngdoc directive
- * @name feAutoFocus
+ * @name app.components.directive:feAutoFocus
  * @restrict E
  * @description
- * Set focus to an HTML element
+ * Set focus to an HTML element.
  *
  */
 
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .directive('feAutoFocus', directive);
 
   /** @ngInject */

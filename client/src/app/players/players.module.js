@@ -1,9 +1,9 @@
 /**
  * @ngdoc overview
- * @name frontendPlayers
+ * @name app.players
  * @description
  *
- * # frontendPlayers
+ * # app.players
  *
  * Module to support viewing players. 
  */
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendPlayers', ['frontendAuth', 'frontendCrud'])
+    .module('app.players', ['app.auth', 'app.crud'])
     ;
 
 

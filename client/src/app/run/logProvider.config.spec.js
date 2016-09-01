@@ -5,7 +5,7 @@
 
     var $logProvider;
 
-    beforeEach(module('frontendRun'));
+    beforeEach(module('app.run'));
 
     beforeEach(function () {
       module(function ($provide, _$logProvider_) {

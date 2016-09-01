@@ -1,16 +1,16 @@
 /**
  * @ngdoc overview
- * @name frontendHeader
+ * @name app.header
  * @description
  *
- * # frontendHeader
+ * # app.header
  *
- * The `frontendHeader` supports the header which includes a navbar and login form.
+ * The `app.header` module supports a navbar and login form.
  */
 (function() {
   'use strict';
 
   angular
-    .module('frontendHeader', ['frontendAuth', 'frontendComponents']);
-  
+    .module('app.header', ['app.auth', 'app.components']);
+
 })();

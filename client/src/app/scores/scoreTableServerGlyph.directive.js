@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTableServerGlyph
+ * @name app.scores.directive:feScoreTableServerGlyph
  * @restrict E
  * @description
  * Displays a glyph beside the current server
@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableServerGlyph', directive);
 
   /** @ngInject */

@@ -1,9 +1,13 @@
 /**
  * @ngdoc directive
- * @name frontendTeams:feTeamsForm
+ * @name app.teams.directive:feTeamsForm
  * @restrict E
  * @description
- * Form for adding a new team and editing an existing team
+ * Form for adding a new team or editing an existing team.
+ * The form has the following fields:
+ * * name
+ * * first player
+ * * second player
  *
  */
 
@@ -11,7 +15,7 @@
   'use strict';
 
   angular
-    .module('frontendTeams')
+    .module('app.teams')
     .directive('feTeamsForm', directive);
 
   /** @ngInject */

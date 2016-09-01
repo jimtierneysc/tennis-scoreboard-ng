@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendMatches:feMatchOpponentTeamPlayers
+ * @name app.matches.directive:feMatchOpponentTeamPlayers
  * @restrict E
  * @description
  * Display the two players on a team
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendMatches')
+    .module('app.matches')
     .directive('feMatchOpponentTeamPlayers', directiveFunc);
 
   /** @ngInject */

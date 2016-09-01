@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendCrud:feCrudRow
+ * @name app.crud.directive:feCrudRow
  * @restrict E
  * @description
  * Directive to display an entity row.
@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .directive('feCrudRow', directive);
 
   /** @ngInject */

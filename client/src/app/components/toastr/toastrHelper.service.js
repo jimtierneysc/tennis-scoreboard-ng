@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name toastrHelper
+ * @name app.components.toastrHelper
  * @description
  * Adds popup toast functionality to a controller
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .factory('toastrHelper', factory);
 
   /** @ngInject */

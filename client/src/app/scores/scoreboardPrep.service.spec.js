@@ -3,7 +3,7 @@
 
   describe('scoreboardPrep service', function () {
 
-    beforeEach(module('frontendScores'));
+    beforeEach(module('app.scores'));
 
     var service;
 

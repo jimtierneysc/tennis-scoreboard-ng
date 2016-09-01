@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name frontendPlayers:playersSelectOptions
+ * @name app.players.playersSelectOptions
  * @description
  * Provide a list of players for populating a select list
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendPlayers')
+    .module('app.players')
     .factory('playersSelectOptions', playersFunc);
 
   /** @ngInject */
@@ -20,7 +20,7 @@
     /**
      * @ngdoc function
      * @name getSelectOptions
-     * @methodOf frontendPlayers:playersSelectOptions
+     * @methodOf app.players.playersSelectOptions
      * @description
      * Makes a REST API request to retrieve a list of matches.
      * Creates an array of player names from the response.

@@ -1,9 +1,9 @@
 /**
  * @ngdoc overview
- * @name frontendHome
+ * @name app.home
  * @description
  *
- * # frontendHome
+ * # app.home
  *
  * Module for the home view.
  */
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendHome', [])
+    .module('app.home', [])
 
 
 })();

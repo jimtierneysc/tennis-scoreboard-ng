@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendCrud:feEditEntityButton
+ * @name app.crud.directive:feEditEntityButton
  * @restrict E
  * @description
  * Button to edit an entity
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .directive('feEditEntityButton', directive);
 
   /** @ngInject */

@@ -1,16 +1,16 @@
 /**
  * @ngdoc overview
- * @name frontendAuth
+ * @name app.auth
  * @description
  *
- * # frontendAuth
+ * # app.auth
  *
- * The `frontendAuth` module provides support for authenticating and authorizing a user
+ * The `app.auth` module provides support for authenticating and authorizing a user
  */
 (function () {
   'use strict';
 
-  angular.module('frontendAuth', ['frontendApi', 'frontendComponents',
+  angular.module('app.auth', ['app.api', 'app.components',
     'ngSanitize', 'ngStorage', 'ngResource']);
 
 })();

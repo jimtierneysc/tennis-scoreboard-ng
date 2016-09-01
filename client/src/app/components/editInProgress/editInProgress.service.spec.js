@@ -8,7 +8,7 @@
     var $q;
     var $timeout;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
       inject(function (_editInProgress_, _modalConfirm_, _$rootScope_, _$q_,

@@ -16,7 +16,7 @@
       {name: 'player2', id: 2}
     ];
 
-    beforeEach(module('frontendPlayers'));
+    beforeEach(module('app.players'));
 
     beforeEach(function () {
       inject(function (_crudResource_, _playersPath_,

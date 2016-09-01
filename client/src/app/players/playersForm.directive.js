@@ -1,9 +1,9 @@
 /**
  * @ngdoc directive
- * @name fePlayersForm
+ * @name app.players.directive:fePlayersForm
  * @restrict E
  * @description
- * Form for adding a new player and editing an existing player
+ * Form for adding a new player or editing an existing player.  The form has a name field.
  *
  */
 
@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontendPlayers')
+    .module('app.players')
     .directive('fePlayersForm', directiveFunc);
 
   /** @ngInject */

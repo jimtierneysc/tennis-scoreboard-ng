@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name frontendMatches:matchesSelectOptions
+ * @name app.matches.matchesSelectOptions
  * @description
  * Provides a list of matches to populate a select list
  */
@@ -8,7 +8,7 @@
   'use strict';
 
   angular
-    .module('frontendMatches')
+    .module('app.matches')
     .factory('matchesSelectOptions', matchesFunc);
 
   /** @ngInject */
@@ -19,7 +19,7 @@
     /**
      * @ngdoc function
      * @name getSelectOptions
-     * @methodOf frontendMatches:matchesSelectOptions
+     * @methodOf app.matches.matchesSelectOptions
      * @description
      * Makes a REST API request to retrieve a list of matches.
      * Creates an array of match titles from the response.

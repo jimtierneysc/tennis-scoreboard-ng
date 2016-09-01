@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name modalConfirm
+ * @name app.components.modalConfirm
  * @description
  * Display a confirmation dialog box
  *
@@ -10,7 +10,7 @@
   'use strict';
   
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .factory('modalConfirm', factory);
 
   var modalSettings = {
@@ -20,7 +20,7 @@
   };
 
   var defaultLabels = {
-    text: 'Are you sure?',
+    message: 'Are you sure?',
     title: 'Confirm',
     ok: 'Yes',
     cancel: 'Cancel'
@@ -34,10 +34,34 @@
       open: open
     };
 
-    function confirm(labels) {
-      return open(labels).result; // promise
+    /**
+     * @ngdoc function
+     * @name confirm
+     * @methodOf app.components.modalConfirm
+     * @description
+     * Show a confirmation dialog box and let caller wait for confirmation
+     *
+     * @param {Object} customLabels
+     * Overrides for HTML content (ok button, cancel button, message, title)
+     * @returns {Object} Promise
+     * * Resolved when user chooses OK
+     * * Rejected when user chooses Cancel
+     */
+    function confirm(customLabels) {
+      return open(customLabels).result; // promise
     }
 
+    /**
+     * @ngdoc function
+     * @name open
+     * @methodOf app.components.modalConfirm
+     * @description
+     * Create a confirmation dialog box
+     *
+     * @param {Object} customLabels
+     * Overrides 
+     * @returns {Object} modal
+     */
     function open(customLabels) {
       var settings = angular.copy(modalSettings);
       settings.resolve = {labels: angular.extend({}, defaultLabels, customLabels || {})};

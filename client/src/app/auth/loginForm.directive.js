@@ -1,16 +1,16 @@
 /**
  * @ngdoc directive
- * @name frontendAuth:feLoginForm
+ * @name app.auth.directive:feLoginForm
  * @restrict E
  * @description
- * Form for login
+ * Form for logging in.  The form has a username and a password field.
  */
 
 (function () {
   'use strict';
 
   angular
-    .module('frontendAuth')
+    .module('app.auth')
     .directive('feLoginForm', directive);
 
   /** @ngInject */

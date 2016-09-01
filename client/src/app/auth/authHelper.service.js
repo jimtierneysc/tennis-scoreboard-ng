@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name frontendAuth:authHelper
+ * @name app.auth.authHelper
  * @description
  * Add authorization functionality to a controller
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendAuth')
+    .module('app.auth')
     .factory('authHelper', factory);
 
   /** @ngInject */
@@ -20,9 +20,9 @@
     /**
      * @ngdoc function
      * @name activate
-     * @methodOf frontendAuth:authHelper
+     * @methodOf app.auth.authHelper
      * @description
-     * Add members to a controller that support authorization:
+     * Add members to a controller:
      * * loggedIn
      * * userName
      * * logOut()

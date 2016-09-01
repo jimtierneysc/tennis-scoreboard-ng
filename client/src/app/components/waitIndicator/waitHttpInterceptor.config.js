@@ -1,15 +1,15 @@
 /**
  * @ngdoc object
- * @name waitIndicator 
+ * @name app.components.config:waitHttpInterceptor 
  * @description
- * Automatically display wait indicator during HTTP requests
+ * Automatically display the wait indicator during HTTP requests
  */
 
 (function () {
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .config(config);
   
   /** @ngInject */

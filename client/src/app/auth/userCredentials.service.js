@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name userCredentials
+ * @name app.auth.userCredentials
  * @description
  * Service to manage the current user's name and session token.
  *
@@ -9,7 +9,7 @@
     'use strict';
 
     angular
-      .module('frontendAuth')
+      .module('app.auth')
       .service('userCredentials', Service);
 
     /** @ngInject */
@@ -33,7 +33,7 @@
       /**
        * @ngdoc function
        * @name setCredentials
-       * @methodOf userCredentials
+       * @methodOf app.auth.userCredentials
        * @description
        * * Store credentials locally
        * * Set HTTP request header.
@@ -60,7 +60,7 @@
       /**
        * @ngdoc function
        * @name clearCredentials
-       * @methodOf userCredentials
+       * @methodOf app.auth.userCredentials
        * @description
        * * Clear local credentials
        * * Clear HTTP request header.
@@ -77,7 +77,7 @@
       /**
        * @ngdoc function
        * @name loadCredentials
-       * @methodOf userCredentials
+       * @methodOf app.auth.userCredentials
        * @description
        * * Load local credentials
        * * Update HTTP request header.
@@ -105,7 +105,7 @@
       /**
        * @ngdoc function
        * @name subscribeChanged
-       * @methodOf userCredentials
+       * @methodOf app.auth.userCredentials
        * @description
        * Subcribe to a change in user credentials
        * @param {String} scope

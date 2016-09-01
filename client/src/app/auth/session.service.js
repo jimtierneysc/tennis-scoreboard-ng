@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name sessionResource
+ * @name app.auth.sessionResource
  * @description
  * Service to login a user by HTTP request
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendAuth')
+    .module('app.auth')
     .factory('sessionResource', factory);
 
   /** @ngInject */
@@ -21,7 +21,7 @@
       /**
        * @ngdoc function
        * @name getSession
-       * @methodOf sessionResource
+       * @methodOf app.auth.sessionResource
        * @description
        * Get a $resource for making a REST API request
        * @returns {Object} $resource

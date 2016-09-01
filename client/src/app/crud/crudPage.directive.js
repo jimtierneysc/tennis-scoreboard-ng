@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendCrud:feCrudPage
+ * @name app.crud.directive:feCrudPage
  * @restrict E
  * @description
  * Directive to display an entity page.
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .directive('feCrudPage', directive);
 
   /** @ngInject */

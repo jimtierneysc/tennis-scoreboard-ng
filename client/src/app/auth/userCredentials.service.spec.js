@@ -10,7 +10,7 @@
     var $httpBackend;
     var path;
 
-    beforeEach(module('frontendAuth'));
+    beforeEach(module('app.auth'));
     afterEach(function () {
       localStorage.clear();
     });

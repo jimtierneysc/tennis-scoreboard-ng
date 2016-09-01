@@ -25,7 +25,7 @@
       ]
     };
 
-    beforeEach(module('frontendScores'));
+    beforeEach(module('app.scores'));
 
     beforeEach(function () {
       inject(function (_scoreboardAnimate_, _scoreboardPrep_, _$timeout_) {

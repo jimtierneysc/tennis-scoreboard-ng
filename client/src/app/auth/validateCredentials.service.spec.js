@@ -7,7 +7,7 @@
     var path;
     var $rootScope;
 
-    beforeEach(module('frontendAuth'));
+    beforeEach(module('app.auth'));
     beforeEach(function () {
       inject(function (_validateCredentials_) {
         service = _validateCredentials_;

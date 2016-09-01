@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTableGameTitle
+ * @name app.scores.directive:feScoreTableGameTitle
  * @restrict E
  * @description
  * Display title of a game in the score table
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableGameTitle', directive);
 
   /** @ngInject */

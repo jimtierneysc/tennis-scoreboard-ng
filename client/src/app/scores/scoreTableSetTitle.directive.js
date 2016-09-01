@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTableSetTitle
+ * @name app.scores.directive:feScoreTableSetTitle
  * @restrict E
  * @description
  * Display title of a set in the score table
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableSetTitle', directive);
 
   /** @ngInject */

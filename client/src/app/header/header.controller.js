@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name frontendHeader:HeaderController
+ * @name app.header.controller:HeaderController
  * @description
  * Controller for navbar (and login form)
  */
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendHeader')
+    .module('app.header')
     .controller('HeaderController', Controller);
 
   /** @ngInject */

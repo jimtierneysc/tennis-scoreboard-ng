@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreButton
+ * @name app.scores.directive:feScoreButton
  * @restrict E
  * @description
  * Button to change score
@@ -12,7 +12,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreButton', directiveFunc);
 
   /** @ngInject */

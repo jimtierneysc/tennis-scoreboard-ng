@@ -1,21 +1,16 @@
 /**
  * @ngdoc service
- * @name frontendTeams:teamsSelectOptions
+ * @name app.teams.teamsSelectOptions
  * @description
  * Provide a list of teams for populating a select list
  *
  */
-/**
- * @ngdoc service
- * @name frontendTeams:teamsSelectOptions
- * @description
- * Provide a list of teams for populating a select list
- *
- */(function () {
+
+(function () {
   'use strict';
 
   angular
-    .module('frontendTeams')
+    .module('app.teams')
     .factory('teamsSelectOptions', factory);
 
   /** @ngInject */
@@ -26,7 +21,7 @@
     /**
      * @ngdoc function
      * @name getSelectOptions
-     * @methodOf frontendTeams:teamsSelectOptions
+     * @methodOf app.teams.teamsSelectOptions
      * @description
      * Makes a REST API request to retrieve a list of teams.
      * Creates an array of team names from the response.

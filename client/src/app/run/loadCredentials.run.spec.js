@@ -4,7 +4,7 @@
   describe('loadCredentials run', function () {
     var loadCredentials;
 
-    beforeEach(module('frontendRun'));
+    beforeEach(module('app.run'));
 
     beforeEach(function () {
       loadCredentials = jasmine.createSpy('loadCredentials');

@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name frontendMatches:MatchesController
+ * @name app.matches.controller:MatchesController
  * @description
  * Controller for displaying and editing matches
  *
@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontendMatches')
+    .module('app.matches')
     .controller('MatchesController', Controller);
 
   /** @ngInject */
@@ -23,7 +23,7 @@
     /**
      * @ngdoc function
      * @name activate
-     * @methodOf frontendMatches:MatchesController
+     * @methodOf app.matches.controller:MatchesController
      * @description
      * Initialize the controller:
      * * Add playerOptionsList object

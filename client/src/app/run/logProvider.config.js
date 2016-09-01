@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontendRun')
+    .module('app.run')
     .config(config);
 
   /** @ngInject */

@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTableOpponent
+ * @name app.scores.directive:feScoreTableOpponent
  * @restrict E
  * @description
  * Table heading for opponent
@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableOpponent', directive);
 
   /** @ngInject */

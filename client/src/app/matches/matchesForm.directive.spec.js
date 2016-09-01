@@ -8,7 +8,7 @@
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontendMatches'));
+    beforeEach(module('app.matches'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

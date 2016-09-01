@@ -7,7 +7,7 @@
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontendScores'));
+    beforeEach(module('app.scores'));
     beforeEach(module(function ($provide) {
       $provide.factory('validateCredentials', function () {
         return function() { return false };

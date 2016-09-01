@@ -13,7 +13,7 @@
       }
     ];
 
-    beforeEach(module('frontendMatches'));
+    beforeEach(module('app.matches'));
 
     beforeEach(function () {
 

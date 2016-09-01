@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name scoreboardPrep
+ * @name app.scores.scoreboardPrep
  * @description
  * To make it easier to display and update the score, add more
  * properties to the scores object received from the backend.
@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .factory('scoreboardPrep', factory);
 
   /** @ngInject */

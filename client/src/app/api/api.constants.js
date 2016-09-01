@@ -1,17 +1,17 @@
 /**
- * @ngdoc overview
- * @name frontendApi constants
+ * @ngdoc object
+ * @name app.api.constant:apiConstants 
  * @description
  *
- * # frontendApi constants
+ * # app.api constants
  *
- * Paths and header names used to make REST API requests.
+ * Constants declaring the paths and header names to use when making REST API requests.
  */
 (function() {
   'use strict';
 
   angular
-    .module('frontendApi')
+    .module('app.api')
     .constant('apiPath','/api/')
     .constant('sessionsPath', 'sessions')
     .constant('userPath', 'user')

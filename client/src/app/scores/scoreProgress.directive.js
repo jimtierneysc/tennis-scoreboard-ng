@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreProgress
+ * @name app.scores.directive:feScoreProgress
  * @restrict E
  * @description
  * Score progress messages
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreProgress', directive);
 
   /** @ngInject */

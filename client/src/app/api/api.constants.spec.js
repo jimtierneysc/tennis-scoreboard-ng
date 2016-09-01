@@ -6,7 +6,7 @@
     var apiPath, playersPath, teamsPath, matchesPath,
       scoreboardPath, authHeaderName, sessionsPath;
 
-    beforeEach(module('frontendApi'));
+    beforeEach(module('app.api'));
 
     beforeEach(inject(function (_apiPath_, _authHeaderName_, _playersPath_,
                                 _teamsPath_, _matchesPath_, _scoreboardPath_,

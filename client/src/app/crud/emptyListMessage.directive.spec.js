@@ -8,7 +8,7 @@
     var element;
     var kind = 'players';
 
-    beforeEach(module('frontendCrud'));
+    beforeEach(module('app.crud'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

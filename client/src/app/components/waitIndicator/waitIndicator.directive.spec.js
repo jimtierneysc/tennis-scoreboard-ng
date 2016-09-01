@@ -5,7 +5,7 @@
 
     var compile, scope, directiveElem;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
 

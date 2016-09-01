@@ -4,7 +4,7 @@
   describe('loadingHelper service', function () {
     var service;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
       inject(function (_loadingHelper_) {

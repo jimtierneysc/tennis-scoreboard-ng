@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name frontendAnimation:animateChange
+ * @name app.animation.animateChange
  * @description
  * Methods to animate some elements in a view by controlling a sequence of
  * delays and state changes.
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendAnimation')
+    .module('app.animation')
     .factory('animateChange', factory);
 
   /** @ngInject */
@@ -23,7 +23,7 @@
     /**
      * @ngdoc function
      * @name promiseHideThenShow
-     * @methodOf frontendAnimation:animateChange
+     * @methodOf app.animation.animateChange
      * @description
      * Given a promise and some callbacks,
      * animate the elements before and after making a change.
@@ -86,7 +86,7 @@
     /**
      * @ngdoc function
      * @name hideThenShow
-     * @methodOf frontendAnimation:animateChange
+     * @methodOf app.animation.animateChange
      * @description
      * Given a change function and some other callbacks,
      * animate the elements before and after making a change.
@@ -117,7 +117,7 @@
     /**
      * @ngdoc function
      * @name toggleShow
-     * @methodOf frontendAnimation:animateChange
+     * @methodOf app.animation.animateChange
      * @description
      * Given a toggle function and two other callbacks, animate the
      * elements that are to be shown or hidden by toggling a setting.

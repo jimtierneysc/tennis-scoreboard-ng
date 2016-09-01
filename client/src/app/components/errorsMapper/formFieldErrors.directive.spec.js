@@ -9,7 +9,7 @@
     var key = 'somekey';
     var prefix = 'someprefix';
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

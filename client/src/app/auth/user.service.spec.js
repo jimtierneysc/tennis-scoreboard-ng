@@ -5,7 +5,7 @@
     var service;
     var $httpBackend;
 
-    beforeEach(module('frontendAuth'));
+    beforeEach(module('app.auth'));
 
     beforeEach(function() {
       inject(function(_userResource_, _$httpBackend_) {

@@ -5,7 +5,7 @@
 
     var waitInterval;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(inject(function (_waitInterval_) {
       waitInterval = _waitInterval_;

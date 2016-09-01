@@ -5,7 +5,7 @@
     var service;
     var $rootScope;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
       inject(function (_authHttpInterceptor_, _$rootScope_) {

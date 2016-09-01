@@ -4,7 +4,7 @@
   describe('errorsMapper service', function () {
     var service;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
     beforeEach(function () {
       inject(function (_errorsMapper_) {
         service = _errorsMapper_;

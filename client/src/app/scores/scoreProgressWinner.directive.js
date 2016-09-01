@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feMatchStatus
+ * @name app.scores.directive:feScoreProgressWinner
  * @restrict E
  * @description
  * Display game, set or match winner
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreProgressWinner', directiveFunc);
 
   /** @ngInject */

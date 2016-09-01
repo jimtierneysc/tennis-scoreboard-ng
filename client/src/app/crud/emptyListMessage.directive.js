@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendCrud:feEmptyListMessage
+ * @name app.crud.directive:feEmptyListMessage
  * @restrict E
  * @description
  * Displays a message about an empty entity list
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .directive('feEmptyListMessage', directiveFunc);
 
   /** @ngInject */

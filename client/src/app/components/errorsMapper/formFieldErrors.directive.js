@@ -1,9 +1,9 @@
 /**
  * @ngdoc directive
- * @name feFormFieldErrors
+ * @name app.components.directive:feFormFieldErrors
  * @restrict E
  * @description
- * Displays error messages in a form
+ * Displays error messages, if any, below a form field.
  *
  */
 
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .directive('feFormFieldErrors', directiveFunc);
 
   /** @ngInject */

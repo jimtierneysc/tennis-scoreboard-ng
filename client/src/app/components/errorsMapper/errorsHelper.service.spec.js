@@ -8,7 +8,7 @@
     var STATUS = 'status message';
     var service;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
       inject(function (_errorsHelper_) {

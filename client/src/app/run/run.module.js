@@ -1,6 +1,6 @@
 (function () {
   'use strict';
 
-  angular.module('frontendRun', ['frontendAuth']);
+  angular.module('app.run', ['app.auth']);
 
 })();

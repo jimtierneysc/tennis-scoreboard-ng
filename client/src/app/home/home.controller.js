@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name frontendHome:HomeController
+ * @name app.home.controller:HomeController
  * @description
  * Controller for home page
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendHome')
+    .module('app.home')
     .controller('HomeController', Controller);
 
   /** @ngInject */

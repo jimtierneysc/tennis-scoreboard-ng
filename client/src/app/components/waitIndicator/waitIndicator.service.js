@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name waitIndicator
+ * @name app.components.waitIndicator
  * @description
  * Service to manage state of a wait indicator
  */
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .service('waitIndicator', Service);
 
 

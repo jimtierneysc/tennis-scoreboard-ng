@@ -1,18 +1,18 @@
 /**
  * @ngdoc overview
- * @name frontendCrud
+ * @name app.crud
  * @description
  *
- * # frontendCrud
+ * # app.crud
  *
- * The `frontendCrud` module provides shared code for implementing
+ * The `app.crud` module provides shared code for implementing
  * a view to create, read, update and delete entities.
  */
 (function() {
   'use strict';
 
   angular
-    .module('frontendCrud', ['frontendApi', 'frontendComponents', 'frontendAnimation', 'frontendAuth',
+    .module('app.crud', ['app.api', 'app.components', 'app.animation', 'app.auth',
       'ngResource']);
 
 })();

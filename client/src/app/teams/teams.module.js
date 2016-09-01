@@ -1,16 +1,16 @@
 /**
  * @ngdoc overview
- * @name frontendTeams
+ * @name app.teams
  * @description
  *
- * # frontendTeams
+ * # app.teams
  *
  * Module to support viewing teams.
  */(function () {
   'use strict';
 
   angular
-    .module('frontendTeams', ['frontendPlayers', 'ui.select']);
+    .module('app.teams', ['app.players', 'ui.select']);
 
 
 })();

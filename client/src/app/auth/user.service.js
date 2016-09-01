@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name userResource
+ * @name app.auth.userResource
  * @description
  * Service to access the current user by REST API request
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendAuth')
+    .module('app.auth')
     .factory('userResource', factory);
 
   /** @ngInject */
@@ -21,7 +21,7 @@
       /**
        * @ngdoc function
        * @name getUser
-       * @methodOf userResource
+       * @methodOf app.auth.userResource
        * @description
        * Get a $resource for making a REST API request
        * @returns {Object} $resource

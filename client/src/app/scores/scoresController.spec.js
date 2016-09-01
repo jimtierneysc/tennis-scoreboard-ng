@@ -14,7 +14,7 @@
       }
     ];
 
-    beforeEach(module('frontendScores'));
+    beforeEach(module('app.scores'));
 
     beforeEach(inject(function (_$controller_, $rootScope, _$timeout_) {
       $controller = _$controller_;

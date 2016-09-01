@@ -8,7 +8,7 @@
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontendPlayers'));
+    beforeEach(module('app.players'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

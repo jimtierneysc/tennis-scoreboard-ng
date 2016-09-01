@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name scoreboardAnimateHideAndShow
+ * @name app.scores.scoreboardAnimateHideAndShow
  * @description
  * Set flags on the scoreboard object to trigger animations.
  */
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .factory('scoreboardAnimate', factory);
 
   /** @ngInject */

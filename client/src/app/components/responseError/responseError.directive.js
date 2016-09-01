@@ -1,9 +1,12 @@
 /**
  * @ngdoc directive
- * @name feResponseError
+ * @name app.components.directive:feResponseError
  * @restrict E
  * @description
- * Displays an http error response
+ * Displays an http error response:
+ * * Status code
+ * * Status text
+ * * Message
  *
  */
 
@@ -11,7 +14,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .directive('feResponseError', directive);
 
   /** @ngInject */

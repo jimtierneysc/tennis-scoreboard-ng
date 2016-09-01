@@ -56,12 +56,13 @@ module.exports = function (config) {
       moduleName: function (htmlPath, originalPath) {
         var paths = htmlPath.split('/');
         if (paths.length > 1) {
-          var suffix = paths[1]; //.charAt(0).toUpperCase(); // + paths[1].slice(1);
-          return 'frontend' +
-            suffix.charAt(0).toUpperCase() + suffix.slice(1);
+          var suffix = paths[1];
+          // Make path out of module name
+          return 'app.' +
+            suffix;
         }
         else
-          return 'frontend';
+          return 'app';
       }
     },
 

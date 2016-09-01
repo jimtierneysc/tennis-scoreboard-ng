@@ -4,13 +4,13 @@
   describe('modalConfirm', function () {
 
     var labels = {
-      text: 'text value',
+      message: 'message value',
       title: 'title value',
       ok: 'ok value',
       cancel: 'cancel value'
     };
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     describe('service', function () {
       var service;
@@ -102,14 +102,14 @@
       var form;
 
       var labels = {
-        text: '<hello>&hello'
+        message: '<hello>&hello'
       };
 
       beforeEach(function () {
         form = createModal(labels).element;
       });
 
-      it('should html encode text', function () {
+      it('should html encode message', function () {
         var el = form.find('article');
         expect(el.html().trim()).toEqual('&lt;hello&gt;&amp;hello')
       });

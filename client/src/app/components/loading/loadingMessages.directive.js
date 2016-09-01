@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feLoadingMessage
+ * @name app.components.directive:feLoadingMessage
  * @restrict E
  * @description
  * Displays message about loading
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .directive('feLoadingMessages', directive);
 
   /** @ngInject */

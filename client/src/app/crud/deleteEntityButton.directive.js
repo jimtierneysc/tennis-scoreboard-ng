@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name frontendCrud:feDeleteEntityButton
+ * @name app.crud.directive:feDeleteEntityButton
  * @restrict E
  * @description
  * Button to delete an entity
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendCrud')
+    .module('app.crud')
     .directive('feDeleteEntityButton', directive);
 
   /** @ngInject */

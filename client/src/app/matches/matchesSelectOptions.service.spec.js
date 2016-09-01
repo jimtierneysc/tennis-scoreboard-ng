@@ -16,7 +16,7 @@
       {title: '(untitled)', id: 2}
     ];
 
-    beforeEach(module('frontendMatches'));
+    beforeEach(module('app.matches'));
 
     beforeEach(function () {
       inject(function (_crudResource_, _matchesPath_,

@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreCommands
+ * @name app.scores.directive:feScoreCommands
  * @restrict E
  * @description
  * Commands to change view
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreCommands', directive);
 
   /** @ngInject */

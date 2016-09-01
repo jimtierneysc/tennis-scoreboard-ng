@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTableSelectServer
+ * @name app.scores.directive:feScoreTableSelectServer
  * @restrict E
  * @description
  * Select the server when starting a new game
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableSelectServer', directive);
 
   /** @ngInject */

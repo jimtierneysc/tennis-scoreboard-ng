@@ -1,15 +1,18 @@
 /**
  * @ngdoc service
- * @name editInProgress
+ * @name app.components.editInProgress
  * @description
- * Prompt the user to cancel the edit in progress, and notify controllers
- * whether cancelled or not.
+ * Prompt the user to cancel the edit in progress.  Notify controllers of the
+ * outcome.
+ * 
+ * An edit is in progress when the user has chosen a command to show a data entry form and
+ * has changed the value of a form field.
  */
 (function () {
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .service('editInProgress', Service);
 
   /** @ngInject */
@@ -22,16 +25,24 @@
     service.registerOnConfirmed = registerOnConfirmed;
     service.registerOnClose = registerOnClose;
 
-    // Return a promise.  The promise will be rejected when there is an edit in-
-    // progress (e.g.; entering a title for a new entity) and the user chooses not to cancel
-    // editing.
+    /**
+     * @ngdoc function
+     * @name closeEditors
+     * @methodOf app.components.editInProgress
+     * @description
+     * If an edit is in progress, display a modal prompt to cancel the edit. 
+     *
+     * @returns {Object} promise
+     * * Resolved when the edit is cancelled or when there is no edit in progress
+     * * Reject if the edit is not cancelled (by the user)
+     */
     function closeEditors() {
       var state = emitQuery(name);
-      angular.merge(state.labels, {
-        cancel: 'No'
-      });
       var promise;
-      if (!state.pristine)
+      if (!state.pristine) {
+        angular.merge(state.labels, {
+          cancel: 'No'
+        });
         promise = modalConfirm.confirm(state.labels).then(
           function () {
             return emitClose(state).then(function () {
@@ -42,11 +53,12 @@
             emitConfirmed(state, false);
             return $q.reject();
           });
+      }
       else
         promise = emitClose(state);
 
       return promise;
-      
+
       function emitQuery() {
         var data = {
           pristine: true,
@@ -75,19 +87,48 @@
       }
     }
 
-    // Register a callback to retrieve the state of an editor
-    // from a controller.
-    function registerOnQueryState(scope, queryCallback) {
-      registerEvent(scope, QUERY_EVENT, queryCallback);
+    /**
+     * @ngdoc function
+     * @name registerOnQueryState
+     * @methodOf app.components.editInProgress
+     * @description
+     * Called by a controller to register a callback to return the state of an editor.
+     * @param {Object} scope
+     * Controller scope
+     * @param {Object} callback
+     * Controller callback
+     */
+    function registerOnQueryState(scope, callback) {
+      registerEvent(scope, QUERY_EVENT, callback);
     }
 
-    // Register a callback to inform a controller that the user was prompted to
-    // close the current editor.
+    /**
+     * @ngdoc function
+     * @name registerOnConfirmed
+     * @methodOf app.components.editInProgress
+     * @description
+     * Called by a controller to register a callback to inform the controller that the user was prompted to
+     * close the current editor.
+     * @param {Object} scope
+     * Controller scope
+     * @param {Object} callback
+     * Controller callback
+     */
     function registerOnConfirmed(scope, callback) {
       registerEvent(scope, CONFIRMED_EVENT, callback);
     }
 
-    // Register a callback to inform a controller that it's editors should be closed.
+    /**
+     * @ngdoc function
+     * @name registerOnClose
+     * @methodOf app.components.editInProgress
+     * @description
+     * Register a callback to inform a controller that it's editors should be closed.
+     * @param {Object} scope
+     * Controller scope
+     * @param {Object} callback
+     * Controller callback
+     */
     function registerOnClose(scope, callback) {
       registerEvent(scope, CLOSE_EVENT, callback);
     }

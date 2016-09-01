@@ -2,11 +2,23 @@ var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
 
+
 gulp.task('ngdocs', [], function () {
   var gulpDocs = require('gulp-ngdocs');
-  return gulp.src(path.join(conf.paths.src, '/app/**/*.js'))
-    .pipe(gulpDocs.process())
-    .pipe(gulp.dest('././docs'));
+  var options = {
+    title: "Tennis-scoreboard-ng",
+  };
+
+  return gulpDocs.sections({
+    api: {
+      glob: path.join(conf.paths.src, '/app/**/*.js'),
+      api: true,
+      title: 'ngdoc'
+    }
+  }).pipe(gulpDocs.process(options)).pipe(gulp.dest('././docs'));
+  // return gulp.src(path.join(conf.paths.src, '/app/**/*.js'))
+  //   .pipe(gulpDocs.process(options))
+  //   .pipe(gulp.dest('././docs'));
 });
 
 gulp.task('connect_ngdocs', function() {

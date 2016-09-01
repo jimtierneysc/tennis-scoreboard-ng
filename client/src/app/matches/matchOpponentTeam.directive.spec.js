@@ -10,7 +10,7 @@
     var $rootScope;
     var $compile;
 
-    beforeEach(module('frontendMatches'));
+    beforeEach(module('app.matches'));
 
      function createElement(period) {
       scope = $rootScope.$new();

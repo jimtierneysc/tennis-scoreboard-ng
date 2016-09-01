@@ -8,7 +8,7 @@
     var $rootScope;
     var $q;
 
-    beforeEach(module('frontendAnimation'));
+    beforeEach(module('app.animation'));
 
     beforeEach(function () {
       module(function ($provide) {

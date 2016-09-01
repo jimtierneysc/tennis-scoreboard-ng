@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontendRouter', ['frontendApi', 'frontendHome', 'frontendHeader', 'frontendMatches', 'frontendScores', 
+    .module('app.router', ['app.api', 'app.home', 'app.header', 'app.matches', 'app.scores',
       'ui.router']);
 
 

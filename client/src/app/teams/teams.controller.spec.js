@@ -14,7 +14,7 @@
       }
     ];
 
-    beforeEach(module('frontendTeams'));
+    beforeEach(module('app.teams'));
     beforeEach(function () {
 
       inject(function (_$controller_, _$q_, _$rootScope_) {

@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name validateCredentials
+ * @name app.auth.validateCredentials
  * @description
  * Service to validate local user credentials by making a REST API request
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendAuth')
+    .module('app.auth')
     .factory('validateCredentials', factory);
 
   /** @ngInject */
@@ -19,7 +19,7 @@
     /**
      * @ngdoc function
      * @name validate
-     * @methodOf validateCredentials
+     * @methodOf app.auth.validateCredentials
      * @description
      * Make a REST API request using the token.
      * @param {Object} currentUser

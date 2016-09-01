@@ -12,7 +12,7 @@
       }
     ];
 
-    beforeEach(module('frontendPlayers'));
+    beforeEach(module('app.players'));
 
     beforeEach(inject(function (_$controller_, _$rootScope_) {
       $controller = _$controller_;

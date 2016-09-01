@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTable
+ * @name app.scores.directive:feScoreTable
  * @restrict E
  * @description
  * Table to display match scoring
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTable', directive);
 
   /** @ngInject */

@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feScoreTableGameResult
+ * @name app.scores.directive:feScoreTableGameResult
  * @restrict E
  * @description
  * Display the result of a game in the score table
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .directive('feScoreTableGameResult', directive);
 
   /** @ngInject */

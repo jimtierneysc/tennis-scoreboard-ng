@@ -4,7 +4,7 @@
   describe('shortenName service', function () {
     var service;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
     beforeEach(function () {
       inject(function (_shortenName_) {
         service = _shortenName_;

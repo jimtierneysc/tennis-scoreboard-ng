@@ -5,7 +5,7 @@
 
     var service;
 
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
 

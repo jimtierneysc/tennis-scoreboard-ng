@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name frontendPlayers:PlayersController
+ * @name app.players.controller:PlayersController
  * @description
  * Controller for displaying and editing players
  */
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendPlayers')
+    .module('app.players')
     .controller('PlayersController', Controller);
 
   /** @ngInject */
@@ -22,7 +22,7 @@
     /**
      * @ngdoc function
      * @name activate
-     * @methodOf frontendPlayers:PlayersController
+     * @methodOf app.players.controller:PlayersController
      * @description
      * Initialize the controller:
      * * Call the crudHelper service with player-specific options.

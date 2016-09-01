@@ -5,7 +5,7 @@
     var service;
     var $httpBackend;
 
-    beforeEach(module('frontendAuth'));
+    beforeEach(module('app.auth'));
     beforeEach(function() {
       inject(function(_sessionResource_, _$httpBackend_) {
         service = _sessionResource_;

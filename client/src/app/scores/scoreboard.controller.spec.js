@@ -65,7 +65,7 @@
       return result;
     }
 
-    beforeEach(module('frontendScores'));
+    beforeEach(module('app.scores'));
 
     function resolvedPromise() {
       return $q.resolve();

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('frontendRun')
+    .module('app.run')
     .run(loadCredentials);
 
   /** @ngInject */

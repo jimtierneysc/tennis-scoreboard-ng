@@ -7,7 +7,7 @@
     var $rootScope;
     var vm = {};
 
-    beforeEach(module('frontendAuth'));
+    beforeEach(module('app.auth'));
 
     beforeEach(function () {
       inject(function (_authHelper_, _$rootScope_) {

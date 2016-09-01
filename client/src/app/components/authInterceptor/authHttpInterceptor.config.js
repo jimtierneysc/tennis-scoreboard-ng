@@ -1,15 +1,15 @@
 /**
  * @ngdoc object
- * @name authHttpInterceptor
+ * @name app.components.config:authHttpInterceptorConfig
  * @description
- * Allow authHttpInterceptor service to receive http errors.
+ * Register an interceptor to allow authHttpInterceptor service to receive http errors.
  */
 
 (function () {
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .config(config);
   
   /** @ngInject */

@@ -11,7 +11,7 @@
     var modalConfirm;
     var autoFocus;
 
-    beforeEach(module('frontendCrud'));
+    beforeEach(module('app.crud'));
 
     beforeEach(function () {
       module(function ($provide) {

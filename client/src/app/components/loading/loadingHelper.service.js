@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @name loadingHelper
+ * @name app.components.loadingHelper
  * @description
  * Adds loading functionality to a controller
  *
@@ -9,13 +9,28 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .factory('loadingHelper', factory);
 
   /** @ngInject */
   function factory() {
     return activate;
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf app.components.loadingHelper
+     * @description
+     * Adds members to a controller:
+     * * loading.loading
+     * * loading.failed
+     * * loading.error
+     * * loading.hasFailed()
+     * * loading.hasCompleted()
+     *
+     * @param {Object} vm
+     * Controller instance
+     */
     function activate(vm) {
       vm.loading = {
         loading: true,

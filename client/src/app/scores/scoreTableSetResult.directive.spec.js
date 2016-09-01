@@ -7,7 +7,7 @@
     var isolatedScope;
     var element;
 
-    beforeEach(module('frontendScores'));
+    beforeEach(module('app.scores'));
 
     beforeEach(inject(function ($compile, $rootScope) {
 

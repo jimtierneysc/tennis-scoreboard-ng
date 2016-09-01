@@ -4,7 +4,7 @@
   describe('feAutoFocus directive', function () {
 
     var compile, scope, $rootScope, $timeout;
-    beforeEach(module('frontendComponents'));
+    beforeEach(module('app.components'));
 
     beforeEach(function () {
 

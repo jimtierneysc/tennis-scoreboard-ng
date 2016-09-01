@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name frontendTeams:TeamsController
+ * @name app.teams.controller:TeamsController
  * @description
  * Controller for displaying and editing teams
  *
@@ -9,7 +9,7 @@
   'use strict';
 
   angular
-    .module('frontendTeams')
+    .module('app.teams')
     .controller('TeamsController', Controller);
 
   /** @ngInject */
@@ -21,7 +21,7 @@
     /**
      * @ngdoc function
      * @name activate
-     * @methodOf frontendTeams:TeamsController
+     * @methodOf app.teams.controller:TeamsController
      * @description
      * Initialize the controller:
      * * Add playerOptionsList object

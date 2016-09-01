@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('frontend', ['frontendRouter', 'frontendRun', 'angulartics',
+  angular.module('app', ['app.router', 'app.run', 'angulartics',
     'angulartics.google.analytics']);
 
 })();

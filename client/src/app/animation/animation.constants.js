@@ -1,16 +1,16 @@
 /**
  * @ngdoc object
- * @name frontendAnimation:animationIntervals
+ * @name app.animation.constant:animationIntervals
  * @description
  *
- * Define the time in milliseconds to allow elements to be animate when being
- * shown or hidden.
+ * Constants specify the time intervals that allow elements to fade in or face out.
+ * These values are equivalent to the transition speeds declared in animation.css
  */
 (function() {
   'use strict';
 
   angular
-    .module('frontendAnimation')
+    .module('app.animation')
     .constant('animationIntervals', {in: 200, out: 200});
 
 })();

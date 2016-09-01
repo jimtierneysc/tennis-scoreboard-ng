@@ -1,6 +1,6 @@
 /**
  * @ngdoc controller
- * @name ScoresController
+ * @name app.scores.controller:ScoresController
  * @description
  * Controller for listing and selecting match scores
  *
@@ -10,7 +10,7 @@
   'use strict';
 
   angular
-    .module('frontendScores')
+    .module('app.scores')
     .controller('ScoresController', Controller);
 
   /** @ngInject */

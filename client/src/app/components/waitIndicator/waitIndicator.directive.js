@@ -1,6 +1,6 @@
 /**
  * @ngdoc directive
- * @name feWaitIndicator
+ * @name app.components.directive:feWaitIndicator
  * @restrict E
  * @description
  * Display animation while waiting
@@ -11,7 +11,7 @@
   'use strict';
 
   angular
-    .module('frontendComponents')
+    .module('app.components')
     .directive('feWaitIndicator', directive);
 
   /** @ngInject */
