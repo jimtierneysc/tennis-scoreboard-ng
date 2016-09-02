@@ -139,7 +139,8 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Return a hash of valid actions
+  # Generate a hash of valid actions
+  # * *Returns* : Hash
   # === Example
   #   {
   #     start_game: true,

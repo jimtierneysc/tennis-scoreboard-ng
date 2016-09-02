@@ -1,17 +1,24 @@
-# Match Validation
-#
-# Classes to validate a match
-#
+# Validate changes to a Match
 module MatchValidation
 
-  # Class to validate the match attributes
+  # Helper for a Match model to validate
+  # the changes to match attributes
   class ValidationHelper
     def initialize(match)
       @match = match
     end
 
-    attr_reader :match
-
+    # Check for various error conditions:
+    # * Both opponents may not be the same team or player
+    # * The server of the second doubles game must be valid
+    #   * Must not be on the same team as the server of the first
+    # * The +:scoring+ kind must be known
+    # * The opponents must be known
+    # * The attributes must be permitted to change
+    #   * Many attributes can not be changed after the match has started
+    # * *Params*
+    #   * +:errors+ - hash
+    #     * Errors will be added to this hash
     def validate(errors)
       that_first_and_second_opponents_different(errors)
       that_player_servers_on_different_teams(errors)
@@ -21,6 +28,8 @@ module MatchValidation
     end
 
     private
+
+    attr_reader :match
 
     def that_first_and_second_opponents_different(errors)
       if match.doubles

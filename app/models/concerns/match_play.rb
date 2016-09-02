@@ -1,7 +1,5 @@
-# Match Play
-#
-# Class to play a match
-#
+# Execute actions to play a match, such as
+# +:win_game+
 module MatchPlay
 
   # Class to start a match, start a game, win a game, etc.
@@ -11,14 +9,29 @@ module MatchPlay
       @match = match
     end
 
-    attr_reader :match
 
+    # Lookup the methods to handle a particular match play
+    # action such as +:win_game+
+    #
+    # * *Args*    :
+    #   - +action+ -> +:win_game+, +:start_game+ etc.
+    # * *Returns* : Hash or nil
+    #   - +:exec+ - method to execute the action
+    #   - +:query+ - method to determine if the action is enabled
     def lookup_method(action)
       action = action.to_sym
       play_methods_table[action] if play_methods_table.has_key? action
     end
 
-    # Return hash of valid actions, for example {start_game: true}
+    # Generate a hash of valid actions
+    #
+    # * *Returns* : Hash
+    # === Example
+    #   {
+    #     start_game: true,
+    #     discard_play: true,
+    #     remove_last_change: true
+    #   }
     def valid_actions
       result = {}
       play_methods_table.each do |k, v|
@@ -29,8 +42,9 @@ module MatchPlay
       result
     end
 
-
     private
+
+    attr_reader :match
 
     # Operations to play a match.
     #
@@ -372,9 +386,10 @@ module MatchPlay
 
       attr_reader :save_list
       attr_reader :destroy_list
-      attr_reader :match
 
       private
+
+      attr_reader :match
 
       def remove_last
         if match.team_winner
@@ -448,8 +463,6 @@ module MatchPlay
         @match = match
       end
 
-      attr_reader :match
-
       def start_game?
         start_game_kind? :game
       end
@@ -475,6 +488,8 @@ module MatchPlay
       end
 
       private
+
+      attr_reader :match
 
       def start_game_kind?(kind)
         last_set_var = match.last_set
@@ -531,8 +546,6 @@ module MatchPlay
           @match = match
         end
 
-        attr_reader :match
-
         # Once the first server(s) are known, the server for a
         # particular game can be calculated.
         def next_player_server
@@ -548,6 +561,8 @@ module MatchPlay
         end
 
         private
+
+        attr_reader :match
 
         def next_doubles_server(games_played)
           case games_played % 4
@@ -599,8 +614,6 @@ module MatchPlay
         @match = match
       end
 
-      attr_reader :match
-
       def win_game?
         win_game_kind? :game
       end
@@ -632,6 +645,8 @@ module MatchPlay
       def win_match_tiebreak(team)
         win_game_kind team, :match_tiebreak
       end
+
+      private
 
       attr_reader :match
 
