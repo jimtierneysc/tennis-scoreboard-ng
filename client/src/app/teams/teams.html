@@ -18,7 +18,10 @@
               <span ng-if="!entity.name">(unnamed)</span>
             </div>
             <div>
-              {{ entity.first_player.name}} and {{ entity.second_player.name }}
+              <fe-team-player-names
+                team="entity"
+              >
+              </fe-team-player-names>
             </div>
 
           </main>

@@ -1,9 +1,9 @@
 /**
  * @ngdoc directive
- * @name app.matches.directive:feMatchOpponentTeamPlayers
+ * @name app.teams.directive:feTeamPlayerNames
  * @restrict E
  * @description
- * Display the two players on a team
+ * Display the names of the two players on a team
  *
  */
 
@@ -11,14 +11,14 @@
   'use strict';
 
   angular
-    .module('app.matches')
-    .directive('feMatchOpponentTeamPlayers', directiveFunc);
+    .module('app.teams')
+    .directive('feTeamPlayerNames', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/matches/matchOpponentTeamPlayers.html',
+      templateUrl: 'app/teams/teamPlayerNames.html',
       scope: {
         team: '=',
         shortPlayerNames: '@',

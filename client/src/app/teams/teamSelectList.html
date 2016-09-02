@@ -1,0 +1,15 @@
+<ui-select search-enabled="false" on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
+           ng-model="vm.entity['select_' + team]" theme="bootstrap" id="team" name="team"
+           ng-required="true">
+  <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
+  <ui-select-choices repeat="item in teamsList.list">
+    <div ng-bind-html="item.name"></div>
+    <small>
+      <fe-team-player-names
+        team="item"
+        short-player-names="true"
+      >
+      </fe-team-player-names>
+    </small>
+  </ui-select-choices>
+</ui-select>

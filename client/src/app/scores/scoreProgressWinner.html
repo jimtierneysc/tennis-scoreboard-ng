@@ -1,16 +1,16 @@
 <span ng-if="scores.doubles">
-  <fe-match-opponent-team-players
+  <fe-team-player-names
     team="(scores.first_team.id == winner) ? scores.first_team : scores.second_team"
     punctuation="{{punctuation}}"
     short-player-names="true"
-  ></fe-match-opponent-team-players>
+  ></fe-team-player-names>
 </span>
 <span ng-if="!scores.doubles">
-  <fe-match-opponent-player
+  <fe-player-name
     player="(scores.first_player.id == winner) ? scores.first_player : scores.second_player"
     punctuation="{{punctuation}}"
     short-player-name="{{!matchWinner}}"
-  ></fe-match-opponent-player>
+  ></fe-player-name>
 </span>
 
 

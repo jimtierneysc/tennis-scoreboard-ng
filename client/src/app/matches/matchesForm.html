@@ -45,15 +45,12 @@
 
       <label for="first_player" class="control-label sr-only">First Player</label>
 
-      <ui-select on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
-                 ng-model="vm.entity.select_first_player" theme="bootstrap" id="first_player" name="first_player"
-                 ng-required="true">
-        <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="item in playersList.list | filter: $select.search">
-          <div ng-bind-html="item.name | highlight: $select.search"></div>
-          <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-        </ui-select-choices>
-      </ui-select>
+      <fe-player-select-list
+        vm="vm"
+        players-list="playersList"
+        player="first_player"
+      >
+      </fe-player-select-list>
 
       <fe-form-field-errors
         errors="vm.errors"
@@ -69,15 +66,13 @@
          class="form-group" ng-class="{ 'has-error': vm.errors.second_player }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_player" class="control-label sr-only">Second Player</label>
-      <ui-select on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
-                 ng-model="vm.entity.select_second_player" theme="bootstrap" id="second_player" name="second_player"
-                 ng-required="true">
-        <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="item in playersList.list | filter: $select.search">
-          <div ng-bind-html="item.name | highlight: $select.search"></div>
-          <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-        </ui-select-choices>
-      </ui-select>
+
+      <fe-player-select-list
+        vm="vm"
+        players-list="playersList"
+        player="second_player"
+      >
+      </fe-player-select-list>
 
       <fe-form-field-errors
         errors="vm.errors"
@@ -90,7 +85,6 @@
   </div>
 
 
-  <!--TODO: Team select lists should display player names as detail row-->
   <div ng-if="vm.entity.doubles">
     <!--First Team-->
     <div class="form-group" ng-class="{ 'has-error': vm.errors.first_team }"
@@ -98,15 +92,12 @@
 
       <label for="first_team" class="control-label sr-only">First Team</label>
 
-      <ui-select on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
-                 ng-model="vm.entity.select_first_team" theme="bootstrap" id="first_team" name="first_team"
-                 ng-required="true">
-        <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="item in teamsList.list | filter: $select.search">
-          <div ng-bind-html="item.name | highlight: $select.search"></div>
-          <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-        </ui-select-choices>
-      </ui-select>
+      <fe-team-select-list
+        vm="vm"
+        teams-list="teamsList"
+        team="first_team"
+      >
+      </fe-team-select-list>
 
       <fe-form-field-errors
         errors="vm.errors"
@@ -121,15 +112,13 @@
     <div class="form-group" ng-class="{ 'has-error': vm.errors.second_team }"
          ng-keyup="$event.keyCode == 27 && $event.stopPropagation()">
       <label for="second_team" class="control-label sr-only">Second Player</label>
-      <ui-select on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
-                 ng-model="vm.entity.select_second_team" theme="bootstrap" id="second_team" name="second_team"
-                 ng-required="true">
-        <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="item in teamsList.list | filter: $select.search">
-          <div ng-bind-html="item.name | highlight: $select.search"></div>
-          <!--<small ng-bind-html="item.id | highlight: $select.search"></small>-->
-        </ui-select-choices>
-      </ui-select>
+
+      <fe-team-select-list
+        vm="vm"
+        teams-list="teamsList"
+        team="second_team"
+      >
+      </fe-team-select-list>
 
       <fe-form-field-errors
         errors="vm.errors"

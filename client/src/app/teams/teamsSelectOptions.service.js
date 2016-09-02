@@ -36,7 +36,12 @@
         function (response) {
           var options = [];
           angular.forEach(response, function (value) {
-            options.push({name: value.name || '(unnamed)', id: value.id});
+            options.push({
+              name: value.name || '(unnamed)',
+              id: value.id,
+              first_player: value.first_player,
+              second_player: value.second_player
+            });
           });
           deferredObject.resolve(options);
         },

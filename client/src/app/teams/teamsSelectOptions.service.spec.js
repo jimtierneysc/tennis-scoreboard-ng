@@ -7,14 +7,15 @@
     var $httpBackend;
     var service;
     var $rootScope;
-    var list = [
-      {name: 'team1', id: 1, something: 'xyz'},
-      {name: 'team2', id: 2}
-    ];
     var options = [
-      {name: 'team1', id: 1},
-      {name: 'team2', id: 2}
+      {name: 'team1', id: 1, first_player: 'f1', second_player: 's1'},
+      {name: 'team2', id: 2, first_player: 'f2', second_player: 's2'}
     ];
+    var list;
+    (function() {
+      list = angular.copy(options);
+      list[0].extra = 'abc';
+    })();
 
     beforeEach(module('app.teams'));
 

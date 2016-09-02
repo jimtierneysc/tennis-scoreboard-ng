@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('feMatchOpponentPlayer directive', function () {
+  describe('fePlayerName directive', function () {
     var compiledDirective;
     var scope;
     var isolatedScope;
@@ -10,18 +10,17 @@
     var $compile;
     var player = {};
 
-    beforeEach(module('app.matches'));
-
-
+    beforeEach(module('app.players'));
+    
     function createElement(shortPlayerName, period) {
       scope = $rootScope.$new();
       scope.aplayer = player;
 
-      var html = ('<fe-match_opponent-player ' +
+      var html = ('<fe-player-name ' +
       'player="aplayer" ' +
       (period ? 'punctuation="." ' : '') +
       (shortPlayerName ? 'short-player-name="true" ' : '') +
-      '></fe-match_opponent-player>');
+      '></fe-player-name>');
 
       element = angular.element(html);
 
@@ -101,8 +100,6 @@
           expected(3);
         });
       });
-
     });
-
   });
 })();

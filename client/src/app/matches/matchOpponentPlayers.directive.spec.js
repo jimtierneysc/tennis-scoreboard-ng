@@ -14,10 +14,10 @@
       scope = $rootScope.$new();
       scope.amatch = {first_player: {}, second_player: {}};
 
-      var html = ('<fe-match_opponents ' +
+      var html = ('<fe-match-opponents ' +
       'match="amatch" ' +
       'short-player-names="true" ' +
-      '></fe-match_opponents>');
+      '></fe-match-opponents>');
 
       element = angular.element(html);
 

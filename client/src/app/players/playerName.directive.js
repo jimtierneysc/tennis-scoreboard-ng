@@ -3,7 +3,7 @@
  * @name app.matches.directive:feMatchOpponentPlayer
  * @restrict E
  * @description
- * Display a player opponent in a match
+ * Display a player name
  *
  */
 
@@ -11,14 +11,14 @@
   'use strict';
 
   angular
-    .module('app.matches')
-    .directive('feMatchOpponentPlayer', directiveFunc);
+    .module('app.players')
+    .directive('fePlayerName', directiveFunc);
 
   /** @ngInject */
   function directiveFunc() {
     var directive = {
       restrict: 'E',
-      templateUrl: 'app/matches/matchOpponentPlayer.html',
+      templateUrl: 'app/players/playerName.html',
       controller: Controller,
       controllerAs: 'vm',
       bindToController: true,

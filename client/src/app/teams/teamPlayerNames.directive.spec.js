@@ -16,11 +16,11 @@
         second_player: {}
       };
 
-      var html = ('<fe-match-opponent-team-players ' +
+      var html = ('<fe-team-player-names ' +
       'team="ateam" ' +
       'short-player-names="true" ' +
       'punctuation="." ' +
-      '></fe-match-opponent-team-players>');
+      '></fe-team-player-names>');
 
       element = angular.element(html);
 
