@@ -23,14 +23,15 @@
       vm.createLoginForm = true;
       vm.showingLogin = showingLogin;
       vm.showLogin = showLogin;
+      vm.collapse = collapse;
 
       // Add loggedIn property
-      authHelper(vm, $scope);
+      authHelper(vm, $scope, loggedInChanged);
 
       // close responsive drop down if the user is prompted to close an editor
       editInProgress.registerOnConfirmed($scope,
         function () {
-          vm.isCollapsed = true;
+          collapse();
         });
     }
 
@@ -43,6 +44,15 @@
     function showingLogin(showing) {
       if (showing)
         vm.createLoginForm = true;
+    }
+
+    function loggedInChanged() {
+      // Close menu after login or logout
+      collapse();
+    }
+
+    function collapse() {
+      vm.isCollapsed = true;
     }
 
   }
