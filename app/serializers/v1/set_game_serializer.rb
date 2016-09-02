@@ -1,6 +1,19 @@
+# Serialize a game with the following attributes:
+# * +:winner+ - Id of a team or a player
+# * +:server+ - Id of a player
+# * +:tiebreak+ - true if this game is a tiebreak
+#
+# Games are serialized with a set.   See
+# V1::MatchSetSerializer.
+#
 class V1::SetGameSerializer < ActiveModel::Serializer
-  attributes :winner, :server
+  attributes :winner, :server, :tiebreak
 
+  # Serialize the player or team id of the game winner,
+  # if any.
+  #
+  # * *Returns* : id or nil
+  #
   def winner
     if object.team_winner.nil?
       nil
@@ -13,12 +26,19 @@ class V1::SetGameSerializer < ActiveModel::Serializer
     end
   end
 
-  def attributes(*args)
-    hash = super
-    hash[:tiebreak] = true if object.tiebreak?
-    hash
+  # Indicate a tiebreak game.
+  #
+  # * *Returns* : true or nil
+  #
+  def tiebreak
+    object.tiebreak? ? true : nil
   end
 
+  # Serialize the playerid of the game server.
+  # Tiebreak games do not have a server.
+  #
+  # * *Returns* : id or nil
+  #
   def server
     object.player_server_id
   end
