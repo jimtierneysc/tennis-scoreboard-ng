@@ -6,4 +6,4 @@ coverage/
 .tmp/
 dist/
 karma_html/
-
+docs/
