@@ -11,6 +11,6 @@
   'use strict';
 
   angular.module('app.auth', ['app.api', 'app.components',
-    'ngSanitize', 'ngStorage', 'ngResource']);
+    'ngStorage', 'ngResource']);
 
 })();

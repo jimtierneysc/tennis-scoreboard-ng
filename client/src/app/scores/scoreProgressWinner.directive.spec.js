@@ -12,7 +12,7 @@
     beforeEach(inject(function ($compile, $rootScope) {
 
       scope = $rootScope.$new();
-      scope.ascores = {winner: 1};
+      scope.ascores = {winner: 1, first_player: {}, second_player: {}};
 
       var html = ('<fe-score-progress-winner ' +
       'scores="ascores" ' +
@@ -27,7 +27,7 @@
       scope.$digest();
       isolatedScope = compiledDirective.isolateScope();
     }));
-    
+
     describe('isolated scope', function () {
 
       it('should have .scores', function () {

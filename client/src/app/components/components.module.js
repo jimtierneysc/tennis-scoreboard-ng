@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app.components', ['ngSanitize', 'ngAria', 'toastr',
+    .module('app.components', ['toastr',
       'ui.bootstrap', 'ui.bootstrap.modal']);
 
 })();

@@ -14,7 +14,9 @@ input[type="search"], input[type="tel"], input[type="time"],
 input[type="url"], textarea
 { font-size: 16px; }
 
-.ui-select-toggle {
-  font-size: 16px;
-  height: 34px;
-}
+// Increase font-size of ui-select
+// This is only needed when using ui-select search
+//.ui-select-toggle {
+//  font-size: 16px;
+//  height: 34px;
+//}

@@ -5,7 +5,7 @@
  *
  * # app.animation
  *
- * The `app.animation` module provides support for animating view 
+ * The `app.animation` module provides support for animating view
  * elements as they are shown or hidden.
  */
 
@@ -13,7 +13,7 @@
   'use strict';
 
   angular
-    .module('app.animation', ['ngSanitize', 'ngAria', 'ngAnimate']);
+    .module('app.animation', ['ngAnimate']);
 
 
 })();

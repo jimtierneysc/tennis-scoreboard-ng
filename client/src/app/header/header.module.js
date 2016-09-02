@@ -11,6 +11,6 @@
   'use strict';
 
   angular
-    .module('app.header', ['app.auth', 'app.components']);
+    .module('app.header', ['app.auth', 'app.components', 'angular-click-outside']);
 
 })();
