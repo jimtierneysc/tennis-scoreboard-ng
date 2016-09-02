@@ -2,10 +2,10 @@
 #
 # == Overview
 #
-# # A team may be an opponent in a match
-# # A team may be the winner of a game, a match or a set
-# # A doubles team has two players
-# # A singles team has one player
+# * A team may be an opponent in a match
+# * A team may be the winner of a game, a match or a set
+# * A doubles team has two players
+# * A singles team has one player
 # Singles teams are created as needed to allow a
 # player to be an opponent in a match.
 #
@@ -39,7 +39,7 @@ class Team < ActiveRecord::Base
   # If a name is not provided when match is created, generate name
   before_create { self.name = next_team_name if self.doubles && self.name.blank? }
 
-  # Indicate whether team includes a all players in a list
+  # Indicate whether team includes all players in a list
   # * *Args*    :
   #   - +players+ -> array of players
   # * *Returns* : Boolean
@@ -119,7 +119,7 @@ class Team < ActiveRecord::Base
       existing_team = Team.where(first_player_id: player_ids)
                         .where(second_player_id: player_ids).first
       unless existing_team.nil? || existing_team.id == self.id
-        errors.add(:base, 'A team with these players already exists')
+        errors.add(:error, 'A team with these players already exists')
       end
     end
   end
