@@ -1,5 +1,11 @@
 //Customize toastr color
-
 .toast-info {
-  background-color: #337ab7 !important;
+  background-color: #337ab7;
 }
+
+// Position toast below navbar
+.toast-top-right {
+  top: 62px;
+  right: 12px;
+}
+
