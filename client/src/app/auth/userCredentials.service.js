@@ -23,7 +23,7 @@
       service.loadCredentials = loadCredentials;
       service.subscribeChanged = subscribeChanged;
       service.loggedIn = false;
-      service.userName = "";
+      service.username = "";
       service.headerName = authHeaderName;
       service.localDataName = DATANAME;
 
@@ -121,10 +121,10 @@
       function changed() {
         service.loggedIn = data.currentUser;
         if (service.loggedIn) {
-          service.userName = data.currentUser.username;
+          service.username = data.currentUser.username;
         }
         else
-          service.userName = "";
+          service.username = "";
 
         $rootScope.$emit(EVENT_NAME);
       }

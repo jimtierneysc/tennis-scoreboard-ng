@@ -92,7 +92,7 @@
           });
 
           it('should have user name', function () {
-            expect(service.userName).toEqual(USERNAME2);
+            expect(service.username).toEqual(USERNAME2);
           });
 
           it('should be logged in', function () {
@@ -132,7 +132,7 @@
       });
 
       it('should be correct username', function () {
-        expect(service.userName).toBe(USERNAME);
+        expect(service.username).toBe(USERNAME);
       });
 
       it('should set http header', function () {
@@ -156,7 +156,7 @@
       });
 
       it('should have blank username', function () {
-        expect(service.userName).toBe('');
+        expect(service.username).toBe('');
       });
 
       it('should clear http header', function () {

@@ -24,7 +24,7 @@
      * @description
      * Add members to a controller:
      * * loggedIn
-     * * userName
+     * * username
      * * logOut()
      *
      * @param {Object} vm
@@ -36,7 +36,7 @@
      */
     function activate(vm, scope, loggedInChanged) {
       vm.loggedIn = userCredentials.loggedIn;
-      vm.userName = userCredentials.userName;
+      vm.username = userCredentials.username;
       vm.logOut = function () {
         // Cancel pending edits, if any
         editInProgress.closeEditors().then(
@@ -45,7 +45,7 @@
 
       userCredentials.subscribeChanged(scope, function () {
         vm.loggedIn = userCredentials.loggedIn;
-        vm.userName = userCredentials.userName;
+        vm.username = userCredentials.username;
         if (loggedInChanged) {
           // Controller can be notified by implementing loggedInChanged()
           loggedInChanged();

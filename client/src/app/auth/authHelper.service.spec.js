@@ -39,8 +39,8 @@
         userCredentials.setCredentials(USERNAME, '')
       });
 
-      it('should get .userName when .setCredentials()', function () {
-        expect(vm.userName).toEqual(USERNAME);
+      it('should get .username when .setCredentials()', function () {
+        expect(vm.username).toEqual(USERNAME);
       });
 
       it('should be .loggedIn when .setCredentials', function () {
@@ -78,7 +78,7 @@
 
           helper.checkFunction('logOut');
           helper.checkBoolean('loggedIn');
-          helper.checkString('userName');
+          helper.checkString('username');
 
           return helper.getResult();
         }
