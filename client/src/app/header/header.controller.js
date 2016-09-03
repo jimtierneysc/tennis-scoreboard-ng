@@ -13,7 +13,7 @@
     .controller('HeaderController', Controller);
 
   /** @ngInject */
-  function Controller(authHelper, $scope, autoFocus, editInProgress) {
+  function Controller(authHelper, $scope, autoFocus, editInProgress, toastrHelper) {
     var vm = this;
 
     activate();
@@ -24,6 +24,9 @@
       vm.showingLogin = showingLogin;
       vm.showLogin = showLogin;
       vm.collapse = collapse;
+
+      // Add toastr support
+      toastrHelper(vm, $scope);
 
       // Add loggedIn property
       authHelper(vm, $scope, loggedInChanged);
@@ -36,6 +39,7 @@
     }
 
     function showLogin(open) {
+      vm.clearToast();
       vm.createLoginForm = open;
       if (open)
         autoFocus($scope, 'username')
@@ -49,6 +53,20 @@
     function loggedInChanged() {
       // Close menu after login or logout
       collapse();
+      // Popup message
+      if (vm.loggedIn)
+        vm.showToast(
+          'Welcome ' + vm.username + '.' +
+          '  You can view and modify players, teams and matches.' +
+          '  You can also keep score.',
+          'You are logged in');
+      else
+        vm.showToast(
+          'You can no longer modify players, teams or matches' +
+        ', or keep score.' +
+        '  However, you can view all.',
+        'You are logged out');
+
     }
 
     function collapse() {

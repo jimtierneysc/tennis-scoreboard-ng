@@ -11,7 +11,7 @@
     var header = {
       templateUrl: 'app/header/header.html',
       controller: 'HeaderController',
-      controllerAs: 'header'
+      controllerAs: 'vm'
     };
 
     $stateProvider

@@ -1,8 +1,8 @@
-<nav class="navbar navbar-default" ng-controller="HeaderController">
+<nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button id="navbar-toggle" type="button" class="navbar-toggle collapsed"
-              aria-expanded="false" ng-click="header.isCollapsed = !header.isCollapsed" ng-init="header.isCollapsed = true">
+              aria-expanded="false" ng-click="vm.isCollapsed = !vm.isCollapsed" ng-init="vm.isCollapsed = true">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -11,7 +11,10 @@
       <a id="navbar-brand" class="navbar-brand" href="#">Tennis Scoreboard</a>
     </div>
 
-    <div id="navbar-collapse" class="collapse navbar-collapse" click-outside="header.collapse()" outside-if-not="navbar-toggle" ng-class="!header.isCollapsed && 'in'">
+    <!-- The navbar-collapse and navbar-toggle ids help the click-outside directive
+    to uniquely identify elements -->
+    <div id="navbar-collapse" class="collapse navbar-collapse" click-outside="vm.collapse()"
+         outside-if-not="navbar-toggle" ng-class="!vm.isCollapsed && 'in'">
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
         <li ui-sref-active="active"><a ui-sref="players">Players</a></li>
@@ -20,29 +23,29 @@
         <li ui-sref-active="active"><a ui-sref="scores">Scores</a></li>
       </ul>
 
-      <div ng-if="header.loggedIn">
+      <div ng-if="vm.loggedIn">
         <div class="navbar-form navbar-right">
           <div class="form-group">
             <p class="control-label">
-              {{header.userName}}
+              {{vm.username}}
             </p>
           </div>
           <div class="form-group">
-            <a class="btn btn-link" ng-click="header.logOut()">Logout</a>
+            <a class="btn btn-link" ng-click="vm.logOut()">Logout</a>
           </div>
         </div>
       </div>
 
-      <div ng-if="!header.loggedIn">
+      <div ng-if="!vm.loggedIn">
         <ul class="nav navbar-nav navbar-right">
           <!--auto-close="outsideClick" not working so use ng-click-->
-          <li uib-dropdown on-toggle="header.showLogin(open)" xauto-close="outsideClick"
-              ng-click="header.showingLogin(!is_open);$event.preventDefault(); $event.stopPropagation();">
+          <li uib-dropdown on-toggle="vm.showLogin(open)" xauto-close="outsideClick"
+              ng-click="vm.showingLogin(!is_open);$event.preventDefault(); $event.stopPropagation();">
             <a href uib-dropdown-toggle>Login<span class="caret"></span></a>
             <ul id="login-dropdown" class="dropdown-menu">
               <li>
                 <!--ng-if to recreate login form when shown-->
-                <fe-login-form ng-if="header.createLoginForm"></fe-login-form>
+                <fe-login-form ng-if="vm.createLoginForm"></fe-login-form>
               </li>
             </ul>
           </li>
