@@ -27,7 +27,8 @@
 
   function prepare(sb, shortenName) {
 
-    var tieBreakTitle = 'Tiebreak';
+    var tieBreak7Title = '7';
+    var tieBreak10Title = '10';    
     var setsTitles = [
       '1st',
       '2nd',
@@ -175,7 +176,7 @@
         var gameOrdinal = 1;
         angular.forEach(set.games, function (game) {
           if (onGame)
-            onGame(game, gameOrdinal);
+            onGame(game, gameOrdinal, set);
           gameOrdinal++;
         });
         if (onAfterGames) {
@@ -191,8 +192,8 @@
         function (set, ordinal) {
           insertSetTitle(set, ordinal);
         },
-        function (game, ordinal) {
-          insertGameTitle(game, ordinal);
+        function (game, ordinal, set) {
+          insertGameTitle(game, ordinal, set);
         }
       );
 
@@ -204,15 +205,15 @@
       }
 
       function insertSetTitle(set, ordinal) {
-        if (set.tiebreak)
-          set.title = tieBreakTitle;
-        else
+        // if (set.tiebreak)
+        //   set.title = tieBreakTitle;
+        // else
           set.title = setsTitles[ordinal - 1];
       }
 
-      function insertGameTitle(game, ordinal) {
+      function insertGameTitle(game, ordinal, set) {
         if (game.tiebreak)
-          game.title = tieBreakTitle;
+          game.title = (set.tiebreak) ? tieBreak10Title : tieBreak7Title;
         else {
           game.title = ordinal.toString();
         }

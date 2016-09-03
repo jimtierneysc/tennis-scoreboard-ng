@@ -49,7 +49,7 @@
     <!-- Match score row -->
     <tr>
       <th class="score-col-1">
-        <span class="hidden-xs">Match </span>Score
+        Match<span class="score-hidden-xs"> Score</span>
       </th>
       <th class="score-col-2 match">
         <fe-score-table-match-result
@@ -115,7 +115,7 @@
 
       <!--Header column-->
 
-      <th class="score-col-1">
+      <th class="score-col-1" ng-class="{'score-col-1-completed':game.winner}">
         <fe-score-table-game-title
           game="game"
           view="view"

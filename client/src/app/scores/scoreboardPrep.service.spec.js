@@ -13,9 +13,8 @@
         service = _scoreboardPrep_;
       })
     });
-    
-    describe('when prepared', function () {
 
+    describe('when prepared', function () {
 
       var scores;
 
@@ -536,8 +535,8 @@
         it('should have game 2 title', function () {
           expect(result.sets[0].games[1].title).toEqual('2');
         });
-        it('should have tiebreak title', function () {
-          expect(result.sets[0].games[2].title).toEqual('Tiebreak');
+        it('should have 7 point tiebreak title', function () {
+          expect(result.sets[0].games[2].title).toMatch('7');
         });
       });
 
@@ -545,8 +544,8 @@
         var result;
         var sample = {
           sets: [
-            {}, {}, {}, {}, {},
-            {tiebreak: true}
+            {}, {}, {}, {},
+            {tiebreak: true, games:[{tiebreak: true}]}
           ]
         };
 
@@ -556,13 +555,16 @@
           service(result);
         });
 
-        for (var i = 1; i <= 4; i++) {
-          it('should have set ' + i + ' title', function () {
-            expect(result.sets[i - 1].title).toEqual(titles[i - 1]);
-          });
+        for (var i = 0; i < titles.length; i++) {
+          (function() {
+            var index = i; // Capture i
+            it('should have set ' + index + ' title', function () {
+              expect(result.sets[index].title).toEqual(titles[index]);
+            });
+          })();
         }
-        it('should have tiebreak title', function () {
-          expect(result.sets[5].title).toEqual('Tiebreak');
+        it('should have 10 point tiebreak title', function () {
+          expect(result.sets[4].games[0].title).toMatch('10');
         });
       });
     });
@@ -584,7 +586,7 @@
         };
 
         var expectNewTiebreak = {
-          title: 'Tiebreak',
+          title: '7',
           set: sampleScores.sets[0]
         };
 
@@ -616,7 +618,7 @@
               });
 
               it('should have title', function () {
-                expect(newGame.title).toEqual(value.title);
+                expect(newGame.title).toMatch(value.title);
               });
 
             }
@@ -753,13 +755,13 @@
         var expectNewSet = {
           title: '2nd'
         };
-        var expectNewTiebreak = {
-          title: 'Tiebreak'
-        };
+        // var expectNewTiebreak = {
+        //   title: '2nd'
+        // };
 
         var actions = {
           start_set: expectNewSet,
-          start_match_tiebreak: expectNewTiebreak,
+          start_match_tiebreak: expectNewSet,
           win_game: null
         };
 

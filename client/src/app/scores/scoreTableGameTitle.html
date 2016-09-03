@@ -1,7 +1,9 @@
 <span ng-if="!game.hiddenTitle" ng-class="{'standard-animation': game.animatingTitle}">
-<span class="hidden-xs" ng-if="game.verboseTitle">
+<span class="score-hidden-xs" ng-if="game.verboseTitle">
 Game
 </span>
 {{game.title}}
+<span ng-if="game.tiebreak">
+&nbsp;Pt<span class="score-hidden-xs" ng-if="game.tiebreak">&nbsp;Tbrk
+</span></span>
 </span>
-

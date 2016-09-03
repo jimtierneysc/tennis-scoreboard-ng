@@ -10,6 +10,8 @@ $table_min_width: 291px;
 $col_1_min_width: 57px;
 $col_2_min_width: 117px;
 $col_3_min_width: 117px;
+$score_screen-xs-max: 500px;
+$score_screen-xss-max: 400px;
 
 $score_color: green;
 $side_margin: 30px;
@@ -19,10 +21,34 @@ $side_margin: 30px;
   vertical-align: middle !important;
 }
 
+@mixin hide-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+@mixin hide-overflow-padding {
+  @include hide-overflow;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media (max-width: $score_screen-xs-max) {
+  @include responsive-invisibility('.score-hidden-xs');
+}
+
 // Default to maximum size
 .score-col-1 {
+  @include hide-overflow-padding;
   width: $col_1_width;
   @include center-cell;
+}
+
+// Dim completed game title
+.score-col-1-completed {
+  // Not sure dimmed titles are better
+  //opacity: .7;
 }
 
 .score-col-2 {
@@ -33,6 +59,13 @@ $side_margin: 30px;
 .score-col-3 {
   width: $col_3_width;
   @include center-cell;
+}
+
+// Form within table column
+.select-server-form {
+  text-align: left;
+  margin-left: 8px;
+  margin-top: 4px;
 }
 
 .score-panel table {
@@ -62,7 +95,7 @@ $side_margin: 30px;
 }
 
 // Add a line on small devices
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: $score_screen-xss-max) {
   .score-progress-left {
     -webkit-line-clamp: 3;
   }
@@ -141,19 +174,6 @@ $side_margin: 30px;
 
 }
 
-@mixin hide-overflow {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: block;
-}
-
-@mixin hide-overflow-padding {
-  @include hide-overflow;
-  padding-left: 0;
-  padding-right: 0;
-}
-
 .game-col-3 {
   @include hide-overflow-padding;
   color: $score_color;
@@ -179,11 +199,13 @@ $side_margin: 30px;
   transform: scaleX(-1);
 }
 
-// Display a score in a green ellipse
-.score-col-2 .winner-text {
+// Display a score in a green sphere
+.winner-text {
   display: inline-block;
   padding: 4px;
   line-height: 100%;
+  width: 1.5em;
+  height: 1.5em;
 
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -192,7 +214,7 @@ $side_margin: 30px;
   color: white;
 }
 
-// Prevent circle from increasing height of row
+// Prevent sphere from increasing height of row
 .score-col-2.match,
 .score-col-2.set {
   padding: 0;
@@ -212,7 +234,6 @@ $side_margin: 30px;
   color: transparent !important;
 }
 
-
 // Show glyphs to side of player name
 div.current-server-left {
   text-align: right;
@@ -224,17 +245,7 @@ div.current-server-right {
   text-align: left;
 }
 
-//// Custom grid sizes
-//.col-xs-2-7 {
-//  @include make-xs-column(2.7)
-//}
-//
-//.col-xs-6-6 {
-//  @include make-xs-column(6.6)
-//}
-
-.server-glyph-container-left
-{
+.server-glyph-container-left {
   float: left;
   position: relative;
 }

@@ -201,6 +201,7 @@
 
       function toggleShowDescription(showDescription) {
         if (showDescription != view.settings.showDescription) {
+          vm.clearToast();
           view.settings.showDescription = !view.settings.showDescription;
           storeSettings();
         }
@@ -208,6 +209,7 @@
 
       function toggleShowGames(showGames) {
         if (showGames != view.settings.showGames) {
+          vm.clearToast();
           if (!vm.scoreboard.hasCompletedGames) {
             toggle();
             var title = 'Show Completed Games';
@@ -258,6 +260,7 @@
           toggle();  // Now score keeper commands will show in case the user logs in later
         } else {
           if (keepScore != view.keepingScore) {
+            vm.clearToast();
             if (vm.scoreboard.winner) {
               toggle();
               var title = 'Show Score Keeper Commands';

@@ -7,61 +7,60 @@
 
         <!--Display a message-->
 
-        <div ng-if="scores.actions.win_game">
-          Playing game {{scores.currentGame.title}} of the {{scores.currentSet.title}} set<span ng-if="view.showWinButtonHint && view.keepingScore">. &nbsp;
+        <span ng-if="scores.actions.win_game">
+          Playing game {{scores.currentGame.title}} of the {{scores.currentSet.title}} set<span ng-if="view.showWinButtonHint && view.keepingScore">.&nbsp;&nbsp;
           When game {{scores.currentGame.title}} is completed, click the button beneath the winner</span>
-        </div>
+        </span>
 
-        <div ng-if="scores.actions.win_tiebreak">
-          Playing the {{scores.currentSet.title}} set tiebreak.
-        </div>
+        <span ng-if="scores.actions.win_tiebreak">
+          Playing the {{scores.currentSet.title}} set {{scores.currentGame.title}} point tiebreak.&nbsp;&nbsp;
+        </span>
 
-        <div ng-if="scores.actions.win_match_tiebreak">
-          Playing the match tiebreak
-        </div>
+        <span ng-if="scores.actions.win_match_tiebreak">
+          Playing the match {{scores.currentGame.title}} point tiebreak.&nbsp;&nbsp;
+        </span>
 
-        <div ng-if="scores.actions.start_set">
-          <div>
-            <span>{{scores.previousSet.title}} set won by&nbsp;</span>
+        <span ng-if="scores.actions.win_tiebreak || scores.actions.win_match_tiebreak">
+          When the tiebreak is completed, click the button beneath the winner.
+        </span>
+
+        <span ng-if="scores.actions.start_set">
+            <span>{{scores.previousSet.title}} set won by&nbsp;&nbsp;</span>
             <fe-score-progress-winner
               scores="scores"
               winner="scores.previousSet.winner"
               punctuation="."
-            ></fe-score-progress-winner>
-            <span>&nbsp;&nbsp;The {{scores.currentSet.title}} set is next and now we have
-            some very long text to exten over multiple line so we can see how it works out</span>
-          </div>
-        </div>
+            ></fe-score-progress-winner><span>&nbsp;&nbsp;</span>
+            <span>The {{scores.currentSet.title}} set is next</span>
+        </span>
 
-        <div ng-if="scores.actions.start_game">
-          <div ng-if="scores.currentGame.firstOfMatch">
+        <span ng-if="scores.actions.start_game">
+          <span ng-if="scores.currentGame.firstOfMatch">
             The match has started.&nbsp;&nbsp;The first game is upcoming
-          </div>
-          <!--<div ng-if="!scores.currentGame.firstOfMatch && scores.currentGame.firstOfSet">-->
-            <!--The first game of the {{scores.currentSet.}}set is upcoming-->
-          <!--</div>-->
-          <div ng-if="!scores.currentGame.firstOfMatch && !scores.currentGame.tiebreak">
+          </span>
+
+          <span ng-if="!scores.currentGame.firstOfMatch && !scores.currentGame.tiebreak">
             <span>Game {{scores.previousGame.title}} won by&nbsp;</span>
             <fe-score-progress-winner
               scores="scores"
               winner="scores.previousGame.winner"
               punctuation="."
-            ></fe-score-progress-winner>
-            <span>&nbsp;&nbsp;Game {{scores.currentGame.title}} is next</span>
-          </div>
-        </div>
+            ></fe-score-progress-winner><span>&nbsp;&nbsp;</span>
+            <span>Game {{scores.currentGame.title}} is next</span>
+          </span>
+        </span>
 
-        <div ng-if="scores.actions.start_tiebreak">
+        <span ng-if="scores.actions.start_tiebreak">
           <span>Game {{scores.previousGame.title}} won by&nbsp;</span>
           <fe-score-progress-winner
             scores="scores"
             winner="scores.previousGame.winner"
             punctuation="."
-          ></fe-score-progress-winner>
-          <span>&nbsp;&nbsp;The set tiebreak is next</span>
-        </div>
+          ></fe-score-progress-winner><span>&nbsp;&nbsp;</span>
+          <span>The set tiebreak is next</span>
+        </span>
 
-        <div ng-if="scores.actions.start_match_tiebreak">
+        <span ng-if="scores.actions.start_match_tiebreak">
           <div>Set {{scores.previousSet.title}} won by&nbsp;
             <fe-score-progress-winner
               scores="scores"
@@ -70,9 +69,9 @@
             ></fe-score-progress-winner>
             <span>&nbsp;&nbsp;The match tiebreak is next</span>
           </div>
-        </div>
+        </span>
 
-        <div ng-if="scores.state == 'complete'">
+        <span ng-if="scores.state == 'complete'">
           <span>The match is over.&nbsp;&nbsp;The</span>
           <span ng-if="scores.doubles">winners are&nbsp;</span>
           <span ng-if="!scores.doubles">winner is&nbsp;</span>
@@ -81,11 +80,11 @@
             winner="scores.winner"
             match-winner="true"
           ></fe-score-progress-winner>
-        </div>
+        </span>
 
-        <div ng-if="scores.actions.start_play">
+        <span ng-if="scores.actions.start_play">
           The match has not started
-        </div>
+        </span>
       </div>
 
       <div class="pull-right" ng-if="view.keepingScore && scores.startingSetOrMatch">
