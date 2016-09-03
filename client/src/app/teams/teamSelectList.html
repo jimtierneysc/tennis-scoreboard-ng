@@ -3,7 +3,7 @@
            ng-required="true">
   <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
   <ui-select-choices repeat="item in teamsList.list">
-    <div ng-bind-html="item.name"></div>
+    <div>{{item.name}}</div>
     <small>
       <fe-team-player-names
         team="item"

@@ -171,7 +171,7 @@
             confirmDelete = true;
           if (confirmDelete) {
             modalConfirm.confirm({
-              title: 'Confirm Delete', message: 'Are you sure you want to delete "' +
+              title: 'Confirm Delete', message: 'Are you sure that you want to delete "' +
               options.getEntityDisplayName(entity) + '"?'
             })
               .then(function () {
