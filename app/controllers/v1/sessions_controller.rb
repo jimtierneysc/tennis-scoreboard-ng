@@ -5,6 +5,14 @@
 #
 class V1::SessionsController < ApplicationController
 
+  # Login a user
+  # Validate user credentials.  If valid, respond with
+  # an authentication token for the user.
+  # * *Request*
+  #   * +:username+
+  #   * +:password+
+  # * *Response*
+  #   * User or HTTP error.  See V1::SessionSerializer
   def create
     session = params[:session]
     user_password = session[:password] if session
@@ -24,6 +32,11 @@ class V1::SessionsController < ApplicationController
     end
   end
 
+  # Clear the authentication token associated with a user
+  # * *Params*
+  #   * +:id+ - authentication token
+  # * *Response*
+  #   * +:no_content+ or HTTP error
   def destroy
     user = User.find_by(auth_token: params[:id])
     if user

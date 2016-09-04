@@ -31,8 +31,8 @@ class V1::MatchScoreboardSerializer < V1::MatchSerializer
 
   # Serialize actions that may be executed on the match.
   # See Match.play_actions
-  # * *Returns* :
-  #   - a hash of actions like this:
+  # * *Returns* : Hash
+  # === Example
   #   {
   #     start_game: true,
   #     discard_play: true,
@@ -47,8 +47,8 @@ class V1::MatchScoreboardSerializer < V1::MatchSerializer
   # or the match.  Player id's are serialized for singles matches;
   # Team id's for doubles matches.
   #
-  # * *Returns* :
-  #   - a hash like this:
+  # * *Returns* : Hash
+  # === Example
   #   (
   #     set: [10],
   #     match[]

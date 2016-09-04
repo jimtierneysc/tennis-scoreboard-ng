@@ -14,7 +14,7 @@ class V1::MatchSetSerializer < ActiveModel::Serializer
   # V1::SetGameSerializer
   #
   # * *Returns* :
-  #   - array of games
+  #   - array of V1::SetGameSerializer
   #
   def games
     ActiveModel::ArraySerializer.new(object.set_games, each_serializer: V1::SetGameSerializer)

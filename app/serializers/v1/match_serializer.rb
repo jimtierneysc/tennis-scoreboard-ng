@@ -44,25 +44,25 @@ class V1::MatchSerializer < ActiveModel::Serializer
     data
   end
 
-  # Serialize the first player.  See V1::PlayerSerializer.
+  # Serialize the first player
   #
-  # * *Returns* : first_player hash
+  # * *Returns* : V1::PlayerSerializer
   #
   def first_player
     V1::PlayerSerializer.new(object.first_team.first_player, root: false)
   end
 
-  # Serialize the first team.  See V1::OpponentTeamSerializer.
+  # Serialize the first team
   #
-  # * *Returns* : first_team hash
+  # * *Returns* : V1::TeamSerializer
   #
   def first_team
-    V1::OpponentTeamSerializer.new(object.first_team, root: false)
+    V1::TeamSerializer.new(object.first_team, root: false)
   end
 
-  # Serialize the second player.  See V1::PlayerSerializer.
+  # Serialize the second player
   #
-  # * *Returns* : second_player hash
+  # * *Returns* : See V1::PlayerSerializer
   #
   def second_player
     V1::PlayerSerializer.new(object.second_team.first_player, root: false)
@@ -70,14 +70,20 @@ class V1::MatchSerializer < ActiveModel::Serializer
 
   # Serialize the second team.  See V1::OpponentTeamSerializer.
   #
-  # * *Returns* : second_team hash
+  # * *Returns* : V1::TeamSerializer
   #
   def second_team
-    V1::OpponentTeamSerializer.new(object.second_team, root: false)
+    V1::TeamSerializer.new(object.second_team, root: false)
   end
 
   protected
 
+  # Get the id for an opponent in a match.
+  # For a doubles match, get a team id.  For a singles match,
+  # get a player id
+  # * *Args*    :
+  #   - +team+ -> team opponent
+  # * *Returns* : id
   def opponent_id(team)
     if object.doubles
       team.id

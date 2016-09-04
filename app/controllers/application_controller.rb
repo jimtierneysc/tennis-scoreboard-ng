@@ -16,7 +16,6 @@ class ApplicationController < ActionController::API
   # Include authentication support
   include Authenticable
 
-
   protected
 
   # Render an HTTP error
