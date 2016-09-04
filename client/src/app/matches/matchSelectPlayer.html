@@ -1,4 +1,4 @@
-<ui-select fe-ui-select-read-only search-enabled="false"
+<ui-select skip-focusser="true" search-enabled="false"
            on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
            ng-model="vm.entity['select_' + player]" theme="bootstrap" id="player" name="player"
            ng-required="true">

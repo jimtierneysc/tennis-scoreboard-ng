@@ -20,7 +20,8 @@
 
           <form class="pull-left score-select-list">
             <label for="team" class="control-label sr-only">Team</label>
-            <ui-select fe-ui-select-read-only search-enabled="false"
+            // skip-focusser and search-enabled prevent keyboard issues on Android
+            <ui-select skip-focusser="true" search-enabled="false"
                        autofocus ng-model="vm.selectedMatch"
                        theme="bootstrap" id="team" name="team"
                        ng-required="true" on-select="vm.selectedMatchChange()">
