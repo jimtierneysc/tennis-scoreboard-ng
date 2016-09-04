@@ -1,7 +1,8 @@
-<ui-select search-enabled="false" on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
+<ui-select fe-ui-select-read-only search-enabled="false"
+           on-select="vm.clearErrors(['first_player', 'second_player', 'other'])"
            ng-model="vm.entity['select_' + player]" theme="bootstrap" id="player" name="player"
            ng-required="true">
-  <ui-select-match placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
+  <ui-select-match fe-ui-select-read-only placeholder="Select a player">{{$select.selected.name}}</ui-select-match>
   <ui-select-choices repeat="item in playersList.list">
     <div>{{item.name}}</div>
   </ui-select-choices>
