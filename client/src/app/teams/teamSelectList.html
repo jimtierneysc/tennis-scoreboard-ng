@@ -1,4 +1,5 @@
-<ui-select search-enabled="false" on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
+<ui-select fe-ui-select-read-only search-enabled="false"
+           on-select="vm.clearErrors(['first_team', 'second_team', 'other'])"
            ng-model="vm.entity['select_' + team]" theme="bootstrap" id="team" name="team"
            ng-required="true">
   <ui-select-match placeholder="Select a team">{{$select.selected.name}}</ui-select-match>
