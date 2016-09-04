@@ -7,7 +7,7 @@
 
   /** @ngInject */
   function loadCredentials(userCredentials) {
-    userCredentials.loadCredentials();
+    userCredentials.loadCredentials(true);
   }
 
 })();

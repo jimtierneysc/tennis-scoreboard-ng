@@ -50,22 +50,24 @@
         vm.createLoginForm = true;
     }
 
-    function loggedInChanged() {
-      // Close menu after login or logout
-      collapse();
-      // Popup message
-      if (vm.loggedIn)
-        vm.showToast(
-          'Welcome ' + vm.username + '.' +
-          '  You can view and modify players, teams and matches.' +
-          '  You can also keep score.',
-          'You are logged in');
-      else
-        vm.showToast(
-          'You can no longer modify players, teams or matches' +
-        ', or keep score.' +
-        '  However, you can view all.',
-        'You are logged out');
+    function loggedInChanged(loading) {
+      if (!loading) {  // Ignore change during applicaiton load
+        // Close menu after login or logout
+        collapse();
+        // Popup message
+        if (vm.loggedIn)
+          vm.showToast(
+            'Welcome ' + vm.username + '.' +
+            '  You can view and modify players, teams and matches.' +
+            '  You can also keep score.',
+            'You are logged in');
+        else
+          vm.showToast(
+            'You can no longer modify players, teams or matches' +
+            ', or keep score.' +
+            '  However, you can view all.',
+            'You are logged out');
+      }
 
     }
 

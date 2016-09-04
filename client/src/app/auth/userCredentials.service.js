@@ -65,13 +65,12 @@
        * * Clear local credentials
        * * Clear HTTP request header.
        * * Emit an event to indicate that credentials have changed.
+       * @param {Boolean} loading
+       * The application is being loaded
        */
-      function clearCredentials() {
-        data = {};
-        // $cookieStore.remove('globals');
-        $localStorage[DATANAME] = undefined;
-        delete $http.defaults.headers.common[authHeaderName];
-        changed();
+      function clearCredentials(loading) {
+        clearData();
+        changed(loading);
       }
 
       /**
@@ -82,22 +81,25 @@
        * * Load local credentials
        * * Update HTTP request header.
        * * Emit an event to indicate that credentials have changed.
+       * @param {Boolean} loading
+       * The application is being loaded
        */
-      function loadCredentials() {
+      function loadCredentials(loading) {
         data = $localStorage[DATANAME] || {};
         if (data && data.currentUser) {
           validateCredentials(data.currentUser).then(
             function (credentials) {
               data.currentUser = angular.copy(credentials);
-              changed();
+              changed(loading);
             },
             function () {
-              clearCredentials();
+              clearData();
+              changed(loading)
             }
           );
         }
         else
-          changed();
+          changed(loading);
       }
 
       var EVENT_NAME = 'user-credentials:change';
@@ -118,7 +120,14 @@
         scope.$on('$destroy', handler);
       }
 
-      function changed() {
+      function clearData() {
+        data = {};
+        // $cookieStore.remove('globals');
+        $localStorage[DATANAME] = undefined;
+        delete $http.defaults.headers.common[authHeaderName];
+      }
+
+      function changed(loading) {
         service.loggedIn = data.currentUser;
         if (service.loggedIn) {
           service.username = data.currentUser.username;
@@ -126,7 +135,7 @@
         else
           service.username = "";
 
-        $rootScope.$emit(EVENT_NAME);
+        $rootScope.$emit(EVENT_NAME, loading);
       }
     }
   })();

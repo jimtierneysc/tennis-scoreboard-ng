@@ -43,12 +43,12 @@
           userCredentials.clearCredentials)
       };
 
-      userCredentials.subscribeChanged(scope, function () {
+      userCredentials.subscribeChanged(scope, function (loading) {
         vm.loggedIn = userCredentials.loggedIn;
         vm.username = userCredentials.username;
         if (loggedInChanged) {
           // Controller can be notified by implementing loggedInChanged()
-          loggedInChanged();
+          loggedInChanged(loading);
         }
       });
 
