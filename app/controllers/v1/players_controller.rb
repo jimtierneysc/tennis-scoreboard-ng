@@ -18,7 +18,7 @@ class V1::PlayersController < ApplicationController
   #   * List of players
   def index
     @players = Player.order 'lower(name)'
-    render json: @players
+    render json: @players, serializer: V1::ApplicationArraySerializer
   end
 
   # Get a particular player

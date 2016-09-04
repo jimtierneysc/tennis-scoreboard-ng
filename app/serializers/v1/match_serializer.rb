@@ -10,7 +10,7 @@
 # * +:first_player+ (when not doubles)
 # * +:second_player+ (when not doubles)
 #
-class V1::MatchSerializer < ActiveModel::Serializer
+class V1::MatchSerializer < V1::ApplicationSerializer
   attributes :id, :title, :scoring, :doubles, :state, :winner
 
   # Serialize the player or team id of the match winner,
@@ -49,7 +49,7 @@ class V1::MatchSerializer < ActiveModel::Serializer
   # * *Returns* : V1::PlayerSerializer
   #
   def first_player
-    V1::PlayerSerializer.new(object.first_team.first_player, root: false)
+    V1::PlayerSerializer.new(object.first_team.first_player)
   end
 
   # Serialize the first team
@@ -57,7 +57,7 @@ class V1::MatchSerializer < ActiveModel::Serializer
   # * *Returns* : V1::TeamSerializer
   #
   def first_team
-    V1::TeamSerializer.new(object.first_team, root: false)
+    V1::TeamSerializer.new(object.first_team)
   end
 
   # Serialize the second player
@@ -65,7 +65,7 @@ class V1::MatchSerializer < ActiveModel::Serializer
   # * *Returns* : See V1::PlayerSerializer
   #
   def second_player
-    V1::PlayerSerializer.new(object.second_team.first_player, root: false)
+    V1::PlayerSerializer.new(object.second_team.first_player)
   end
 
   # Serialize the second team.  See V1::OpponentTeamSerializer.
@@ -73,7 +73,7 @@ class V1::MatchSerializer < ActiveModel::Serializer
   # * *Returns* : V1::TeamSerializer
   #
   def second_team
-    V1::TeamSerializer.new(object.second_team, root: false)
+    V1::TeamSerializer.new(object.second_team)
   end
 
   protected

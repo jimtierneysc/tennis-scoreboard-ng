@@ -18,7 +18,7 @@ class V1::MatchesController < ApplicationController
   #   * List of matches
   def index
     @matches = Match.order 'lower(title)'
-    render json: @matches
+    render json: @matches, serializer: V1::ApplicationArraySerializer
   end
 
   # Get a particular match

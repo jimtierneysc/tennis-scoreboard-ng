@@ -5,7 +5,7 @@ RSpec.describe V1::MatchScoreboardSerializer, { type: :serializer, match_seriali
 
   def scoreboard_json(match)
     serializer = V1::MatchScoreboardSerializer.new(match)
-    JSON.parse(serializer.to_json, symbolize_names: true)[:match_scoreboard]
+    JSON.parse(serializer.to_json, symbolize_names: true)
   end
 
   describe 'empty match' do

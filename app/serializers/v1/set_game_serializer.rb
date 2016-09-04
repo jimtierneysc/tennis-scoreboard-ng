@@ -6,7 +6,7 @@
 # Games are serialized with a set.   See
 # V1::MatchSetSerializer.
 #
-class V1::SetGameSerializer < ActiveModel::Serializer
+class V1::SetGameSerializer < V1::ApplicationSerializer
   attributes :winner, :server, :tiebreak
 
   # Serialize the player or team id of the game winner,

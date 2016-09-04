@@ -5,7 +5,7 @@ RSpec.describe V1::UserSerializer, { type: :serializer } do
   let(:serializer) { V1::UserSerializer.new(resource) }
 
   subject do
-    JSON.parse(serializer.to_json, symbolize_names: true)[:user]
+    JSON.parse(serializer.to_json, symbolize_names: true)
   end
 
   it 'should have id' do

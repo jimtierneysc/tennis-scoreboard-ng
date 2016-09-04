@@ -2,7 +2,7 @@
 # * +:id+
 # * +:username+
 #
-class V1::UserSerializer < ActiveModel::Serializer
+class V1::UserSerializer < V1::ApplicationSerializer
   attributes :id, :username
 
 end

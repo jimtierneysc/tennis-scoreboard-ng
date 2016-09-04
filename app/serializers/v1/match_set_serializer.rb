@@ -7,7 +7,7 @@
 # Sets are serialized with a match scoreboard.   See
 # V1::MatchScoreboardSerializer.
 #
-class V1::MatchSetSerializer < ActiveModel::Serializer
+class V1::MatchSetSerializer < V1::ApplicationSerializer
   attributes :scoring, :winner, :games, :state
 
   # Serialize the games of the set. See
@@ -17,7 +17,7 @@ class V1::MatchSetSerializer < ActiveModel::Serializer
   #   - array of V1::SetGameSerializer
   #
   def games
-    ActiveModel::ArraySerializer.new(object.set_games, each_serializer: V1::SetGameSerializer)
+    V1::ApplicationArraySerializer.new(object.set_games, each_serializer: V1::SetGameSerializer)
   end
 
   # Serialize the player or team id of the set winner,

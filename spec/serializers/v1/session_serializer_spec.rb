@@ -5,7 +5,7 @@ RSpec.describe V1::SessionSerializer, { type: :serializer } do
   let(:serializer) { V1::SessionSerializer.new(resource) }
 
   subject do
-    JSON.parse(serializer.to_json, symbolize_names: true)[:session]
+    JSON.parse(serializer.to_json, symbolize_names: true)
   end
 
   it 'should have id' do

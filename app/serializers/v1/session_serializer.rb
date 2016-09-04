@@ -3,6 +3,6 @@
 # * +:username+
 # * +:auth_token+
 #
-class V1::SessionSerializer < V1::UserSerializer
+class V1::SessionSerializer < V1::ApplicationSerializer
   attributes :id, :username, :auth_token
 end

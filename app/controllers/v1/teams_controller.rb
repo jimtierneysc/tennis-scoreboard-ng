@@ -19,7 +19,7 @@ class V1::TeamsController < ApplicationController
   #   * List of teams
   def index
     @teams = Team.where(doubles: true).order 'lower(name)'
-    render json: @teams
+    render json: @teams, serializer: V1::ApplicationArraySerializer
   end
 
   # Get a particular team

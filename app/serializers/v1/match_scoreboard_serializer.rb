@@ -26,7 +26,7 @@ class V1::MatchScoreboardSerializer < V1::MatchSerializer
   #   - array of sets
   #
   def sets
-    ActiveModel::ArraySerializer.new(object.match_sets, each_serializer: V1::MatchSetSerializer)
+    V1::ApplicationArraySerializer.new(object.match_sets, each_serializer: V1::MatchSetSerializer)
   end
 
   # Serialize actions that may be executed on the match.

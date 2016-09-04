@@ -5,7 +5,7 @@ RSpec.describe V1::MatchSerializer, { type: :serializer, match_serializer_shared
 
   def match_json(match)
     serializer = V1::MatchSerializer.new(match)
-    JSON.parse(serializer.to_json, symbolize_names: true)[:match]
+    JSON.parse(serializer.to_json, symbolize_names: true)
   end
 
   describe 'empty match' do
