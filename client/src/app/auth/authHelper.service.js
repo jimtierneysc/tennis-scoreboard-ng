@@ -40,7 +40,9 @@
       vm.logOut = function () {
         // Cancel pending edits, if any
         editInProgress.closeEditors().then(
-          userCredentials.clearCredentials)
+          function() {
+            userCredentials.clearCredentials()
+          })
       };
 
       userCredentials.subscribeChanged(scope, function (loading) {
