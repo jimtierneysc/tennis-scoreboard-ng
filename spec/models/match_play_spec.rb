@@ -14,7 +14,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
     end
 
     it 'should respond with valid actions' do
-      expect(subject.play_actions).to eq({ start_play: true })
+      expect(subject.valid_actions).to eq({ start_play: true })
     end
 
     context 'when attempt invalid actions' do
@@ -69,7 +69,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
       context 'with first server' do
         before do
-          subject.play_match! :start_game, player: subject.first_player
+          subject.play_match! :start_game, opponent: subject.first_player
         end
 
         it_behaves_like 'a match with first game started'
@@ -93,7 +93,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
       context 'start first game with first server' do
         before do
-          subject.play_match! :start_game, player: subject.first_team.first_player
+          subject.play_match! :start_game, opponent: subject.first_team.first_player
         end
 
         it_behaves_like 'a match with first game started'
@@ -108,7 +108,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
           context 'start second game with second server' do
             before do
-              subject.play_match! :start_game, player: subject.second_team.first_player
+              subject.play_match! :start_game, opponent: subject.second_team.first_player
             end
 
             it_behaves_like 'a match with second game started'
@@ -130,11 +130,11 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
           context 'second game with invalid server' do
             it 'should not allow same server' do
-              expect { subject.play_match! :start_game, player: subject.first_team.first_player }.to raise_error ActiveRecord::RecordInvalid
+              expect { subject.play_match! :start_game, opponent: subject.first_team.first_player }.to raise_error ActiveRecord::RecordInvalid
             end
 
             it 'should not allow server from same team' do
-              expect { subject.play_match! :start_game, player: subject.first_team.second_player }.to raise_error ActiveRecord::RecordInvalid
+              expect { subject.play_match! :start_game, opponent: subject.first_team.second_player }.to raise_error ActiveRecord::RecordInvalid
             end
           end
         end
@@ -320,7 +320,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context 'first' do
           before do
-            subject.play_match! :start_game, player: subject.second_player
+            subject.play_match! :start_game, opponent: subject.second_player
           end
           it_behaves_like 'a match with second player serving'
 
@@ -383,14 +383,14 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
 
         context 'first' do
           before do
-            subject.play_match! :start_game, player: subject.first_team.second_player
+            subject.play_match! :start_game, opponent: subject.first_team.second_player
           end
           it_behaves_like 'a match with second player serving'
 
           context 'second' do
             before do
               subject.play_match! :win_game, opponent: winner
-              subject.play_match! :start_game, player: subject.second_team.first_player
+              subject.play_match! :start_game, opponent: subject.second_team.first_player
             end
             it_behaves_like 'a match with third player serving'
 
@@ -434,7 +434,7 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
         context 'second' do
           before do
             subject.play_match! :win_game, opponent: winner
-            subject.play_match! :start_game, player: subject.second_team.first_player
+            subject.play_match! :start_game, opponent: subject.second_team.first_player
           end
 
           it_behaves_like 'a match with third player serving'
@@ -579,20 +579,20 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
       end
 
       context 'when use valid version' do
-        before { subject.play_match! :start_game, { player: subject.first_player, version: subject.play_version } }
+        before { subject.play_match! :start_game, { opponent: subject.first_player, version: subject.play_version } }
 
         it_behaves_like 'a match with game in progress'
       end
 
       it 'should raise exception when version is behind' do
         expect do
-          subject.play_match! :start_game, { player: subject.first_player, version: subject.play_version - 1 }
+          subject.play_match! :start_game, { opponent: subject.first_player, version: subject.play_version - 1 }
         end.to raise_error Exceptions::InvalidOperation
       end
 
       it 'should raise exception when version is ahead' do
         expect do
-          subject.play_match! :start_game, { player: subject.first_player, version: subject.play_version + 1 }
+          subject.play_match! :start_game, { opponent: subject.first_player, version: subject.play_version + 1 }
         end.to raise_error Exceptions::InvalidOperation
       end
 

@@ -11,6 +11,8 @@ module ControllersShared
         'has already been taken'
       when :not_found
         'not found'
+      else
+        id.to_s
       end
     else
       id.to_s
@@ -70,11 +72,11 @@ module ControllersShared
     end
 
     failure_message do
-      "expect to have errors"
+      'expect to have errors'
     end
 
     failure_message_when_negated do
-      "do not expect to have errors"
+      'do not expect to have errors'
     end
   end
 

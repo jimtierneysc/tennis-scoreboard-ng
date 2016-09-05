@@ -10,7 +10,7 @@ RSpec.describe V1::ApplicationController, { type: :controller } do
     end
   end
 
-  def set_authorization token
+  def set_authorization(token)
     request.headers['Authorization'] = token
   end
 

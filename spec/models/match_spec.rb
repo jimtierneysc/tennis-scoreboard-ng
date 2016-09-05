@@ -186,8 +186,8 @@ RSpec.describe Match, { type: :model } do
 
       context 'start game' do
         before do
-          subject.play_match! :start_game, player: subject.first_player
-          subject.play_match! :win_game, team: subject.first_player.singles_team
+          subject.play_match! :start_game, opponent: subject.first_player
+          subject.play_match! :win_game, opponent: subject.first_player.singles_team
         end
 
         it 'should validate cannot change server' do
@@ -222,8 +222,8 @@ RSpec.describe Match, { type: :model } do
 
       context 'win first game' do
         before do
-          subject.play_match! :start_game, player: subject.first_team.first_player
-          subject.play_match! :win_game, team: subject.first_team
+          subject.play_match! :start_game, opponent: subject.first_team.first_player
+          subject.play_match! :win_game, opponent: subject.first_team
         end
 
         it 'should validate cannot change first server' do
@@ -238,8 +238,8 @@ RSpec.describe Match, { type: :model } do
 
         context 'start second game' do
           before do
-            subject.play_match! :start_game, player: subject.second_team.first_player
-            subject.play_match! :win_game, team: subject.first_team
+            subject.play_match! :start_game, opponent: subject.second_team.first_player
+            subject.play_match! :win_game, opponent: subject.first_team
           end
 
           it 'should validate cannot change second server' do

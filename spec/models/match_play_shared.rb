@@ -148,9 +148,9 @@ module MatchPlayShared
     match do |m|
       actions = [:discard_play, :remove_last_change]
       actions.each do |action|
-        return false if not m.play_match? action
+        return false unless m.play_match? action
       end
-      return true
+      true
     end
 
     failure_message do
@@ -165,7 +165,7 @@ module MatchPlayShared
   RSpec::Matchers.define :have_complete_set do
     match do |m|
       last_set = m.last_set
-      return last_set && last_set.state == :complete
+      last_set && last_set.state == :complete
     end
 
     failure_message do

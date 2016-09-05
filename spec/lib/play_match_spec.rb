@@ -7,7 +7,7 @@ RSpec.describe PlayMatch, { type: :model } do
     subject { PlayMatch.convert_scores([[1, 2]]) }
 
     it 'should convert scores' do
-      expect(subject).to eq([['w', 'l', 'l']])
+      expect(subject).to eq([%w(w l l)])
     end
 
   end

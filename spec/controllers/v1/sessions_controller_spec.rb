@@ -7,7 +7,7 @@ RSpec.describe V1::SessionsController, { type: :controller } do
   let(:password) { '12345678' }
   let(:unknown_password) { '99999999' }
 
-  describe "POST #create" do
+  describe 'POST #create' do
 
     context 'when the credentials are correct' do
 
@@ -32,7 +32,7 @@ RSpec.describe V1::SessionsController, { type: :controller } do
 
   end
 
-  describe "DELETE #destroy" do
+  describe 'DELETE #destroy' do
     before do
       # sign_in user
     end

@@ -4,20 +4,20 @@ require 'rails_helper'
 
 module V1::MatchSerializerShared
 
-  RSpec.shared_examples "a match" do
+  RSpec.shared_examples 'a match' do
     it { is_expected.to include :id, :title, :doubles, :state, :scoring, :winner }
   end
 
-  RSpec.shared_examples "a doubles match" do
-    it_behaves_like "a match"
+  RSpec.shared_examples 'a doubles match' do
+    it_behaves_like 'a match'
 
     it 'should be doubles' do
       expect(subject[:doubles]).to eql(true)
     end
   end
 
-  RSpec.shared_examples "a singles match" do
-    it_behaves_like "a match"
+  RSpec.shared_examples 'a singles match' do
+    it_behaves_like 'a match'
 
     it 'should be singles' do
       expect(subject[:doubles]).to eql(false)
@@ -82,7 +82,7 @@ module V1::MatchSerializerShared
     end
 
     failure_message_when_negated do
-      "do not expect to match json"
+      'do not expect to match json'
     end
   end
 
@@ -98,20 +98,20 @@ module V1::MatchSerializerShared
     attr_reader :json
     attr_reader :match
 
-    def eql_member member
+    def eql_member(member)
       record_result member, json[member] == match.send(member)
     end
 
-    def eql_member_to_s member
+    def eql_member_to_s(member)
       record_result member, json[member] == match.send(member).to_s
     end
 
-    def eql_team opponent
+    def eql_team(opponent)
       record_result "#{opponent}.id", json[opponent][:id] == match.send(opponent).id
       record_result "#{opponent}.name", json[opponent][:name] == match.send(opponent).name
     end
 
-    def record_result member, result
+    def record_result(member, result)
       not_equal.push member unless result
     end
 
