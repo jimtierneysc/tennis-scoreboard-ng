@@ -12,7 +12,7 @@
 
     beforeEach(module('app.players'));
     
-    function createElement(shortPlayerName, period) {
+    function createElement() {
       scope = $rootScope.$new();
       scope.avm = {};
       scope.aplayersList = [];
@@ -39,7 +39,7 @@
 
     describe('members', function () {
       beforeEach(function () {
-        createElement(false, false);
+        createElement();
       });
 
       it('should have .player', function () {

@@ -1,17 +1,13 @@
-# Serialize a set with the following attributes:
-# * +:scoring+ kind
+# Serialize a MatchSet with the following attributes:
+# * +:scoring+
 # * +:state+
 # * +:winner+
-# * +:games+ See V1::SetGameSerializer.
-#
-# Sets are serialized with a match scoreboard.   See
-# V1::MatchScoreboardSerializer.
+# * +:games+
 #
 class V1::MatchSetSerializer < V1::ApplicationSerializer
   attributes :scoring, :winner, :games, :state
 
-  # Serialize the games of the set. See
-  # V1::SetGameSerializer
+  # Serialize the games of the set.
   #
   # * *Returns* :
   #   - array of V1::SetGameSerializer
@@ -20,10 +16,9 @@ class V1::MatchSetSerializer < V1::ApplicationSerializer
     V1::ApplicationArraySerializer.new(object.set_games, each_serializer: V1::SetGameSerializer)
   end
 
-  # Serialize the player or team id of the set winner,
-  # if any.
+  # Serialize the Player or Team id of the winner
   #
-  # * *Returns* : id
+  # * *Returns* : Player id or Team id or nil
   #
   def winner
     if object.team_winner.nil?

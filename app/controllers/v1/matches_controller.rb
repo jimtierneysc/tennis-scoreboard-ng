@@ -4,8 +4,8 @@
 # * Renders one particular match
 # * Creates a new match
 # * Updates a match
-# Some updates are not allowed if the match has started.
 # * Deletes a match
+# * Serializes a Match using V1::MatchSerializer
 #
 class V1::MatchesController < ApplicationController
   before_action :authorize_user!, only: [:create, :update, :destroy]
@@ -15,7 +15,7 @@ class V1::MatchesController < ApplicationController
   # Get a list of all matches,
   # sorted by match title
   # * *Response*
-  #   * List of matches
+  #   * Serialized array of matches
   def index
     @matches = Match.order 'lower(title)'
     render json: @matches, serializer: V1::ApplicationArraySerializer
@@ -23,7 +23,7 @@ class V1::MatchesController < ApplicationController
 
   # Get a particular match
   # * *Params*
-  #   * +:id+ - match id
+  #   * +:id+ - id of a Match
   # * *Response*
   #   * Match
   def show
@@ -35,12 +35,13 @@ class V1::MatchesController < ApplicationController
   #   * +:title+ - match title
   #   * +:scoring+ - scoring kind
   #   * +:doubles+ - true for doubles
-  #   * +:first_team_id+ - for doubles match
-  #   * +:second_team_id+ - for doubles match
-  #   * +:first_player_id+ - for singles match
-  #   * +:second_player_id+ - for singles match
+  #   * +:first_team_id+ - id of a Team
+  #   * +:second_team_id+ - id of a Team
+  #   * +:first_player_id+ - id of a Player
+  #   * +:second_player_id+ - id of a Player
+  # Teams are for a doubles match.  Players are for a singles match.
   # * *Response*
-  #   * Match or HTTP error
+  #   * serialized Match or HTTP error
   def create
     @match = create_match
     if @match.save
@@ -52,17 +53,18 @@ class V1::MatchesController < ApplicationController
 
   # Update a match
   # * *Params*
-  #   * +:id+ - match id
+  #   * +:id+ - id of a Match
   # * *Request*
-  #   * +:title+ - different title
-  #   * +:scoring+ - different scoring kind
+  #   * +:title+ - change title
+  #   * +:scoring+ - change scoring kind
   #   * +:doubles+ - change doubles
   #   * +:first_team_id+ - change first team
   #   * +:second_team_id+ - change second team
   #   * +:first_player_id+ - change first player
   #   * +:second_player_id+ - change second player
+  # Teams are for a doubles match.  Players are for a singles match.
   # * *Response*
-  #   * Match or HTTP error
+  #   * serialized Match or HTTP error
   def update
     doubles = match_params_doubles?(@match.doubles)
     update_sym = if doubles
@@ -79,7 +81,7 @@ class V1::MatchesController < ApplicationController
 
   # Delete a match
   # * *Params*
-  #   * +:id+ - match id
+  #   * +:id+ - id of a Match
   # * *Response*
   #   * +:no_content+ or HTTP error
   def destroy

@@ -13,7 +13,7 @@
     .factory('crudHelper', factory);
 
   /** @ngInject */
-  function factory($log, modalConfirm, $timeout, $q,
+  function factory($log, modalConfirm, $q,
                    $filter, loadingHelper, errorsHelper, toastrHelper, authHelper,
                    waitIndicator, crudResource, editInProgress, autoFocus, animationTimers) {
     return activate;

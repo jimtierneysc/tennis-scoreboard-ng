@@ -13,7 +13,7 @@
     .factory('errorsHelper', factory);
 
   /** @ngInject */
-  function factory($log, errorsMapper) {
+  function factory(errorsMapper) {
     return activate;
 
     /**
@@ -25,7 +25,7 @@
      * * errorsOfResponse()
      * * clearErrors()
      *
-     * @param {Object} vm
+     * @param {Object} _vm_
      * Controller instance
      * @param {Object} errorsMap
      * Options to identify how errors should be handled:

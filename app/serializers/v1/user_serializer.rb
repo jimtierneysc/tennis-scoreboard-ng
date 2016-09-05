@@ -1,4 +1,4 @@
-# Serialize the current user with the following attributes:
+# Serializes the current User with the following attributes:
 # * +:id+
 # * +:username+
 #

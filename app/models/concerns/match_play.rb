@@ -1,9 +1,15 @@
-# Execute actions to play a match, such as
-# +:win_game+
+# Executes actions to play a match. Executes the ':win_game' action to
+# win the current game in progress, for example.
 module MatchPlay
 
-  # Class to start a match, start a game, win a game, etc.
-  class PlayMethods
+  # Class to help work with actions:
+  # * Indicate whether a particular action is enabled
+  # * Get a hash of all enabled actions
+  # * Execute an action
+  # actions include +:win_game+, +:start_game+, and +:discard_play+.
+  # See Match.play_match!
+  #
+  class PlayActions
 
     # * *Args*
     #   - +match+ -> Match
@@ -11,8 +17,7 @@ module MatchPlay
       @match = match
     end
 
-    # Lookup the methods to handle a particular match play
-    # action such as +:win_game+
+    # Lookup the methods to handle a particular action
     #
     # * *Args*    :
     #   - +action+ -> +:win_game+, +:start_game+ etc.
@@ -74,7 +79,7 @@ module MatchPlay
         # Method with optional player parameter
         [:start_game].each do |sym|
           @methods[sym][:exec] = lambda do |options|
-            player = options[:player] if options
+            player = player_from_options options if options
             method("#{sym}!").call(player)
           end
         end
@@ -91,22 +96,37 @@ module MatchPlay
     end
 
     def team_from_options(options)
-      player = options[:player]
-      team = options[:team]
-      opponent = options[:opponent] unless player || team
+      opponent = opponent_from_options options
+      if opponent[:player]
+        match.doubles ? nil : opponent[:player].singles_team!
+      else
+        opponent[:team]
+      end
+    end
+
+    def player_from_options(options)
+      opponent = opponent_from_options options
+      if opponent[:team]
+        opponent[:team].first_player
+      else
+        opponent[:player]
+      end
+    end
+
+    def opponent_from_options(options)
+      result = {
+        player: nil,
+        team: nil
+      }
+      opponent = options[:opponent]
       if opponent
         if opponent.is_a? Team
-          team = opponent
+          result[:team] = opponent
         elsif opponent.is_a? Player
-          player = opponent
+          result[:player] = opponent
         end
       end
-      # return
-      if player
-        match.doubles ? nil : player.singles_team!
-      else
-        team
-      end
+      result
     end
 
     # Operations to play a match.
@@ -266,9 +286,7 @@ module MatchPlay
       unless remove_last_change?
         raise Exceptions::InvalidOperation, 'Can\'t remove last change'
       end
-      remove_last = RemoveLastChange.new(match).remove_last
-      remove_last.save_list.each(&:save!)
-      remove_last.destroy_list.each(&:destroy)
+      RemoveLastChange.new(match).remove_last
     end
 
     def remove_last_change?
@@ -294,7 +312,7 @@ module MatchPlay
       ordinal = match.match_sets.count + 1
       set = MatchSet.new(match_id: match.id,
                          ordinal: ordinal,
-                         scoring: match.scoring_of_set_ordinal(ordinal))
+                         scoring: match.scoring_of_set(ordinal))
       match.match_sets << set
       set # fluent
     end
@@ -313,18 +331,35 @@ module MatchPlay
   end
 
 
-  # Class to remove last play.  For example, after a game has been started, this
-  # class will remove the game.
+  # Class to remove the last scoring change.  Removing the last scoring change may
+  # involve deleting games or sets, or changing attribute values.
   class RemoveLastChange
 
     # * *Args*
     #   - +match+ -> Match
     def initialize(match)
       @match = match
-      @save_list = []
-      @destroy_list = []
     end
 
+
+    # Execute +:remove_last_change+ action by updating and/or
+    # deleting entities.
+    def remove_last
+      @save_list = []
+      @destroy_list = []
+      if match.team_winner
+        remove_match_complete
+      elsif match.last_set
+        remove_last_set_change(match.last_set)
+      end
+      save_list.each(&:save!)
+      destroy_list.each(&:destroy)
+    end
+
+
+    private
+
+    attr_reader :match
     # List of entities that need to be saved in order
     # to remove the last change
     attr_reader :save_list
@@ -332,23 +367,6 @@ module MatchPlay
     # List of entities that need to be destroyed in
     # order to remove the last change
     attr_reader :destroy_list
-
-    # Class to help execute +:remove_last_change+ action+.  Adds entities to +:save_list+ that need to be saved.
-    # Add entities to +:destroy_list+ that need to be destroyed.
-    # * *Returns* : self
-    def remove_last
-      if match.team_winner
-        remove_match_complete
-      elsif match.last_set
-        remove_last_set_change(match.last_set)
-      end
-      self
-    end
-
-
-    private
-
-    attr_reader :match
 
     def remove_match_complete
       match.team_winner = nil
@@ -504,9 +522,10 @@ module MatchPlay
       @match = match
     end
 
-    # Determine the serving player.  When a singles match is started, the first serving player is identified.
-    # Subsequent games alternate between players.  In doubles, there is a first server for each team.  Subsequent
-    # games alternate between players on each team.
+    # Determine the serving player.  In a singles match, serving alternates between
+    # the two opponent players.  In doubles, serving alternates between each opponent team and
+    # the players on each team.
+    # * *Returns* : Player
     def player
       # Count total games, ignoring tiebreaks
       games_played = match.set_games.all.reduce(0) do |sum, game|
@@ -574,17 +593,17 @@ module MatchPlay
       @match = match
     end
 
-    # Indicate if a game can be won (i.e.; a game is in progress)
+    # Indicate if a game can be won (a game is in progress)
     def game?
       win_game_kind? :game
     end
 
-    # Indicate if a tiebreak game can be won (i.e.; a tiebreak game is in progress).
+    # Indicate if a tiebreak game can be won (a tiebreak game is in progress).
     def tiebreak?
       win_game_kind?(:tiebreak)
     end
 
-    # Indicate if a match tiebreak game can be completed (i.e.; a tiebreak game is in progress)
+    # Indicate if a match tiebreak game can be completed (a match tiebreak is in progress)
     def match_tiebreak?
       win_game_kind?(:match_tiebreak)
     end

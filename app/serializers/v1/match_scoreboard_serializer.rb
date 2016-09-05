@@ -1,4 +1,4 @@
-# Serialize a match score with the following information:
+# Serialize a Match score with the following information:
 # * Attributes of the match (See V1::MatchSerializer)
 #   * +:id+
 #   * +:title+
@@ -10,10 +10,10 @@
 #   * +:sets+ - The sets in the match.  See V1::MatchSetSerializer.
 #   * +:actions+ - The actions that may be executed on the match
 #   * +:errors+ - Errors that occurred when executing an action
-#   * +:server+ - The player id's that may serve the next game
+#   * +:server+ - The Player id's that may serve the next game
 #   * +:near_winner+
-#     * The teams or players id's that are near to winning a set
-#     * The teams or player id's that are near to winning the match
+#     * The Team or Player id's that are near to winning a set
+#     * The Team or Player id's that are near to winning the match
 #
 class V1::MatchScoreboardSerializer < V1::MatchSerializer
   attributes :id, :title, :scoring, :doubles, :state, :winner, :sets, :actions, :errors, :servers,
@@ -23,14 +23,14 @@ class V1::MatchScoreboardSerializer < V1::MatchSerializer
   # V1::MatchSetSerializer
   #
   # * *Returns* :
-  #   - array of sets
+  #   - array of serialized sets
   #
   def sets
     V1::ApplicationArraySerializer.new(object.match_sets, each_serializer: V1::MatchSetSerializer)
   end
 
   # Serialize actions that may be executed on the match.
-  # See Match.play_actions
+  # See Match.valid_actions
   # * *Returns* : Hash
   # === Example
   #   {
@@ -40,7 +40,7 @@ class V1::MatchScoreboardSerializer < V1::MatchSerializer
   #   }
   #
   def actions
-    object.play_actions
+    object.valid_actions
   end
 
   # Serialize the id's of teams or players that are near to winning a set
@@ -72,7 +72,7 @@ class V1::MatchScoreboardSerializer < V1::MatchSerializer
 
 
   # Serialize a list of player id's that may serve the first or second game.
-  # (One of these players must be passes as a parameter when executing the
+  # (One of these players must be passed as a parameter when executing the
   # +:start_game+ action)
   #
   # * *Returns* :

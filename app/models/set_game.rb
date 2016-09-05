@@ -36,7 +36,7 @@ class SetGame < ActiveRecord::Base
   after_destroy { match_set.score_changed }
 
   # Get the state of a game
-  # * *Returns* : state
+  # * *Returns* : symbol
   #   * +:in_progress+ or
   #   * +:finished+
   def state

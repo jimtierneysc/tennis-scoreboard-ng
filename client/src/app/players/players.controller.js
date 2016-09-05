@@ -13,7 +13,7 @@
     .controller('PlayersController', Controller);
 
   /** @ngInject */
-  function Controller($log, $scope, crudHelper, authHelper, playersPath, response, $q) {
+  function Controller($scope, crudHelper, playersPath, response, $q) {
 
     var vm = this;
 

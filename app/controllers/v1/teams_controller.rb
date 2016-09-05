@@ -55,7 +55,7 @@ class V1::TeamsController < ApplicationController
   #   * +:id+ - team id
   # * *Request*
   #   * +:name+ - different team name
-  #   * +:first_player_id+ - differnt first player
+  #   * +:first_player_id+ - different first player
   #   * +:second_player_id+ - different second player
   # * *Response*
   #   * Team or HTTP error
@@ -68,7 +68,7 @@ class V1::TeamsController < ApplicationController
   end
 
   # Delete a team
-  # A team in a match omay not be
+  # A team in a match may not be
   # deleted
   # * *Params*
   #   * +:id+ - team id

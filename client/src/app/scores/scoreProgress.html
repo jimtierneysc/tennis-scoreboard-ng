@@ -61,14 +61,14 @@
         </span>
 
         <span ng-if="scores.actions.start_match_tiebreak">
-          <div>Set {{scores.previousSet.title}} won by&nbsp;
+          <span>Set {{scores.previousSet.title}} won by&nbsp;
             <fe-score-progress-winner
               scores="scores"
               winner="scores.previousSet.winner"
               punctuation="."
             ></fe-score-progress-winner>
             <span>&nbsp;&nbsp;The match tiebreak is next</span>
-          </div>
+          </span>
         </span>
 
         <span ng-if="scores.state == 'complete'">

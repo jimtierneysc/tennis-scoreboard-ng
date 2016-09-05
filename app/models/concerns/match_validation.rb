@@ -19,6 +19,9 @@ module MatchValidation
     # * The opponents must be known
     # * The attributes must be permitted to change
     #   * Many attributes can not be changed after the match has started
+    #     * opponents
+    #     * doubles
+    #     * scoring kind
     # * *Params*
     #   * +:errors+ - hash
     #     * Errors will be added to this hash
@@ -88,7 +91,7 @@ module MatchValidation
 
     def that_can_change_after_start_play(errors)
       if match.started
-        ValidateChangeMatch.new(match, errors)
+        ValidateChangeMatch.new(match).validate(errors)
       end
     end
 
@@ -107,30 +110,28 @@ module MatchValidation
       end
     end
 
-    # Class to validate changes to match after start play.
-    # For example, the match type (doubles/singles) may not be
-    # changed once the match has started.
+    # Class to validate changes to a match after play has started.
+    # The match opponents may not be changed, for example.
     class ValidateChangeMatch
       # * *Args*
       #   - +match+ -> Match
-      #   - +errors+ -> hash
-      def initialize(match, errors)
+      def initialize(match)
         @match = match
-        @errors = errors
-        validate
+      end
+
+      # Check for invalid changes to the match.  Add error messages to a hash.
+      # * *Args*
+      #   - +errors+ -> hash
+      def validate(errors)
+        find_invalid_changes do |sym|
+          errors.add sym, 'can\'t be changed after match has started'
+        end
       end
 
       private
 
       attr_reader :errors
       attr_reader :match
-
-      # Check for invalid changes to the match.  Add error messages to a hash.
-      def validate
-        find_invalid_changes do |sym|
-          errors.add sym, 'can\'t be changed after match has started'
-        end
-      end
 
       # Once the match has started, some attributes must not be changed.
       def find_invalid_changes
@@ -165,15 +166,6 @@ module MatchValidation
         end
       end
 
-      # # find invalid change server after wins
-      # def find_invalid_change_server_after_wins(wins)
-      #   if wins >= 1 && match.first_player_server_id_changed?
-      #     yield :first_player_server_id
-      #   end
-      #   if match.doubles && wins >= 2 && match.second_player_server_id_changed?
-      #     yield :second_player_server_id
-      #   end
-      # end
     end
   end
 end

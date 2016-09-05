@@ -1,18 +1,14 @@
-# Serialize a game with the following attributes:
-# * +:winner+ - Id of a team or a player
-# * +:server+ - Id of a player
+# Serializes a SetGame with the following attributes:
+# * +:winner+ - Id of a Team or a Player
+# * +:server+ - Id of a Player
 # * +:tiebreak+ - true if this game is a tiebreak
-#
-# Games are serialized with a set.   See
-# V1::MatchSetSerializer.
 #
 class V1::SetGameSerializer < V1::ApplicationSerializer
   attributes :winner, :server, :tiebreak
 
-  # Serialize the player or team id of the game winner,
-  # if any.
+  # Serialize the Player or Team id of the game winner
   #
-  # * *Returns* : id or nil
+  # * *Returns* : Team id or Player id or nil
   #
   def winner
     if object.team_winner.nil?
@@ -26,7 +22,7 @@ class V1::SetGameSerializer < V1::ApplicationSerializer
     end
   end
 
-  # Indicate a tiebreak game.
+  # Indicate a tiebreak game
   #
   # * *Returns* : true or nil
   #
@@ -34,10 +30,9 @@ class V1::SetGameSerializer < V1::ApplicationSerializer
     object.tiebreak? ? true : nil
   end
 
-  # Serialize the playerid of the game server.
-  # Tiebreak games do not have a server.
+  # Serialize the Player id of the game server.
   #
-  # * *Returns* : id or nil
+  # * *Returns* : Player id or nil
   #
   def server
     object.player_server_id

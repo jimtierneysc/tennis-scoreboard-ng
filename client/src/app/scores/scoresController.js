@@ -14,8 +14,8 @@
     .controller('ScoresController', Controller);
 
   /** @ngInject */
-  function Controller($filter, $log, $scope, $state, crudResource, $q, loadingHelper,
-                      authHelper, $timeout, $document, response) {
+  function Controller($filter, $log, $scope, $state, loadingHelper,
+                      authHelper, response) {
 
     var vm = this;
 

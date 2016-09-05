@@ -13,7 +13,7 @@
       .service('userCredentials', Service);
 
     /** @ngInject */
-    function Service($http, $rootScope, $log, $localStorage, validateCredentials, authHeaderName) {
+    function Service($http, $rootScope, $localStorage, validateCredentials, authHeaderName) {
       var service = this;
 
       var DATANAME = 'credentials';
@@ -116,7 +116,10 @@
        * Method to call when credentials change
        */
       function subscribeChanged(scope, callback) {
-        var handler = $rootScope.$on(EVENT_NAME, callback);
+        var handler = $rootScope.$on(EVENT_NAME, 
+          function(event, loading) {
+            callback(loading)
+          });
         scope.$on('$destroy', handler);
       }
 

@@ -39,7 +39,7 @@ class Team < ActiveRecord::Base
   # If a name is not provided when match is created, generate name
   before_create { self.name = next_team_name if self.doubles && self.name.blank? }
 
-  # Indicate whether team includes all players in a list
+  # Indicate whether the team includes all players in a list
   # * *Args*    :
   #   - +players+ -> array of players
   # * *Returns* : Boolean
@@ -47,7 +47,7 @@ class Team < ActiveRecord::Base
     players == [first_player, second_player] & players.compact
   end
 
-  # Indicate whether team includes a particular player
+  # Indicate whether the team includes a particular player
   # * *Args*    :
   #   - +player+ -> Player
   # * *Returns* : Boolean

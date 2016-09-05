@@ -16,8 +16,8 @@ end
 # Create and clear tennis sample data, including
 # players, doubles teams, and matches
 class SampleData
-  ONE_TO_ZERO = PlayMatch::FIRST_PLAYER_WIN
-  ZERO_TO_ONE = PlayMatch::SECOND_PLAYER_WIN
+  ONE_TO_ZERO = PlayMatch::FIRST_OPPONENT_WIN
+  ZERO_TO_ONE = PlayMatch::SECOND_OPPONENT_WIN
   TWO_TO_TWO = ONE_TO_ZERO + ZERO_TO_ONE + ONE_TO_ZERO + ZERO_TO_ONE
   SIX_TO_SIX = TWO_TO_TWO * 3
   SEVEN_TO_SIX = SIX_TO_SIX + ONE_TO_ZERO

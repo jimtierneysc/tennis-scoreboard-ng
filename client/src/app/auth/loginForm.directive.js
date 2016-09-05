@@ -29,7 +29,7 @@
   }
 
   /** @ngInject */
-  function Controller(sessionResource, userCredentials, errorsHelper, waitIndicator, $log) {
+  function Controller(sessionResource, userCredentials, errorsHelper, $log) {
     var vm = this;
 
     activate();

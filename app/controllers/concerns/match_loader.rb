@@ -2,7 +2,7 @@
 module MatchLoader
   # Load match, sets, games, teams and players at once.
   # * *Args*    :
-  #   - +match_id+ -> match to load
+  #   - +match_id+ -> Id of Match
   # * *Returns* : Relation
   def eager_load_match(match_id)
     Match

@@ -5,8 +5,7 @@
 # * Creates a new player
 # * Updates a player
 # * Deletes a player
-# Players may not be deleted if they are in a match or
-# on a team
+# * Serializes a Player using V1::PlayerSerializer
 #
 class V1::PlayersController < ApplicationController
   before_action :authorize_user!, only: [:update, :create, :destroy]
@@ -15,7 +14,7 @@ class V1::PlayersController < ApplicationController
   # Get a list of all players,
   # sorted by player name
   # * *Response*
-  #   * List of players
+  #   * serialized array of players
   def index
     @players = Player.order 'lower(name)'
     render json: @players, serializer: V1::ApplicationArraySerializer
@@ -25,7 +24,7 @@ class V1::PlayersController < ApplicationController
   # * *Params*
   #   * +:id+ - player id
   # * *Response*
-  #   * Player
+  #   * serialized Player
   def show
     render json: @player
   end
@@ -34,7 +33,7 @@ class V1::PlayersController < ApplicationController
   # * *Request*
   #   * +:name+ - player name
   # * *Response*
-  #   * Player or HTTP error
+  #   * serialized Player or HTTP error
   def create
     @player = Player.new(player_params)
 
@@ -51,7 +50,7 @@ class V1::PlayersController < ApplicationController
   # * *Request*
   #   * +:name+ - different player name
   # * *Response*
-  #   * Player or HTTP error
+  #   * serialized Player or HTTP error
   def update
     if @player.update(player_params)
       render json: @player, status: :ok

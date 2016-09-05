@@ -131,7 +131,7 @@ class MatchSet < ActiveRecord::Base
     game_ordinal == tiebreak_ordinal
   end
 
-  # Clear cached scores.  For internal use.
+  # Clear cached scores.  For internal use
   def score_changed
     @games_won_by_team = nil
   end

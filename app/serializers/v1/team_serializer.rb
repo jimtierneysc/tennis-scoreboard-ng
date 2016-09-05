@@ -1,12 +1,10 @@
-# Serialize a team with the following attributes:
+# Serializes a Team with the following attributes:
 # * +:id+
-# * +:first_player+ See V1::PlayerSerializer
+# * +:first_player+
 # * +:second_player+
 #
 class V1::TeamSerializer < V1::ApplicationSerializer
   attributes :id, :name, :first_player, :second_player
-  # has_one :first_player
-  # has_one :second_player
 
   # Serialize the first player on the team
   # * *Returns* : V1::PlayerSerializer

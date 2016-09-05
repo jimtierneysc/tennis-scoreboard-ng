@@ -2,18 +2,19 @@
 # == Overview
 # * A match may be a singles match or a doubles match
 # * A match has two opponent teams:
-#   * The teams may be doubles teams, or
-#   * singles teams (a singles team has only one player)
-# * A match may be in different states:
+#   * Doubles teams with four players in total
+#   * Singles teams with two players in total
+# * A match has a state:
 #   * +:not_started+
 #   * +:in_progress+
 #   * +:complete+
 # * A match may have first servers
 # First server are the players that serve
-# the first game or two.  For a singles match, there is one
-# first server; two for a doubles match
-# * A match has sets, once the match has started
-# * A match has a scoring kind
+# the first game or two.  For a singles match, there is a
+# first server for the first game.  For a doubles match, there is a first
+# server for the first two games; one from each team.
+# * A match has sets (see MatchSet).  Sets have games (see SetGame).
+# * A match has scoring:
 #   * +:two_six_game_ten_point+
 #   * +:one_eight_game+
 #   * +:three_six_game+
@@ -65,49 +66,42 @@ class Match < ActiveRecord::Base
   #
   # * *Args*    :
   #   - +action+ -> the action to execute
-  #   - +options+ -> hash of action options
+  #   - +params+ -> hash of action parameters
   # * *Raises* :
   #   - +UnknownOperation+ -> if the action is unknown
   #   - +InvalidOperation+ -> if the action is not permitted
   #
-  # === Actions
+  # === Action
   # * +:start_play+ - Start playing
   # * +:discard_play+ - Discard all scoring
   # * +:start_set+ - Start the next set
   # * +:start_game+ - Start the next game
-  # The first one or two games require
-  # a player parameter to identify the server
+  # When starting the first game in a singles match, or the first
+  # two games in a doubles match, +params+ identifies the player to
+  # serve the game.
   # * +:start_tiebreak+ - Start game tiebreak
   # * +:remove_last_change+ - Back up to the previous state
   # * +:start_match_tiebreak+ - Start the match tiebreak
   # * +:win_game+ - Win the current game
-  # The option parameter identifies the
-  # The option parameter identifies the
-  # doubles team or singles team to win
   # * +:win_tiebreak+ - Win the current set tiebreak.
-  # The option parameter identifies the
-  # doubles team or singles team to win
   # * +:win_match_tiebreak+ - Win the current match tiebreak.
-  # The option parameter identifies the
+  # For the 3 +:win_*+ actions, +params+ identifies the
   # doubles team or singles team to win
-  # === Options
+  # === Params
   # * +:version+ Version number from client.
   # If provided, it will be compared to the
-  # current match play version number.  An exception may be
-  # raised if not equal.
-  # * +:player+ - Player parameter.
-  # Used by +:win_*+ actions and by +:start_game+
-  # * +:team+ = Team parameter.
-  # Used by +:win_*+ actions.
-  # * +:opponent+ - Team or player.
-  # Used by +:win_*+ actions.   Convenient alternative to
-  # +:team+ or +:player+ options.
+  # current match play version number.  An exception will be
+  # raised if the values are not equal.  The purpose of the version
+  # number is to detect when a client is out of sync.
+  # * +:opponent+ - Team or Player
+  # This options is used with +:win_*+ actions to identify the winning team or player.  It is also
+  # used with the +:start_game+ action to identify the serving player
   #
-  def play_match!(action, options = nil)
-    method = play_methods.lookup_method(action)
+  def play_match!(action, params = nil)
+    method = play_actions.lookup_method(action)
     if method
       ActiveRecord::Base.transaction do
-        version = options[:version] if options
+        version = params[:version] if params
         version = version.to_i if version
         if version && version != self.play_version
           raise Exceptions::InvalidOperation,
@@ -118,7 +112,7 @@ class Match < ActiveRecord::Base
                     'Unexpected match version number.'
                   end
         end
-        method[:exec].call options
+        method[:exec].call params
         # Version number is used to detect when client has is out of sync
         self.play_version = next_version_number
         self.save!
@@ -128,10 +122,10 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Indicate if an action can be executed.  For example,
-  # +:win_game+ can be executed if a game has started
+  # Indicate if an action can be executed.
+  # +:win_game+ can be executed if a game has started, for example.
   def play_match?(action)
-    methods = play_methods.lookup_method(action)
+    methods = play_actions.lookup_method(action)
     if methods
       methods[:query].call
     else
@@ -147,8 +141,8 @@ class Match < ActiveRecord::Base
   #     discard_play: true,
   #     remove_last_change: true
   #   }
-  def play_actions
-    play_methods.valid_actions
+  def valid_actions
+    play_actions.valid_actions
   end
 
   # Indicate if the match is completed.
@@ -198,8 +192,7 @@ class Match < ActiveRecord::Base
   #
   # * *Args*    :
   #   - +team+ -> Team
-  # * *Returns* :
-  #   - the number of sets won
+  # * *Returns* : Integer
   def sets_won(team)
     match_sets.reduce(0) do |sum, set|
       winner = set.compute_team_winner
@@ -207,30 +200,30 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Get the first set of a match
-  # * *Returns* : Set
+  # Get the first set of the match
+  # * *Returns* : MatchSet
   def first_set
     match_sets.first
   end
 
-  # Get the last set of a match
-  # * *Returns* : Set
+  # Get the last set of the match
+  # * *Returns* : MatchSet
   def last_set
     match_sets.last
   end
 
-  # Get the minimum number of sets that will be
-  # played in this match, based on the match scoring kind
-  # * *Returns* : Minimum number of sets
+  # Get the minimum number of sets that will be played in this match
+  # The minimum is 2 for +:three_six_game+ scoring, for example
+  # * *Returns* : Integer
   def min_sets_to_play
     max = max_sets_to_play
     raise Exceptions::ApplicationError, 'Unexpected game count' if max.even?
     (max + 1) / 2
   end
 
-  # Get the maximum number of sets that will be
-  # played in this match, based on the match scoring kind
-  # * *Returns* : Maximum number of sets
+  # Get the maximum number of sets that will be played in this match.
+  # The maximum is 3 for +:three_six_game+ scoring, for example
+  # * *Returns* : Integer
   def max_sets_to_play
     case scoring.to_sym
     when :two_six_game_ten_point
@@ -242,25 +235,23 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Get the origin of the next game to play in the
-  # match.
-  # The lowest ordinal is 1, which indicates the
-  # first game in set.
-  # * *Returns* : next ordinal
+  # Get the ordinal of the next game to play in the
+  # match. The lowest ordinal is 1.
+  # * *Returns* : Integer
   def next_game_ordinal
     last_set ? last_set.set_games.count + 1 : 0
   end
 
   # Indicate whether a set is a match tiebreak
   # * *Args*    :
-  #   - +ordinal+ -> set ordinal
+  #   - +ordinal+ -> Integer
   # * *Returns* : Boolean
   def tiebreak_set?(ordinal)
-    scoring_of_set_ordinal(ordinal) == :ten_point
+    scoring_of_set(ordinal) == :ten_point
   end
 
   # Compute the winner of the match based on
-  # #scoring and sets won
+  # the number of sets won by each opponent
   # * *Returns* : Team or nil
   def compute_team_winner
     if completed?
@@ -276,7 +267,7 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Determine whether a team can win the match by
+  # Determine whether a Team can win the match by
   # winning one more game
   # * *Args*    :
   #   - +team+ -> Team
@@ -287,14 +278,14 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Get the scoring kind of a set
+  # Get the scoring of a set
   # * *Args*    :
   #   - +ordinal+ -> set ordinal
-  # * *Returns* : scoring
+  # * *Returns* : symbol
   #   * +:six_game+
   #   * +:eight_game+
   #   * +:ten_point+  (tiebreak)
-  def scoring_of_set_ordinal(ordinal)
+  def scoring_of_set(ordinal)
     case scoring.to_sym
     when :two_six_game_ten_point
       ordinal == 3 ? :ten_point : :six_game
@@ -305,7 +296,7 @@ class Match < ActiveRecord::Base
     end
   end
 
-  # Get the opponent team that includes a player
+  # Get the opponent team that includes a particular player
   # * *Args*    :
   #   - +player+ -> Player
   # * *Returns* : Team
@@ -344,7 +335,7 @@ class Match < ActiveRecord::Base
     result[0]['nextval']
   end
 
-  # Get an increasing number to use as a version number for a match score
+  # A Postgres sequence generates a version number for a match score
   def next_version_number
     # This returns a PGresult object
     # [http://rubydoc.info/github/ged/ruby-pg/master/PGresult]
@@ -352,8 +343,8 @@ class Match < ActiveRecord::Base
     result[0]['nextval']
   end
 
-  def play_methods
-    @play_methods ||= PlayMethods.new(self)
+  def play_actions
+    @play_actions ||= PlayActions.new(self)
   end
 
   include MatchPlay

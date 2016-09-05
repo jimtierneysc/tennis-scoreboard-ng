@@ -175,7 +175,7 @@
               expect(scores.currentGame.animating).toBeTruthy();
             });
 
-            it('should hide currrent game', function () {
+            it('should hide current game', function () {
               expect(scores.currentGame.hidden).toBeTruthy();
             });
           });

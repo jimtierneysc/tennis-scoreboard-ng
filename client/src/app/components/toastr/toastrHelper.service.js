@@ -13,7 +13,7 @@
     .factory('toastrHelper', factory);
 
   /** @ngInject */
-  function factory($log, toastr) {
+  function factory(toastr) {
     return activate;
 
     function activate(_vm_, _scope_) {

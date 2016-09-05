@@ -13,7 +13,7 @@
     .factory('userResource', factory);
 
   /** @ngInject */
-  function factory($log, $resource, apiPath, userPath) {
+  function factory($resource, apiPath, userPath) {
     var path = apiPath + userPath;
 
     var service = {

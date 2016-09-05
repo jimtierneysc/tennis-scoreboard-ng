@@ -150,7 +150,7 @@
       });
 
       /** @ngInject */
-      function makeResourcePromise($q, $log, waitIndicator, crudResource, resourceName) {
+      function makeResourcePromise($q, $log, crudResource, resourceName) {
         var resource = crudResource.getResource(resourceName);
         var deferred = $q.defer();
         resource.query(
@@ -172,7 +172,7 @@
       return $injector.invoke(makeResourcePromise, null);
 
       /** @ngInject */
-      function makeResourcePromise($q, $log, waitIndicator, crudResource) {
+      function makeResourcePromise($q, $log, crudResource) {
         var resource = crudResource.getResource(resourceName);
         var deferred = $q.defer();
         resource.get({id: id},

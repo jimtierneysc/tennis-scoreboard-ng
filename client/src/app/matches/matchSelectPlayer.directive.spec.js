@@ -13,7 +13,7 @@
     beforeEach(module('app.matches'));
 
 
-    function createElement(shortPlayerName, period) {
+    function createElement() {
       scope = $rootScope.$new();
       scope.aplayer = player;
 
@@ -38,7 +38,7 @@
 
     describe('members', function () {
       beforeEach(function () {
-        createElement(false, false);
+        createElement();
       });
 
       it('should have .player()', function () {

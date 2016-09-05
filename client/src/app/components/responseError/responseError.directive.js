@@ -34,7 +34,7 @@
   }
 
   /** @ngInject */
-  function Controller($scope, errorsMapper) {
+  function Controller(errorsMapper) {
     var vm = this;
 
     activate();

@@ -24,7 +24,7 @@ class Player < ActiveRecord::Base
     Team.find_by_doubles_and_first_player_id(false, self.id)
   end
 
-  # Force a player to have an associated singles team.  Create a new
+  # Force a player to have an associated singles team.  Creates a new
   # Team if needed.
   # * *Returns* : Team
   def singles_team!

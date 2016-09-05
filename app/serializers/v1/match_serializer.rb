@@ -1,4 +1,4 @@
-# Serialize a match with the following attributes:
+# Serialize a Match with the following attributes:
 # * +:id+
 # * +:title+
 # * +:scoring+ kind
@@ -82,7 +82,7 @@ class V1::MatchSerializer < V1::ApplicationSerializer
   # For a doubles match, get a team id.  For a singles match,
   # get a player id
   # * *Args*    :
-  #   - +team+ -> team opponent
+  #   - +team+ -> opponent Team
   # * *Returns* : id
   def opponent_id(team)
     if object.doubles

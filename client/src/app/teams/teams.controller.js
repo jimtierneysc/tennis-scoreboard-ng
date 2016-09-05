@@ -13,7 +13,7 @@
     .controller('TeamsController', Controller);
 
   /** @ngInject */
-  function Controller($q, $filter, $log, $scope, crudHelper, authHelper, teamsPath, playersSelectOptions, response) {
+  function Controller($q, $filter, $log, $scope, crudHelper, teamsPath, playersSelectOptions, response) {
     var vm = this;
 
     activate();

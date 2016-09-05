@@ -1,4 +1,4 @@
-# Serialize a player with the following attributes:
+# Serializes a Player with the following attributes:
 # * +:id+
 # * +:name+
 #

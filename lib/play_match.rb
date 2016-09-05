@@ -1,45 +1,63 @@
-# PlayMatch is used to play a match.
-# An array like this: %w(w l) indicate a one game win for the first opponent
-# and a one game loss for the second opponent.
+# Class to help "play" a match.  This class is used to generate seed data and test data.
+#
 class PlayMatch
-  FIRST_PLAYER_WIN = %w(w).freeze
-  SECOND_PLAYER_WIN = %w(l).freeze
 
+  # Class method to play a match.
+  # Calls PlayMatch.play
+  # * *Args*    :
+  #   - +match+ -> Match
+  #   - +scores+ -> Array
+  #     - Array of characters within an array of sets
+  def self.play_match(match, scores)
+    PlayMatch.new(match).play(scores)
+  end
+
+  # Convert an array of numeric scores into an array of
+  # character scores.
+  # This method is convenient for creating scores when the
+  # exact order of wins and losses is not important.
+  # Pass the result of this method to play_match
+  #
+  # * *Args*    :
+  #   - +scores+ -> Array
+  #     - Array of numeric pairs within an array of sets
+  # * *Returns* : Array
+  #   - Array of characters within an array of sets
+  #
+  # === Scores Example
+  #   [[6, 2],[3,2]]
+  #
+  # This array of numeric scores result in the following array of character scores:
+  #   [['w', 'l', 'w', 'l', 'w', 'w', 'w', 'w'], ['w', 'l', 'w', 'l', 'w']]
+  def self.convert_scores(scores)
+    scores.map { |pair| convert_set_score(pair[0], pair[1]) }
+  end
+
+  # * *Args*    :
+  #   - +match+ -> Match
   def initialize(match)
     @match = match
   end
 
-  attr_reader :match
-
-  # Play a match.
-  def self.play_match(match, scores, options={})
-    PlayMatch.new(match).play(scores, options)
-  end
-
-  # Create an array of set scores that may be passed to #play
-  def self.convert_scores(set_scores)
-    set_scores.map { |pair| convert_set_score(pair[0], pair[1]) }
-  end
-
   # Play a match
-  # === options
-  # [complete_set: true]
-  # [complete_match: true]
-  def play(scores, options={})
+  # * *Args*    :
+  #   - +scores+ -> array of set scores
+  #     - Array of characters within an array of sets
+  #
+  # === Scores Example
+  #   [['l', 'w', 'w', 'w', 'w', 'w', 'w'], ['w', 'l', 'w', 'l', 'w']]
+  #
+  # This array indicates that the first opponent is to win the first set 6-1,
+  # and be ahead 3-2 in the second.
+  #
+  def play(scores)
     match.play_match! :start_play
     # apply_first_servers
-    scores.each { |v| play_set(v, options) }
+    scores.each { |v| play_set(v) }
   end
 
-  # Play a set
-  # === options
-  # [complete_set: true]
-  #
-  def play_set(scores, options={})
-    start_set
-    play_games(scores)
-  end
-
+  # Start the match by executing the
+  # +:start_play+ action
   def start_play
     match.save!
     if match.play_match? :start_play
@@ -47,39 +65,54 @@ class PlayMatch
     end
   end
 
+  # Start the match and start the first game by executing the
+  # +:start_play+ and +:start_game+ actions
   def start_first_game
     start_play
     if match.play_match?(:start_game) && no_games?
       if match.doubles
-        match.play_match! :start_game, player: match.first_team.first_player
+        match.play_match! :start_game, opponent: match.first_team.first_player
       else
-        match.play_match! :start_game, player: match.first_player
+        match.play_match! :start_game, opponent: match.first_player
       end
     end
   end
 
+  # Start the next set by executing the
+  # +:start_set+ action
   def start_set_game
     # Starting set also starts first game
     match.play_match! :start_set
   end
 
+  # Indicate that the first opponent is to win
+  FIRST_OPPONENT_WIN = %w(w).freeze
+  # Indicate that the second opponent is to win
+  SECOND_OPPONENT_WIN = %w(l).freeze
+
   private
 
-  # Create an array of "w" and "l" that may be passed to #play_set
+  attr_reader :match
+
+  # Play a set
+  def play_set(scores)
+    start_set
+    play_games(scores)
+  end
+
+  # Create an array of 'w' and 'l' that may be passed to #play_set
   # Parameter values first_wins: 6, second_wins: 1 would return
   # %w(w l w w w w w).
-  # This method is convenient for creating a score when the
-  # exact order of wins and losses in not important.
   def self.convert_set_score(first_wins, second_wins)
     score = []
     # mix wins and losses so that set is not won prematurely
     min = [first_wins, second_wins].min
-    1.upto(min) { score << FIRST_PLAYER_WIN + SECOND_PLAYER_WIN }
+    1.upto(min) { score << FIRST_OPPONENT_WIN + SECOND_OPPONENT_WIN }
     # now, add winning games
     win = if first_wins > second_wins
-            FIRST_PLAYER_WIN
+            FIRST_OPPONENT_WIN
           else
-            SECOND_PLAYER_WIN
+            SECOND_OPPONENT_WIN
           end
     1.upto((first_wins - second_wins).abs) { score << win }
     score.flatten
@@ -129,6 +162,7 @@ class PlayMatch
 
   def play_normal_game(winner)
     if match.play_match? :start_game
+      # May need a first server
       param = nil
       if match.doubles
         if match.first_player_server.nil?
@@ -141,7 +175,7 @@ class PlayMatch
           param = match.first_player
         end
       end
-      match.play_match! :start_game, player: param
+      match.play_match! :start_game, opponent: param
     end
     match.play_match! :win_game, opponent: winner
   end

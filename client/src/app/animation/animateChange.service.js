@@ -13,7 +13,7 @@
     .factory('animateChange', factory);
 
   /** @ngInject */
-  function factory($timeout, animationTimers, $q) {
+  function factory(animationTimers, $q) {
     return {
       promiseHideThenShow: promiseHideThenShow,
       hideThenShow: hideThenShow,

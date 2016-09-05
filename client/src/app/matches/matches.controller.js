@@ -15,7 +15,7 @@
 
   /** @ngInject */
   function Controller($filter, $q, $log, $scope, crudHelper, matchesPath,
-                      authHelper, playersSelectOptions, teamsSelectOptions, response) {
+                      playersSelectOptions, teamsSelectOptions, response) {
     var vm = this;
 
     activate();

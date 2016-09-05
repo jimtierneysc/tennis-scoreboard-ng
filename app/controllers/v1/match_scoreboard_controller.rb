@@ -1,6 +1,6 @@
 # Controller for match scoreboards
 #
-# * Renders a match with sets and games
+# * Renders a match with sets and games using V1::MatchScoreboardSerializer
 # * Executes commands to play the match
 #
 class V1::MatchScoreboardController < ApplicationController
@@ -9,20 +9,23 @@ class V1::MatchScoreboardController < ApplicationController
   before_action :authorize_user!, only: [:update]
   before_action :set_match_eager_load, only: [:show, :update]
 
-  # Render the match using V1::MatchScoreboardSerializer
+  # Render the match score
   # * *Params*
-  #   * +:id+ - id of the match
+  #   * +:id+ - id of a Match
+  # * *Response*
+  #   * Serialized Match score
   def show
     render json: V1::MatchScoreboardSerializer.new(@match, root: false)
   end
 
-  # Execute a command to play the match.
+  # Execute an action by calling Match.play_match!
   # * *Params*
   #   * +:action+ - action such as +:win_game+
   #   * +:version+ - match play version number
-  #   * +:team+ - id of team to win a game
-  #   * +:player+ - id of player to serve
-  # See Match.play_match!
+  #   * +:team+ - id of a Team to win a game
+  #   * +:player+ - id of a Player to serve or win a game
+  # * *Response*
+  #   * Serialized Match score
   def update
     request_params = match_scoreboard_params
     action = request_params[:action].to_sym
@@ -32,8 +35,12 @@ class V1::MatchScoreboardController < ApplicationController
 
     play_params = {}
     play_params[:version] = version if version
-    play_params[:team] = Team.find(team_id) if team_id
-    play_params[:player] = Player.find(player_id) if player_id
+    play_params[:opponent] =
+      if team_id
+        Team.find(team_id) if team_id
+      elsif player_id
+        Player.find(player_id) if player_id
+      end
 
     play_match {
       @match.play_match!(action, play_params)
@@ -53,9 +60,9 @@ class V1::MatchScoreboardController < ApplicationController
 
   def match_scoreboard_params
     params.require(:match_scoreboard).permit(:action,
-                                              :team,
-                                              :player,
-                                              :version)
+                                             :team,
+                                             :player,
+                                             :version)
   end
 
   def play_match

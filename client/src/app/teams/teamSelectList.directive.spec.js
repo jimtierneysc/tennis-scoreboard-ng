@@ -13,7 +13,7 @@
     beforeEach(module('app.teams'));
 
 
-    function createElement(shortPlayerName, period) {
+    function createElement() {
       scope = $rootScope.$new();
       scope.avm = {};
       scope.ateamsList = [];
@@ -40,7 +40,7 @@
 
     describe('members', function () {
       beforeEach(function () {
-        createElement(false, false);
+        createElement();
       });
 
       it('should have .team', function () {
