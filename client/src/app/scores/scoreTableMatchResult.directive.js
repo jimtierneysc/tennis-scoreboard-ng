@@ -3,7 +3,7 @@
  * @name app.scores.directive:feScoreTableMatchResult
  * @restrict E
  * @description
- * Display the result of a set in the score table
+ * Display the number of sets won by an opponent
  */
 
 

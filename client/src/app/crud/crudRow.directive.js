@@ -4,7 +4,7 @@
  * @restrict E
  * @description
  * Directive to display an entity row.
- * A row includes the entity data, a (hidden) edit form, 
+ * An entity row contains the entity data, a (hidden) edit form,
  * and buttons to delete and edit the entity.
  *
  */

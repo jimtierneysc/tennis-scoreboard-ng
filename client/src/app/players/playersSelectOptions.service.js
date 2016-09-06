@@ -22,7 +22,7 @@
      * @name getSelectOptions
      * @methodOf app.players.playersSelectOptions
      * @description
-     * Makes a REST API request to retrieve a list of matches.
+     * Makes a REST API request to retrieve a list of players.
      * Creates an array of player names from the response.
      *
      * @returns {Object} promise

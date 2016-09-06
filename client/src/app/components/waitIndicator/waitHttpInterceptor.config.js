@@ -17,11 +17,11 @@
     $httpProvider.interceptors.push(interceptor);
     
     /** @ngInject */
-    function interceptor($q, waitIndicator) {
+    function interceptor($q, waitingState) {
       var endWait;
       return {
         'request': function (config) {
-          endWait = waitIndicator.beginWait();
+          endWait = waitingState.beginWait();
           return config;
         },
 

@@ -4,7 +4,7 @@
  * @restrict E
  * @description
  * Directive to display an entity page.
- * A page includes a (hidden) form to create a new entity, and
+ * An entity page contains a (hidden) form to create a new entity, and
  * a list of entities.
  */
 (function () {

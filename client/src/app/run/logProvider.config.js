@@ -1,3 +1,9 @@
+/**
+ * @ngdoc object
+ * @name app.run.config:configLogProvider
+ * @description
+ * Set default options for the $logProvider
+ */
 (function() {
   'use strict';
 

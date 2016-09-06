@@ -3,7 +3,7 @@
  * @name app.components.directive:feWaitIndicator
  * @restrict E
  * @description
- * Display animation while waiting
+ * Displays a spinner when the application is in a waiting state
  *
  */
 
@@ -27,21 +27,21 @@
   }
 
   /** @ngInject */
-  function Controller(waitIndicator, $scope, $timeout, waitInterval) {
+  function Controller(waitingState, $scope, $timeout, waitInterval) {
     var vm = this;
     vm.waiting = false;
 
     activate();
 
     function activate() {
-      waitIndicator.subscribeChanged($scope, changed);
+      waitingState.subscribeChanged($scope, changed);
     }
 
     function changed() {
-      if (waitIndicator.waiting()) {
+      if (waitingState.waiting()) {
         // Wait before showing indicator
         var timer = $timeout(function () {
-            vm.waiting = waitIndicator.waiting();
+            vm.waiting = waitingState.waiting();
           },
           waitInterval);
         $scope.$on('$destroy', function() {

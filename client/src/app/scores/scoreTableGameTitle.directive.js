@@ -3,7 +3,7 @@
  * @name app.scores.directive:feScoreTableGameTitle
  * @restrict E
  * @description
- * Display title of a game in the score table
+ * Display the title of a game in the score table
  */
 
 

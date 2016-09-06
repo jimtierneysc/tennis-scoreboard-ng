@@ -1,4 +1,10 @@
-(function() {
+/**
+ * @ngdoc object
+ * @name app.run.run:loadCredentials
+ * @description
+ * Load the user credentials from local storage when
+ * the application is initialized
+ */(function() {
   'use strict';
 
   angular

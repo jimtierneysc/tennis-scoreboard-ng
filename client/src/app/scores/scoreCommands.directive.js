@@ -3,7 +3,10 @@
  * @name app.scores.directive:feScoreCommands
  * @restrict E
  * @description
- * Commands to change view
+ * Display a menu of commands.  Commands to change the view include
+ * show completed games, show score keeper commands, and show match description.
+ * Commands to change the score include undo and clear.  These two commands are 
+ * shown if the end user is logged in
  *
  */
 

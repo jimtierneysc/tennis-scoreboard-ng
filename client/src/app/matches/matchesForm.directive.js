@@ -7,8 +7,8 @@
  * * title
  * * doubles radio button
  * * singles radio button
- * * first player name or first team name
- * * second player name or second team name
+ * * first player name xor first team name
+ * * second player name xor second team name
  * * scoring radio buttons
  */
 

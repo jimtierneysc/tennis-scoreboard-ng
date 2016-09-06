@@ -2,7 +2,7 @@
  * @ngdoc controller
  * @name app.header.controller:HeaderController
  * @description
- * Controller for navbar (and login form)
+ * Controller for navbar and login form
  */
 
 (function () {
@@ -18,6 +18,19 @@
 
     activate();
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf app.header.controller:HeaderController
+     * @description
+     * Initialize the controller:
+     * * Add toastr support
+     * * * To show toast when login or logout
+     * * Add collapse() and isCollapsed
+     * * * To manage the responsive navbar menu
+     * * Add auth support
+     * * * To be informed on login or logout
+     */
     function activate() {
       vm.isCollapsed = true;
       vm.createLoginForm = true;

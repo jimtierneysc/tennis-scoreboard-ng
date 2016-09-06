@@ -3,6 +3,7 @@
  * @name app.scores.directive:feScoreProgressWinner
  * @restrict E
  * @description
+ * 
  * Display game, set or match winner
  *
  */

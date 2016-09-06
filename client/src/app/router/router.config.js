@@ -1,3 +1,23 @@
+/**
+ * @ngdoc object
+ * @name app.router.config:routerConfig
+ * @description
+ * Configure the views
+ * 
+ * Names
+ * * home
+ * * players
+ * * teams
+ * * matches
+ * * scores
+ * * scores.board
+ * 
+ * Resolve 
+ * * Close the edit in progress.  See {@link app.components.editInProgress}
+ * * Resolve a REST API request (except for the home view, which does not display data)
+ *
+ */
+
 (function () {
   'use strict';
 

@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name app.crud.crudHelper
  * @description
- * Add CRUD functionality to a controller
+ * Adds CRUD functionality to a controller
  *
  */
 (function () {
@@ -15,7 +15,7 @@
   /** @ngInject */
   function factory($log, modalConfirm, $q,
                    $filter, loadingHelper, errorsHelper, toastrHelper, authHelper,
-                   waitIndicator, crudResource, editInProgress, autoFocus, animationTimers) {
+                   waitingState, crudResource, editInProgress, autoFocus, animationTimers) {
     return activate;
 
     /**
@@ -23,7 +23,7 @@
      * @name activate
      * @methodOf app.crud.crudHelper
      * @description
-     * Add members to a controller that may be used by the controller and views:
+     * Adds members to a controller:
      * * beginWait()
      * * entityList
      * * editEntity
@@ -57,8 +57,24 @@
 
       // initialize instance properties
 
-      vm.beginWait = waitIndicator.beginWait;
+      /**
+       * @ngdoc function
+       * @name beginWait
+       * @methodOf app.crud.crudHelper
+       * @description
+       * Begins application waiting state
+       * @returns {Function} 
+       * Ends application waiting state
+      */
+      vm.beginWait = waitingState.beginWait;
 
+      /**
+       * @ngdoc property
+       * @name entityList
+       * @propertyOf app.crud.crudHelper
+       * @description
+       * Object to manage a list of entities
+       */
       vm.entityList = {
         deleteItem: deleteEntity,
         hidingItem: hidingEntity,
@@ -70,6 +86,13 @@
         }
       };
 
+      /**
+       * @ngdoc property
+       * @name editEntity
+       * @propertyOf app.crud.crudHelper
+       * @description
+       * Object to edit a particular entity
+       */
       vm.editEntity = {
         form: null,
         errors: null,
@@ -87,6 +110,13 @@
         }
       };
 
+      /**
+       * @ngdoc property
+       * @name editEntity
+       * @propertyOf app.crud.crudHelper
+       * @description
+       * Object to create a new entity
+       */
       vm.newEntity = {
         form: null,
         errors: null,

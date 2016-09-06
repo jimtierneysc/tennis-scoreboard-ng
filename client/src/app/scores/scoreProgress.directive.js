@@ -3,7 +3,9 @@
  * @name app.scores.directive:feScoreProgress
  * @restrict E
  * @description
- * Score progress messages
+ * Describing the progress of the match.  This may include
+ * the number of the current game, the name of the most recent game winner,
+ * or the name of the match winner.
  *
  */
 

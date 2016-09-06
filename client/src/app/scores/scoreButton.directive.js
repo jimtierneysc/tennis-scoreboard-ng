@@ -3,7 +3,8 @@
  * @name app.scores.directive:feScoreButton
  * @restrict E
  * @description
- * Button to change score
+ * Button to execute an action such as
+ * start_game, start_tiebreaker, win_game, win_tiebreaker, etc.
  *
  */
 

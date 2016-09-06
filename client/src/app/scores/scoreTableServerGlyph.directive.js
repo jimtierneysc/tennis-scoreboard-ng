@@ -3,7 +3,8 @@
  * @name app.scores.directive:feScoreTableServerGlyph
  * @restrict E
  * @description
- * Displays a glyph beside the current server
+ * Displays a glyph beside the serving player in the score table
+ * heading
  */
 
 (function () {

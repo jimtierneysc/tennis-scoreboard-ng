@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('waitIndicator constants', function () {
+  describe('waitInterval constants', function () {
 
     var waitInterval;
 

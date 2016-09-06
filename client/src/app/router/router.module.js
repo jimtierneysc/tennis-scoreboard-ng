@@ -1,3 +1,12 @@
+/**
+ * @ngdoc overview
+ * @name app.router
+ * @description
+ *
+ * # app.router
+ *
+ * Module to configure ui-router.
+ */
 (function () {
   'use strict';
 

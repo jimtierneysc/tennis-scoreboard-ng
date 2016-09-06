@@ -39,7 +39,7 @@
      * @name confirm
      * @methodOf app.components.modalConfirm
      * @description
-     * Show a confirmation dialog box and let caller wait for confirmation
+     * Show a confirmation dialog box and let the caller wait for a response from the user
      *
      * @param {Object} customLabels
      * Overrides for HTML content (ok button, cancel button, message, title)
