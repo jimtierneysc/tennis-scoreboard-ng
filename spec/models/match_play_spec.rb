@@ -80,6 +80,15 @@ RSpec.describe 'Play', { type: :model, match_play_shared: true, play_actions: tr
         end
       end
 
+      context 'with first server team' do
+        before do
+          subject.play_match! :start_game, opponent: subject.first_team
+        end
+
+        it_behaves_like 'a match with first game started'
+
+      end
+
       context 'without server' do
         it 'should not start' do
           expect { subject.play_match! :start_game }.to raise_error Exceptions::InvalidOperation
