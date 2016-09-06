@@ -84,12 +84,12 @@
     });
 
     describe('.submit()', function () {
-      var waitIndicator;
+      var waitingState;
       beforeEach(function () {
-        inject(function (_waitIndicator_) {
-          waitIndicator = _waitIndicator_;
+        inject(function (_waitingState_) {
+          waitingState = _waitingState_;
         });
-        spyOn(waitIndicator, 'beginWait').and.callThrough();
+        spyOn(waitingState, 'beginWait').and.callThrough();
       });
 
       beforeEach(function () {

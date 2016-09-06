@@ -54,14 +54,14 @@
       })
     });
 
-    describe('using waitIndicator service', function () {
+    describe('using waitingState service', function () {
       var vm;
       var service;
       var $timeout;
 
       beforeEach(function () {
-        inject(function (waitIndicator, _$timeout_) {
-          service = waitIndicator;
+        inject(function (waitingState, _$timeout_) {
+          service = waitingState;
           $timeout = _$timeout_;
         });
         vm = scope.vm;

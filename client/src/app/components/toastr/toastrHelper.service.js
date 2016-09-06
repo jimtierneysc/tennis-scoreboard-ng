@@ -16,6 +16,22 @@
   function factory(toastr) {
     return activate;
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf app.components.toastrHelper
+     * @description
+     * Adds members to a controller:
+     * * showToast()
+     * * showHttpErrorToast()
+     * * clearToast()
+     * * lastToast
+     *
+     * @param {Object} _vm_
+     * Controller instance
+     * @param {Object} _scope_
+     * Controller scope
+     */
     function activate(_vm_, _scope_) {
       var vm = _vm_;
       vm.showToast = showToast;

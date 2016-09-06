@@ -3,9 +3,8 @@
  * @name app.scores.directive:feScoreTableSetResult
  * @restrict E
  * @description
- * Display the result of a set in the score table
+ * Display the number of games won in a set by an opponent
  */
-
 
 (function () {
   'use strict';

@@ -1,8 +1,14 @@
 /**
  * @ngdoc service
- * @name app.scores.scoreboardAnimateHideAndShow
+ * @name app.scores.scoreboardAnimate
  * @description
- * Set flags on the scoreboard object to trigger animations.
+ * Change flags on the scoreboard object to trigger animations.
+ * For example, when the win_game action is executed, the old set
+ * score should fade out and the new set score should fade in.
+ * So before the scoreboardController's scoreboard object is updated, flags
+ * are changed to cause the old set score to fade out.  After the
+ * scoreboardControllers's scoreboard object is updated, flags are changed to
+ * cause the new set score to fade in.
  */
 
 (function () {
@@ -34,8 +40,16 @@
     var sb = _sb_;
     var animationTimers = _animationTimers_;
 
-    // Hide and show elements while changing the mode between keeping score and
-    // following score.
+    /**
+     * @ngdoc function
+     * @name animateKeepScore
+     * @methodOf  app.scores.scoreboardAnimate
+     * @description
+     * Hide and show elements while changing the scoreboard view between showing
+     * score keeper command and hiding score keeper commands
+     * @param {Boolean} keepScore
+     * Truthy if showing score keeper commands
+     */
     this.animateKeepScore = function (keepScore) {
       return {
         hideChanging: function () {
@@ -49,7 +63,18 @@
       }
     };
 
-    // Hide and show elements while posting an action, like win_game
+    /**
+     * @ngdoc function
+     * @name animateAction
+     * @methodOf  app.scores.scoreboardAnimate
+     * @description
+     * Hide and show elements while positing an action, such as
+     * win_game
+     * @param {String} action
+     * Action such as 'win_game'
+     * @param {Object} param
+     * Action parameter
+     */
     this.animateAction = function (action, param) {
       return {
         hideChanging: function () {

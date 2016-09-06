@@ -22,7 +22,7 @@
         });
       });
     });
-    
+
     beforeEach(function () {
       module(function ($provide) {
         // Disable animation delays
@@ -107,15 +107,15 @@
       var originalEntities;
       var crudOptions;
       var crudMethods;
-      var waitIndicator;
+      var waitingState;
 
       beforeEach(function () {
 
-        inject(function ($rootScope, _waitIndicator_) {
+        inject(function ($rootScope, _waitingState_) {
           scope = $rootScope.$new();
-          waitIndicator = _waitIndicator_;
+          waitingState = _waitingState_;
         });
-        spyOn(waitIndicator, 'beginWait').and.callThrough();
+        spyOn(waitingState, 'beginWait').and.callThrough();
         entities = [
           {id: 1, item: 'one'},
           {id: 2, item: 'two'},
@@ -237,7 +237,7 @@
           })
         });
       });
-      
+
       describe('allow', function () {
         var items = [
           {name: 'edit entity'},

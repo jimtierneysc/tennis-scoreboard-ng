@@ -3,7 +3,8 @@
  * @name app.components.directive:feLoadingMessage
  * @restrict E
  * @description
- * Displays message about loading
+ * Displays a loading message if the page is loading.  Displays an
+ * error message if the page failed to load.
  *
  */
 

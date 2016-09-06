@@ -1,3 +1,9 @@
+/**
+ * @ngdoc object
+ * @name app.components.config:toastrConfig
+ * @description
+ * Set default options for the toastr service
+ */
 (function() {
   'use strict';
 

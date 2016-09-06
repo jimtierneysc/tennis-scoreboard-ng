@@ -2,8 +2,10 @@
  * @ngdoc service
  * @name app.scores.scoreboardPrep
  * @description
- * To make it easier to display and update the score, add more
- * properties to the scores object received from the backend.
+ * Enhances the  scores object with additional properties that 
+ * are helpful for rendering the scores table.  For example,
+ * titles are added to each set, so that it is 
+ * easy to display a title next to each set.
  */
 
 (function () {

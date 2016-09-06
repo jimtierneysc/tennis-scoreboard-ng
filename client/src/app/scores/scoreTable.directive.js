@@ -3,7 +3,10 @@
  * @name app.scores.directive:feScoreTable
  * @restrict E
  * @description
- * Table to display match scoring
+ * Display a table with the names of the opponents,
+ * the match score, the set scores, and (optionally) the
+ * completed games.  When the end user is keeping score, the table
+ * will include some buttons to start a game and win a game.
  *
  */
 

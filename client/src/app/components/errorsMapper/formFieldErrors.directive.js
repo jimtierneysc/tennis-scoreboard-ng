@@ -3,7 +3,7 @@
  * @name app.components.directive:feFormFieldErrors
  * @restrict E
  * @description
- * Displays error messages, if any, below a form field.
+ * Displays error messages on a form.
  *
  */
 

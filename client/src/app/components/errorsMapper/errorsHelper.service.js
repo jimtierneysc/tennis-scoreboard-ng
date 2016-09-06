@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name app.components.errorsHelper
  * @description
- * Add error processing to a controller
+ * Adds error processing to a controller
  *
  */
 (function () {
@@ -65,8 +65,7 @@
        * @name clearErrors
        * @methodOf app.components.errorsHelper
        * @description
-       * Clear categories of errors.  Use, for example, to clear a "username" errors
-       * when the user types in a different username.
+       * Clear categories of errors.
        *
        * @param {Object} errors
        * Categories arrays

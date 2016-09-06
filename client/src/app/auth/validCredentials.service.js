@@ -21,12 +21,12 @@
      * @name validate
      * @methodOf app.auth.validateCredentials
      * @description
-     * Make a REST API request using the token.
+     * Make a REST API request passing username and token
      * @param {Object} currentUser
      * username and token
      * @returns {Object} a promise
-     * * The promise is resolved with a valid username and token.
-     * * The promise is rejected if the token is not valid.
+     * * The promise is resolved with a valid username and token
+     * * The promise is rejected if the token is not valid
      */
     function validate(currentUser) {
       var deferred = $q.defer();

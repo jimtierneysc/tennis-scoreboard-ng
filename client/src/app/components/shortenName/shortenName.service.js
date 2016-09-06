@@ -2,7 +2,7 @@
  * @ngdoc service
  * @name app.components.shortenName
  * @description
- * Shortens a full firstname and full lastname to full first name and last initial.
+ * Shortens a full first name and full last name to full first name and last name initial
  */
 (function () {
   'use strict';
@@ -22,7 +22,7 @@
      * @methodOf app.components.shortenName
      *
      * @param {String} name
-     * Overrides for HTML content (ok button, cancel button, message, title)
+     * first name and last name
      * @returns {String} name
      */
     function shortenName(name) {

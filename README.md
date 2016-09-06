@@ -1,9 +1,9 @@
-## Tennis Scoreboard
+## Tennis Scoreboard Ng
 
 ### Summary
 
-This project implements an SPA to keep score of tennis matches. The backend is
-a Rails API application and the frontend is an AngularJS application.  
+This project implements an SPA to keep the score of tennis matches. The back-end consists of
+a Rails API application.  The client consists of an AngularJS application.
 
 ### Rails API Application
 
@@ -68,25 +68,35 @@ Rails API application by making HTTP requests.
     * `cd client`
     * `gulp test`
     
+### User guide
 
-
-### Logging in
+#### Logging in
 
 * A login link appears in the upper right corner of the page.  Enter the password and username specified with
 the db:seed command.  Login is only required to edit or keep score.  Login is not required to view.
 
 #### Players, Teams and Matches views
 
-* Choose a link in the navbar.
+* Choose a link in the navigation bar.
 * Each view supports add, delete and edit.
 * The Matches view has a link to the match score.
 
 #### Scores view
 
-* Choose "Scores" in the navbar or the "Score" link in the Matches view.
+* Choose "Scores" in the navigation bar or the "Score" link in the Matches view.
 * A drop down list is used to select a match.
-* When a match is selected, the score board is shown
+* When a match is selected, the score board is shown.
 * A drop down menu has commands to show or hide visual elements
-    * If you want to keep score, choose the command to show score keeper commands
+    * To keep score, choose the menu command to show score keeper commands
+    * To show the winners of each game, choose the menu command to show completed games
+    
+#### Mobile
 
+* The navigation bar collapses when the viewport is narrow
+* Click the button on the upper right side of the page to show the navigation links
 
+### Todo
+
+- [ ] Readme: Provide instructions for running on AWS 
+- [ ] Feature: Show when a game is won by service break
+- [ ] Feature: Automatically update clients when the score is changed

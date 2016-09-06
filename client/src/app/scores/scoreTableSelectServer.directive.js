@@ -3,7 +3,7 @@
  * @name app.scores.directive:feScoreTableSelectServer
  * @restrict E
  * @description
- * Select the server when starting a new game
+ * Display a form for selecting the player to serve in the next game
  */
 
 

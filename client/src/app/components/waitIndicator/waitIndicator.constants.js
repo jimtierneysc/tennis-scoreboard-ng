@@ -2,7 +2,7 @@
  * @ngdoc object
  * @name app.components.constant:waitInterval
  * @description
- * Delay before displaying wait indicator (e.g.; spinner)
+ * Delay before displaying wait indicator (spinner)
  */
 (function() {
   'use strict';

@@ -3,7 +3,7 @@
  * @name app.auth.directive:feLoginForm
  * @restrict E
  * @description
- * Form for logging in.  The form has a username and a password field.
+ * Form for logging in.  The form has a username field and a password field.
  */
 
 (function () {

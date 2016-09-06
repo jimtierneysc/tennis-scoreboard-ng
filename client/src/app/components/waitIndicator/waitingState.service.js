@@ -1,8 +1,8 @@
 /**
  * @ngdoc service
- * @name app.components.waitIndicator
+ * @name app.components.waitingState
  * @description
- * Service to manage state of a wait indicator
+ * Service to manage the waiting state of the application.
  */
 
 (function () {
@@ -10,7 +10,7 @@
 
   angular
     .module('app.components')
-    .service('waitIndicator', Service);
+    .service('waitingState', Service);
 
 
   /** @ngInject */
@@ -23,6 +23,15 @@
 
     var waitingCount = 0;
 
+    /**
+     * @ngdoc function
+     * @name beginWait
+     * @methodOf app.components.waitingState
+     * @description
+     * Begin waiting
+     * @returns {Function}
+     * Function to end waiting
+     */
     function beginWait() {
       var last = waiting();
       waitingCount++;
@@ -42,12 +51,33 @@
         changed();
     }
 
+    /**
+     * @ngdoc function
+     * @name waiting
+     * @methodOf app.components.waitingState
+     * @description
+     * Indicate if the application is waiting or not.
+     * @returns {Boolean}
+     * Truthy if waiting
+     */
     function waiting() {
       return waitingCount > 0;
     }
 
     var EVENT_NAME = 'wait-indicator:change';
 
+    /**
+     * @ngdoc function
+     * @name subscribeChanged
+     * @methodOf app.components.waitingState
+     * @description
+     * Provide a callback for a controller to be informed of a change to the
+     * waiting state
+     * @param {Object} scope
+     * Controller scope
+     * @param {Function} callback
+     * Callback to inform of a change
+     */
     function subscribeChanged(scope, callback) {
       var handler = $rootScope.$on(EVENT_NAME, callback);
       scope.$on('$destroy', handler);

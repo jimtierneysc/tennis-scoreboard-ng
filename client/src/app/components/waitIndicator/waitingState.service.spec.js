@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('waitIndicator service', function () {
+  describe('waitingState service', function () {
 
     var service;
 
@@ -9,8 +9,8 @@
 
     beforeEach(function () {
 
-      inject(function (waitIndicator) {
-        service = waitIndicator;
+      inject(function (waitingState) {
+        service = waitingState;
       });
     });
 

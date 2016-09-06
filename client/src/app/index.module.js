@@ -1,3 +1,12 @@
+/**
+ * @ngdoc overview
+ * @name app
+ * @description
+ *
+ * # app
+ *
+ * The app module references all modules required by the application
+ */
 (function () {
   'use strict';
 

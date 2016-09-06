@@ -3,7 +3,7 @@
  * @name app.scores.directive:feScoreTableOpponent
  * @restrict E
  * @description
- * Table heading for opponent
+ * Display an oppponent in the score table heading
  */
 
 (function () {

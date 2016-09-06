@@ -28,7 +28,7 @@
      * Initialize the controller:
      * * Add playerOptionsList object
      * * Add teamOptionsList object
-     * * Call the crudHelper service with match-specific options.
+     * * Call the crudHelper service with match-specific options
      */
     function activate() {
       vm.teamOptionsList = {list: null};

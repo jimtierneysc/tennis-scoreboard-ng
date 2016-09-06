@@ -4,8 +4,8 @@
  * @description
  * Prompt the user to cancel the edit in progress.  Notify controllers of the
  * outcome.
- * 
- * An edit is in progress when the user has chosen a command to show a data entry form and
+ *
+ * An edit is in progress when the user has chosen a command to show a data entry form, and
  * has changed the value of a form field.
  */
 (function () {
@@ -30,14 +30,14 @@
      * @name closeEditors
      * @methodOf app.components.editInProgress
      * @description
-     * If an edit is in progress, display a modal prompt to cancel the edit. 
+     * If an edit is in progress, display a modal prompt to cancel the edit.
      *
      * @returns {Object} promise
      * * Resolved when the edit is cancelled or when there is no edit in progress
      * * Reject if the edit is not cancelled (by the user)
      */
     function closeEditors() {
-      var state = emitQuery(name);
+      var state = emitQuery();
       var promise;
       if (!state.pristine) {
         angular.merge(state.labels, {
@@ -92,7 +92,7 @@
      * @name registerOnQueryState
      * @methodOf app.components.editInProgress
      * @description
-     * Called by a controller to register a callback to return the state of an editor.
+     * Register a controller callback to query for the editing state.
      * @param {Object} scope
      * Controller scope
      * @param {Object} callback
@@ -107,8 +107,8 @@
      * @name registerOnConfirmed
      * @methodOf app.components.editInProgress
      * @description
-     * Called by a controller to register a callback to inform the controller that the user was prompted to
-     * close the current editor.
+     * Register a callback to inform controllers that the user was prompted to
+     * close the current editor
      * @param {Object} scope
      * Controller scope
      * @param {Object} callback
@@ -123,7 +123,7 @@
      * @name registerOnClose
      * @methodOf app.components.editInProgress
      * @description
-     * Register a callback to inform a controller that it's editors should be closed.
+     * Register a callback to inform controllers that editors should be closed.
      * @param {Object} scope
      * Controller scope
      * @param {Object} callback

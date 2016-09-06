@@ -2,7 +2,10 @@
  * @ngdoc controller
  * @name app.scores.controller:ScoresController
  * @description
- * Controller for listing and selecting match scores
+ * Controller for listing and selecting matches and for displaying a 
+ * drop down menu next to the match list.  
+ * Selecting a match updates a child view. 
+ * See {@link app.scores.controller:ScoreboardController}
  *
  */
 
@@ -21,6 +24,19 @@
 
     activate();
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf  app.scores.controller:ScoresController
+     * @description
+     * Initialize the controller:
+     * * Add auth support
+     * * Add loading support
+     * * Add members
+     *   * matches - array of matches
+     *   * selectedMatch - currently selected match
+     *   * selectedMatchChange() - transitions the child view to the selected match
+     */
     function activate() {
       vm.matches = [];
       vm.selectedMatch = null;

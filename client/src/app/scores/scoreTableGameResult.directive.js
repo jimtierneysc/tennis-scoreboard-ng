@@ -3,7 +3,7 @@
  * @name app.scores.directive:feScoreTableGameResult
  * @restrict E
  * @description
- * Display the result of a game in the score table
+ * Display a check mark to indicate the winner of a game
  */
 
 

@@ -2,7 +2,13 @@
  * @ngdoc controller
  * @name app.scores.controller:ScoreboardController
  * @description
- * Controller for displaying a match score
+ * Controller for displaying a match score. A table shows the
+ * opponents, match score, set scores, and (optionally) completed games.
+ * Logged in users may keep score by clicking buttons to start a game, win a game,
+ * and execute other actions.  A parent view is responsible for displaying a
+ * list for selecting the match, and for displaying a menu with commands
+ * to hide and show information about the match (such as completed games).
+ * See {@link app.scores.controller:ScoresController}
  *
  */
 (function () {
@@ -23,6 +29,20 @@
 
     activate();
 
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf  app.scores.controller:ScoreboardController
+     * @description
+     * Initialize the controller:
+     * * Add auth support
+     * * Add loading support
+     * * Add toastr support
+     * * Add members
+     *   * id - match id from $stateParams.id
+     *   * scoreboard - scores object
+     *   * view - object to manage scoreboard view commands and animations
+     */
     function activate() {
       vm.id = $stateParams.id;
       vm.scoreboard = {};
@@ -70,6 +90,25 @@
       }
     }
 
+    /**
+     * @ngdoc function
+     * @name scoreboardUpdate
+     * @methodOf  app.scores.controller:ScoreboardController
+     * @description
+     * This method is called when the user changes the score by
+     * clicking the "Start Game" button, for example.
+     * 
+     * In simple terms, here is how the scoreboard gets updated
+     * * First, a REST API request posts the action (such as 'start_game')
+     * * Next, the REST server responds with the new match scores (including an additional game)
+     * * Then the controller's scoreboard object is updated with the new scores
+     * * Finally, the view updates because it is bound to the scoreboard object
+     * @param {String} action
+     * action to execute ('start_game', 'win_game', etc.)
+     * @param {Object} param
+     * action specific options, such as a winner for the 'win_game' action
+     * 
+     */
     function scoreboardUpdate(action, param) {
 
       if (updating)  // Prevent re-enter
