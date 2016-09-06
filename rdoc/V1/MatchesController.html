@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::MatchesController - RDoc Documentation</title>
+<title>class V1::MatchesController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -94,16 +94,20 @@
   <section class="description">
     
 <p>Controller for matches</p>
-
-<p>Renders a list of matches</p>
-
-<p>Renders a single match</p>
-
-<p>Creates new doubles matches and new singles matches</p>
-
+<ul><li>
+<p>Renders a list of all matches</p>
+</li><li>
+<p>Renders one particular match</p>
+</li><li>
+<p>Creates a new match</p>
+</li><li>
 <p>Updates a match</p>
-
+</li><li>
 <p>Deletes a match</p>
+</li><li>
+<p>Serializes a <a href="../Match.html">Match</a> using <a
+href="MatchSerializer.html">V1::MatchSerializer</a></p>
+</li></ul>
 
   </section>
 
@@ -139,13 +143,40 @@
 
         <div class="method-description">
           
-          <p>POST /matches</p>
+          <p>Create a match</p>
+<ul><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:title</code> - match title</p>
+</li><li>
+<p><code>:scoring</code> - scoring kind</p>
+</li><li>
+<p><code>:doubles</code> - true for doubles</p>
+</li><li>
+<p><code>:first_team_id</code> - id of a <a href="../Team.html">Team</a></p>
+</li><li>
+<p><code>:second_team_id</code> - id of a <a href="../Team.html">Team</a></p>
+</li><li>
+<p><code>:first_player_id</code> - id of a <a href="../Player.html">Player</a></p>
+</li><li>
+<p><code>:second_player_id</code> - id of a <a
+href="../Player.html">Player</a></p>
+</li></ul>
+</li></ul>
+
+<p>Teams are for a doubles match.  Players are for a singles match.</p>
+<ul><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized <a href="../Match.html">Match</a> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@match</span> = <span class="ruby-identifier">create_match</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@match</span>.<span class="ruby-identifier">save</span>
@@ -177,13 +208,24 @@
 
         <div class="method-description">
           
-          <p>DELETE /matches/1</p>
+          <p>Delete a match</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - id of a <a href="../Match.html">Match</a></p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><code>:no_content</code> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 55</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 87</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@match</span>.<span class="ruby-identifier">destroy</span>
   <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span>
@@ -211,7 +253,13 @@
 
         <div class="method-description">
           
-          <p>GET /matches</p>
+          <p>Get a list of all matches, sorted by match title</p>
+<ul><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>Serialized array of matches</p>
+</li></ul>
+</li></ul>
           
           
 
@@ -220,7 +268,7 @@
             <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-ivar">@matches</span> = <span class="ruby-constant">Match</span>.<span class="ruby-identifier">order</span> <span class="ruby-string">&#39;lower(title)&#39;</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@matches</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@matches</span>, <span class="ruby-identifier">serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">ApplicationArraySerializer</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -245,13 +293,24 @@
 
         <div class="method-description">
           
-          <p>GET /matches/1</p>
+          <p>Get a particular match</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - id of a <a href="../Match.html">Match</a></p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><a href="../Match.html">Match</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 25</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@match</span>
 <span class="ruby-keyword">end</span></pre>
@@ -278,13 +337,44 @@
 
         <div class="method-description">
           
-          <p>PATCH/PUT /matches/1</p>
+          <p>Update a match</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - id of a <a href="../Match.html">Match</a></p>
+</li></ul>
+</li><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:title</code> - change title</p>
+</li><li>
+<p><code>:scoring</code> - change scoring kind</p>
+</li><li>
+<p><code>:doubles</code> - change doubles</p>
+</li><li>
+<p><code>:first_team_id</code> - change first team</p>
+</li><li>
+<p><code>:second_team_id</code> - change second team</p>
+</li><li>
+<p><code>:first_player_id</code> - change first player</p>
+</li><li>
+<p><code>:second_player_id</code> - change second player</p>
+</li></ul>
+</li></ul>
+
+<p>Teams are for a doubles match.  Players are for a singles match.</p>
+<ul><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized <a href="../Match.html">Match</a> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/matches_controller.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-identifier">doubles</span> = <span class="ruby-identifier">match_params_doubles?</span>(<span class="ruby-ivar">@match</span>.<span class="ruby-identifier">doubles</span>)
   <span class="ruby-identifier">update_sym</span> = <span class="ruby-keyword">if</span> <span class="ruby-identifier">doubles</span>

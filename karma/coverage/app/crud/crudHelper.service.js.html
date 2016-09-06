@@ -495,7 +495,37 @@
 450
 451
 452
-453</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -554,7 +584,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">83×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -567,6 +613,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">83×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -581,6 +634,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -951,7 +1011,7 @@
  * @ngdoc service
  * @name app.crud.crudHelper
  * @description
- * Add CRUD functionality to a controller
+ * Adds CRUD functionality to a controller
  *
  */
 (function () {
@@ -962,9 +1022,9 @@
     .factory('crudHelper', factory);
 &nbsp;
   /** @ngInject */
-  function factory($log, modalConfirm, $timeout, $q,
+  function factory($log, modalConfirm, $q,
                    $filter, loadingHelper, errorsHelper, toastrHelper, authHelper,
-                   waitIndicator, crudResource, editInProgress, autoFocus, animationTimers) {
+                   waitingState, crudResource, editInProgress, autoFocus, animationTimers) {
     return activate;
 &nbsp;
     /**
@@ -972,7 +1032,7 @@
      * @name activate
      * @methodOf app.crud.crudHelper
      * @description
-     * Add members to a controller that may be used by the controller and views:
+     * Adds members to a controller:
      * * beginWait()
      * * entityList
      * * editEntity
@@ -1006,8 +1066,24 @@
 &nbsp;
       // initialize instance properties
 &nbsp;
-      vm.beginWait = waitIndicator.beginWait;
+      /**
+       * @ngdoc function
+       * @name beginWait
+       * @methodOf app.crud.crudHelper
+       * @description
+       * Begins application waiting state
+       * @returns {Function} 
+       * Ends application waiting state
+      */
+      vm.beginWait = waitingState.beginWait;
 &nbsp;
+      /**
+       * @ngdoc property
+       * @name entityList
+       * @propertyOf app.crud.crudHelper
+       * @description
+       * Object to manage a list of entities
+       */
       vm.entityList = {
         deleteItem: deleteEntity,
         hidingItem: hidingEntity,
@@ -1019,6 +1095,13 @@
         }
       };
 &nbsp;
+      /**
+       * @ngdoc property
+       * @name editEntity
+       * @propertyOf app.crud.crudHelper
+       * @description
+       * Object to edit a particular entity
+       */
       vm.editEntity = {
         form: null,
         errors: null,
@@ -1036,6 +1119,13 @@
         }
       };
 &nbsp;
+      /**
+       * @ngdoc property
+       * @name editEntity
+       * @propertyOf app.crud.crudHelper
+       * @description
+       * Object to create a new entity
+       */
       vm.newEntity = {
         form: null,
         errors: null,
@@ -1120,7 +1210,7 @@
             confirmDelete = true;
           if (confirmDelete) {
             modalConfirm.confirm({
-              title: 'Confirm Delete', text: 'Are you sure you want to delete "' +
+              title: 'Confirm Delete', message: 'Are you sure that you want to delete "' +
               options.getEntityDisplayName(entity) + '"?'
             })
               .then(function () {
@@ -1405,7 +1495,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Aug 30 2016 20:20:47 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 05 2016 23:00:31 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class SetGame - RDoc Documentation</title>
+<title>class SetGame - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -51,6 +51,15 @@
   </div>
 
   
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-SetGame-label-Overview">Overview</a>
+    <li><a href="#class-SetGame-label-Schema+Information">Schema Information</a>
+  </ul>
+</div>
+
 
   <div id="class-metadata">
     
@@ -89,15 +98,41 @@
     
 <p>Model for a game</p>
 
-<p>Every game is in a set</p>
-
-<p>Every game has an ordinal.  The first game in the set has ordinal 1</p>
-
+<h2 id="class-SetGame-label-Overview">Overview<span><a href="#class-SetGame-label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>A game belongs to a <a href="MatchSet.html">MatchSet</a></p>
+</li><li>
+<p>A game has a state:</p>
+<ul><li>
+<p><code>:in_progress</code></p>
+</li><li>
+<p><code>:finished</code></p>
+</li></ul>
+</li><li>
+<p>A game has an ordinal.  The first game in the set has ordinal 1</p>
+</li><li>
 <p>A game may have a winning team</p>
+</li><li>
+<p>A game may be a tiebreak</p>
+</li></ul>
 
 <p>A tiebreak is a special kind of game that occurs at the end of a set</p>
+<ul><li>
+<p>A non-tiebreak game has a serving player</p>
+</li></ul>
 
-<p>Normal games have a serving player.  Tiebreaks do not have a serving player</p>
+<h2 id="class-SetGame-label-Schema+Information">Schema Information<span><a href="#class-SetGame-label-Schema+Information">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Table name: set_games</p>
+
+<pre>id               :integer          not null, primary key
+ordinal          :integer          not null
+match_set_id     :integer          not null
+team_winner_id   :integer
+created_at       :datetime         not null
+updated_at       :datetime         not null
+player_server_id :integer
+tiebreaker       :boolean          default(FALSE), not null</pre>
 
   </section>
 
@@ -133,13 +168,21 @@
 
         <div class="method-description">
           
-          
+          <p>Get the state of a game</p>
+<ul><li>
+<p><strong>Returns</strong> : symbol</p>
+<ul><li>
+<p><code>:in_progress</code> or</p>
+</li><li>
+<p><code>:finished</code></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="state-source">
-            <pre><span class="ruby-comment"># File app/models/set_game.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/models/set_game.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
   <span class="ruby-identifier">team_winner_id</span> <span class="ruby-operator">?</span> <span class="ruby-value">:finished</span> <span class="ruby-operator">:</span> <span class="ruby-value">:in_progress</span>
 <span class="ruby-keyword">end</span></pre>
@@ -166,13 +209,16 @@
 
         <div class="method-description">
           
-          
+          <p>Indicate if the game is a tiebreak</p>
+<ul><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="tiebreak-3F-source">
-            <pre><span class="ruby-comment"># File app/models/set_game.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/models/set_game.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak?</span>
   <span class="ruby-identifier">tiebreaker</span>
 <span class="ruby-keyword">end</span></pre>

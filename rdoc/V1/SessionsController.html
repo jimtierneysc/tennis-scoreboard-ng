@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::SessionsController - RDoc Documentation</title>
+<title>class V1::SessionsController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -88,10 +88,11 @@
   <section class="description">
     
 <p>Controller for a user session</p>
-
-<p>Validates credentials and returns authentication token</p>
-
-<p>Regenerates the authentication token</p>
+<ul><li>
+<p>Validates credentials and returns user attributes</p>
+</li><li>
+<p>Regenerates the authentication token of a user</p>
+</li></ul>
 
   </section>
 
@@ -127,13 +128,28 @@
 
         <div class="method-description">
           
-          
+          <p>Login a user Validate user credentials.  If valid, respond with an
+authentication token for the user.</p>
+<ul><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:username</code></p>
+</li><li>
+<p><code>:password</code></p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><a href="../User.html">User</a> or HTTP error.  See <a
+href="SessionSerializer.html">V1::SessionSerializer</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/sessions_controller.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/sessions_controller.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-identifier">session</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:session</span>]
   <span class="ruby-identifier">user_password</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:password</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>
@@ -175,13 +191,24 @@
 
         <div class="method-description">
           
-          
+          <p>Clear the authentication token associated with a user</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - authentication token</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><code>:no_content</code> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/sessions_controller.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/sessions_controller.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">auth_token</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>

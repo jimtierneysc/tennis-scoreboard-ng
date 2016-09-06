@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>167/167</span>
+        <span class='fraction'>170/170</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">88.71% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>167/167</span>
+        <span class='fraction'>170/170</span>
       </div>
     </div>
   </div>
@@ -386,7 +386,55 @@
 341
 342
 343
-344</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -410,6 +458,20 @@
 <span class="cline-any cline-yes">91×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">91×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">91×</span>
@@ -455,6 +517,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -591,10 +672,12 @@
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-yes">4×</span>
@@ -645,6 +728,7 @@
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-yes">4×</span>
@@ -733,7 +817,13 @@
  * @ngdoc controller
  * @name app.scores.controller:ScoreboardController
  * @description
- * Controller for displaying a match score
+ * Controller for displaying a match score. A table shows the
+ * opponents, match score, set scores, and (optionally) completed games.
+ * Logged in users may keep score by clicking buttons to start a game, win a game,
+ * and execute other actions.  A parent view is responsible for displaying a
+ * list for selecting the match, and for displaying a menu with commands
+ * to hide and show information about the match (such as completed games).
+ * See {@link app.scores.controller:ScoresController}
  *
  */
 (function () {
@@ -754,6 +844,20 @@
 &nbsp;
     activate();
 &nbsp;
+    /**
+     * @ngdoc function
+     * @name activate
+     * @methodOf  app.scores.controller:ScoreboardController
+     * @description
+     * Initialize the controller:
+     * * Add auth support
+     * * Add loading support
+     * * Add toastr support
+     * * Add members
+     *   * id - match id from $stateParams.id
+     *   * scoreboard - scores object
+     *   * view - object to manage scoreboard view commands and animations
+     */
     function activate() {
       vm.id = $stateParams.id;
       vm.scoreboard = {};
@@ -789,7 +893,7 @@
 &nbsp;
       if (action == 'discard_play') {
         modalConfirm.confirm({
-          title: 'Confirm Clear', text: 'Are you sure you want to clear all games from match "' +
+          title: 'Confirm Clear', message: 'Are you sure you want to clear all games from match "' +
           vm.scoreboard.title + '"?'
         })
           .then(function () {
@@ -801,6 +905,25 @@
       }
     }
 &nbsp;
+    /**
+     * @ngdoc function
+     * @name scoreboardUpdate
+     * @methodOf  app.scores.controller:ScoreboardController
+     * @description
+     * This method is called when the user changes the score by
+     * clicking the "Start Game" button, for example.
+     * 
+     * In simple terms, here is how the scoreboard gets updated
+     * * First, a REST API request posts the action (such as 'start_game')
+     * * Next, the REST server responds with the new match scores (including an additional game)
+     * * Then the controller's scoreboard object is updated with the new scores
+     * * Finally, the view updates because it is bound to the scoreboard object
+     * @param {String} action
+     * action to execute ('start_game', 'win_game', etc.)
+     * @param {Object} param
+     * action specific options, such as a winner for the 'win_game' action
+     * 
+     */
     function scoreboardUpdate(action, param) {
 &nbsp;
       if (updating)  // Prevent re-enter
@@ -932,13 +1055,15 @@
 &nbsp;
       function toggleShowDescription(showDescription) {
         <span class="missing-if-branch" title="else path not taken" >E</span>if (showDescription != view.settings.showDescription) {
+          vm.clearToast();
           view.settings.showDescription = !view.settings.showDescription;
           storeSettings();
         }
       }
-      
+&nbsp;
       function toggleShowGames(showGames) {
         <span class="missing-if-branch" title="else path not taken" >E</span>if (showGames != view.settings.showGames) {
+          vm.clearToast();
           if (!vm.scoreboard.hasCompletedGames) {
             toggle();
             var title = 'Show Completed Games';
@@ -989,6 +1114,7 @@
           toggle();  // Now score keeper commands will show in case the user logs in later
         } else {
           <span class="missing-if-branch" title="else path not taken" >E</span>if (keepScore != view.keepingScore) {
+            vm.clearToast();
             if (vm.scoreboard.winner) {
               toggle();
               var title = 'Show Score Keeper Commands';
@@ -1078,7 +1204,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Aug 30 2016 20:20:47 GMT-0700 (PDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 05 2016 23:00:31 GMT-0700 (PDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

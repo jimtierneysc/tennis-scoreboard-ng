@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::TeamsController - RDoc Documentation</title>
+<title>class V1::TeamsController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -94,16 +94,19 @@
   <section class="description">
     
 <p>Controller for teams</p>
-
-<p>Renders a list of teams</p>
-
-<p>Renders a single team</p>
-
+<ul><li>
+<p>Renders a list of all teams</p>
+</li><li>
+<p>Renders a particular team</p>
+</li><li>
 <p>Creates a new team</p>
-
+</li><li>
 <p>Updates a team</p>
-
+</li><li>
 <p>Deletes a team</p>
+</li></ul>
+
+<p>Teams can not be deleted if they are in a match</p>
 
   </section>
 
@@ -139,13 +142,28 @@
 
         <div class="method-description">
           
-          <p>POST /teams POST /teams.json</p>
+          <p>Create a team</p>
+<ul><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:name</code> - team name</p>
+</li><li>
+<p><code>:first_player_id</code> - first player on team</p>
+</li><li>
+<p><code>:second_player_id</code> - second player on team</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><a href="../Team.html">Team</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-identifier">json</span> = <span class="ruby-identifier">team_params</span>
   <span class="ruby-identifier">json</span>[<span class="ruby-value">:doubles</span>] = <span class="ruby-keyword">true</span>
@@ -180,13 +198,24 @@
 
         <div class="method-description">
           
-          <p>DELETE /teams/1</p>
+          <p>Delete a team A team in a match may not be deleted</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - team id</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><code>:no_content</code> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 52</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 77</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@team</span>.<span class="ruby-identifier">destroy</span>
     <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span>
@@ -217,16 +246,23 @@
 
         <div class="method-description">
           
-          <p>GET /teams</p>
+          <p>Get a list of all doubles teams, sorted by team name. Singles teams are for
+internal use so are not shown to end users.</p>
+<ul><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>List of teams</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-ivar">@teams</span> = <span class="ruby-constant">Team</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">doubles</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">order</span> <span class="ruby-string">&#39;lower(name)&#39;</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@teams</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@teams</span>, <span class="ruby-identifier">serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">ApplicationArraySerializer</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -251,13 +287,24 @@
 
         <div class="method-description">
           
-          <p>GET /teams/1</p>
+          <p>Get a particular team</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - team id</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><a href="../Team.html">Team</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@team</span>
 <span class="ruby-keyword">end</span></pre>
@@ -284,13 +331,33 @@
 
         <div class="method-description">
           
-          <p>PATCH/PUT /teams/1</p>
+          <p>Update a team</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - team id</p>
+</li></ul>
+</li><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:name</code> - different team name</p>
+</li><li>
+<p><code>:first_player_id</code> - different first player</p>
+</li><li>
+<p><code>:second_player_id</code> - different second player</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><a href="../Team.html">Team</a> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/teams_controller.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@team</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">team_params</span>)
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@team</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:ok</span>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::PlayersController - RDoc Documentation</title>
+<title>class V1::PlayersController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -94,16 +94,20 @@
   <section class="description">
     
 <p>Controller for players</p>
-
-<p>Renders a list of players</p>
-
-<p>Renders a single player</p>
-
+<ul><li>
+<p>Renders a list of all players</p>
+</li><li>
+<p>Renders one player</p>
+</li><li>
 <p>Creates a new player</p>
-
+</li><li>
 <p>Updates a player</p>
-
+</li><li>
 <p>Deletes a player</p>
+</li><li>
+<p>Serializes a <a href="../Player.html">Player</a> using <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
+</li></ul>
 
   </section>
 
@@ -139,13 +143,24 @@
 
         <div class="method-description">
           
-          <p>POST /players POST /players.json</p>
+          <p>Create a player</p>
+<ul><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:name</code> - player name</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized <a href="../Player.html">Player</a> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@player</span> = <span class="ruby-constant">Player</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">player_params</span>)
 
@@ -178,13 +193,24 @@
 
         <div class="method-description">
           
-          <p>DELETE /players/1</p>
+          <p>Delete a player A player in a match or on a team may not be deleted.</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - player id</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p><code>:no_content</code> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@player</span>.<span class="ruby-identifier">destroy</span>
     <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span>
@@ -215,7 +241,13 @@
 
         <div class="method-description">
           
-          <p>GET /players</p>
+          <p>Get a list of all players, sorted by player name</p>
+<ul><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized array of players</p>
+</li></ul>
+</li></ul>
           
           
 
@@ -224,7 +256,7 @@
             <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-ivar">@players</span> = <span class="ruby-constant">Player</span>.<span class="ruby-identifier">order</span> <span class="ruby-string">&#39;lower(name)&#39;</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@players</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@players</span>, <span class="ruby-identifier">serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">ApplicationArraySerializer</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -249,13 +281,24 @@
 
         <div class="method-description">
           
-          <p>GET /players/1</p>
+          <p>Get a particular player</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - player id</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized <a href="../Player.html">Player</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@player</span>
 <span class="ruby-keyword">end</span></pre>
@@ -282,13 +325,29 @@
 
         <div class="method-description">
           
-          <p>PATCH/PUT /players/1</p>
+          <p>Update a player</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - player id</p>
+</li></ul>
+</li><li>
+<p><strong>Request</strong></p>
+<ul><li>
+<p><code>:name</code> - different player name</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized <a href="../Player.html">Player</a> or HTTP error</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 41</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/players_controller.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@player</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">player_params</span>)
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@player</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:ok</span>

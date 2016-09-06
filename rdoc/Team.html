@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class Team - RDoc Documentation</title>
+<title>class Team - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -51,6 +51,15 @@
   </div>
 
   
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-Team-label-Overview">Overview</a>
+    <li><a href="#class-Team-label-Schema+Information">Schema Information</a>
+  </ul>
+</div>
+
 
   <div id="class-metadata">
     
@@ -89,14 +98,31 @@
     
 <p>Model for a team</p>
 
+<h2 id="class-Team-label-Overview">Overview<span><a href="#class-Team-label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
 <p>A team may be an opponent in a match</p>
-
+</li><li>
 <p>A team may be the winner of a game, a match or a set</p>
-
+</li><li>
 <p>A doubles team has two players</p>
+</li><li>
+<p>A singles team has one player</p>
+</li></ul>
 
-<p>A singles team has one player. Singles teams are created as needed to allow
-a player to be an opponent in a match</p>
+<p>Singles teams are created as needed to allow a player to be an opponent in
+a match.</p>
+
+<h2 id="class-Team-label-Schema+Information">Schema Information<span><a href="#class-Team-label-Schema+Information">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Table name: teams</p>
+
+<pre>id               :integer          not null, primary key
+name             :string
+first_player_id  :integer          not null
+second_player_id :integer
+created_at       :datetime         not null
+updated_at       :datetime         not null
+doubles          :boolean          default(FALSE), not null</pre>
 
   </section>
 
@@ -132,13 +158,21 @@ a player to be an opponent in a match</p>
 
         <div class="method-description">
           
-          
+          <p>Indicate whether the team includes a particular player</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>player</code> -&gt; <a href="Player.html">Player</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="include_player-3F-source">
-            <pre><span class="ruby-comment"># File app/models/team.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/models/team.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">include_player?</span>(<span class="ruby-identifier">player</span>)
   <span class="ruby-identifier">include_players?</span>([<span class="ruby-identifier">player</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -165,13 +199,21 @@ a player to be an opponent in a match</p>
 
         <div class="method-description">
           
-          <p>indicate whether team includes a set of players</p>
+          <p>Indicate whether the team includes all players in a list</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>players</code> -&gt; array of players</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="include_players-3F-source">
-            <pre><span class="ruby-comment"># File app/models/team.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/models/team.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">include_players?</span>(<span class="ruby-identifier">players</span>)
   <span class="ruby-identifier">players</span> <span class="ruby-operator">==</span> [<span class="ruby-identifier">first_player</span>, <span class="ruby-identifier">second_player</span>] <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">players</span>.<span class="ruby-identifier">compact</span>
 <span class="ruby-keyword">end</span></pre>

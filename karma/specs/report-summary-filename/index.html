@@ -94,7 +94,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </head>
 
 <body id="HTMLReporter" class="html-reporter">
-<h1>Tested in PhantomJS 2.1.1 (Mac OS X 0.0.0) on Tue Aug 30 2016</h1>
+<h1>Tested in PhantomJS 2.1.1 (Mac OS X 0.0.0) on Mon Sep 05 2016</h1>
 
 <div class="alert">
 
@@ -102,7 +102,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
   
   <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>755 specs, 0 failed, 0 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>773 specs, 0 failed, 0 pending</span>
   
 
 
@@ -326,7 +326,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">authHelper service authentication</span>
     
       <div class="specSummary passed">
-      <span class="description">should get .userName when .setCredentials()</span>
+      <span class="description">should get .username when .setCredentials()</span>
       </div>
     
       <div class="specSummary passed">
@@ -1216,7 +1216,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">waitIndicator constants</span>
+      <span class="description">waitInterval constants</span>
     
       <div class="specSummary passed">
       <span class="description">should have .waitInterval</span>
@@ -1251,7 +1251,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">feWaitIndicator directive using waitIndicator service</span>
+      <span class="description">feWaitIndicator directive using waitingState service</span>
     
       <div class="specSummary passed">
       <span class="description">should set .waiting</span>
@@ -1264,7 +1264,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">waitIndicator service</span>
+      <span class="description">waitingState service</span>
     
       <div class="specSummary passed">
       <span class="description">should not be waiting initially</span>
@@ -1273,7 +1273,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">waitIndicator service .beginWait()</span>
+      <span class="description">waitingState service .beginWait()</span>
     
       <div class="specSummary passed">
       <span class="description">should set .waiting</span>
@@ -1290,7 +1290,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">waitIndicator service change notification</span>
+      <span class="description">waitingState service change notification</span>
     
       <div class="specSummary passed">
       <span class="description">should notify when .beginWait()</span>
@@ -1311,7 +1311,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">waitIndicator service nested waiting</span>
+      <span class="description">waitingState service nested waiting</span>
     
       <div class="specSummary passed">
       <span class="description">should be waiting</span>
@@ -1931,6 +1931,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">HeaderController</span>
     
       <div class="specSummary passed">
+      <span class="description">should support toastr</span>
+      </div>
+    
+      <div class="specSummary passed">
       <span class="description">should support auth</span>
       </div>
     
@@ -1983,6 +1987,44 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should have .showLogin()</span>
       </div>
     
+      <div class="specSummary passed">
+      <span class="description">should have .collapse()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">HeaderController when login</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should collapse</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should collapse</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show toast</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">HeaderController when load credentials</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should not show toast</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be logged in</span>
+      </div>
+    
     </div>
   
     <div class="suite passed">
@@ -1990,103 +2032,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should have controller</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">feMatchOpponentPlayer directive members</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should have .playerName()</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should have .suffix()</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">feMatchOpponentPlayer directive short player name with period (test 0)</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName with period</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name only</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name with period</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">feMatchOpponentPlayer directive short player name without period (test 1)</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName with period</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name only</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name with period</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">feMatchOpponentPlayer directive long player name with period (test 2)</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName with period</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name only</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name with period</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
-      <span class="description">feMatchOpponentPlayer directive long player name without period (test 3)</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name and shortName with period</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name only</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should support name with period</span>
       </div>
     
     </div>
@@ -2152,23 +2097,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">feMatchOpponentTeamPlayers directive members</span>
-    
-      <div class="specSummary passed">
-      <span class="description">should have .team</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should have .shortPlayerNames</span>
-      </div>
-    
-      <div class="specSummary passed">
-      <span class="description">should have .punctuation</span>
-      </div>
-    
-    </div>
-  
-    <div class="suite passed">
       <span class="description">feMatchOpponentTeams directive isolated scope</span>
     
       <div class="specSummary passed">
@@ -2195,6 +2123,23 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should have .match</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchSelectPlayer directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .player()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerList</span>
       </div>
     
     </div>
@@ -2558,6 +2503,120 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should call failure function</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerName directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playerName()</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .suffix()</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerName directive short player name with period (test 0)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerName directive short player name without period (test 1)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerName directive long player name with period (test 2)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerName directive long player name without period (test 3)</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name and shortName with period</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name only</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should support name with period</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">fePlayerSelectList directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .player</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .playersList</span>
       </div>
     
     </div>
@@ -3856,7 +3915,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should hide currrent game</span>
+      <span class="description">should hide current game</span>
       </div>
     
     </div>
@@ -4469,13 +4528,17 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should have tiebreak title</span>
+      <span class="description">should have 7 point tiebreak title</span>
       </div>
     
     </div>
   
     <div class="suite passed">
       <span class="description">scoreboardPrep service inserted titles set</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have set 0 title</span>
+      </div>
     
       <div class="specSummary passed">
       <span class="description">should have set 1 title</span>
@@ -4494,7 +4557,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       </div>
     
       <div class="specSummary passed">
-      <span class="description">should have tiebreak title</span>
+      <span class="description">should have 10 point tiebreak title</span>
       </div>
     
     </div>
@@ -4695,6 +4758,40 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should set state</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feMatchOpponentTeamPlayers directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .team</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .shortPlayerNames</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .punctuation</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">feTeamSelectList directive members</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .team</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .vm</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should have .teamsList</span>
       </div>
     
     </div>

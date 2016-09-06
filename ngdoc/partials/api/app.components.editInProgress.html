@@ -6,12 +6,12 @@
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="app-components-editinprogress-page"><p>Prompt the user to cancel the edit in progress.  Notify controllers of the
 outcome.</p>
-<p>An edit is in progress when the user has chosen a command to show a data entry form and
+<p>An edit is in progress when the user has chosen a command to show a data entry form, and
 has changed the value of a form field.</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_closeeditors">closeEditors()</h3>
-<div class="closeeditors"><div class="closeeditors-page"><p>If an edit is in progress, display a modal prompt to cancel the edit. </p>
+<div class="closeeditors"><div class="closeeditors-page"><p>If an edit is in progress, display a modal prompt to cancel the edit.</p>
 </div><h5 id="methods_closeeditors_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="closeeditors-page"><p>promise</p>
 <ul>
 <li>Resolved when the edit is cancelled or when there is no edit in progress</li>
@@ -20,20 +20,20 @@ has changed the value of a form field.</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_registeronclose">registerOnClose(scope, callback)</h3>
-<div class="registeronclose"><div class="registeronclose-page"><p>Register a callback to inform a controller that it&#39;s editors should be closed.</p>
+<div class="registeronclose"><div class="registeronclose-page"><p>Register a callback to inform controllers that editors should be closed.</p>
 </div><h5 id="methods_registeronclose_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>scope</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="registeronclose-page"><p>Controller scope</p>
 </div></td></tr><tr><td>callback</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="registeronclose-page"><p>Controller callback</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_registeronconfirmed">registerOnConfirmed(scope, callback)</h3>
-<div class="registeronconfirmed"><div class="registeronconfirmed-page"><p>Called by a controller to register a callback to inform the controller that the user was prompted to
-close the current editor.</p>
+<div class="registeronconfirmed"><div class="registeronconfirmed-page"><p>Register a callback to inform controllers that the user was prompted to
+close the current editor</p>
 </div><h5 id="methods_registeronconfirmed_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>scope</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="registeronconfirmed-page"><p>Controller scope</p>
 </div></td></tr><tr><td>callback</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="registeronconfirmed-page"><p>Controller callback</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods_registeronquerystate">registerOnQueryState(scope, callback)</h3>
-<div class="registeronquerystate"><div class="registeronquerystate-page"><p>Called by a controller to register a callback to return the state of an editor.</p>
+<div class="registeronquerystate"><div class="registeronquerystate-page"><p>Register a controller callback to query for the editing state.</p>
 </div><h5 id="methods_registeronquerystate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>scope</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="registeronquerystate-page"><p>Controller scope</p>
 </div></td></tr><tr><td>callback</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="registeronquerystate-page"><p>Controller callback</p>
 </div></td></tr></tbody></table></div>

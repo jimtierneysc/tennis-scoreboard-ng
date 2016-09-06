@@ -1,0 +1,31 @@
+<h1><code ng:non-bindable="">scoreboardAnimate</code>
+<div><span class="hint">service in module <code ng:non-bindable="">app.scores</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="app-scores-scoreboardanimate-page"><p>Change flags on the scoreboard object to trigger animations.
+For example, when the win_game action is executed, the old set
+score should fade out and the new set score should fade in.
+So before the scoreboardController&#39;s scoreboard object is updated, flags
+are changed to cause the old set score to fade out.  After the
+scoreboardControllers&#39;s scoreboard object is updated, flags are changed to
+cause the new set score to fade in.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_animateaction">animateAction(action, param)</h3>
+<div class="animateaction"><div class="animateaction-page"><p>Hide and show elements while positing an action, such as
+win_game</p>
+</div><h5 id="methods_animateaction_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>action</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="animateaction-page"><p>Action such as &#39;win_game&#39;</p>
+</div></td></tr><tr><td>param</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="animateaction-page"><p>Action parameter</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_animatekeepscore">animateKeepScore(keepScore)</h3>
+<div class="animatekeepscore"><div class="animatekeepscore-page"><p>Hide and show elements while changing the scoreboard view between showing
+score keeper command and hiding score keeper commands</p>
+</div><h5 id="methods_animatekeepscore_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>keepScore</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="animatekeepscore-page"><p>Truthy if showing score keeper commands</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+</div>

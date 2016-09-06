@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class MatchPlay::PlayMethods::StartNext - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Object
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-game">#game</a>
+    
+    <li ><a href="#method-i-game-3F">#game?</a>
+    
+    <li ><a href="#method-i-match_tiebreak-3F">#match_tiebreak?</a>
+    
+    <li ><a href="#method-i-set-3F">#set?</a>
+    
+    <li ><a href="#method-i-tiebreak">#tiebreak</a>
+    
+    <li ><a href="#method-i-tiebreak-3F">#tiebreak?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-MatchPlay::PlayMethods::StartNext">
+  <h1 id="class-MatchPlay::PlayMethods::StartNext" class="class">
+    class MatchPlay::PlayMethods::StartNext
+  </h1>
+
+  <section class="description">
+    
+<p>Class to help with starting games, tiebreaks, sets, and match tiebreaks</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(match)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>constructor</p>
+<ul><li>
+<p><strong>Args</strong></p>
+<ul><li>
+<p><code>match</code> -&gt; <a href="../../Match.html">Match</a></p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 414</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">match</span>)
+  <span class="ruby-ivar">@match</span> = <span class="ruby-identifier">match</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-game" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">game</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Start the next game</p>
+          
+          
+
+          
+          <div class="method-source-code" id="game-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 439</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">game</span>
+  <span class="ruby-identifier">start_game_kind</span> <span class="ruby-value">:game</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-game-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">game?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Indicate if a game can be started</p>
+          
+          
+
+          
+          <div class="method-source-code" id="game-3F-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 419</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">game?</span>
+  <span class="ruby-identifier">start_game_kind?</span> <span class="ruby-value">:game</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-match_tiebreak-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">match_tiebreak?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Indicate if the match tiebreak set can be started</p>
+          
+          
+
+          
+          <div class="method-source-code" id="match_tiebreak-3F-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 434</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">match_tiebreak?</span>
+  <span class="ruby-identifier">start_set_kind?</span> <span class="ruby-value">:tiebreak</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Indicate if a set can be started</p>
+          
+          
+
+          
+          <div class="method-source-code" id="set-3F-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 429</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set?</span>
+  <span class="ruby-identifier">start_set_kind?</span> <span class="ruby-value">:set</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tiebreak" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tiebreak</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Start the next tiebreak game</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tiebreak-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 444</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak</span>
+  <span class="ruby-identifier">start_game_kind</span> <span class="ruby-value">:tiebreak</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tiebreak-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tiebreak?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Indicate if a tiebreak game can be started</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tiebreak-3F-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_play.rb, line 424</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak?</span>
+  <span class="ruby-identifier">start_game_kind?</span> <span class="ruby-value">:tiebreak</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

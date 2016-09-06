@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>module MatchLoader - RDoc Documentation</title>
+<title>module MatchLoader - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -56,19 +56,18 @@
     
     
     
-    <div id="extends-section" class="nav-section">
-  <h3>Extended With Modules</h3>
-
-  <ul class="link-list">
     
-  
-    <li><span class="extend">ActiveSupport::Concern</span>
-  
-  
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-eager_load_match">#eager_load_match</a>
+    
   </ul>
 </div>
 
-    
   </div>
 </nav>
 
@@ -79,7 +78,7 @@
 
   <section class="description">
     
-<p>Utility code shared by models.</p>
+<p><a href="Match.html">Match</a> loading for controllers</p>
 
   </section>
 
@@ -96,6 +95,63 @@
     
 
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-eager_load_match" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">eager_load_match</span><span
+            class="method-args">(match_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load match, sets, games, teams and players at once.</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>match_id</code> -&gt; Id of <a href="Match.html">Match</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Relation</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="eager_load_match-source">
+            <pre><span class="ruby-comment"># File app/controllers/concerns/match_loader.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">eager_load_match</span>(<span class="ruby-identifier">match_id</span>)
+  <span class="ruby-constant">Match</span>
+    .<span class="ruby-identifier">includes</span>(<span class="ruby-identifier">first_team</span><span class="ruby-operator">:</span> [<span class="ruby-value">:first_player</span>,
+                           <span class="ruby-value">:second_player</span>],
+              <span class="ruby-identifier">second_team</span><span class="ruby-operator">:</span> [<span class="ruby-value">:first_player</span>,
+                            <span class="ruby-value">:second_player</span>],
+              <span class="ruby-identifier">match_sets</span><span class="ruby-operator">:</span> [<span class="ruby-identifier">set_games</span><span class="ruby-operator">:</span>
+                             [<span class="ruby-value">:player_server</span>,
+                              <span class="ruby-value">:team_winner</span>]])
+    .<span class="ruby-identifier">find</span>(<span class="ruby-identifier">match_id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 </main>
 

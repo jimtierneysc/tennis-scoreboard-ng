@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Table of Contents - RDoc Documentation</title>
+<title>Table of Contents - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -20,11 +20,24 @@
 
 <body id="top" class="table-of-contents">
 <main role="main">
-<h1 class="class">Table of Contents - RDoc Documentation</h1>
+<h1 class="class">Table of Contents - Tennis-scoreboard-ng</h1>
 
+<h2 id="pages">Pages</h2>
+<ul>
+  <li class="file">
+    <a href="lib/tasks/rspec_report_rake.html">rspec_report.rake</a>
+  </li>
+    <li class="file">
+    <a href="lib/tasks/sample_data_rake.html">sample_data.rake</a>
+  </li>
+  
+</ul>
 
 <h2 id="classes">Classes and Modules</h2>
 <ul>
+  <li class="class">
+    <a href="ApiConstraints.html">ApiConstraints</a>
+  </li>
   <li class="class">
     <a href="ApplicationController.html">ApplicationController</a>
   </li>
@@ -51,54 +64,96 @@
   </li>
   <li class="class">
     <a href="Match.html">Match</a>
+
+    <ul>
+      <li><a href="Match.html#label-Overview">Overview</a>
+      <li><a href="Match.html#label-Schema+Information">Schema Information</a>
+    </ul>
   </li>
   <li class="module">
     <a href="MatchLoader.html">MatchLoader</a>
   </li>
   <li class="module">
-    <a href="MatchLoader/ClassMethods.html">MatchLoader::ClassMethods</a>
-  </li>
-  <li class="module">
-    <a href="MatchPlayHelpers.html">MatchPlayHelpers</a>
+    <a href="MatchPlay.html">MatchPlay</a>
   </li>
   <li class="class">
-    <a href="MatchPlayHelpers/PlayMethods.html">MatchPlayHelpers::PlayMethods</a>
+    <a href="MatchPlay/CompleteSetAndMatch.html">MatchPlay::CompleteSetAndMatch</a>
   </li>
   <li class="class">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html">MatchPlayHelpers::PlayMethods::CompleteCurrent</a>
+    <a href="MatchPlay/NextServer.html">MatchPlay::NextServer</a>
   </li>
   <li class="class">
-    <a href="MatchPlayHelpers/PlayMethods/RemoveLastScoringChange.html">MatchPlayHelpers::PlayMethods::RemoveLastScoringChange</a>
+    <a href="MatchPlay/PlayActions.html">MatchPlay::PlayActions</a>
   </li>
   <li class="class">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html">MatchPlayHelpers::PlayMethods::StartNext</a>
+    <a href="MatchPlay/RemoveLastChange.html">MatchPlay::RemoveLastChange</a>
   </li>
   <li class="class">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext/PlayerServersHelper.html">MatchPlayHelpers::PlayMethods::StartNext::PlayerServersHelper</a>
+    <a href="MatchPlay/StartNext.html">MatchPlay::StartNext</a>
   </li>
   <li class="class">
-    <a href="MatchPlayHelpers/ValidateChangeMatch.html">MatchPlayHelpers::ValidateChangeMatch</a>
-  </li>
-  <li class="class">
-    <a href="MatchPlayHelpers/ValidationHelper.html">MatchPlayHelpers::ValidationHelper</a>
+    <a href="MatchPlay/WinGame.html">MatchPlay::WinGame</a>
   </li>
   <li class="class">
     <a href="MatchSet.html">MatchSet</a>
+
+    <ul>
+      <li><a href="MatchSet.html#label-Overview">Overview</a>
+      <li><a href="MatchSet.html#label-Schema+Information">Schema Information</a>
+    </ul>
+  </li>
+  <li class="module">
+    <a href="MatchValidation.html">MatchValidation</a>
+  </li>
+  <li class="class">
+    <a href="MatchValidation/ValidationHelper.html">MatchValidation::ValidationHelper</a>
+  </li>
+  <li class="class">
+    <a href="MatchValidation/ValidationHelper/ValidateChangeMatch.html">MatchValidation::ValidationHelper::ValidateChangeMatch</a>
+  </li>
+  <li class="class">
+    <a href="PlayMatch.html">PlayMatch</a>
   </li>
   <li class="class">
     <a href="Player.html">Player</a>
+
+    <ul>
+      <li><a href="Player.html#label-Overview">Overview</a>
+      <li><a href="Player.html#label-Schema+Information">Schema Information</a>
+    </ul>
   </li>
   <li class="class">
     <a href="SetGame.html">SetGame</a>
+
+    <ul>
+      <li><a href="SetGame.html#label-Overview">Overview</a>
+      <li><a href="SetGame.html#label-Schema+Information">Schema Information</a>
+    </ul>
   </li>
   <li class="class">
     <a href="Team.html">Team</a>
+
+    <ul>
+      <li><a href="Team.html#label-Overview">Overview</a>
+      <li><a href="Team.html#label-Schema+Information">Schema Information</a>
+    </ul>
   </li>
   <li class="class">
     <a href="User.html">User</a>
+
+    <ul>
+      <li><a href="User.html#label-Overview">Overview</a>
+      <li><a href="User.html#label-Schema+Information">Schema Information</a>
+    </ul>
   </li>
   <li class="module">
     <a href="V1.html">V1</a>
+  </li>
+  <li class="class">
+    <a href="V1/ApplicationArraySerializer.html">V1::ApplicationArraySerializer</a>
+  </li>
+  <li class="class">
+    <a href="V1/ApplicationSerializer.html">V1::ApplicationSerializer</a>
   </li>
   <li class="class">
     <a href="V1/MatchScoreboardController.html">V1::MatchScoreboardController</a>
@@ -117,9 +172,6 @@
   </li>
   <li class="class">
     <a href="V1/MatchesController.html">V1::MatchesController</a>
-  </li>
-  <li class="class">
-    <a href="V1/OpponentTeamSerializer.html">V1::OpponentTeamSerializer</a>
   </li>
   <li class="class">
     <a href="V1/PlayerSerializer.html">V1::PlayerSerializer</a>
@@ -154,49 +206,69 @@
 <ul>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-c-new">::new</a>
+    <a href="PlayMatch.html#method-c-convert_scores">::convert_scores</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
+    <span class="container">PlayMatch</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/ValidationHelper.html#method-c-new">::new</a>
+    <a href="ApiConstraints.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::ValidationHelper</span>
+    <span class="container">ApiConstraints</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-c-new">::new</a>
+    <a href="MatchPlay/RemoveLastChange.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
+    <span class="container">MatchPlay::RemoveLastChange</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/ValidateChangeMatch.html#method-c-new">::new</a>
+    <a href="MatchPlay/CompleteSetAndMatch.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::ValidateChangeMatch</span>
+    <span class="container">MatchPlay::CompleteSetAndMatch</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext/PlayerServersHelper.html#method-c-new">::new</a>
+    <a href="MatchPlay/PlayActions.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext::PlayerServersHelper</span>
+    <span class="container">MatchPlay::PlayActions</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/RemoveLastScoringChange.html#method-c-new">::new</a>
+    <a href="MatchPlay/WinGame.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::RemoveLastScoringChange</span>
+    <span class="container">MatchPlay::WinGame</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods.html#method-c-new">::new</a>
+    <a href="PlayMatch.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods</span>
+    <span class="container">PlayMatch</span>
+
+  <li class="method">
+    <a href="MatchValidation/ValidationHelper.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">MatchValidation::ValidationHelper</span>
+
+  <li class="method">
+    <a href="MatchValidation/ValidationHelper/ValidateChangeMatch.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">MatchValidation::ValidationHelper::ValidateChangeMatch</span>
+
+  <li class="method">
+    <a href="MatchPlay/StartNext.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
+    <a href="MatchPlay/NextServer.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">MatchPlay::NextServer</span>
+
+  <li class="method">
+    <a href="PlayMatch.html#method-c-play_match">::play_match</a>
+    &mdash;
+    <span class="container">PlayMatch</span>
 
   <li class="method">
     <a href="V1/MatchScoreboardSerializer.html#method-i-actions">#actions</a>
     &mdash;
     <span class="container">V1::MatchScoreboardSerializer</span>
-
-  <li class="method">
-    <a href="V1/SetGameSerializer.html#method-i-attributes">#attributes</a>
-    &mdash;
-    <span class="container">V1::SetGameSerializer</span>
 
   <li class="method">
     <a href="V1/MatchSerializer.html#method-i-attributes">#attributes</a>
@@ -209,19 +281,9 @@
     <span class="container">Authenticable</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-complete_match_tiebreak-3F">#complete_match_tiebreak?</a>
+    <a href="MatchPlay/CompleteSetAndMatch.html#method-i-complete-21">#complete!</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-complete_set-3F">#complete_set?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-complete_set_kind-3F">#complete_set_kind?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
+    <span class="container">MatchPlay::CompleteSetAndMatch</span>
 
   <li class="method">
     <a href="Match.html#method-i-completed-3F">#completed?</a>
@@ -244,19 +306,14 @@
     <span class="container">MatchSet</span>
 
   <li class="method">
-    <a href="V1/TeamsController.html#method-i-create">#create</a>
-    &mdash;
-    <span class="container">V1::TeamsController</span>
-
-  <li class="method">
-    <a href="V1/PlayersController.html#method-i-create">#create</a>
-    &mdash;
-    <span class="container">V1::PlayersController</span>
-
-  <li class="method">
     <a href="V1/MatchesController.html#method-i-create">#create</a>
     &mdash;
     <span class="container">V1::MatchesController</span>
+
+  <li class="method">
+    <a href="V1/TeamsController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">V1::TeamsController</span>
 
   <li class="method">
     <a href="V1/SessionsController.html#method-i-create">#create</a>
@@ -264,19 +321,24 @@
     <span class="container">V1::SessionsController</span>
 
   <li class="method">
+    <a href="V1/PlayersController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">V1::PlayersController</span>
+
+  <li class="method">
     <a href="Authenticable.html#method-i-current_user">#current_user</a>
     &mdash;
     <span class="container">Authenticable</span>
 
   <li class="method">
-    <a href="ApplicationController.html#method-i-default_serializer_options">#default_serializer_options</a>
-    &mdash;
-    <span class="container">ApplicationController</span>
-
-  <li class="method">
     <a href="V1/MatchesController.html#method-i-destroy">#destroy</a>
     &mdash;
     <span class="container">V1::MatchesController</span>
+
+  <li class="method">
+    <a href="V1/TeamsController.html#method-i-destroy">#destroy</a>
+    &mdash;
+    <span class="container">V1::TeamsController</span>
 
   <li class="method">
     <a href="V1/PlayersController.html#method-i-destroy">#destroy</a>
@@ -289,19 +351,9 @@
     <span class="container">V1::SessionsController</span>
 
   <li class="method">
-    <a href="V1/TeamsController.html#method-i-destroy">#destroy</a>
+    <a href="MatchLoader.html#method-i-eager_load_match">#eager_load_match</a>
     &mdash;
-    <span class="container">V1::TeamsController</span>
-
-  <li class="method">
-    <a href="MatchLoader/ClassMethods.html#method-i-eager_load_match">#eager_load_match</a>
-    &mdash;
-    <span class="container">MatchLoader::ClassMethods</span>
-
-  <li class="method">
-    <a href="V1/MatchSerializer.html#method-i-first_player">#first_player</a>
-    &mdash;
-    <span class="container">V1::MatchSerializer</span>
+    <span class="container">MatchLoader</span>
 
   <li class="method">
     <a href="Match.html#method-i-first_player">#first_player</a>
@@ -309,9 +361,14 @@
     <span class="container">Match</span>
 
   <li class="method">
-    <a href="V1/OpponentTeamSerializer.html#method-i-first_player">#first_player</a>
+    <a href="V1/TeamSerializer.html#method-i-first_player">#first_player</a>
     &mdash;
-    <span class="container">V1::OpponentTeamSerializer</span>
+    <span class="container">V1::TeamSerializer</span>
+
+  <li class="method">
+    <a href="V1/MatchSerializer.html#method-i-first_player">#first_player</a>
+    &mdash;
+    <span class="container">V1::MatchSerializer</span>
 
   <li class="method">
     <a href="Match.html#method-i-first_player-3D">#first_player=</a>
@@ -327,6 +384,26 @@
     <a href="V1/MatchSerializer.html#method-i-first_team">#first_team</a>
     &mdash;
     <span class="container">V1::MatchSerializer</span>
+
+  <li class="method">
+    <a href="MatchPlay/StartNext.html#method-i-game">#game</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
+    <a href="MatchPlay/WinGame.html#method-i-game">#game</a>
+    &mdash;
+    <span class="container">MatchPlay::WinGame</span>
+
+  <li class="method">
+    <a href="MatchPlay/StartNext.html#method-i-game-3F">#game?</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
+    <a href="MatchPlay/WinGame.html#method-i-game-3F">#game?</a>
+    &mdash;
+    <span class="container">MatchPlay::WinGame</span>
 
   <li class="method">
     <a href="V1/MatchSetSerializer.html#method-i-games">#games</a>
@@ -374,9 +451,29 @@
     <span class="container">Match</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods.html#method-i-lookup_method">#lookup_method</a>
+    <a href="MatchPlay/PlayActions.html#method-i-lookup_method">#lookup_method</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods</span>
+    <span class="container">MatchPlay::PlayActions</span>
+
+  <li class="method">
+    <a href="MatchPlay/WinGame.html#method-i-match_tiebreak">#match_tiebreak</a>
+    &mdash;
+    <span class="container">MatchPlay::WinGame</span>
+
+  <li class="method">
+    <a href="MatchPlay/WinGame.html#method-i-match_tiebreak-3F">#match_tiebreak?</a>
+    &mdash;
+    <span class="container">MatchPlay::WinGame</span>
+
+  <li class="method">
+    <a href="MatchPlay/StartNext.html#method-i-match_tiebreak-3F">#match_tiebreak?</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
+    <a href="ApiConstraints.html#method-i-matches-3F">#matches?</a>
+    &mdash;
+    <span class="container">ApiConstraints</span>
 
   <li class="method">
     <a href="Match.html#method-i-max_sets_to_play">#max_sets_to_play</a>
@@ -409,19 +506,14 @@
     <span class="container">Match</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext/PlayerServersHelper.html#method-i-next_player_server">#next_player_server</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext::PlayerServersHelper</span>
-
-  <li class="method">
     <a href="V1/MatchSerializer.html#method-i-opponent_id">#opponent_id</a>
     &mdash;
     <span class="container">V1::MatchSerializer</span>
 
   <li class="method">
-    <a href="Match.html#method-i-play_actions">#play_actions</a>
+    <a href="PlayMatch.html#method-i-play">#play</a>
     &mdash;
-    <span class="container">Match</span>
+    <span class="container">PlayMatch</span>
 
   <li class="method">
     <a href="Match.html#method-i-play_match-21">#play_match!</a>
@@ -434,6 +526,16 @@
     <span class="container">Match</span>
 
   <li class="method">
+    <a href="MatchPlay/NextServer.html#method-i-player">#player</a>
+    &mdash;
+    <span class="container">MatchPlay::NextServer</span>
+
+  <li class="method">
+    <a href="MatchPlay/RemoveLastChange.html#method-i-remove_last">#remove_last</a>
+    &mdash;
+    <span class="container">MatchPlay::RemoveLastChange</span>
+
+  <li class="method">
     <a href="ApplicationController.html#method-i-rescue_record_not_found">#rescue_record_not_found</a>
     &mdash;
     <span class="container">ApplicationController</span>
@@ -444,9 +546,14 @@
     <span class="container">MatchSet</span>
 
   <li class="method">
-    <a href="Match.html#method-i-scoring_of_set_ordinal">#scoring_of_set_ordinal</a>
+    <a href="Match.html#method-i-scoring_of_set">#scoring_of_set</a>
     &mdash;
     <span class="container">Match</span>
+
+  <li class="method">
+    <a href="V1/TeamSerializer.html#method-i-second_player">#second_player</a>
+    &mdash;
+    <span class="container">V1::TeamSerializer</span>
 
   <li class="method">
     <a href="V1/MatchSerializer.html#method-i-second_player">#second_player</a>
@@ -457,11 +564,6 @@
     <a href="Match.html#method-i-second_player">#second_player</a>
     &mdash;
     <span class="container">Match</span>
-
-  <li class="method">
-    <a href="V1/OpponentTeamSerializer.html#method-i-second_player">#second_player</a>
-    &mdash;
-    <span class="container">V1::OpponentTeamSerializer</span>
 
   <li class="method">
     <a href="Match.html#method-i-second_player-3D">#second_player=</a>
@@ -484,6 +586,11 @@
     <span class="container">V1::MatchScoreboardSerializer</span>
 
   <li class="method">
+    <a href="MatchPlay/StartNext.html#method-i-set-3F">#set?</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
     <a href="V1/MatchScoreboardSerializer.html#method-i-sets">#sets</a>
     &mdash;
     <span class="container">V1::MatchScoreboardSerializer</span>
@@ -494,9 +601,9 @@
     <span class="container">Match</span>
 
   <li class="method">
-    <a href="V1/MatchesController.html#method-i-show">#show</a>
+    <a href="V1/TeamsController.html#method-i-show">#show</a>
     &mdash;
-    <span class="container">V1::MatchesController</span>
+    <span class="container">V1::TeamsController</span>
 
   <li class="method">
     <a href="V1/MatchScoreboardController.html#method-i-show">#show</a>
@@ -504,14 +611,14 @@
     <span class="container">V1::MatchScoreboardController</span>
 
   <li class="method">
-    <a href="V1/TeamsController.html#method-i-show">#show</a>
-    &mdash;
-    <span class="container">V1::TeamsController</span>
-
-  <li class="method">
     <a href="V1/PlayersController.html#method-i-show">#show</a>
     &mdash;
     <span class="container">V1::PlayersController</span>
+
+  <li class="method">
+    <a href="V1/MatchesController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">V1::MatchesController</span>
 
   <li class="method">
     <a href="V1/UserController.html#method-i-show">#show</a>
@@ -529,39 +636,19 @@
     <span class="container">Player</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-i-start_game">#start_game</a>
+    <a href="PlayMatch.html#method-i-start_first_game">#start_first_game</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
+    <span class="container">PlayMatch</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-i-start_game-3F">#start_game?</a>
+    <a href="PlayMatch.html#method-i-start_play">#start_play</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
+    <span class="container">PlayMatch</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-i-start_match_tiebreak-3F">#start_match_tiebreak?</a>
+    <a href="PlayMatch.html#method-i-start_set_game">#start_set_game</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-i-start_set-3F">#start_set?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-i-start_tiebreak">#start_tiebreak</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/StartNext.html#method-i-start_tiebreak-3F">#start_tiebreak?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::StartNext</span>
-
-  <li class="method">
-    <a href="Match.html#method-i-state">#state</a>
-    &mdash;
-    <span class="container">Match</span>
+    <span class="container">PlayMatch</span>
 
   <li class="method">
     <a href="SetGame.html#method-i-state">#state</a>
@@ -574,14 +661,44 @@
     <span class="container">MatchSet</span>
 
   <li class="method">
+    <a href="Match.html#method-i-state">#state</a>
+    &mdash;
+    <span class="container">Match</span>
+
+  <li class="method">
     <a href="Match.html#method-i-team_of_player">#team_of_player</a>
     &mdash;
     <span class="container">Match</span>
 
   <li class="method">
+    <a href="V1/SetGameSerializer.html#method-i-tiebreak">#tiebreak</a>
+    &mdash;
+    <span class="container">V1::SetGameSerializer</span>
+
+  <li class="method">
+    <a href="MatchPlay/StartNext.html#method-i-tiebreak">#tiebreak</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
+    <a href="MatchPlay/WinGame.html#method-i-tiebreak">#tiebreak</a>
+    &mdash;
+    <span class="container">MatchPlay::WinGame</span>
+
+  <li class="method">
     <a href="SetGame.html#method-i-tiebreak-3F">#tiebreak?</a>
     &mdash;
     <span class="container">SetGame</span>
+
+  <li class="method">
+    <a href="MatchPlay/StartNext.html#method-i-tiebreak-3F">#tiebreak?</a>
+    &mdash;
+    <span class="container">MatchPlay::StartNext</span>
+
+  <li class="method">
+    <a href="MatchPlay/WinGame.html#method-i-tiebreak-3F">#tiebreak?</a>
+    &mdash;
+    <span class="container">MatchPlay::WinGame</span>
 
   <li class="method">
     <a href="MatchSet.html#method-i-tiebreak-3F">#tiebreak?</a>
@@ -599,14 +716,9 @@
     <span class="container">Match</span>
 
   <li class="method">
-    <a href="V1/TeamsController.html#method-i-update">#update</a>
+    <a href="V1/PlayersController.html#method-i-update">#update</a>
     &mdash;
-    <span class="container">V1::TeamsController</span>
-
-  <li class="method">
-    <a href="V1/MatchScoreboardController.html#method-i-update">#update</a>
-    &mdash;
-    <span class="container">V1::MatchScoreboardController</span>
+    <span class="container">V1::PlayersController</span>
 
   <li class="method">
     <a href="V1/MatchesController.html#method-i-update">#update</a>
@@ -614,9 +726,14 @@
     <span class="container">V1::MatchesController</span>
 
   <li class="method">
-    <a href="V1/PlayersController.html#method-i-update">#update</a>
+    <a href="V1/MatchScoreboardController.html#method-i-update">#update</a>
     &mdash;
-    <span class="container">V1::PlayersController</span>
+    <span class="container">V1::MatchScoreboardController</span>
+
+  <li class="method">
+    <a href="V1/TeamsController.html#method-i-update">#update</a>
+    &mdash;
+    <span class="container">V1::TeamsController</span>
 
   <li class="method">
     <a href="Authenticable.html#method-i-user_signed_in-3F">#user_signed_in?</a>
@@ -624,64 +741,29 @@
     <span class="container">Authenticable</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods.html#method-i-valid_actions">#valid_actions</a>
+    <a href="MatchPlay/PlayActions.html#method-i-valid_actions">#valid_actions</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods</span>
+    <span class="container">MatchPlay::PlayActions</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/ValidationHelper.html#method-i-validate">#validate</a>
+    <a href="Match.html#method-i-valid_actions">#valid_actions</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::ValidationHelper</span>
+    <span class="container">Match</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/ValidateChangeMatch.html#method-i-validate">#validate</a>
+    <a href="MatchValidation/ValidationHelper/ValidateChangeMatch.html#method-i-validate">#validate</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::ValidateChangeMatch</span>
+    <span class="container">MatchValidation::ValidationHelper::ValidateChangeMatch</span>
 
   <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_game">#win_game</a>
+    <a href="MatchValidation/ValidationHelper.html#method-i-validate">#validate</a>
     &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_game-3F">#win_game?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_game_kind">#win_game_kind</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_game_kind-3F">#win_game_kind?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_match_tiebreak">#win_match_tiebreak</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_match_tiebreak-3F">#win_match_tiebreak?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
+    <span class="container">MatchValidation::ValidationHelper</span>
 
   <li class="method">
     <a href="MatchSet.html#method-i-win_threshold">#win_threshold</a>
     &mdash;
     <span class="container">MatchSet</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_tiebreak">#win_tiebreak</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
-
-  <li class="method">
-    <a href="MatchPlayHelpers/PlayMethods/CompleteCurrent.html#method-i-win_tiebreak-3F">#win_tiebreak?</a>
-    &mdash;
-    <span class="container">MatchPlayHelpers::PlayMethods::CompleteCurrent</span>
 
   <li class="method">
     <a href="V1/MatchSerializer.html#method-i-winner">#winner</a>

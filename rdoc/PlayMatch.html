@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class PlayMatch - Tennis-scoreboard-ng</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Object
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-convert_scores">::convert_scores</a>
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-play_match">::play_match</a>
+    
+    <li ><a href="#method-i-play">#play</a>
+    
+    <li ><a href="#method-i-start_first_game">#start_first_game</a>
+    
+    <li ><a href="#method-i-start_play">#start_play</a>
+    
+    <li ><a href="#method-i-start_set_game">#start_set_game</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-PlayMatch">
+  <h1 id="class-PlayMatch" class="class">
+    class PlayMatch
+  </h1>
+
+  <section class="description">
+    
+<p>Class to help “play” a match.  This class is used to generate seed data and
+test data.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="FIRST_OPPONENT_WIN">FIRST_OPPONENT_WIN
+        
+        <dd><p>Indicate that the first opponent is to win</p>
+        
+      
+        <dt id="SECOND_OPPONENT_WIN">SECOND_OPPONENT_WIN
+        
+        <dd><p>Indicate that the second opponent is to win</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-convert_scores" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">convert_scores</span><span
+            class="method-args">(scores)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convert an array of numeric scores into an array of character scores. This
+method is convenient for creating scores when the exact order of wins and
+losses is not important. Pass the result of this method to <a
+href="PlayMatch.html#method-c-play_match">::play_match</a></p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>scores</code> -&gt; Array</p>
+<ul><li>
+<p>Array of numeric pairs within an array of sets</p>
+</li></ul>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Array</p>
+<ul><li>
+<p>Array of characters within an array of sets</p>
+</li></ul>
+</li></ul>
+
+<h3 id="method-c-convert_scores-label-Scores+Example">Scores Example<span><a href="#method-c-convert_scores-label-Scores+Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby">[[<span class="ruby-value">6</span>, <span class="ruby-value">2</span>],[<span class="ruby-value">3</span>,<span class="ruby-value">2</span>]]
+</pre>
+
+<p>This array of numeric scores result in the following array of character
+scores:</p>
+
+<pre class="ruby">[[<span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>], [<span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>]]
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="convert_scores-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">convert_scores</span>(<span class="ruby-identifier">scores</span>)
+  <span class="ruby-identifier">scores</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pair</span><span class="ruby-operator">|</span> <span class="ruby-identifier">convert_set_score</span>(<span class="ruby-identifier">pair</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">pair</span>[<span class="ruby-value">1</span>]) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(match)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>match</code> -&gt; <a href="Match.html">Match</a></p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">match</span>)
+  <span class="ruby-ivar">@match</span> = <span class="ruby-identifier">match</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-play_match" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">play_match</span><span
+            class="method-args">(match, scores)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Class method to play a match. Calls <a
+href="PlayMatch.html#method-i-play">#play</a></p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>match</code> -&gt; <a href="Match.html">Match</a></p>
+</li><li>
+<p><code>scores</code> -&gt; Array</p>
+<ul><li>
+<p>Array of characters within an array of sets</p>
+</li></ul>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="play_match-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">play_match</span>(<span class="ruby-identifier">match</span>, <span class="ruby-identifier">scores</span>)
+  <span class="ruby-constant">PlayMatch</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">match</span>).<span class="ruby-identifier">play</span>(<span class="ruby-identifier">scores</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-play" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">play</span><span
+            class="method-args">(scores)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Play a match</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>scores</code> -&gt; array of set scores</p>
+<ul><li>
+<p>Array of characters within an array of sets</p>
+</li></ul>
+</li></ul>
+</li></ul>
+
+<h3 id="method-i-play-label-Scores+Example">Scores Example<span><a href="#method-i-play-label-Scores+Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby">[[<span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>], [<span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>, <span class="ruby-string">&#39;l&#39;</span>, <span class="ruby-string">&#39;w&#39;</span>]]
+</pre>
+
+<p>This array indicates that the first opponent is to win the first set 6-1,
+and be ahead 3-2 in the second.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="play-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">play</span>(<span class="ruby-identifier">scores</span>)
+  <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match!</span> <span class="ruby-value">:start_play</span>
+  <span class="ruby-comment"># apply_first_servers</span>
+  <span class="ruby-identifier">scores</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">play_set</span>(<span class="ruby-identifier">v</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-start_first_game" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start_first_game</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Start the match and start the first game by executing the
+<code>:start_play</code> and <code>:start_game</code> actions</p>
+          
+          
+
+          
+          <div class="method-source-code" id="start_first_game-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_first_game</span>
+  <span class="ruby-identifier">start_play</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match?</span>(<span class="ruby-value">:start_game</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">no_games?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">doubles</span>
+      <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match!</span> <span class="ruby-value">:start_game</span>, <span class="ruby-identifier">opponent</span><span class="ruby-operator">:</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">first_team</span>.<span class="ruby-identifier">first_player</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match!</span> <span class="ruby-value">:start_game</span>, <span class="ruby-identifier">opponent</span><span class="ruby-operator">:</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">first_player</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-start_play" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start_play</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Start the match by executing the <code>:start_play</code> action</p>
+          
+          
+
+          
+          <div class="method-source-code" id="start_play-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_play</span>
+  <span class="ruby-identifier">match</span>.<span class="ruby-identifier">save!</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match?</span> <span class="ruby-value">:start_play</span>
+    <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match!</span> <span class="ruby-value">:start_play</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-start_set_game" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start_set_game</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Start the next set by executing the <code>:start_set</code> action</p>
+          
+          
+
+          
+          <div class="method-source-code" id="start_set_game-source">
+            <pre><span class="ruby-comment"># File lib/play_match.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_set_game</span>
+  <span class="ruby-comment"># Starting set also starts first game</span>
+  <span class="ruby-identifier">match</span>.<span class="ruby-identifier">play_match!</span> <span class="ruby-value">:start_set</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

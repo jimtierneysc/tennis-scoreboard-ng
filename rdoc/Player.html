@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class Player - RDoc Documentation</title>
+<title>class Player - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -51,6 +51,15 @@
   </div>
 
   
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-Player-label-Overview">Overview</a>
+    <li><a href="#class-Player-label-Schema+Information">Schema Information</a>
+  </ul>
+</div>
+
 
   <div id="class-metadata">
     
@@ -89,14 +98,23 @@
     
 <p>Model for a player</p>
 
-<p>A player may be on a doubles team or a singles team</p>
-
-<p>A singles team is a special kind of team with only one player. Singles
-teams represent players in singles matches</p>
-
+<h2 id="class-Player-label-Overview">Overview<span><a href="#class-Player-label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>A player may be on a team</p>
+</li><li>
 <p>A player may be the first or second server in a match</p>
-
+</li><li>
 <p>A player may be the server of a game</p>
+</li></ul>
+
+<h2 id="class-Player-label-Schema+Information">Schema Information<span><a href="#class-Player-label-Schema+Information">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Table name: players</p>
+
+<pre>id         :integer          not null, primary key
+name       :string           not null
+created_at :datetime         not null
+updated_at :datetime         not null</pre>
 
   </section>
 
@@ -132,13 +150,16 @@ teams represent players in singles matches</p>
 
         <div class="method-description">
           
-          
+          <p>Find the singles team associated with this player</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="Team.html">Team</a> or nil</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="singles_team-source">
-            <pre><span class="ruby-comment"># File app/models/player.rb, line 17</span>
+            <pre><span class="ruby-comment"># File app/models/player.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">singles_team</span>
   <span class="ruby-constant">Team</span>.<span class="ruby-identifier">find_by_doubles_and_first_player_id</span>(<span class="ruby-keyword">false</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -165,13 +186,17 @@ teams represent players in singles matches</p>
 
         <div class="method-description">
           
-          <p>Force a player to have a unique singles team</p>
+          <p>Force a player to have an associated singles team.  Creates a new <a
+href="Team.html">Team</a> if needed.</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="Team.html">Team</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="singles_team-21-source">
-            <pre><span class="ruby-comment"># File app/models/player.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/models/player.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">singles_team!</span>
   <span class="ruby-identifier">team</span> = <span class="ruby-identifier">singles_team</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">team</span>

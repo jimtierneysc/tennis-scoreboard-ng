@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class Match - RDoc Documentation</title>
+<title>class Match - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -51,6 +51,15 @@
   </div>
 
   
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-Match-label-Overview">Overview</a>
+    <li><a href="#class-Match-label-Schema+Information">Schema Information</a>
+  </ul>
+</div>
+
 
   <div id="class-metadata">
     
@@ -68,7 +77,11 @@
   <ul class="link-list">
   
   
-    <li><a class="include" href="MatchPlayHelpers.html">MatchPlayHelpers</a>
+    <li><a class="include" href="MatchPlay.html">MatchPlay</a>
+  
+  
+  
+    <li><a class="include" href="MatchValidation.html">MatchValidation</a>
   
   
   </ul>
@@ -101,13 +114,11 @@
     
     <li ><a href="#method-i-next_game_ordinal">#next_game_ordinal</a>
     
-    <li ><a href="#method-i-play_actions">#play_actions</a>
-    
     <li ><a href="#method-i-play_match-21">#play_match!</a>
     
     <li ><a href="#method-i-play_match-3F">#play_match?</a>
     
-    <li ><a href="#method-i-scoring_of_set_ordinal">#scoring_of_set_ordinal</a>
+    <li ><a href="#method-i-scoring_of_set">#scoring_of_set</a>
     
     <li ><a href="#method-i-second_player">#second_player</a>
     
@@ -120,6 +131,8 @@
     <li ><a href="#method-i-team_of_player">#team_of_player</a>
     
     <li ><a href="#method-i-tiebreak_set-3F">#tiebreak_set?</a>
+    
+    <li ><a href="#method-i-valid_actions">#valid_actions</a>
     
   </ul>
 </div>
@@ -134,9 +147,67 @@
 
   <section class="description">
     
-<p>This class holds the letters in the original word or phrase. The
-is_anagram? method allows us to test if subsequent words or phrases are
-anagrams of the original.</p>
+<p>Model for a tennis match</p>
+
+<h2 id="class-Match-label-Overview">Overview<span><a href="#class-Match-label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>A match may be a singles match or a doubles match</p>
+</li><li>
+<p>A match has two opponent teams:</p>
+<ul><li>
+<p>Doubles teams with four players in total</p>
+</li><li>
+<p>Singles teams with two players in total</p>
+</li></ul>
+</li><li>
+<p>A match has a state:</p>
+<ul><li>
+<p><code>:not_started</code></p>
+</li><li>
+<p><code>:in_progress</code></p>
+</li><li>
+<p><code>:complete</code></p>
+</li></ul>
+</li><li>
+<p>A match may have first servers</p>
+</li></ul>
+
+<p>First server are the players that serve the first game or two.  For a
+singles match, there is a first server for the first game.  For a doubles
+match, there is a first server for the first two games; one from each team.</p>
+<ul><li>
+<p>A match has sets (see <a href="MatchSet.html">MatchSet</a>).  Sets have
+games (see <a href="SetGame.html">SetGame</a>).</p>
+</li><li>
+<p>A match has scoring:</p>
+<ul><li>
+<p><code>:two_six_game_ten_point</code></p>
+</li><li>
+<p><code>:one_eight_game</code></p>
+</li><li>
+<p><code>:three_six_game</code></p>
+</li></ul>
+</li><li>
+<p>A complete match has a winner</p>
+</li></ul>
+
+<h2 id="class-Match-label-Schema+Information">Schema Information<span><a href="#class-Match-label-Schema+Information">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Table name: matches</p>
+
+<pre>id                      :integer          not null, primary key
+created_at              :datetime         not null
+updated_at              :datetime         not null
+first_team_id           :integer          not null
+second_team_id          :integer          not null
+scoring                 :string           not null
+started                 :boolean          default(FALSE), not null
+doubles                 :boolean          default(FALSE), not null
+first_player_server_id  :integer
+second_player_server_id :integer
+title                   :string
+team_winner_id          :integer
+play_version            :integer</pre>
 
   </section>
 
@@ -172,13 +243,13 @@ anagrams of the original.</p>
 
         <div class="method-description">
           
-          <p>Retrieve information about the match</p>
+          <p>Indicate if the match is completed.</p>
           
           
 
           
           <div class="method-source-code" id="completed-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 139</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 149</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">completed?</span>
   <span class="ruby-identifier">team_winner</span>
 <span class="ruby-keyword">end</span></pre>
@@ -205,13 +276,17 @@ anagrams of the original.</p>
 
         <div class="method-description">
           
-          <p>return the winner of the match, if any</p>
+          <p>Compute the winner of the match based on the number of sets won by each
+opponent</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="Team.html">Team</a> or nil</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="compute_team_winner-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 212</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 256</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">compute_team_winner</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">completed?</span>
     <span class="ruby-identifier">team_winner</span>
@@ -248,14 +323,16 @@ anagrams of the original.</p>
 
         <div class="method-description">
           
-          <p>The opponents in a match are teams.  For singles matches, each team has a
-single player.</p>
+          <p>Get the first player opponent in a singles match</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="Player.html">Player</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="first_player-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 145</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 155</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">first_player</span>
   <span class="ruby-identifier">singles_player_of_team</span> <span class="ruby-identifier">first_team</span>
 <span class="ruby-keyword">end</span></pre>
@@ -282,13 +359,14 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Set the first player opponent in a singles match. A new team may be created
+to hold the player</p>
           
           
 
           
           <div class="method-source-code" id="first_player-3D-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 149</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 161</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">first_player=</span>(<span class="ruby-identifier">player</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">first_team</span> = <span class="ruby-identifier">singles_player_team</span>(<span class="ruby-identifier">player</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -315,13 +393,16 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the first set of the match</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="MatchSet.html">MatchSet</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="first_set-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 178</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 205</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">first_set</span>
   <span class="ruby-identifier">match_sets</span>.<span class="ruby-identifier">first</span>
 <span class="ruby-keyword">end</span></pre>
@@ -348,13 +429,16 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the last set of the match</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="MatchSet.html">MatchSet</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="last_set-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 182</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 211</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">last_set</span>
   <span class="ruby-identifier">match_sets</span>.<span class="ruby-identifier">last</span>
 <span class="ruby-keyword">end</span></pre>
@@ -381,13 +465,17 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the maximum number of sets that will be played in this match. The
+maximum is 3 for <code>:three_six_game</code> scoring, for example</p>
+<ul><li>
+<p><strong>Returns</strong> : Integer</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="max_sets_to_play-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 192</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 227</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">max_sets_to_play</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">scoring</span>.<span class="ruby-identifier">to_sym</span>
   <span class="ruby-keyword">when</span> <span class="ruby-value">:two_six_game_ten_point</span>
@@ -421,13 +509,17 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the minimum number of sets that will be played in this match The
+minimum is 2 for <code>:three_six_game</code> scoring, for example</p>
+<ul><li>
+<p><strong>Returns</strong> : Integer</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="min_sets_to_play-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 186</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 218</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">min_sets_to_play</span>
   <span class="ruby-identifier">max</span> = <span class="ruby-identifier">max_sets_to_play</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exceptions</span><span class="ruby-operator">::</span><span class="ruby-constant">ApplicationError</span>, <span class="ruby-string">&#39;Unexpected game count&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">max</span>.<span class="ruby-identifier">even?</span>
@@ -456,13 +548,22 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Determine whether a <a href="Team.html">Team</a> can win the match by
+winning one more game</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>team</code> -&gt; <a href="Team.html">Team</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="near_team_winner-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 226</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 275</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">near_team_winner?</span>(<span class="ruby-identifier">team</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">completed?</span>
     <span class="ruby-identifier">sets_won</span>(<span class="ruby-identifier">team</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">min_sets_to_play</span>
@@ -491,48 +592,19 @@ single player.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the ordinal of the next game to play in the match. The lowest ordinal
+is 1.</p>
+<ul><li>
+<p><strong>Returns</strong> : Integer</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="next_game_ordinal-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 203</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 241</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">next_game_ordinal</span>
   <span class="ruby-identifier">last_set</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">last_set</span>.<span class="ruby-identifier">set_games</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-play_actions" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">play_actions</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Return hash of valid actions, for example {start_game: true}</p>
-          
-          
-
-          
-          <div class="method-source-code" id="play_actions-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 133</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">play_actions</span>
-  <span class="ruby-identifier">play_methods</span>.<span class="ruby-identifier">valid_actions</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -548,7 +620,7 @@ single player.</p>
         
         <div class="method-heading">
           <span class="method-name">play_match!</span><span
-            class="method-args">(action, options = nil)</span>
+            class="method-args">(action, params = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -557,93 +629,81 @@ single player.</p>
 
         <div class="method-description">
           
-          <p>play_match!</p>
+          <p>Execute an action on the match, such as <code>:win_game</code></p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>action</code> -&gt; the action to execute</p>
+</li><li>
+<p><code>params</code> -&gt; hash of action parameters</p>
+</li></ul>
+</li><li>
+<p><strong>Raises</strong> :</p>
+<ul><li>
+<p><code>UnknownOperation</code> -&gt; if the action is unknown</p>
+</li><li>
+<p><code>InvalidOperation</code> -&gt; if the action is not permitted</p>
+</li></ul>
+</li></ul>
 
-<h3 id="method-i-play_match-21-label-action">action<span><a href="#method-i-play_match-21-label-action">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<h3 id="method-i-play_match-21-label-Action">Action<span><a href="#method-i-play_match-21-label-Action">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><code>:start_play</code> - Start playing</p>
+</li><li>
+<p><code>:discard_play</code> - Discard all scoring</p>
+</li><li>
+<p><code>:start_set</code> - Start the next set</p>
+</li><li>
+<p><code>:start_game</code> - Start the next game</p>
+</li></ul>
 
-<p>:start_play</p>
+<p>When starting the first game in a singles match, or the first two games in
+a doubles match, <code>params</code> identifies the player to serve the
+game.</p>
+<ul><li>
+<p><code>:start_tiebreak</code> - Start game tiebreak</p>
+</li><li>
+<p><code>:remove_last_change</code> - Back up to the previous state</p>
+</li><li>
+<p><code>:start_match_tiebreak</code> - Start the match tiebreak</p>
+</li><li>
+<p><code>:win_game</code> - Win the current game</p>
+</li><li>
+<p><code>:win_tiebreak</code> - Win the current set tiebreak.</p>
+</li><li>
+<p><code>:win_match_tiebreak</code> - Win the current match tiebreak.</p>
+</li></ul>
 
-<pre class="ruby"><span class="ruby-constant">Start</span> <span class="ruby-identifier">playing</span>
-</pre>
+<p>For the 3 <code>:win_*</code> actions, <code>params</code> identifies the
+doubles team or singles team to win</p>
 
-<p>:discard_play</p>
+<h3 id="method-i-play_match-21-label-Params">Params<span><a href="#method-i-play_match-21-label-Params">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p><code>:version</code> Version number from client.</p>
+</li></ul>
 
-<pre class="ruby"><span class="ruby-constant">Discard</span> <span class="ruby-identifier">all</span> <span class="ruby-identifier">scoring</span>
-</pre>
+<p>If provided, it will be compared to the current match play version number. 
+An exception will be raised if the values are not equal.  The purpose of
+the version number is to detect when a client is out of sync.</p>
+<ul><li>
+<p><code>:opponent</code> - <a href="Team.html">Team</a> or <a
+href="Player.html">Player</a></p>
+</li></ul>
 
-<p>:start_set</p>
-
-<pre>Start the next set</pre>
-
-<p>:start_game [player]</p>
-
-<pre>Start the next game.  The first one or two games require
-a player parameter to identify the server</pre>
-
-<p>:start_tiebreak</p>
-
-<pre class="ruby"><span class="ruby-constant">Start</span> <span class="ruby-identifier">game</span> <span class="ruby-identifier">tiebreak</span>
-</pre>
-
-<p>:remove_last_change</p>
-
-<pre class="ruby"><span class="ruby-constant">Back</span> <span class="ruby-identifier">up</span> <span class="ruby-identifier">to</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">previous</span> <span class="ruby-identifier">state</span>
-</pre>
-
-<p>:start_match_tiebreak</p>
-
-<pre class="ruby"><span class="ruby-constant">Start</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">match</span> <span class="ruby-identifier">tiebreak</span>
-</pre>
-
-<p>:win_game team</p>
-
-<pre class="ruby"><span class="ruby-constant">Win</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">current</span> <span class="ruby-identifier">game</span>.  <span class="ruby-constant">A</span> <span class="ruby-identifier">team</span> <span class="ruby-identifier">parameter</span> <span class="ruby-identifier">identifies</span> <span class="ruby-identifier">the</span>
-<span class="ruby-identifier">doubles</span> <span class="ruby-identifier">team</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">singles</span> <span class="ruby-identifier">team</span> <span class="ruby-identifier">to</span> <span class="ruby-identifier">win</span>
-</pre>
-
-<p>:win_tiebreak</p>
-
-<pre class="ruby"><span class="ruby-constant">Win</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">current</span> <span class="ruby-identifier">set</span> <span class="ruby-identifier">tiebreak</span>.  <span class="ruby-constant">A</span> <span class="ruby-identifier">team</span> <span class="ruby-identifier">parameter</span> <span class="ruby-identifier">identifies</span> <span class="ruby-identifier">the</span>
-<span class="ruby-identifier">doubles</span> <span class="ruby-identifier">team</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">singles</span> <span class="ruby-identifier">team</span> <span class="ruby-identifier">to</span> <span class="ruby-identifier">win</span>
-</pre>
-
-<p>:win_match_tiebreak</p>
-
-<pre class="ruby"><span class="ruby-constant">Win</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">current</span> <span class="ruby-identifier">match</span> <span class="ruby-identifier">tiebreak</span>.  <span class="ruby-constant">A</span> <span class="ruby-identifier">team</span> <span class="ruby-identifier">parameter</span> <span class="ruby-identifier">identifies</span> <span class="ruby-identifier">the</span>
-<span class="ruby-identifier">doubles</span> <span class="ruby-identifier">team</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">singles</span> <span class="ruby-identifier">team</span> <span class="ruby-identifier">to</span> <span class="ruby-identifier">win</span>
-</pre>
-
-<h3 id="method-i-play_match-21-label-Options">Options<span><a href="#method-i-play_match-21-label-Options">&para;</a> <a href="#top">&uarr;</a></span></h3>
-<dl class="rdoc-list label-list"><dt>:version
-<dd>
-<p>Version number from client.  If provided, it will be compared to the
-current match play version number.  An exception may be raised if not
-equal.</p>
-</dd><dt>:player
-<dd>
-<p><a href="Player.html">Player</a> parameter. Used by :win_* actions and by
-:start_game</p>
-</dd></dl>
-
-<p>:team</p>
-
-<pre>Team parameter.  Used by :win_* actions.</pre>
-
-<p>:opponent</p>
-
-<pre>Team or player.  Used by :win_* actions.   Convenient alternative to
-:team or :player options.</pre>
+<p>This options is used with <code>:win_*</code> actions to identify the
+winning team or player.  It is also used with the <code>:start_game</code>
+action to identify the serving player</p>
           
           
 
           
           <div class="method-source-code" id="play_match-21-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 97</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">play_match!</span>(<span class="ruby-identifier">action</span>, <span class="ruby-identifier">options</span> = <span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">method</span> = <span class="ruby-identifier">play_methods</span>.<span class="ruby-identifier">lookup_method</span>(<span class="ruby-identifier">action</span>)
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">play_match!</span>(<span class="ruby-identifier">action</span>, <span class="ruby-identifier">params</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">method</span> = <span class="ruby-identifier">play_actions</span>.<span class="ruby-identifier">lookup_method</span>(<span class="ruby-identifier">action</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">method</span>
     <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
-      <span class="ruby-identifier">version</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:version</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>
+      <span class="ruby-identifier">version</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:version</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>
       <span class="ruby-identifier">version</span> = <span class="ruby-identifier">version</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">version</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">version</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">version</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">play_version</span>
         <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exceptions</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidOperation</span>,
@@ -654,7 +714,7 @@ equal.</p>
                   <span class="ruby-string">&#39;Unexpected match version number.&#39;</span>
                 <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
-      <span class="ruby-identifier">method</span>[<span class="ruby-value">:exec</span>].<span class="ruby-identifier">call</span> <span class="ruby-identifier">options</span>
+      <span class="ruby-identifier">method</span>[<span class="ruby-value">:exec</span>].<span class="ruby-identifier">call</span> <span class="ruby-identifier">params</span>
       <span class="ruby-comment"># Version number is used to detect when client has is out of sync</span>
       <span class="ruby-keyword">self</span>.<span class="ruby-identifier">play_version</span> = <span class="ruby-identifier">next_version_number</span>
       <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save!</span>
@@ -686,15 +746,16 @@ equal.</p>
 
         <div class="method-description">
           
-          <p>Can action be applied?</p>
+          <p>Indicate if an action can be executed. <code>:win_game</code> can be
+executed if a game has started, for example.</p>
           
           
 
           
           <div class="method-source-code" id="play_match-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 123</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">play_match?</span>(<span class="ruby-identifier">action</span>)
-  <span class="ruby-identifier">methods</span> = <span class="ruby-identifier">play_methods</span>.<span class="ruby-identifier">lookup_method</span>(<span class="ruby-identifier">action</span>)
+  <span class="ruby-identifier">methods</span> = <span class="ruby-identifier">play_actions</span>.<span class="ruby-identifier">lookup_method</span>(<span class="ruby-identifier">action</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">methods</span>
     <span class="ruby-identifier">methods</span>[<span class="ruby-value">:query</span>].<span class="ruby-identifier">call</span>
   <span class="ruby-keyword">else</span>
@@ -711,10 +772,10 @@ equal.</p>
       </div>
 
     
-      <div id="method-i-scoring_of_set_ordinal" class="method-detail ">
+      <div id="method-i-scoring_of_set" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">scoring_of_set_ordinal</span><span
+          <span class="method-name">scoring_of_set</span><span
             class="method-args">(ordinal)</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -724,14 +785,29 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the scoring of a set</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>ordinal</code> -&gt; set ordinal</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : symbol</p>
+<ul><li>
+<p><code>:six_game</code></p>
+</li><li>
+<p><code>:eight_game</code></p>
+</li><li>
+<p><code>:ten_point</code>  (tiebreak)</p>
+</li></ul>
+</li></ul>
           
           
 
           
-          <div class="method-source-code" id="scoring_of_set_ordinal-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 232</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">scoring_of_set_ordinal</span>(<span class="ruby-identifier">ordinal</span>)
+          <div class="method-source-code" id="scoring_of_set-source">
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 288</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scoring_of_set</span>(<span class="ruby-identifier">ordinal</span>)
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">scoring</span>.<span class="ruby-identifier">to_sym</span>
   <span class="ruby-keyword">when</span> <span class="ruby-value">:two_six_game_ten_point</span>
     <span class="ruby-identifier">ordinal</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span> <span class="ruby-operator">?</span> <span class="ruby-value">:ten_point</span> <span class="ruby-operator">:</span> <span class="ruby-value">:six_game</span>
@@ -764,13 +840,16 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the second player opponent in a singles match</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="Player.html">Player</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="second_player-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 153</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 167</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">second_player</span>
   <span class="ruby-identifier">singles_player_of_team</span> <span class="ruby-identifier">second_team</span>
 <span class="ruby-keyword">end</span></pre>
@@ -797,13 +876,14 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Set the second player opponent in a singles match. A new team may be
+created to hold the player</p>
           
           
 
           
           <div class="method-source-code" id="second_player-3D-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 157</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 173</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">second_player=</span>(<span class="ruby-identifier">player</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">second_team</span> = <span class="ruby-identifier">singles_player_team</span>(<span class="ruby-identifier">player</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -830,13 +910,21 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Calculate the number of sets won by a team</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>team</code> -&gt; <a href="Team.html">Team</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Integer</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="sets_won-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 171</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 196</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">sets_won</span>(<span class="ruby-identifier">team</span>)
   <span class="ruby-identifier">match_sets</span>.<span class="ruby-identifier">reduce</span>(<span class="ruby-value">0</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sum</span>, <span class="ruby-identifier">set</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">winner</span> = <span class="ruby-identifier">set</span>.<span class="ruby-identifier">compute_team_winner</span>
@@ -866,13 +954,20 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the state of the match</p>
+<ul><li>
+<p>:complete</p>
+</li><li>
+<p>:in_progress</p>
+</li><li>
+<p>:not_started</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="state-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 161</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 181</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">completed?</span>
     <span class="ruby-value">:complete</span>
@@ -905,13 +1000,21 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Get the opponent team that includes a particular player</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>player</code> -&gt; <a href="Player.html">Player</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : <a href="Team.html">Team</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="team_of_player-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 243</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 303</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">team_of_player</span>(<span class="ruby-identifier">player</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">player</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">first_team</span>.<span class="ruby-identifier">include_player?</span>(<span class="ruby-identifier">player</span>)
@@ -944,15 +1047,68 @@ equal.</p>
 
         <div class="method-description">
           
-          
+          <p>Indicate whether a set is a match tiebreak</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>ordinal</code> -&gt; Integer</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="tiebreak_set-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match.rb, line 207</span>
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 249</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak_set?</span>(<span class="ruby-identifier">ordinal</span>)
-  <span class="ruby-identifier">scoring_of_set_ordinal</span>(<span class="ruby-identifier">ordinal</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:ten_point</span>
+  <span class="ruby-identifier">scoring_of_set</span>(<span class="ruby-identifier">ordinal</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:ten_point</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid_actions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_actions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generate a hash of valid actions</p>
+<ul><li>
+<p><strong>Returns</strong> : Hash</p>
+</li></ul>
+
+<h3 id="method-i-valid_actions-label-Example">Example<span><a href="#method-i-valid_actions-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby">{
+  <span class="ruby-identifier">start_game</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>,
+  <span class="ruby-identifier">discard_play</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>,
+  <span class="ruby-identifier">remove_last_change</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+}
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="valid_actions-source">
+            <pre><span class="ruby-comment"># File app/models/match.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_actions</span>
+  <span class="ruby-identifier">play_actions</span>.<span class="ruby-identifier">valid_actions</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

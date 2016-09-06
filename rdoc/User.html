@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class User - RDoc Documentation</title>
+<title>class User - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -51,6 +51,15 @@
   </div>
 
   
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-User-label-Overview">Overview</a>
+    <li><a href="#class-User-label-Schema+Information">Schema Information</a>
+  </ul>
+</div>
+
 
   <div id="class-metadata">
     
@@ -87,7 +96,28 @@
     
 <p>Model for a user</p>
 
-<p>A user has a name, password and authorization token</p>
+<h2 id="class-User-label-Overview">Overview<span><a href="#class-User-label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>A user has a name, password and authentication token</p>
+
+<h2 id="class-User-label-Schema+Information">Schema Information<span><a href="#class-User-label-Schema+Information">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Table name: users</p>
+
+<pre>id                     :integer          not null, primary key
+username               :string           default(&quot;&quot;), not null
+encrypted_password     :string           default(&quot;&quot;), not null
+reset_password_token   :string
+reset_password_sent_at :datetime
+remember_created_at    :datetime
+sign_in_count          :integer          default(0), not null
+current_sign_in_at     :datetime
+last_sign_in_at        :datetime
+current_sign_in_ip     :string
+last_sign_in_ip        :string
+created_at             :datetime
+updated_at             :datetime
+auth_token             :string           default(&quot;&quot;)</pre>
 
   </section>
 
@@ -123,13 +153,13 @@
 
         <div class="method-description">
           
-          
+          <p>Set auth_token attribute to a new value</p>
           
           
 
           
           <div class="method-source-code" id="generate_authentication_token-21-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_authentication_token!</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">auth_token</span> = <span class="ruby-constant">Devise</span>.<span class="ruby-identifier">friendly_token</span>

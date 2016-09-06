@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>module Authenticable - RDoc Documentation</title>
+<title>module Authenticable - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -82,6 +82,8 @@
 
   <section class="description">
     
+<p>Add authentication support to a controller</p>
+
   </section>
 
   
@@ -116,13 +118,14 @@
 
         <div class="method-description">
           
-          
+          <p>Check for a current user.  If not, render an error. Overrides devise
+implementation.</p>
           
           
 
           
           <div class="method-source-code" id="authorize_user-21-source">
-            <pre><span class="ruby-comment"># File app/controllers/concerns/authenticable.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/controllers/concerns/authenticable.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">authorize_user!</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">header_token</span>.<span class="ruby-identifier">blank?</span>
     <span class="ruby-comment"># Anonymous users can&#39;t request current user</span>
@@ -155,13 +158,19 @@
 
         <div class="method-description">
           
-          <p>Devise methods overwrites</p>
+          <p>Get user associated with auth token. Overrides devise implementation.</p>
+<ul><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p><a href="User.html">User</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="current_user-source">
-            <pre><span class="ruby-comment"># File app/controllers/concerns/authenticable.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/controllers/concerns/authenticable.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">current_user</span>
   <span class="ruby-ivar">@current_user</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">auth_token</span><span class="ruby-operator">:</span> <span class="ruby-identifier">header_token</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -188,13 +197,13 @@
 
         <div class="method-description">
           
-          
+          <p>Check for a current user. Overrides device implementation.</p>
           
           
 
           
           <div class="method-source-code" id="user_signed_in-3F-source">
-            <pre><span class="ruby-comment"># File app/controllers/concerns/authenticable.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/concerns/authenticable.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">user_signed_in?</span>
   <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">present?</span>
 <span class="ruby-keyword">end</span></pre>

@@ -87,6 +87,20 @@
 
   <section class="description">
     
+<p>Serialize a team in a match:</p>
+<ul><li>
+<p><code>:id</code></p>
+</li><li>
+<p><code>:name</code></p>
+</li><li>
+<p><code>:first_player</code></p>
+</li><li>
+<p><code>:second_player</code></p>
+</li></ul>
+
+<p>The opponent teams are serialized with the match scoreboard.   See <a
+href="MatchScoreboardSerializer.html">V1::MatchScoreboardSerializer</a>.</p>
+
   </section>
 
   
@@ -121,13 +135,14 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the first player on the team.  See <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
           
           
 
           
           <div class="method-source-code" id="first_player-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/opponent_team_serializer.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/opponent_team_serializer.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">first_player</span>
   <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_player</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -154,13 +169,14 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the second player on the team.  See <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
           
           
 
           
           <div class="method-source-code" id="second_player-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/opponent_team_serializer.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/opponent_team_serializer.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">second_player</span>
   <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">second_player</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
 <span class="ruby-keyword">end</span></pre>

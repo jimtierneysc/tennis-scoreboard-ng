@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::SetGameSerializer - RDoc Documentation</title>
+<title>class V1::SetGameSerializer - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link">ActiveModel::Serializer
+  <p class="link"><a href="ApplicationSerializer.html">V1::ApplicationSerializer</a>
   
 </div>
 
@@ -70,9 +70,9 @@
 
   <ul class="link-list" role="directory">
     
-    <li class="calls-super" ><a href="#method-i-attributes">#attributes</a>
-    
     <li ><a href="#method-i-server">#server</a>
+    
+    <li ><a href="#method-i-tiebreak">#tiebreak</a>
     
     <li ><a href="#method-i-winner">#winner</a>
     
@@ -89,6 +89,17 @@
 
   <section class="description">
     
+<p>Serializes a <a href="../SetGame.html">SetGame</a> with the following
+attributes:</p>
+<ul><li>
+<p><code>:winner</code> - Id of a <a href="../Team.html">Team</a> or a <a
+href="../Player.html">Player</a></p>
+</li><li>
+<p><code>:server</code> - Id of a <a href="../Player.html">Player</a></p>
+</li><li>
+<p><code>:tiebreak</code> - true if this game is a tiebreak</p>
+</li></ul>
+
   </section>
 
   
@@ -110,46 +121,6 @@
        </header>
 
     
-      <div id="method-i-attributes" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">attributes</span><span
-            class="method-args">(*args)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-            <div class="method-calls-super">
-              Calls superclass method
-              
-            </div>
-          
-
-          
-          <div class="method-source-code" id="attributes-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/set_game_serializer.rb, line 16</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">attributes</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
-  <span class="ruby-identifier">hash</span> = <span class="ruby-keyword">super</span>
-  <span class="ruby-identifier">hash</span>[<span class="ruby-value">:tiebreak</span>] = <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">tiebreak?</span>
-  <span class="ruby-identifier">hash</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
       <div id="method-i-server" class="method-detail ">
         
         <div class="method-heading">
@@ -163,15 +134,54 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the <a href="../Player.html">Player</a> id of the game server.</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="../Player.html">Player</a> id or nil</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="server-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/set_game_serializer.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/set_game_serializer.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">server</span>
   <span class="ruby-identifier">object</span>.<span class="ruby-identifier">player_server_id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tiebreak" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tiebreak</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Indicate a tiebreak game</p>
+<ul><li>
+<p><strong>Returns</strong> : true or nil</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="tiebreak-source">
+            <pre><span class="ruby-comment"># File app/serializers/v1/set_game_serializer.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak</span>
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">tiebreak?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -196,13 +206,18 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the <a href="../Player.html">Player</a> or <a
+href="../Team.html">Team</a> id of the game winner</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="../Team.html">Team</a> id or <a
+href="../Player.html">Player</a> id or nil</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="winner-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/set_game_serializer.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/set_game_serializer.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">winner</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">team_winner</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-keyword">nil</span>

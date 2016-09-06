@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::UserController - RDoc Documentation</title>
+<title>class V1::UserController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -87,8 +87,9 @@
     
 <p>Controller for the current user</p>
 
-<p>Renders the current user.  The current user is determined by the
-authentication token in the request header</p>
+<p>Renders the current user using <a
+href="UserSerializer.html">V1::UserSerializer</a>. The current user is
+determined by the authentication token in the request header</p>
 
   </section>
 
@@ -124,13 +125,19 @@ authentication token in the request header</p>
 
         <div class="method-description">
           
-          
+          <p>Get the current user</p>
+<ul><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>serialized <a href="../User.html">User</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/user_controller.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/user_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>

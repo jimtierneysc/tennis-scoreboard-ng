@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::TeamSerializer - RDoc Documentation</title>
+<title>class V1::TeamSerializer - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -58,13 +58,25 @@
   <h3>Parent</h3>
 
   
-  <p class="link">ActiveModel::Serializer
+  <p class="link"><a href="ApplicationSerializer.html">V1::ApplicationSerializer</a>
   
 </div>
 
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-first_player">#first_player</a>
+    
+    <li ><a href="#method-i-second_player">#second_player</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -75,6 +87,15 @@
 
   <section class="description">
     
+<p>Serializes a <a href="../Team.html">Team</a> with the following attributes:</p>
+<ul><li>
+<p><code>:id</code></p>
+</li><li>
+<p><code>:first_player</code></p>
+</li><li>
+<p><code>:second_player</code></p>
+</li></ul>
+
   </section>
 
   
@@ -90,6 +111,88 @@
     
 
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-first_player" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">first_player</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Serialize the first player on the team</p>
+<ul><li>
+<p><strong>Returns</strong> : <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="first_player-source">
+            <pre><span class="ruby-comment"># File app/serializers/v1/team_serializer.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">first_player</span>
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_player</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-second_player" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">second_player</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Serialize the second player on the team</p>
+<ul><li>
+<p><strong>Returns</strong> : <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="second_player-source">
+            <pre><span class="ruby-comment"># File app/serializers/v1/team_serializer.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">second_player</span>
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">second_player</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 </main>
 

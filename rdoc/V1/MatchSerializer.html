@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::MatchSerializer - RDoc Documentation</title>
+<title>class V1::MatchSerializer - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link">ActiveModel::Serializer
+  <p class="link"><a href="ApplicationSerializer.html">V1::ApplicationSerializer</a>
   
 </div>
 
@@ -97,6 +97,30 @@
 
   <section class="description">
     
+<p>Serialize a <a href="../Match.html">Match</a> with the following
+attributes:</p>
+<ul><li>
+<p><code>:id</code></p>
+</li><li>
+<p><code>:title</code></p>
+</li><li>
+<p><code>:scoring</code> kind</p>
+</li><li>
+<p><code>:doubles</code></p>
+</li><li>
+<p><code>:state</code></p>
+</li><li>
+<p><code>:winner</code></p>
+</li><li>
+<p><code>:first_team</code> (when doubles)</p>
+</li><li>
+<p><code>:second_team</code> (when doubles)</p>
+</li><li>
+<p><code>:first_player</code> (when not doubles)</p>
+</li><li>
+<p><code>:second_player</code> (when not doubles)</p>
+</li></ul>
+
   </section>
 
   
@@ -131,7 +155,12 @@
 
         <div class="method-description">
           
-          
+          <p>Indicate dynamic attributes to the serializer.  For a doubles match,
+serialize first and second players.  For a singles match, serialize the
+first and second teams.</p>
+<ul><li>
+<p><strong>Returns</strong> : Hash of attributes</p>
+</li></ul>
           
           
             <div class="method-calls-super">
@@ -142,7 +171,7 @@
 
           
           <div class="method-source-code" id="attributes-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 12</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">attributes</span>
   <span class="ruby-identifier">data</span> = <span class="ruby-keyword">super</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">doubles</span>
@@ -177,15 +206,19 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the first player</p>
+<ul><li>
+<p><strong>Returns</strong> : <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="first_player-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">first_player</span>
-  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_team</span>.<span class="ruby-identifier">first_player</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_team</span>.<span class="ruby-identifier">first_player</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -210,52 +243,19 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the first team</p>
+<ul><li>
+<p><strong>Returns</strong> : <a
+href="TeamSerializer.html">V1::TeamSerializer</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="first_team-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">first_team</span>
-  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">OpponentTeamSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_team</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-opponent_id" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">opponent_id</span><span
-            class="method-args">(team)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="opponent_id-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 40</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">opponent_id</span>(<span class="ruby-identifier">team</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">doubles</span>
-    <span class="ruby-identifier">team</span>.<span class="ruby-identifier">id</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">team</span>.<span class="ruby-identifier">first_player</span>.<span class="ruby-identifier">id</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">TeamSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_team</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -280,15 +280,19 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the second player</p>
+<ul><li>
+<p><strong>Returns</strong> : See <a
+href="PlayerSerializer.html">V1::PlayerSerializer</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="second_player-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">second_player</span>
-  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">second_team</span>.<span class="ruby-identifier">first_player</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">PlayerSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">second_team</span>.<span class="ruby-identifier">first_player</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -313,15 +317,19 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the second team.  See V1::OpponentTeamSerializer.</p>
+<ul><li>
+<p><strong>Returns</strong> : <a
+href="TeamSerializer.html">V1::TeamSerializer</a></p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="second_team-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">second_team</span>
-  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">OpponentTeamSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">second_team</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">TeamSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">second_team</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -346,18 +354,75 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the player or team id of the match winner, if any.</p>
+<ul><li>
+<p><strong>Returns</strong> : id</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="winner-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">winner</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">team_winner</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">opponent_id</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">team_winner</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-opponent_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">opponent_id</span><span
+            class="method-args">(team)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get the id for an opponent in a match. For a doubles match, get a team id. 
+For a singles match, get a player id</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>team</code> -&gt; opponent <a href="../Team.html">Team</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : id</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="opponent_id-source">
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_serializer.rb, line 87</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">opponent_id</span>(<span class="ruby-identifier">team</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">doubles</span>
+    <span class="ruby-identifier">team</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">team</span>.<span class="ruby-identifier">first_player</span>.<span class="ruby-identifier">id</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

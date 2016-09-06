@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::MatchSetSerializer - RDoc Documentation</title>
+<title>class V1::MatchSetSerializer - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link">ActiveModel::Serializer
+  <p class="link"><a href="ApplicationSerializer.html">V1::ApplicationSerializer</a>
   
 </div>
 
@@ -87,6 +87,18 @@
 
   <section class="description">
     
+<p>Serialize a <a href="../MatchSet.html">MatchSet</a> with the following
+attributes:</p>
+<ul><li>
+<p><code>:scoring</code></p>
+</li><li>
+<p><code>:state</code></p>
+</li><li>
+<p><code>:winner</code></p>
+</li><li>
+<p><code>:games</code></p>
+</li></ul>
+
   </section>
 
   
@@ -121,15 +133,21 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the games of the set.</p>
+<ul><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>array of <a href="SetGameSerializer.html">V1::SetGameSerializer</a></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="games-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_set_serializer.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_set_serializer.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">games</span>
-  <span class="ruby-constant">ActiveModel</span><span class="ruby-operator">::</span><span class="ruby-constant">ArraySerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">set_games</span>, <span class="ruby-identifier">each_serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">SetGameSerializer</span>)
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">ApplicationArraySerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">set_games</span>, <span class="ruby-identifier">each_serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">SetGameSerializer</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -154,13 +172,18 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the <a href="../Player.html">Player</a> or <a
+href="../Team.html">Team</a> id of the winner</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="../Player.html">Player</a> id or <a
+href="../Team.html">Team</a> id or nil</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="winner-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_set_serializer.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_set_serializer.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">winner</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">team_winner</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-keyword">nil</span>

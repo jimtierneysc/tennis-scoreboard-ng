@@ -5,6 +5,15 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "app",
+      "shortName": "app",
+      "type": "overview",
+      "moduleName": "app",
+      "shortDescription": "app",
+      "keywords": "api app application module modules overview references required"
+    },
+    {
+      "section": "api",
       "id": "app.animation",
       "shortName": "app.animation",
       "type": "overview",
@@ -36,8 +45,8 @@ NG_DOCS={
       "shortName": "animationIntervals",
       "type": "object",
       "moduleName": "app.animation",
-      "shortDescription": "Constants specify the time intervals that allow elements to fade in or face out.",
-      "keywords": "allow animation animationintervals api app constant constants css declared elements equivalent face fade intervals object speeds time transition values"
+      "shortDescription": "Constants specify the time intervals that allow elements to fade in or fade out.",
+      "keywords": "allow animation animationintervals api app constant constants css declared elements equivalent fade intervals object speeds time transition values"
     },
     {
       "section": "api",
@@ -81,7 +90,7 @@ NG_DOCS={
       "shortName": "feLoginForm",
       "type": "directive",
       "moduleName": "app.auth",
-      "shortDescription": "Form for logging in.  The form has a username and a password field.",
+      "shortDescription": "Form for logging in.  The form has a username field and a password field.",
       "keywords": "api app directive feloginform field form logging password username"
     },
     {
@@ -100,7 +109,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "app.auth",
       "shortDescription": "Service to manage the current user&#39;s name and session token.",
-      "keywords": "api app call callback change changed clear clearcredentials controller credentials current emit event function header http indicate load loadcredentials local locally manage method request scope service session set setcredentials store subcribe subscribechanged token update user usercredentials username"
+      "keywords": "api app application call callback change changed clear clearcredentials controller credentials current emit event function header http indicate load loadcredentials loaded loading local locally manage method request scope service session set setcredentials store subcribe subscribechanged token update user usercredentials username"
     },
     {
       "section": "api",
@@ -118,7 +127,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "app.auth",
       "shortDescription": "Service to validate local user credentials by making a REST API request",
-      "keywords": "api app credentials currentuser function local making promise rejected request resolved rest service token user username valid validate validatecredentials"
+      "keywords": "api app credentials currentuser function local making passing promise rejected request resolved rest service token user username valid validate validatecredentials"
     },
     {
       "section": "api",
@@ -126,8 +135,8 @@ NG_DOCS={
       "shortName": "app.components.authHttpInterceptor",
       "type": "service",
       "moduleName": "app.components",
-      "shortDescription": "Intercept HTTP error 401 unauthorized and notify subscribers.  This",
-      "keywords": "401 api app authhttpinterceptor call callback components controller error function http intercept intercepts longer notification notify occurs receive register response responseerror responses scope service subscribers subscribeunauthorized token unauthorized valid"
+      "shortDescription": "Intercepts HTTP error 401 unauthorized and notifies subscribers.  This",
+      "keywords": "401 api app authhttpinterceptor call callback components controller error function http intercepts longer notification notifies occurs receive register response responseerror responses scope service subscribers subscribeunauthorized token unauthorized valid"
     },
     {
       "section": "api",
@@ -144,8 +153,17 @@ NG_DOCS={
       "shortName": "authHttpInterceptorConfig",
       "type": "object",
       "moduleName": "app.components",
-      "shortDescription": "Register an interceptor to allow authHttpInterceptor service to receive http errors.",
-      "keywords": "allow api app authhttpinterceptor authhttpinterceptorconfig components config errors http interceptor object receive register service"
+      "shortDescription": "Registers an interceptor to allow the authHttpInterceptor service to receive http errors.",
+      "keywords": "allow api app authhttpinterceptor authhttpinterceptorconfig components config errors http interceptor object receive registers service"
+    },
+    {
+      "section": "api",
+      "id": "app.components.config:toastrConfig",
+      "shortName": "toastrConfig",
+      "type": "object",
+      "moduleName": "app.components",
+      "shortDescription": "Set default options for the toastr service",
+      "keywords": "api app components config default object options service set toastr toastrconfig"
     },
     {
       "section": "api",
@@ -162,8 +180,8 @@ NG_DOCS={
       "shortName": "waitInterval",
       "type": "object",
       "moduleName": "app.components",
-      "shortDescription": "Delay before displaying wait indicator (e.g.; spinner)",
-      "keywords": "api app components constant delay displaying indicator object spinner wait waitinterval"
+      "shortDescription": "Delay before displaying wait indicator (spinner)",
+      "keywords": "api app components constant delay displaying indicator object wait waitinterval"
     },
     {
       "section": "api",
@@ -180,8 +198,8 @@ NG_DOCS={
       "shortName": "feFormFieldErrors",
       "type": "directive",
       "moduleName": "app.components",
-      "shortDescription": "Displays error messages, if any, below a form field.",
-      "keywords": "api app components directive displays error feformfielderrors field form messages"
+      "shortDescription": "Displays error messages on a form.",
+      "keywords": "api app components directive displays error feformfielderrors form messages"
     },
     {
       "section": "api",
@@ -189,8 +207,8 @@ NG_DOCS={
       "shortName": "feLoadingMessage",
       "type": "directive",
       "moduleName": "app.components",
-      "shortDescription": "Displays message about loading",
-      "keywords": "api app components directive displays feloadingmessage loading message"
+      "shortDescription": "Displays a loading message if the page is loading.  Displays an",
+      "keywords": "api app components directive displays error failed feloadingmessage load loading message"
     },
     {
       "section": "api",
@@ -207,8 +225,8 @@ NG_DOCS={
       "shortName": "feWaitIndicator",
       "type": "directive",
       "moduleName": "app.components",
-      "shortDescription": "Display animation while waiting",
-      "keywords": "animation api app components directive display fewaitindicator waiting"
+      "shortDescription": "Displays a spinner when the application is in a waiting state",
+      "keywords": "api app application components directive displays fewaitindicator spinner waiting"
     },
     {
       "section": "api",
@@ -217,7 +235,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "app.components",
       "shortDescription": "Prompt the user to cancel the edit in progress.  Notify controllers of the",
-      "keywords": "api app callback called cancel cancelled changed chosen close closed closeeditors command components controller controllers current data display edit editinprogress editor editors entry field form function inform modal notify outcome progress promise prompt prompted register registeronclose registeronconfirmed registeronquerystate reject resolved return scope service user"
+      "keywords": "api app callback cancel cancelled changed chosen close closed closeeditors command components controller controllers current data display edit editing editinprogress editor editors entry field form function inform modal notify outcome progress promise prompt prompted query register registeronclose registeronconfirmed registeronquerystate reject resolved scope service user"
     },
     {
       "section": "api",
@@ -225,8 +243,8 @@ NG_DOCS={
       "shortName": "app.components.errorsHelper",
       "type": "service",
       "moduleName": "app.components",
-      "shortDescription": "Add error processing to a controller",
-      "keywords": "activate add adds api app arrays categories categorize categorized clear clearerrors components controller created error errors errorshelper errorsmap errorsmapper errorsofresponse example function handled hash http identify instance map members messages names options processing response service types user username vm"
+      "shortDescription": "Adds error processing to a controller",
+      "keywords": "_vm_ activate adds api app arrays categories categorize categorized clear clearerrors components controller created error errors errorshelper errorsmap errorsmapper errorsofresponse function handled hash http identify instance map members messages names options processing response service"
     },
     {
       "section": "api",
@@ -234,8 +252,8 @@ NG_DOCS={
       "shortName": "app.components.errorsMapper",
       "type": "service",
       "moduleName": "app.components",
-      "shortDescription": "Given a hash, return a new hash that groups values together.  Useful for",
-      "keywords": "api app arrays components copy data defaultkey don errors errorsmapper expected generated groups hash input key map match names original param prefixed processing rails return service string strings values"
+      "shortDescription": "Categorize error messages in a hash",
+      "keywords": "api app arrays categorize components copy data defaultkey don error errors errorsmapper expected generated groups hash input key map match messages names original param prefixed processing rails return service string strings values"
     },
     {
       "section": "api",
@@ -253,7 +271,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "app.components",
       "shortDescription": "Display a confirmation dialog box",
-      "keywords": "api app box button caller cancel chooses components confirm confirmation content create customlabels dialog display function html message modal modalconfirm open overrides promise rejected resolved service title user wait"
+      "keywords": "api app box button caller cancel chooses components confirm confirmation content create customlabels dialog display function html message modal modalconfirm open overrides promise rejected resolved response service title user wait"
     },
     {
       "section": "api",
@@ -261,8 +279,8 @@ NG_DOCS={
       "shortName": "app.components.shortenName",
       "type": "service",
       "moduleName": "app.components",
-      "shortDescription": "Shortens a full firstname and full lastname to full first name and last initial.",
-      "keywords": "api app button cancel components content firstname full function html initial lastname message overrides service shortenname shortens title"
+      "shortDescription": "Shortens a full first name and full last name to full first name and last name initial",
+      "keywords": "api app components full function initial service shortenname shortens"
     },
     {
       "section": "api",
@@ -271,16 +289,16 @@ NG_DOCS={
       "type": "service",
       "moduleName": "app.components",
       "shortDescription": "Adds popup toast functionality to a controller",
-      "keywords": "adds api app components controller functionality popup service toast toastrhelper"
+      "keywords": "_scope_ _vm_ activate adds api app cleartoast components controller function functionality instance lasttoast members popup scope service showhttperrortoast showtoast toast toastrhelper"
     },
     {
       "section": "api",
-      "id": "app.components.waitIndicator",
-      "shortName": "app.components.waitIndicator",
+      "id": "app.components.waitingState",
+      "shortName": "app.components.waitingState",
       "type": "service",
       "moduleName": "app.components",
-      "shortDescription": "Service to manage state of a wait indicator",
-      "keywords": "api app components indicator manage service wait waitindicator"
+      "shortDescription": "Service to manage the waiting state of the application.",
+      "keywords": "api app application beginwait callback change components controller function indicate inform informed manage provide scope service subscribechanged truthy waiting waitingstate"
     },
     {
       "section": "api",
@@ -297,8 +315,8 @@ NG_DOCS={
       "shortName": "app.crud.crudHelper",
       "type": "service",
       "moduleName": "app.crud",
-      "shortDescription": "Add CRUD functionality to a controller",
-      "keywords": "activate add api app array beforeshoweditentity beforeshownewentity beginwait callbacks controller crud crudhelper editentity entitykind entitylist errorsmap function functionality getentitydisplayname instance makeentitybody members newentity options preparetocreateentity preparetoupdateentity resourcename response scope service specific views vm"
+      "shortDescription": "Adds CRUD functionality to a controller",
+      "keywords": "activate adds api app application array beforeshoweditentity beforeshownewentity beginwait callbacks controller create crud crudhelper edit editentity ends entities entity entitykind entitylist errorsmap function functionality getentitydisplayname instance list makeentitybody manage members newentity object options preparetocreateentity preparetoupdateentity property resourcename response scope service specific vm waiting"
     },
     {
       "section": "api",
@@ -316,7 +334,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "app.crud",
       "shortDescription": "Directive to display an entity page.",
-      "keywords": "api app create crud directive display entities entity fecrudpage form includes list"
+      "keywords": "api app create crud directive display entities entity fecrudpage form list"
     },
     {
       "section": "api",
@@ -325,7 +343,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "app.crud",
       "shortDescription": "Directive to display an entity row.",
-      "keywords": "api app buttons crud data delete directive display edit entity fecrudrow form includes row"
+      "keywords": "api app buttons crud data delete directive display edit entity fecrudrow form row"
     },
     {
       "section": "api",
@@ -369,8 +387,8 @@ NG_DOCS={
       "shortName": "HeaderController",
       "type": "controller",
       "moduleName": "app.header",
-      "shortDescription": "Controller for navbar (and login form)",
-      "keywords": "api app controller form header headercontroller login navbar"
+      "shortDescription": "Controller for navbar and login form",
+      "keywords": "activate add api app collapse controller form function header headercontroller informed initialize iscollapsed login logout manage menu navbar responsive support toast toastr"
     },
     {
       "section": "api",
@@ -415,7 +433,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "app.matches",
       "shortDescription": "Form for adding a new match or editing an existing match.  The form has the following fields:",
-      "keywords": "adding api app button buttons directive doubles editing existing fematchesform fields form match matches player radio scoring second singles team title"
+      "keywords": "adding api app button buttons directive doubles editing existing fematchesform fields form match matches player radio scoring second singles team title xor"
     },
     {
       "section": "api",
@@ -423,8 +441,8 @@ NG_DOCS={
       "shortName": "feMatchOpponentPlayer",
       "type": "directive",
       "moduleName": "app.matches",
-      "shortDescription": "Display a player opponent in a match",
-      "keywords": "api app directive display fematchopponentplayer match matches opponent player"
+      "shortDescription": "Display a player name",
+      "keywords": "api app directive display fematchopponentplayer matches player"
     },
     {
       "section": "api",
@@ -455,15 +473,6 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "app.matches.directive:feMatchOpponentTeamPlayers",
-      "shortName": "feMatchOpponentTeamPlayers",
-      "type": "directive",
-      "moduleName": "app.matches",
-      "shortDescription": "Display the two players on a team",
-      "keywords": "api app directive display fematchopponentteamplayers matches players team"
-    },
-    {
-      "section": "api",
       "id": "app.matches.directive:feMatchOpponentTeams",
       "shortName": "feMatchOpponentTeams",
       "type": "directive",
@@ -488,6 +497,15 @@ NG_DOCS={
       "moduleName": "app.matches",
       "shortDescription": "Display how the match is scored (e.g.; two sets of six)",
       "keywords": "api app directive display fematchscoring match matches scored sets"
+    },
+    {
+      "section": "api",
+      "id": "app.matches.directive:feMatchSelectPlayer",
+      "shortName": "feMatchSelectPlayer",
+      "type": "directive",
+      "moduleName": "app.matches",
+      "shortDescription": "Display a player select list",
+      "keywords": "api app directive display fematchselectplayer list matches player select"
     },
     {
       "section": "api",
@@ -527,6 +545,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "app.players.directive:fePlayerSelectList",
+      "shortName": "fePlayerSelectList",
+      "type": "directive",
+      "moduleName": "app.players",
+      "shortDescription": "Display a player select list.  This directive is designed to ",
+      "keywords": "api app designed directive display feplayerselectlist forms list match player players select team"
+    },
+    {
+      "section": "api",
       "id": "app.players.directive:fePlayersForm",
       "shortName": "fePlayersForm",
       "type": "directive",
@@ -541,7 +568,52 @@ NG_DOCS={
       "type": "service",
       "moduleName": "app.players",
       "shortDescription": "Provide a list of players for populating a select list",
-      "keywords": "api app array creates fails function getselectoptions list matches names player players playersselectoptions populating promise provide rejected request resolved response rest retrieve select service succeeds"
+      "keywords": "api app array creates fails function getselectoptions list names player players playersselectoptions populating promise provide rejected request resolved response rest retrieve select service succeeds"
+    },
+    {
+      "section": "api",
+      "id": "app.router",
+      "shortName": "app.router",
+      "type": "overview",
+      "moduleName": "app.router",
+      "shortDescription": "app.router",
+      "keywords": "api app configure module overview router ui-router"
+    },
+    {
+      "section": "api",
+      "id": "app.router.config:routerConfig",
+      "shortName": "routerConfig",
+      "type": "object",
+      "moduleName": "app.router",
+      "shortDescription": "Configure the views",
+      "keywords": "api app board close components config configure data display edit editinprogress matches names object players progress request resolve rest router routerconfig scores teams view views"
+    },
+    {
+      "section": "api",
+      "id": "app.run",
+      "shortName": "app.run",
+      "type": "overview",
+      "moduleName": "app.run",
+      "shortDescription": "app.run",
+      "keywords": "api app application initialize module overview"
+    },
+    {
+      "section": "api",
+      "id": "app.run.config:configLogProvider",
+      "shortName": "configLogProvider",
+      "type": "object",
+      "moduleName": "app.run",
+      "shortDescription": "Set default options for the $logProvider",
+      "keywords": "$logprovider api app config configlogprovider default object options set"
+    },
+    {
+      "section": "api",
+      "id": "app.run.run:loadCredentials",
+      "shortName": "loadCredentials",
+      "type": "object",
+      "moduleName": "app.run",
+      "shortDescription": "Load the user credentials from local storage when",
+      "keywords": "api app application credentials initialized load loadcredentials local object storage user"
     },
     {
       "section": "api",
@@ -558,8 +630,8 @@ NG_DOCS={
       "shortName": "ScoreboardController",
       "type": "controller",
       "moduleName": "app.scores",
-      "shortDescription": "Controller for displaying a match score",
-      "keywords": "api app controller displaying match score scoreboardcontroller scores"
+      "shortDescription": "Controller for displaying a match score. A table shows the",
+      "keywords": "$stateparams action actions activate add additional animations api app bound button buttons called changes clicking commands completed controller displaying example execute finally function game games hide initialize list loading logged manage match members menu method object opponents options param parent posts request responds responsible rest score scoreboard scoreboardcontroller scoreboardupdate scores scorescontroller selecting server set simple specific start start_game support table terms toastr updated updates user users view win win_game winner"
     },
     {
       "section": "api",
@@ -567,8 +639,8 @@ NG_DOCS={
       "shortName": "ScoresController",
       "type": "controller",
       "moduleName": "app.scores",
-      "shortDescription": "Controller for listing and selecting match scores",
-      "keywords": "api app controller listing match scores scorescontroller selecting"
+      "shortDescription": "Controller for listing and selecting matches and for displaying a ",
+      "keywords": "activate add api app array child controller currently displaying drop function initialize list listing loading match matches members menu scoreboardcontroller scores scorescontroller selected selectedmatch selectedmatchchange selecting support transitions updates view"
     },
     {
       "section": "api",
@@ -576,8 +648,8 @@ NG_DOCS={
       "shortName": "feScoreButton",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Button to change score",
-      "keywords": "api app button change directive fescorebutton score scores"
+      "shortDescription": "Button to execute an action such as",
+      "keywords": "action api app button directive execute fescorebutton scores start_game start_tiebreaker win_game win_tiebreaker"
     },
     {
       "section": "api",
@@ -585,8 +657,8 @@ NG_DOCS={
       "shortName": "feScoreCommands",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Commands to change view",
-      "keywords": "api app change commands directive fescorecommands scores view"
+      "shortDescription": "Display a menu of commands.  Commands to change the view include",
+      "keywords": "api app change clear commands completed description directive display fescorecommands games include keeper logged match menu score scores undo user view"
     },
     {
       "section": "api",
@@ -594,8 +666,8 @@ NG_DOCS={
       "shortName": "feScoreProgress",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Score progress messages",
-      "keywords": "api app directive fescoreprogress messages progress score scores"
+      "shortDescription": "Describing the progress of the match.  This may include",
+      "keywords": "api app current describing directive fescoreprogress game include match number progress scores winner"
     },
     {
       "section": "api",
@@ -621,8 +693,8 @@ NG_DOCS={
       "shortName": "feScoreTable",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Table to display match scoring",
-      "keywords": "api app directive display fescoretable match scores scoring table"
+      "shortDescription": "Display a table with the names of the opponents,",
+      "keywords": "api app buttons completed directive display fescoretable game games include keeping match names opponents score scores set start table user win"
     },
     {
       "section": "api",
@@ -630,8 +702,8 @@ NG_DOCS={
       "shortName": "feScoreTableGameResult",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Display the result of a game in the score table",
-      "keywords": "api app directive display fescoretablegameresult game result score scores table"
+      "shortDescription": "Display a check mark to indicate the winner of a game",
+      "keywords": "api app check directive display fescoretablegameresult game indicate mark scores winner"
     },
     {
       "section": "api",
@@ -639,7 +711,7 @@ NG_DOCS={
       "shortName": "feScoreTableGameTitle",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Display title of a game in the score table",
+      "shortDescription": "Display the title of a game in the score table",
       "keywords": "api app directive display fescoretablegametitle game score scores table title"
     },
     {
@@ -648,8 +720,8 @@ NG_DOCS={
       "shortName": "feScoreTableMatchResult",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Display the result of a set in the score table",
-      "keywords": "api app directive display fescoretablematchresult result score scores set table"
+      "shortDescription": "Display the number of sets won by an opponent",
+      "keywords": "api app directive display fescoretablematchresult number opponent scores sets won"
     },
     {
       "section": "api",
@@ -657,8 +729,8 @@ NG_DOCS={
       "shortName": "feScoreTableOpponent",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Table heading for opponent",
-      "keywords": "api app directive fescoretableopponent heading opponent scores table"
+      "shortDescription": "Display an oppponent in the score table heading",
+      "keywords": "api app directive display fescoretableopponent heading oppponent score scores table"
     },
     {
       "section": "api",
@@ -666,8 +738,8 @@ NG_DOCS={
       "shortName": "feScoreTableSelectServer",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Select the server when starting a new game",
-      "keywords": "api app directive fescoretableselectserver game scores select server starting"
+      "shortDescription": "Display a form for selecting the player to serve in the next game",
+      "keywords": "api app directive display fescoretableselectserver form game player scores selecting serve"
     },
     {
       "section": "api",
@@ -675,8 +747,8 @@ NG_DOCS={
       "shortName": "feScoreTableServerGlyph",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Displays a glyph beside the current server",
-      "keywords": "api app current directive displays fescoretableserverglyph glyph scores server"
+      "shortDescription": "Displays a glyph beside the serving player in the score table",
+      "keywords": "api app directive displays fescoretableserverglyph glyph heading player score scores serving table"
     },
     {
       "section": "api",
@@ -684,8 +756,8 @@ NG_DOCS={
       "shortName": "feScoreTableSetResult",
       "type": "directive",
       "moduleName": "app.scores",
-      "shortDescription": "Display the result of a set in the score table",
-      "keywords": "api app directive display fescoretablesetresult result score scores set table"
+      "shortDescription": "Display the number of games won in a set by an opponent",
+      "keywords": "api app directive display fescoretablesetresult games number opponent scores set won"
     },
     {
       "section": "api",
@@ -698,12 +770,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "app.scores.scoreboardAnimateHideAndShow",
-      "shortName": "app.scores.scoreboardAnimateHideAndShow",
+      "id": "app.scores.scoreboardAnimate",
+      "shortName": "app.scores.scoreboardAnimate",
       "type": "service",
       "moduleName": "app.scores",
-      "shortDescription": "Set flags on the scoreboard object to trigger animations.",
-      "keywords": "animations api app flags object scoreboard scoreboardanimatehideandshow scores service set trigger"
+      "shortDescription": "Change flags on the scoreboard object to trigger animations.",
+      "keywords": "action animateaction animatekeepscore animations api app change changed changing command commands elements example executed fade flags function hide hiding keeper keepscore object param parameter positing score scoreboard scoreboardanimate scoreboardcontroller scoreboardcontrollers scores service set showing trigger truthy updated view win_game"
     },
     {
       "section": "api",
@@ -711,8 +783,8 @@ NG_DOCS={
       "shortName": "app.scores.scoreboardPrep",
       "type": "service",
       "moduleName": "app.scores",
-      "shortDescription": "To make it easier to display and update the score, add more",
-      "keywords": "add api app backend display easier object properties received score scoreboardprep scores service update"
+      "shortDescription": "Enhances the  scores object with additional properties that ",
+      "keywords": "additional api app display easy enhances example helpful object properties rendering scoreboardprep scores service set table title titles"
     },
     {
       "section": "api",
@@ -731,6 +803,24 @@ NG_DOCS={
       "moduleName": "app.teams",
       "shortDescription": "Controller for displaying and editing teams",
       "keywords": "activate add api app call controller crudhelper displaying editing function initialize object options playeroptionslist service team-specific teams teamscontroller"
+    },
+    {
+      "section": "api",
+      "id": "app.teams.directive:feTeamPlayerNames",
+      "shortName": "feTeamPlayerNames",
+      "type": "directive",
+      "moduleName": "app.teams",
+      "shortDescription": "Display the names of the two players on a team",
+      "keywords": "api app directive display feteamplayernames names players team teams"
+    },
+    {
+      "section": "api",
+      "id": "app.teams.directive:feTeamSelectList",
+      "shortName": "feTeamSelectList",
+      "type": "directive",
+      "moduleName": "app.teams",
+      "shortDescription": "Display a team select list.  This directive is designed to be ",
+      "keywords": "api app designed directive display feteamselectlist form list match select selects team teams"
     },
     {
       "section": "api",

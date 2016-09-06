@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::MatchScoreboardController - RDoc Documentation</title>
+<title>class V1::MatchScoreboardController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -98,11 +98,13 @@
 
   <section class="description">
     
-<p>Controller for a match scoreboard</p>
-
-<p>Renders the current state of the match</p>
-
-<p>Handles commands to play the match</p>
+<p>Controller for match scoreboards</p>
+<ul><li>
+<p>Renders a match with sets and games using <a
+href="MatchScoreboardSerializer.html">V1::MatchScoreboardSerializer</a></p>
+</li><li>
+<p>Executes commands to play the match</p>
+</li></ul>
 
   </section>
 
@@ -138,13 +140,24 @@
 
         <div class="method-description">
           
-          
+          <p>Render the match score</p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:id</code> - id of a <a href="../Match.html">Match</a></p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>Serialized <a href="../Match.html">Match</a> score</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/match_scoreboard_controller.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/match_scoreboard_controller.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">MatchScoreboardSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@match</span>, <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -171,13 +184,32 @@
 
         <div class="method-description">
           
-          <p>POST change to score /match_scoreboard/1</p>
+          <p>Execute an action by calling <a
+href="../Match.html#method-i-play_match-21">Match#play_match!</a></p>
+<ul><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:action</code> - action such as <code>:win_game</code></p>
+</li><li>
+<p><code>:version</code> - match play version number</p>
+</li><li>
+<p><code>:team</code> - id of a <a href="../Team.html">Team</a> to win a game</p>
+</li><li>
+<p><code>:player</code> - id of a <a href="../Player.html">Player</a> to serve
+or win a game</p>
+</li></ul>
+</li><li>
+<p><strong>Response</strong></p>
+<ul><li>
+<p>Serialized <a href="../Match.html">Match</a> score</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/match_scoreboard_controller.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/match_scoreboard_controller.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-identifier">request_params</span> = <span class="ruby-identifier">match_scoreboard_params</span>
   <span class="ruby-identifier">action</span> = <span class="ruby-identifier">request_params</span>[<span class="ruby-value">:action</span>].<span class="ruby-identifier">to_sym</span>
@@ -187,8 +219,12 @@
 
   <span class="ruby-identifier">play_params</span> = {}
   <span class="ruby-identifier">play_params</span>[<span class="ruby-value">:version</span>] = <span class="ruby-identifier">version</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">version</span>
-  <span class="ruby-identifier">play_params</span>[<span class="ruby-value">:team</span>] = <span class="ruby-constant">Team</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">team_id</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">team_id</span>
-  <span class="ruby-identifier">play_params</span>[<span class="ruby-value">:player</span>] = <span class="ruby-constant">Player</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">player_id</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">player_id</span>
+  <span class="ruby-identifier">play_params</span>[<span class="ruby-value">:opponent</span>] =
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">team_id</span>
+      <span class="ruby-constant">Team</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">team_id</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">team_id</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">player_id</span>
+      <span class="ruby-constant">Player</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">player_id</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">player_id</span>
+    <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">play_match</span> {
     <span class="ruby-ivar">@match</span>.<span class="ruby-identifier">play_match!</span>(<span class="ruby-identifier">action</span>, <span class="ruby-identifier">play_params</span>)

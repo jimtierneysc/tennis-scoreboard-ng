@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class MatchSet - RDoc Documentation</title>
+<title>class MatchSet - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -51,6 +51,15 @@
   </div>
 
   
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-MatchSet-label-Overview">Overview</a>
+    <li><a href="#class-MatchSet-label-Schema+Information">Schema Information</a>
+  </ul>
+</div>
+
 
   <div id="class-metadata">
     
@@ -103,11 +112,49 @@
     
 <p>Model for a set in a match</p>
 
-<p>A set may has a state: in progress and complete</p>
+<h2 id="class-MatchSet-label-Overview">Overview<span><a href="#class-MatchSet-label-Overview">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>A set belongs to a <a href="Match.html">Match</a></p>
+</li><li>
+<p>A set has a state:</p>
+<ul><li>
+<p><code>:in_progress</code></p>
+</li><li>
+<p><code>:complete</code></p>
+</li></ul>
+</li><li>
+<p>A set has a scoring kind</p>
+<ul><li>
+<p><code>:eight_game</code></p>
+</li><li>
+<p><code>:ten_point</code></p>
+</li><li>
+<p><code>:six_game</code></p>
+</li></ul>
+</li></ul>
 
-<p>A match tiebreak is a special kind of set with only one game</p>
+<p><code>:ten_point</code> indicate a match tiebreak set. A tiebreak set has
+only one game</p>
+<ul><li>
+<p>A set has an ordinal.</p>
+</li></ul>
 
-<p>A set has an ordinal.  The first set in the match has ordinal 1</p>
+<p>The first set in the match has ordinal 1</p>
+<ul><li>
+<p>A complete set has a winning team</p>
+</li></ul>
+
+<h2 id="class-MatchSet-label-Schema+Information">Schema Information<span><a href="#class-MatchSet-label-Schema+Information">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Table name: match_sets</p>
+
+<pre>id             :integer          not null, primary key
+match_id       :integer          not null
+ordinal        :integer          not null
+created_at     :datetime         not null
+updated_at     :datetime         not null
+scoring        :string           not null
+team_winner_id :integer</pre>
 
   </section>
 
@@ -143,13 +190,16 @@
 
         <div class="method-description">
           
-          
+          <p>Indicate whether the match has a winner</p>
+<ul><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="completed-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 50</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">completed?</span>
   <span class="ruby-identifier">team_winner</span>
 <span class="ruby-keyword">end</span></pre>
@@ -176,13 +226,17 @@
 
         <div class="method-description">
           
-          
+          <p>Compute the winner of the set, if any, based on the games won and the
+scoring kind</p>
+<ul><li>
+<p><strong>Returns</strong> : <a href="Team.html">Team</a> or nil</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="compute_team_winner-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 34</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">compute_team_winner</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">completed?</span>
     <span class="ruby-identifier">team_winner</span>
@@ -216,13 +270,16 @@
 
         <div class="method-description">
           
-          
+          <p>Get the last game of the set</p>
+<ul><li>
+<p><strong>Returns</strong> : Game</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="last_game-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 57</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 98</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">last_game</span>
   <span class="ruby-identifier">set_games</span>.<span class="ruby-identifier">last</span>
 <span class="ruby-keyword">end</span></pre>
@@ -249,13 +306,21 @@
 
         <div class="method-description">
           
-          <p>Identify teams that can win set with one more game win</p>
+          <p>Indicate whether a team can win the set if the team wins one more game</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>team</code> -&gt; <a href="Team.html">Team</a></p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="near_team_winner-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">near_team_winner?</span>(<span class="ruby-identifier">team</span>)
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">completed?</span>
     <span class="ruby-identifier">lookup</span> = <span class="ruby-identifier">lookup_games_won</span>
@@ -289,13 +354,13 @@
 
         <div class="method-description">
           
-          <p>Notification to clear cached values</p>
+          <p>Clear cached scores.  For internal use</p>
           
           
 
           
           <div class="method-source-code" id="score_changed-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 82</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">score_changed</span>
   <span class="ruby-ivar">@games_won_by_team</span> = <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
@@ -322,13 +387,21 @@
 
         <div class="method-description">
           
-          
+          <p>Get the state of the match</p>
+<ul><li>
+<p><strong>Returns</strong> : state</p>
+<ul><li>
+<p><code>:in_progress</code></p>
+</li><li>
+<p><code>:complete</code></p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="state-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">completed?</span>
     <span class="ruby-value">:complete</span>
@@ -359,13 +432,16 @@
 
         <div class="method-description">
           
-          
+          <p>Indicate if this set is a match tiebreak</p>
+<ul><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="tiebreak-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 72</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 119</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak?</span>
   <span class="ruby-identifier">scoring</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-operator">==</span> <span class="ruby-value">:ten_point</span>
 <span class="ruby-keyword">end</span></pre>
@@ -392,13 +468,22 @@
 
         <div class="method-description">
           
-          
+          <p>Indicate whether a particular game is a tiebreak. A game may be a tiebreak
+because the set is tied (e.g. 6-6), or because the set is a match tiebreak.</p>
+<ul><li>
+<p><strong>Args</strong>    :</p>
+<ul><li>
+<p><code>game_ordinal</code> -&gt; ordinal</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> : Boolean</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="tiebreak_game-3F-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 76</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 129</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tiebreak_game?</span>(<span class="ruby-identifier">game_ordinal</span>)
   <span class="ruby-identifier">tiebreak_ordinal</span> = (<span class="ruby-identifier">win_threshold</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>) <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">win_threshold</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
   <span class="ruby-identifier">game_ordinal</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">tiebreak_ordinal</span>
@@ -426,13 +511,17 @@
 
         <div class="method-description">
           
-          
+          <p>Get the minimum number of games that an opponent must win in order to win
+the set, based on the scoring kind.</p>
+<ul><li>
+<p><strong>Returns</strong> : count</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="win_threshold-source">
-            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 61</span>
+            <pre><span class="ruby-comment"># File app/models/match_set.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">win_threshold</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">scoring</span>.<span class="ruby-identifier">to_sym</span>
   <span class="ruby-keyword">when</span> <span class="ruby-value">:eight_game</span>

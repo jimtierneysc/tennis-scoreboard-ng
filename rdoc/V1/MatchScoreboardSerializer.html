@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class V1::MatchScoreboardSerializer - RDoc Documentation</title>
+<title>class V1::MatchScoreboardSerializer - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../";
@@ -91,6 +91,48 @@
 
   <section class="description">
     
+<p>Serialize a <a href="../Match.html">Match</a> score with the following
+information:</p>
+<ul><li>
+<p>Attributes of the match (See <a
+href="MatchSerializer.html">V1::MatchSerializer</a>)</p>
+<ul><li>
+<p><code>:id</code></p>
+</li><li>
+<p><code>:title</code></p>
+</li><li>
+<p><code>:scoring</code></p>
+</li><li>
+<p><code>:doubles</code></p>
+</li><li>
+<p><code>:state</code></p>
+</li><li>
+<p><code>:winner</code></p>
+</li></ul>
+</li><li>
+<p>Attributes related to keeping score</p>
+<ul><li>
+<p><code>:sets</code> - The sets in the match.  See <a
+href="MatchSetSerializer.html">V1::MatchSetSerializer</a>.</p>
+</li><li>
+<p><code>:actions</code> - The actions that may be executed on the match</p>
+</li><li>
+<p><code>:errors</code> - Errors that occurred when executing an action</p>
+</li><li>
+<p><code>:server</code> - The <a href="../Player.html">Player</a> id&#39;s
+that may serve the next game</p>
+</li><li>
+<p><code>:near_winner</code></p>
+<ul><li>
+<p>The <a href="../Team.html">Team</a> or <a href="../Player.html">Player</a>
+id&#39;s that are near to winning a set</p>
+</li><li>
+<p>The <a href="../Team.html">Team</a> or <a href="../Player.html">Player</a>
+id&#39;s that are near to winning the match</p>
+</li></ul>
+</li></ul>
+</li></ul>
+
   </section>
 
   
@@ -125,15 +167,28 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize actions that may be executed on the match. See <a
+href="../Match.html#method-i-valid_actions">Match#valid_actions</a></p>
+<ul><li>
+<p><strong>Returns</strong> : Hash</p>
+</li></ul>
+
+<h3 id="method-i-actions-label-Example">Example<span><a href="#method-i-actions-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby">{
+  <span class="ruby-identifier">start_game</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>,
+  <span class="ruby-identifier">discard_play</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>,
+  <span class="ruby-identifier">remove_last_change</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+}
+</pre>
           
           
 
           
           <div class="method-source-code" id="actions-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">actions</span>
-  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">play_actions</span>
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">valid_actions</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -158,13 +213,26 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the id&#39;s of teams or players that are near to winning a set
+or the match.  <a href="../Player.html">Player</a> id&#39;s are serialized
+for singles matches; <a href="../Team.html">Team</a> id&#39;s for doubles
+matches.</p>
+<ul><li>
+<p><strong>Returns</strong> : Hash</p>
+</li></ul>
+
+<h3 id="method-i-near_winners-label-Example">Example<span><a href="#method-i-near_winners-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre>(
+  set: [10],
+  match[]
+}</pre>
           
           
 
           
           <div class="method-source-code" id="near_winners-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 13</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 57</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">near_winners</span>
   <span class="ruby-identifier">result</span> = {
     <span class="ruby-identifier">set</span><span class="ruby-operator">:</span> [],
@@ -179,7 +247,7 @@
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">result</span>
- <span class="ruby-keyword">end</span></pre>
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -203,13 +271,37 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize a list of player id&#39;s that may serve the first or second
+game. (One of these players must be passed as a parameter when executing
+the <code>:start_game</code> action)</p>
+<ul><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>an array of player ids</p>
+</li></ul>
+</li><li>
+<p>Example list before starting a doubles match:</p>
+
+<p>[10, 20, 30, 40]</p>
+</li><li>
+<p>Example list before starting the second game of a doubles match:</p>
+
+<p>[30, 40]</p>
+</li><li>
+<p>Example list before starting the first game of a singles match:</p>
+
+<p>[10, 20]</p>
+</li><li>
+<p>Value for all other cases:</p>
+
+<p>[]</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="servers-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">servers</span>
   <span class="ruby-identifier">result</span> = []
   <span class="ruby-identifier">result</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_player_server</span>.<span class="ruby-identifier">id</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">first_player_server</span>
@@ -239,15 +331,22 @@
 
         <div class="method-description">
           
-          
+          <p>Serialize the sets of the match. See <a
+href="MatchSetSerializer.html">V1::MatchSetSerializer</a></p>
+<ul><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>array of serialized sets</p>
+</li></ul>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="sets-source">
-            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/serializers/v1/match_scoreboard_serializer.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">sets</span>
-  <span class="ruby-constant">ActiveModel</span><span class="ruby-operator">::</span><span class="ruby-constant">ArraySerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">match_sets</span>, <span class="ruby-identifier">each_serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">MatchSetSerializer</span>)
+  <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">ApplicationArraySerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">match_sets</span>, <span class="ruby-identifier">each_serializer</span><span class="ruby-operator">:</span> <span class="ruby-constant">V1</span><span class="ruby-operator">::</span><span class="ruby-constant">MatchSetSerializer</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>class ApplicationController - RDoc Documentation</title>
+<title>class ApplicationController - Tennis-scoreboard-ng</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -85,8 +85,6 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-default_serializer_options">#default_serializer_options</a>
-    
     <li ><a href="#method-i-rescue_record_not_found">#rescue_record_not_found</a>
     
   </ul>
@@ -102,9 +100,7 @@
 
   <section class="description">
     
-<p>Application controller</p>
-
-<p>Base class for controllers</p>
+<p>Base class for this application&#39;s controllers</p>
 
   </section>
 
@@ -121,50 +117,6 @@
     
 
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Instance Methods</h3>
-       </header>
-
-    
-      <div id="method-i-default_serializer_options" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">default_serializer_options</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="default_serializer_options-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 10</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">default_serializer_options</span>
-  {
-    <span class="ruby-identifier">scope</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>,
-    <span class="ruby-identifier">root</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
-  }
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-    </section>
-  
      <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Protected Instance Methods</h3>
@@ -184,13 +136,13 @@
 
         <div class="method-description">
           
-          
+          <p>Render an HTTP error on ActiveRecord::RecordNotFound</p>
           
           
 
           
           <div class="method-source-code" id="rescue_record_not_found-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 21</span>
+            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">rescue_record_not_found</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">errors</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Record not found&#39;</span> }, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:not_found</span>
 <span class="ruby-keyword">end</span></pre>
