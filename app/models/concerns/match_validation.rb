@@ -1,9 +1,21 @@
 # Validate changes to a Match
 module MatchValidation
 
-  # Helper for a Match model to validate
+  # Help validate the changes to match attributes
+  # * *Args*
+  #   - +match+ -> Match
+  # * *Params*
+  #   * +:errors+ - hash
+  #     * Errors will be added to this hash
+  def self.validate(match, errors)
+    Validator.new(match).validate(errors)
+  end
+
+  private
+
+  # Help validate
   # the changes to match attributes
-  class ValidationHelper
+  class Validator
 
     # * *Args*
     #   - +match+ -> Match

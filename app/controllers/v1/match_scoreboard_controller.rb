@@ -51,7 +51,7 @@ class V1::MatchScoreboardController < ApplicationController
 
   def set_match_eager_load
     # @match = self.class.eager_load_match params[:id]
-    @match = eager_load_match params[:id]
+    @match = MatchLoader::eager_load_match params[:id]
   end
 
   def when_unknown_operation(exception)
@@ -81,9 +81,8 @@ class V1::MatchScoreboardController < ApplicationController
   end
 
   def reload_match(errors=nil)
-    @match = eager_load_match params[:id]
+    @match = MatchLoader::eager_load_match params[:id]
     @match.errors.messages.merge! errors if errors
   end
 
-  include MatchLoader
 end

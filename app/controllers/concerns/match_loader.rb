@@ -4,7 +4,7 @@ module MatchLoader
   # * *Args*    :
   #   - +match_id+ -> Id of Match
   # * *Returns* : Relation
-  def eager_load_match(match_id)
+  def self.eager_load_match(match_id)
     Match
       .includes(first_team: [:first_player,
                              :second_player],

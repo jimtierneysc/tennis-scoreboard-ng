@@ -59,7 +59,7 @@ class Match < ActiveRecord::Base
   validates :scoring, presence: true # schema
   validates_uniqueness_of :title, allow_nil: true # schema
   validate do
-    ValidationHelper.new(self).validate(errors)
+    MatchValidation::validate self, errors
   end
 
   # Execute an action on the match, such as +:win_game+
@@ -344,9 +344,7 @@ class Match < ActiveRecord::Base
   end
 
   def play_actions
-    @play_actions ||= PlayActions.new(self)
+    @play_actions ||= MatchPlay::PlayActions.new(self)
   end
 
-  include MatchPlay
-  include MatchValidation
 end
