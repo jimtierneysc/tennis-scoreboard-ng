@@ -1,8 +1,8 @@
-Mon, 05 Sep 2016 12:45:59 -0700
+Sat, 10 Sep 2016 18:31:04 -0700
 app/controllers/application_controller.rb	Sat, 03 Sep 2016 21:08:34 -0700
 app/controllers/concerns/authenticable.rb	Wed, 31 Aug 2016 11:30:22 -0700
-app/controllers/concerns/match_loader.rb	Mon, 05 Sep 2016 08:06:44 -0700
-app/controllers/v1/match_scoreboard_controller.rb	Mon, 05 Sep 2016 12:09:33 -0700
+app/controllers/concerns/match_loader.rb	Sat, 10 Sep 2016 18:23:27 -0700
+app/controllers/v1/match_scoreboard_controller.rb	Sat, 10 Sep 2016 18:23:27 -0700
 app/controllers/v1/matches_controller.rb	Mon, 05 Sep 2016 11:50:39 -0700
 app/controllers/v1/players_controller.rb	Mon, 05 Sep 2016 11:59:19 -0700
 app/controllers/v1/sessions_controller.rb	Fri, 02 Sep 2016 21:39:32 -0700
@@ -10,8 +10,8 @@ app/controllers/v1/teams_controller.rb	Sun, 04 Sep 2016 17:19:46 -0700
 app/controllers/v1/user_controller.rb	Mon, 05 Sep 2016 12:35:23 -0700
 app/exceptions/exceptions.rb	Wed, 31 Aug 2016 11:22:52 -0700
 app/models/concerns/match_play.rb	Mon, 05 Sep 2016 09:02:24 -0700
-app/models/concerns/match_validation.rb	Mon, 05 Sep 2016 09:11:01 -0700
-app/models/match.rb	Mon, 05 Sep 2016 08:43:00 -0700
+app/models/concerns/match_validation.rb	Sat, 10 Sep 2016 18:30:53 -0700
+app/models/match.rb	Sat, 10 Sep 2016 18:30:53 -0700
 app/models/match_set.rb	Mon, 05 Sep 2016 08:48:10 -0700
 app/models/player.rb	Mon, 05 Sep 2016 09:18:10 -0700
 app/models/set_game.rb	Mon, 05 Sep 2016 09:19:59 -0700
@@ -28,6 +28,6 @@ app/serializers/v1/set_game_serializer.rb	Mon, 05 Sep 2016 12:45:56 -0700
 app/serializers/v1/team_serializer.rb	Mon, 05 Sep 2016 12:37:52 -0700
 app/serializers/v1/user_serializer.rb	Mon, 05 Sep 2016 12:22:46 -0700
 lib/api_constraints.rb	Sun, 04 Sep 2016 21:00:09 -0700
-lib/play_match.rb	Mon, 05 Sep 2016 09:15:04 -0700
-lib/tasks/rspec_report.rake	Sun, 04 Sep 2016 15:48:24 -0700
-lib/tasks/sample_data.rake	Wed, 24 Aug 2016 22:11:12 -0700
+lib/play_match.rb	Mon, 05 Sep 2016 12:50:19 -0700
+lib/tasks/rspec_report.rake	Mon, 05 Sep 2016 13:22:14 -0700
+lib/tasks/sample_data.rake	Mon, 05 Sep 2016 12:50:19 -0700

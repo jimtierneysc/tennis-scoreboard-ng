@@ -57,7 +57,17 @@
     
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-c-validate">::validate</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -85,6 +95,61 @@
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-validate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate</span><span
+            class="method-args">(match, errors)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Help validate the changes to match attributes</p>
+<ul><li>
+<p><strong>Args</strong></p>
+<ul><li>
+<p><code>match</code> -&gt; <a href="Match.html">Match</a></p>
+</li></ul>
+</li><li>
+<p><strong>Params</strong></p>
+<ul><li>
+<p><code>:errors</code> - hash</p>
+<ul><li>
+<p>Errors will be added to this hash</p>
+</li></ul>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="validate-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/match_validation.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">validate</span>(<span class="ruby-identifier">match</span>, <span class="ruby-identifier">errors</span>)
+  <span class="ruby-constant">Validator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">match</span>).<span class="ruby-identifier">validate</span>(<span class="ruby-identifier">errors</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 </main>
 

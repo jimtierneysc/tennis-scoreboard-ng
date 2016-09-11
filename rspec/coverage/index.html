@@ -14,7 +14,7 @@
       <img src="./assets/0.10.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-06T11:01:41-07:00">2016-09-06T11:01:41-07:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-10T18:35:22-07:00">2016-09-10T18:35:22-07:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,7 +25,7 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         270.75
+         271.9
        </span>
     </span> hits/line)
   </h2>
@@ -83,11 +83,11 @@
       <tr>
         <td class="strong"><a href="#ab6159ac32cbe3e91250dd7123bee98681aee6f4" class="src_link" title="app/controllers/v1/match_scoreboard_controller.rb">app/controllers/v1/match_scoreboard_controller.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>89</td>
-        <td>37</td>
-        <td>37</td>
+        <td>88</td>
+        <td>36</td>
+        <td>36</td>
         <td>0</td>
-        <td>14.1</td>
+        <td>14.5</td>
       </tr>
       
       <tr>
@@ -163,21 +163,21 @@
       <tr>
         <td class="strong"><a href="#c605a998ff08e527d5ae662b1d7c8cbcba6dc216" class="src_link" title="app/models/concerns/match_validation.rb">app/models/concerns/match_validation.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>171</td>
-        <td>78</td>
-        <td>78</td>
+        <td>183</td>
+        <td>81</td>
+        <td>81</td>
         <td>0</td>
-        <td>1744.3</td>
+        <td>1723.8</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#5c79033c17446bab4f4a194691541da5f2288fd2" class="src_link" title="app/models/match.rb">app/models/match.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>352</td>
-        <td>113</td>
-        <td>113</td>
+        <td>350</td>
+        <td>111</td>
+        <td>111</td>
         <td>0</td>
-        <td>1545.1</td>
+        <td>1572.9</td>
       </tr>
       
       <tr>
@@ -1263,7 +1263,7 @@
         <li class="covered" data-hits="1" data-linenumber="7">
           <span class="hits">1</span>
           
-          <code class="ruby">  def eager_load_match(match_id)</code>
+          <code class="ruby">  def self.eager_load_match(match_id)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="8">
@@ -1341,8 +1341,8 @@
     <h3>app/controllers/v1/match_scoreboard_controller.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>37</b> relevant lines. 
-      <span class="green"><b>37</b> lines covered</span> and
+      <b>36</b> relevant lines. 
+      <span class="green"><b>36</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -1671,7 +1671,7 @@
         <li class="covered" data-hits="35" data-linenumber="54">
           <span class="hits">35</span>
           
-          <code class="ruby">    @match = eager_load_match params[:id]</code>
+          <code class="ruby">    @match = MatchLoader::eager_load_match params[:id]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="55">
@@ -1851,7 +1851,7 @@
         <li class="covered" data-hits="23" data-linenumber="84">
           <span class="hits">23</span>
           
-          <code class="ruby">    @match = eager_load_match params[:id]</code>
+          <code class="ruby">    @match = MatchLoader::eager_load_match params[:id]</code>
         </li>
       
         <li class="covered" data-hits="23" data-linenumber="85">
@@ -1872,13 +1872,7 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="88">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  include MatchLoader</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="89">
+        <li class="never" data-hits="" data-linenumber="88">
           
           
           <code class="ruby">end</code>
@@ -9111,8 +9105,8 @@
     <h3>app/models/concerns/match_validation.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>78</b> relevant lines. 
-      <span class="green"><b>78</b> lines covered</span> and
+      <b>81</b> relevant lines. 
+      <span class="green"><b>81</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -9141,55 +9135,55 @@
         <li class="never" data-hits="" data-linenumber="4">
           
           
-          <code class="ruby">  # Helper for a Match model to validate</code>
+          <code class="ruby">  # Help validate the changes to match attributes</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="5">
           
           
-          <code class="ruby">  # the changes to match attributes</code>
+          <code class="ruby">  # * *Args*</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="6">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="6">
           
-          <code class="ruby">  class ValidationHelper</code>
+          
+          <code class="ruby">  #   - +match+ -&gt; Match</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="7">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  # * *Params*</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="8">
           
           
-          <code class="ruby">    # * *Args*</code>
+          <code class="ruby">  #   * +:errors+ - hash</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="9">
           
           
-          <code class="ruby">    #   - +match+ -&gt; Match</code>
+          <code class="ruby">  #     * Errors will be added to this hash</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="10">
           <span class="hits">1</span>
           
-          <code class="ruby">    def initialize(match)</code>
+          <code class="ruby">  def self.validate(match, errors)</code>
         </li>
       
         <li class="covered" data-hits="3570" data-linenumber="11">
           <span class="hits">3570</span>
           
-          <code class="ruby">      @match = match</code>
+          <code class="ruby">    Validator.new(match).validate(errors)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="12">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="13">
@@ -9198,304 +9192,304 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="14">
+        <li class="covered" data-hits="1" data-linenumber="14">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    # Check for various error conditions:</code>
+          <code class="ruby">  private</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="15">
           
           
-          <code class="ruby">    # * Both opponents may not be the same team or player</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="16">
           
           
-          <code class="ruby">    # * The server of the second doubles game must be valid</code>
+          <code class="ruby">  # Help validate</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="17">
           
           
-          <code class="ruby">    #   * Must not be on the same team as the server of the first</code>
+          <code class="ruby">  # the changes to match attributes</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="18">
+        <li class="covered" data-hits="1" data-linenumber="18">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    # * The +:scoring+ kind must be known</code>
+          <code class="ruby">  class Validator</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="19">
           
           
-          <code class="ruby">    # * The opponents must be known</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="20">
           
           
-          <code class="ruby">    # * The attributes must be permitted to change</code>
+          <code class="ruby">    # * *Args*</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="21">
           
           
-          <code class="ruby">    #   * Many attributes can not be changed after the match has started</code>
+          <code class="ruby">    #   - +match+ -&gt; Match</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="22">
+        <li class="covered" data-hits="1" data-linenumber="22">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    #     * opponents</code>
+          <code class="ruby">    def initialize(match)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="23">
+        <li class="covered" data-hits="3570" data-linenumber="23">
+          <span class="hits">3570</span>
           
-          
-          <code class="ruby">    #     * doubles</code>
+          <code class="ruby">      @match = match</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="24">
           
           
-          <code class="ruby">    #     * scoring kind</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="25">
           
           
-          <code class="ruby">    # * *Params*</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="26">
           
           
-          <code class="ruby">    #   * +:errors+ - hash</code>
+          <code class="ruby">    # Check for various error conditions:</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="27">
           
           
-          <code class="ruby">    #     * Errors will be added to this hash</code>
+          <code class="ruby">    # * Both opponents may not be the same team or player</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="28">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="28">
           
-          <code class="ruby">    def validate(errors)</code>
+          
+          <code class="ruby">    # * The server of the second doubles game must be valid</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="29">
-          <span class="hits">3570</span>
+        <li class="never" data-hits="" data-linenumber="29">
           
-          <code class="ruby">      that_first_and_second_opponents_different(errors)</code>
+          
+          <code class="ruby">    #   * Must not be on the same team as the server of the first</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="30">
-          <span class="hits">3570</span>
+        <li class="never" data-hits="" data-linenumber="30">
           
-          <code class="ruby">      that_player_servers_on_different_teams(errors)</code>
+          
+          <code class="ruby">    # * The +:scoring+ kind must be known</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="31">
-          <span class="hits">3570</span>
+        <li class="never" data-hits="" data-linenumber="31">
           
-          <code class="ruby">      that_scoring_is_known(errors)</code>
+          
+          <code class="ruby">    # * The opponents must be known</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="32">
-          <span class="hits">3570</span>
+        <li class="never" data-hits="" data-linenumber="32">
           
-          <code class="ruby">      that_can_change_after_start_play(errors)</code>
+          
+          <code class="ruby">    # * The attributes must be permitted to change</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="33">
-          <span class="hits">3570</span>
+        <li class="never" data-hits="" data-linenumber="33">
           
-          <code class="ruby">      that_teams_or_players_are_present(errors)</code>
+          
+          <code class="ruby">    #   * Many attributes can not be changed after the match has started</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="34">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">    #     * opponents</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="35">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    #     * doubles</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="36">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="36">
           
-          <code class="ruby">    private</code>
+          
+          <code class="ruby">    #     * scoring kind</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="37">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    # * *Params*</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="38">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="38">
           
-          <code class="ruby">    attr_reader :match</code>
+          
+          <code class="ruby">    #   * +:errors+ - hash</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="39">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">    #     * Errors will be added to this hash</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="40">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_first_and_second_opponents_different(errors)</code>
+          <code class="ruby">    def validate(errors)</code>
         </li>
       
         <li class="covered" data-hits="3570" data-linenumber="41">
           <span class="hits">3570</span>
           
-          <code class="ruby">      if match.doubles</code>
+          <code class="ruby">      that_first_and_second_opponents_different(errors)</code>
         </li>
       
-        <li class="covered" data-hits="1095" data-linenumber="42">
-          <span class="hits">1095</span>
+        <li class="covered" data-hits="3570" data-linenumber="42">
+          <span class="hits">3570</span>
           
-          <code class="ruby">        that_doubles_teams_different(errors)</code>
+          <code class="ruby">      that_player_servers_on_different_teams(errors)</code>
         </li>
       
-        <li class="covered" data-hits="1095" data-linenumber="43">
-          <span class="hits">1095</span>
+        <li class="covered" data-hits="3570" data-linenumber="43">
+          <span class="hits">3570</span>
           
-          <code class="ruby">        that_doubles_players_different(errors)</code>
+          <code class="ruby">      that_scoring_is_known(errors)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="44">
+        <li class="covered" data-hits="3570" data-linenumber="44">
+          <span class="hits">3570</span>
           
-          
-          <code class="ruby">      else</code>
+          <code class="ruby">      that_can_change_after_start_play(errors)</code>
         </li>
       
-        <li class="covered" data-hits="2475" data-linenumber="45">
-          <span class="hits">2475</span>
+        <li class="covered" data-hits="3570" data-linenumber="45">
+          <span class="hits">3570</span>
           
-          <code class="ruby">        that_singles_players_different(errors)</code>
+          <code class="ruby">      that_teams_or_players_are_present(errors)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="46">
           
           
-          <code class="ruby">      end</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="47">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="48">
+        <li class="covered" data-hits="1" data-linenumber="48">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    private</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="49">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="49">
+        <li class="covered" data-hits="1" data-linenumber="50">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_doubles_teams_different(errors)</code>
+          <code class="ruby">    attr_reader :match</code>
         </li>
       
-        <li class="covered" data-hits="1095" data-linenumber="50">
-          <span class="hits">1095</span>
-          
-          <code class="ruby">      unless match.first_team.nil? || match.first_team != match.second_team</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="51">
-          <span class="hits">1</span>
-          
-          <code class="ruby">        errors.add(:second_team, &#39;must not be the same as first team&#39;)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="52">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="53">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="54">
+        <li class="never" data-hits="" data-linenumber="51">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="55">
+        <li class="covered" data-hits="1" data-linenumber="52">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_doubles_players_different(errors)</code>
+          <code class="ruby">    def that_first_and_second_opponents_different(errors)</code>
         </li>
       
-        <li class="covered" data-hits="1095" data-linenumber="56">
+        <li class="covered" data-hits="3570" data-linenumber="53">
+          <span class="hits">3570</span>
+          
+          <code class="ruby">      if match.doubles</code>
+        </li>
+      
+        <li class="covered" data-hits="1095" data-linenumber="54">
           <span class="hits">1095</span>
           
-          <code class="ruby">      unless match.first_team == match.second_team || match.first_team.nil? || match.second_team.nil?</code>
+          <code class="ruby">        that_doubles_teams_different(errors)</code>
         </li>
       
-        <li class="covered" data-hits="1086" data-linenumber="57">
-          <span class="hits">1086</span>
+        <li class="covered" data-hits="1095" data-linenumber="55">
+          <span class="hits">1095</span>
           
-          <code class="ruby">        arr = [match.first_team.first_player, match.first_team.second_player,</code>
+          <code class="ruby">        that_doubles_players_different(errors)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="56">
+          
+          
+          <code class="ruby">      else</code>
+        </li>
+      
+        <li class="covered" data-hits="2475" data-linenumber="57">
+          <span class="hits">2475</span>
+          
+          <code class="ruby">        that_singles_players_different(errors)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="58">
           
           
-          <code class="ruby">               match.second_team.first_player, match.second_team.second_player]</code>
+          <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="1086" data-linenumber="59">
-          <span class="hits">1086</span>
+        <li class="never" data-hits="" data-linenumber="59">
           
-          <code class="ruby">        arr = arr.compact.map(&amp;:id)</code>
+          
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="60">
           
           
-          <code class="ruby">        # All id&#39;s unique?</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1086" data-linenumber="61">
-          <span class="hits">1086</span>
+        <li class="covered" data-hits="1" data-linenumber="61">
+          <span class="hits">1</span>
           
-          <code class="ruby">        if arr.uniq.length != arr.length</code>
+          <code class="ruby">    def that_doubles_teams_different(errors)</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="62">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="1095" data-linenumber="62">
+          <span class="hits">1095</span>
           
-          <code class="ruby">          errors.add(:second_team, &#39;must not have players from the first team&#39;)</code>
+          <code class="ruby">      unless match.first_team.nil? || match.first_team != match.second_team</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="63">
+        <li class="covered" data-hits="1" data-linenumber="63">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">        end</code>
+          <code class="ruby">        errors.add(:second_team, &#39;must not be the same as first team&#39;)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="64">
@@ -9519,628 +9513,700 @@
         <li class="covered" data-hits="1" data-linenumber="67">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_singles_players_different(errors)</code>
+          <code class="ruby">    def that_doubles_players_different(errors)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="68">
+        <li class="covered" data-hits="1095" data-linenumber="68">
+          <span class="hits">1095</span>
           
-          
-          <code class="ruby">      unless match.first_player.nil? ||</code>
+          <code class="ruby">      unless match.first_team == match.second_team || match.first_team.nil? || match.second_team.nil?</code>
         </li>
       
-        <li class="covered" data-hits="2475" data-linenumber="69">
-          <span class="hits">2475</span>
+        <li class="covered" data-hits="1086" data-linenumber="69">
+          <span class="hits">1086</span>
           
-          <code class="ruby">        match.first_player != match.second_player</code>
+          <code class="ruby">        arr = [match.first_team.first_player, match.first_team.second_player,</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="70">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="70">
           
-          <code class="ruby">        errors.add(:second_player,</code>
+          
+          <code class="ruby">               match.second_team.first_player, match.second_team.second_player]</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="71">
+        <li class="covered" data-hits="1086" data-linenumber="71">
+          <span class="hits">1086</span>
           
-          
-          <code class="ruby">                   &#39;must not be the same as first player&#39;)</code>
+          <code class="ruby">        arr = arr.compact.map(&amp;:id)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="72">
           
           
+          <code class="ruby">        # All id&#39;s unique?</code>
+        </li>
+      
+        <li class="covered" data-hits="1086" data-linenumber="73">
+          <span class="hits">1086</span>
+          
+          <code class="ruby">        if arr.uniq.length != arr.length</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="74">
+          <span class="hits">2</span>
+          
+          <code class="ruby">          errors.add(:second_team, &#39;must not have players from the first team&#39;)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="75">
+          
+          
+          <code class="ruby">        end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="76">
+          
+          
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="73">
+        <li class="never" data-hits="" data-linenumber="77">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="74">
+        <li class="never" data-hits="" data-linenumber="78">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="75">
+        <li class="covered" data-hits="1" data-linenumber="79">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_player_servers_on_different_teams(errors)</code>
-        </li>
-      
-        <li class="covered" data-hits="3570" data-linenumber="76">
-          <span class="hits">3570</span>
-          
-          <code class="ruby">      first = match.team_of_player(match.first_player_server)</code>
-        </li>
-      
-        <li class="covered" data-hits="3570" data-linenumber="77">
-          <span class="hits">3570</span>
-          
-          <code class="ruby">      second = match.team_of_player(match.second_player_server)</code>
-        </li>
-      
-        <li class="covered" data-hits="3570" data-linenumber="78">
-          <span class="hits">3570</span>
-          
-          <code class="ruby">      if first &amp;&amp; first == second</code>
-        </li>
-      
-        <li class="covered" data-hits="3" data-linenumber="79">
-          <span class="hits">3</span>
-          
-          <code class="ruby">        errors.add(:first_server,</code>
+          <code class="ruby">    def that_singles_players_different(errors)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="80">
           
           
-          <code class="ruby">                   &#39;may not be in the same team as second server&#39;)</code>
+          <code class="ruby">      unless match.first_player.nil? ||</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="81">
+        <li class="covered" data-hits="2475" data-linenumber="81">
+          <span class="hits">2475</span>
           
-          
-          <code class="ruby">      end</code>
+          <code class="ruby">        match.first_player != match.second_player</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="82">
+        <li class="covered" data-hits="1" data-linenumber="82">
+          <span class="hits">1</span>
           
-          
-          <code class="ruby">    end</code>
+          <code class="ruby">        errors.add(:second_player,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="83">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">                   &#39;must not be the same as first player&#39;)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="84">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    def that_scoring_is_known(errors)</code>
-        </li>
-      
-        <li class="covered" data-hits="3570" data-linenumber="85">
-          <span class="hits">3570</span>
-          
-          <code class="ruby">      unless match.scoring.blank?</code>
-        </li>
-      
-        <li class="covered" data-hits="3566" data-linenumber="86">
-          <span class="hits">3566</span>
-          
-          <code class="ruby">        s = [:one_eight_game, :two_six_game_ten_point, :three_six_game]</code>
-        </li>
-      
-        <li class="covered" data-hits="2" data-linenumber="87">
-          <span class="hits">2</span>
-          
-          <code class="ruby">        errors.add(:scoring,</code>
-        </li>
-      
-        <li class="covered" data-hits="3566" data-linenumber="88">
-          <span class="hits">3566</span>
-          
-          <code class="ruby">                   &#39;invalid value&#39;) unless s.include? match.scoring.to_sym</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="89">
+        <li class="never" data-hits="" data-linenumber="84">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="90">
+        <li class="never" data-hits="" data-linenumber="85">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="91">
+        <li class="never" data-hits="" data-linenumber="86">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="92">
+        <li class="covered" data-hits="1" data-linenumber="87">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_can_change_after_start_play(errors)</code>
+          <code class="ruby">    def that_player_servers_on_different_teams(errors)</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="93">
+        <li class="covered" data-hits="3570" data-linenumber="88">
           <span class="hits">3570</span>
           
-          <code class="ruby">      if match.started</code>
+          <code class="ruby">      first = match.team_of_player(match.first_player_server)</code>
         </li>
       
-        <li class="covered" data-hits="3329" data-linenumber="94">
-          <span class="hits">3329</span>
+        <li class="covered" data-hits="3570" data-linenumber="89">
+          <span class="hits">3570</span>
           
-          <code class="ruby">        ValidateChangeMatch.new(match).validate(errors)</code>
+          <code class="ruby">      second = match.team_of_player(match.second_player_server)</code>
+        </li>
+      
+        <li class="covered" data-hits="3570" data-linenumber="90">
+          <span class="hits">3570</span>
+          
+          <code class="ruby">      if first &amp;&amp; first == second</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="91">
+          <span class="hits">3</span>
+          
+          <code class="ruby">        errors.add(:first_server,</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="92">
+          
+          
+          <code class="ruby">                   &#39;may not be in the same team as second server&#39;)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="93">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="94">
+          
+          
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="95">
           
           
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="96">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="97">
-          
-          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="98">
+        <li class="covered" data-hits="1" data-linenumber="96">
           <span class="hits">1</span>
           
-          <code class="ruby">    def that_teams_or_players_are_present(errors)</code>
+          <code class="ruby">    def that_scoring_is_known(errors)</code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="99">
+        <li class="covered" data-hits="3570" data-linenumber="97">
           <span class="hits">3570</span>
           
-          <code class="ruby">      fields = if match.doubles</code>
+          <code class="ruby">      unless match.scoring.blank?</code>
         </li>
       
-        <li class="covered" data-hits="1095" data-linenumber="100">
-          <span class="hits">1095</span>
+        <li class="covered" data-hits="3566" data-linenumber="98">
+          <span class="hits">3566</span>
           
-          <code class="ruby">                 [:first_team, :second_team]</code>
+          <code class="ruby">        s = [:one_eight_game, :two_six_game_ten_point, :three_six_game]</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="99">
+          <span class="hits">2</span>
+          
+          <code class="ruby">        errors.add(:scoring,</code>
+        </li>
+      
+        <li class="covered" data-hits="3566" data-linenumber="100">
+          <span class="hits">3566</span>
+          
+          <code class="ruby">                   &#39;invalid value&#39;) unless s.include? match.scoring.to_sym</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="101">
           
           
-          <code class="ruby">               else</code>
+          <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="2475" data-linenumber="102">
-          <span class="hits">2475</span>
+        <li class="never" data-hits="" data-linenumber="102">
           
-          <code class="ruby">                 [:first_player, :second_player]</code>
+          
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="103">
           
           
-          <code class="ruby">               end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="3570" data-linenumber="104">
+        <li class="covered" data-hits="1" data-linenumber="104">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def that_can_change_after_start_play(errors)</code>
+        </li>
+      
+        <li class="covered" data-hits="3570" data-linenumber="105">
           <span class="hits">3570</span>
           
-          <code class="ruby">      fields.each do |sym|</code>
+          <code class="ruby">      if match.started</code>
         </li>
       
-        <li class="covered" data-hits="7140" data-linenumber="105">
-          <span class="hits">7140</span>
+        <li class="covered" data-hits="3329" data-linenumber="106">
+          <span class="hits">3329</span>
           
-          <code class="ruby">        value = match.send(sym)</code>
+          <code class="ruby">        ValidateChangeMatch.new(match).validate(errors)</code>
         </li>
       
-        <li class="covered" data-hits="7140" data-linenumber="106">
-          <span class="hits">7140</span>
+        <li class="never" data-hits="" data-linenumber="107">
           
-          <code class="ruby">        errors.add sym, &#39;can\&#39;t be blank&#39; unless value</code>
+          
+          <code class="ruby">      end</code>
         </li>
       
-        <li class="covered" data-hits="7140" data-linenumber="107">
-          <span class="hits">7140</span>
+        <li class="never" data-hits="" data-linenumber="108">
           
-          <code class="ruby">        if value &amp;&amp; sym.to_s.end_with?(&#39;team&#39;)</code>
-        </li>
-      
-        <li class="covered" data-hits="2182" data-linenumber="108">
-          <span class="hits">2182</span>
           
-          <code class="ruby">          errors.add sym, &#39;must be doubles team&#39; unless value.doubles</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="109">
           
           
-          <code class="ruby">        end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="110">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="111">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="112">
-          
-          
           <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="110">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    def that_teams_or_players_are_present(errors)</code>
+        </li>
+      
+        <li class="covered" data-hits="3570" data-linenumber="111">
+          <span class="hits">3570</span>
+          
+          <code class="ruby">      fields = if match.doubles</code>
+        </li>
+      
+        <li class="covered" data-hits="1095" data-linenumber="112">
+          <span class="hits">1095</span>
+          
+          <code class="ruby">                 [:first_team, :second_team]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="113">
           
           
-          <code class="ruby">    # Class to validate changes to a match after play has started.</code>
+          <code class="ruby">               else</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="114">
+        <li class="covered" data-hits="2475" data-linenumber="114">
+          <span class="hits">2475</span>
           
-          
-          <code class="ruby">    # The match opponents may not be changed, for example.</code>
+          <code class="ruby">                 [:first_player, :second_player]</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="115">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="115">
           
-          <code class="ruby">    class ValidateChangeMatch</code>
+          
+          <code class="ruby">               end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="116">
+        <li class="covered" data-hits="3570" data-linenumber="116">
+          <span class="hits">3570</span>
           
-          
-          <code class="ruby">      # * *Args*</code>
+          <code class="ruby">      fields.each do |sym|</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="117">
+        <li class="covered" data-hits="7140" data-linenumber="117">
+          <span class="hits">7140</span>
           
-          
-          <code class="ruby">      #   - +match+ -&gt; Match</code>
+          <code class="ruby">        value = match.send(sym)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="118">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="7140" data-linenumber="118">
+          <span class="hits">7140</span>
           
-          <code class="ruby">      def initialize(match)</code>
+          <code class="ruby">        errors.add sym, &#39;can\&#39;t be blank&#39; unless value</code>
         </li>
       
-        <li class="covered" data-hits="3329" data-linenumber="119">
-          <span class="hits">3329</span>
+        <li class="covered" data-hits="7140" data-linenumber="119">
+          <span class="hits">7140</span>
           
-          <code class="ruby">        @match = match</code>
+          <code class="ruby">        if value &amp;&amp; sym.to_s.end_with?(&#39;team&#39;)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="120">
+        <li class="covered" data-hits="2182" data-linenumber="120">
+          <span class="hits">2182</span>
           
-          
-          <code class="ruby">      end</code>
+          <code class="ruby">          errors.add sym, &#39;must be doubles team&#39; unless value.doubles</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="121">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">        end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="122">
           
           
-          <code class="ruby">      # Check for invalid changes to the match.  Add error messages to a hash.</code>
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="123">
           
           
-          <code class="ruby">      # * *Args*</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="124">
           
           
-          <code class="ruby">      #   - +errors+ -&gt; hash</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="125">
+        <li class="never" data-hits="" data-linenumber="125">
+          
+          
+          <code class="ruby">    # Class to validate changes to a match after play has started.</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="126">
+          
+          
+          <code class="ruby">    # The match opponents may not be changed, for example.</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="127">
           <span class="hits">1</span>
           
-          <code class="ruby">      def validate(errors)</code>
-        </li>
-      
-        <li class="covered" data-hits="3329" data-linenumber="126">
-          <span class="hits">3329</span>
-          
-          <code class="ruby">        find_invalid_changes do |sym|</code>
-        </li>
-      
-        <li class="covered" data-hits="10" data-linenumber="127">
-          <span class="hits">10</span>
-          
-          <code class="ruby">          errors.add sym, &#39;can\&#39;t be changed after match has started&#39;</code>
+          <code class="ruby">    class ValidateChangeMatch</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="128">
           
           
-          <code class="ruby">        end</code>
+          <code class="ruby">      # * *Args*</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="129">
           
           
-          <code class="ruby">      end</code>
+          <code class="ruby">      #   - +match+ -&gt; Match</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="130">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="131">
+        <li class="covered" data-hits="1" data-linenumber="130">
           <span class="hits">1</span>
           
-          <code class="ruby">      private</code>
+          <code class="ruby">      def initialize(match)</code>
+        </li>
+      
+        <li class="covered" data-hits="3329" data-linenumber="131">
+          <span class="hits">3329</span>
+          
+          <code class="ruby">        @match = match</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="132">
           
           
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="133">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="133">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="134">
           
-          <code class="ruby">      attr_reader :errors</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="134">
-          <span class="hits">1</span>
           
-          <code class="ruby">      attr_reader :match</code>
+          <code class="ruby">      # Check for invalid changes to the match.  Add error messages to a hash.</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="135">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">      # * *Args*</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="136">
           
           
-          <code class="ruby">      # Once the match has started, some attributes must not be changed.</code>
+          <code class="ruby">      #   - +errors+ -&gt; hash</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="137">
           <span class="hits">1</span>
           
-          <code class="ruby">      def find_invalid_changes</code>
+          <code class="ruby">      def validate(errors)</code>
         </li>
       
         <li class="covered" data-hits="3329" data-linenumber="138">
           <span class="hits">3329</span>
           
-          <code class="ruby">        if match.started &amp;&amp; !match.started_changed?</code>
+          <code class="ruby">        find_invalid_changes do |sym|</code>
         </li>
       
-        <li class="covered" data-hits="3158" data-linenumber="139">
-          <span class="hits">3158</span>
+        <li class="covered" data-hits="10" data-linenumber="139">
+          <span class="hits">10</span>
           
-          <code class="ruby">          doubles_var = match.doubles</code>
+          <code class="ruby">          errors.add sym, &#39;can\&#39;t be changed after match has started&#39;</code>
         </li>
       
-        <li class="covered" data-hits="3158" data-linenumber="140">
-          <span class="hits">3158</span>
+        <li class="never" data-hits="" data-linenumber="140">
           
-          <code class="ruby">          if match.first_team_id_changed?</code>
+          
+          <code class="ruby">        end</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="141">
-          <span class="hits">2</span>
+        <li class="never" data-hits="" data-linenumber="141">
           
-          <code class="ruby">            yield doubles_var ? :first_team : :first_player</code>
+          
+          <code class="ruby">      end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="142">
           
           
-          <code class="ruby">          end</code>
+          <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="3158" data-linenumber="143">
-          <span class="hits">3158</span>
+        <li class="covered" data-hits="1" data-linenumber="143">
+          <span class="hits">1</span>
           
-          <code class="ruby">          if match.second_team_id_changed?</code>
+          <code class="ruby">      private</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="144">
-          <span class="hits">2</span>
-          
-          <code class="ruby">            yield doubles_var ? :second_team : :second_player</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="145">
-          
-          
-          <code class="ruby">          end</code>
-        </li>
-      
-        <li class="covered" data-hits="3158" data-linenumber="146">
-          <span class="hits">3158</span>
-          
-          <code class="ruby">          yield :doubles if match.doubles_changed?</code>
-        </li>
-      
-        <li class="covered" data-hits="3158" data-linenumber="147">
-          <span class="hits">3158</span>
-          
-          <code class="ruby">          yield :scoring if match.scoring_changed?</code>
-        </li>
-      
-        <li class="covered" data-hits="3161" data-linenumber="148">
-          <span class="hits">3161</span>
-          
-          <code class="ruby">          find_invalid_change_servers { |sym| yield sym }</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="149">
-          
-          
-          <code class="ruby">        end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="150">
-          
-          
-          <code class="ruby">      end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="151">
+        <li class="never" data-hits="" data-linenumber="144">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="152">
+        <li class="covered" data-hits="1" data-linenumber="145">
           <span class="hits">1</span>
           
-          <code class="ruby">      def find_invalid_change_servers</code>
+          <code class="ruby">      attr_reader :errors</code>
         </li>
       
-        <li class="covered" data-hits="3158" data-linenumber="153">
+        <li class="covered" data-hits="1" data-linenumber="146">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      attr_reader :match</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="147">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="148">
+          
+          
+          <code class="ruby">      # Once the match has started, some attributes must not be changed.</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="149">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      def find_invalid_changes</code>
+        </li>
+      
+        <li class="covered" data-hits="3329" data-linenumber="150">
+          <span class="hits">3329</span>
+          
+          <code class="ruby">        if match.started &amp;&amp; !match.started_changed?</code>
+        </li>
+      
+        <li class="covered" data-hits="3158" data-linenumber="151">
           <span class="hits">3158</span>
           
-          <code class="ruby">        first_set_var = match.first_set</code>
+          <code class="ruby">          doubles_var = match.doubles</code>
+        </li>
+      
+        <li class="covered" data-hits="3158" data-linenumber="152">
+          <span class="hits">3158</span>
+          
+          <code class="ruby">          if match.first_team_id_changed?</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="153">
+          <span class="hits">2</span>
+          
+          <code class="ruby">            yield doubles_var ? :first_team : :first_player</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="154">
           
           
-          <code class="ruby">        if first_set_var &amp;&amp;</code>
+          <code class="ruby">          end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="155">
-          
-          
-          <code class="ruby">          (match.first_player_server_id_changed? ||</code>
-        </li>
-      
-        <li class="covered" data-hits="3158" data-linenumber="156">
+        <li class="covered" data-hits="3158" data-linenumber="155">
           <span class="hits">3158</span>
           
-          <code class="ruby">            match.second_player_server_id_changed?)</code>
+          <code class="ruby">          if match.second_team_id_changed?</code>
         </li>
       
-        <li class="covered" data-hits="183" data-linenumber="157">
-          <span class="hits">183</span>
-          
-          <code class="ruby">          wins = first_set_var.set_games</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="158">
-          
-          
-          <code class="ruby">                   .where(&#39;team_winner_id IS NOT NULL&#39;).count</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="159">
-          
-          
-          <code class="ruby">          # find_invalid_change_server_after_wins(wins) { |sym| yield sym }</code>
-        </li>
-      
-        <li class="covered" data-hits="183" data-linenumber="160">
-          <span class="hits">183</span>
-          
-          <code class="ruby">          if wins &gt;= 1 &amp;&amp; match.first_player_server_id_changed?</code>
-        </li>
-      
-        <li class="covered" data-hits="2" data-linenumber="161">
+        <li class="covered" data-hits="2" data-linenumber="156">
           <span class="hits">2</span>
           
-          <code class="ruby">            yield :first_player_server_id</code>
+          <code class="ruby">            yield doubles_var ? :second_team : :second_player</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="162">
+        <li class="never" data-hits="" data-linenumber="157">
           
           
           <code class="ruby">          end</code>
         </li>
       
-        <li class="covered" data-hits="183" data-linenumber="163">
-          <span class="hits">183</span>
+        <li class="covered" data-hits="3158" data-linenumber="158">
+          <span class="hits">3158</span>
           
-          <code class="ruby">          if match.doubles &amp;&amp; wins &gt;= 2 &amp;&amp; match.second_player_server_id_changed?</code>
+          <code class="ruby">          yield :doubles if match.doubles_changed?</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="164">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3158" data-linenumber="159">
+          <span class="hits">3158</span>
           
-          <code class="ruby">            yield :second_player_server_id</code>
+          <code class="ruby">          yield :scoring if match.scoring_changed?</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="165">
+        <li class="covered" data-hits="3161" data-linenumber="160">
+          <span class="hits">3161</span>
           
-          
-          <code class="ruby">          end</code>
+          <code class="ruby">          find_invalid_change_servers { |sym| yield sym }</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="166">
+        <li class="never" data-hits="" data-linenumber="161">
           
           
           <code class="ruby">        end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="167">
+        <li class="never" data-hits="" data-linenumber="162">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="168">
+        <li class="never" data-hits="" data-linenumber="163">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="169">
+        <li class="covered" data-hits="1" data-linenumber="164">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      def find_invalid_change_servers</code>
+        </li>
+      
+        <li class="covered" data-hits="3158" data-linenumber="165">
+          <span class="hits">3158</span>
+          
+          <code class="ruby">        first_set_var = match.first_set</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="166">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">        if first_set_var &amp;&amp;</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="167">
+          
+          
+          <code class="ruby">          (match.first_player_server_id_changed? ||</code>
+        </li>
+      
+        <li class="covered" data-hits="3158" data-linenumber="168">
+          <span class="hits">3158</span>
+          
+          <code class="ruby">            match.second_player_server_id_changed?)</code>
+        </li>
+      
+        <li class="covered" data-hits="183" data-linenumber="169">
+          <span class="hits">183</span>
+          
+          <code class="ruby">          wins = first_set_var.set_games</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="170">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">                   .where(&#39;team_winner_id IS NOT NULL&#39;).count</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="171">
+          
+          
+          <code class="ruby">          # find_invalid_change_server_after_wins(wins) { |sym| yield sym }</code>
+        </li>
+      
+        <li class="covered" data-hits="183" data-linenumber="172">
+          <span class="hits">183</span>
+          
+          <code class="ruby">          if wins &gt;= 1 &amp;&amp; match.first_player_server_id_changed?</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="173">
+          <span class="hits">2</span>
+          
+          <code class="ruby">            yield :first_player_server_id</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="174">
+          
+          
+          <code class="ruby">          end</code>
+        </li>
+      
+        <li class="covered" data-hits="183" data-linenumber="175">
+          <span class="hits">183</span>
+          
+          <code class="ruby">          if match.doubles &amp;&amp; wins &gt;= 2 &amp;&amp; match.second_player_server_id_changed?</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="176">
+          <span class="hits">1</span>
+          
+          <code class="ruby">            yield :second_player_server_id</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="177">
+          
+          
+          <code class="ruby">          end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="178">
+          
+          
+          <code class="ruby">        end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="179">
+          
+          
+          <code class="ruby">      end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="180">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="181">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="182">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="183">
           
           
           <code class="ruby">end</code>
@@ -10155,8 +10221,8 @@
     <h3>app/models/match.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>113</b> relevant lines. 
-      <span class="green"><b>113</b> lines covered</span> and
+      <b>111</b> relevant lines. 
+      <span class="green"><b>111</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -10533,7 +10599,7 @@
         <li class="covered" data-hits="3570" data-linenumber="62">
           <span class="hits">3570</span>
           
-          <code class="ruby">    ValidationHelper.new(self).validate(errors)</code>
+          <code class="ruby">    MatchValidation::validate self, errors</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="63">
@@ -12243,7 +12309,7 @@
         <li class="covered" data-hits="6142" data-linenumber="347">
           <span class="hits">6142</span>
           
-          <code class="ruby">    @play_actions ||= PlayActions.new(self)</code>
+          <code class="ruby">    @play_actions ||= MatchPlay::PlayActions.new(self)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="348">
@@ -12258,19 +12324,7 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="350">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  include MatchPlay</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="351">
-          <span class="hits">1</span>
-          
-          <code class="ruby">  include MatchValidation</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="352">
+        <li class="never" data-hits="" data-linenumber="350">
           
           
           <code class="ruby">end</code>
