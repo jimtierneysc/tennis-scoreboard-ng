@@ -159,7 +159,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (= 0.9.3)
   annotate
-  bcrypt (~> 3.1.7)
   byebug
   devise
   factory_girl_rails

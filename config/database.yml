@@ -82,6 +82,11 @@ test:
 #
 production:
   <<: *default
-  database: tennis-ng_production
-  username: tennis-ng
-  password: <%= ENV['TENNIS-NG_DATABASE_PASSWORD'] %>
+#  database: tennis-ng_production
+#  username: tennis-ng
+#  password: <%= ENV['TENNIS-NG_DATABASE_PASSWORD'] %>
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>
