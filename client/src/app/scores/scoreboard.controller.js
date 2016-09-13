@@ -97,7 +97,7 @@
      * @description
      * This method is called when the user changes the score by
      * clicking the "Start Game" button, for example.
-     * 
+     *
      * In simple terms, here is how the scoreboard gets updated
      * * First, a REST API request posts the action (such as 'start_game')
      * * Next, the REST server responds with the new match scores (including an additional game)
@@ -107,7 +107,7 @@
      * action to execute ('start_game', 'win_game', etc.)
      * @param {Object} param
      * action specific options, such as a winner for the 'win_game' action
-     * 
+     *
      */
     function scoreboardUpdate(action, param) {
 
@@ -294,7 +294,7 @@
       function toggleKeepingScore(keepScore) {
 
         if (!vm.loggedIn) {
-          vm.showToast('You must be logged in order to keep score.', "Unable to Show Score Keeper Commands");
+          vm.showToast('You must be logged in to keep score.', "Unable to Show Score Keeper Commands");
           keepScore = true;
           toggle();  // Now score keeper commands will show in case the user logs in later
         } else {
