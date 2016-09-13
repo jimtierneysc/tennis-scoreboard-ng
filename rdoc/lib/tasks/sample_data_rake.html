@@ -70,7 +70,7 @@
 
 <main role="main" aria-label="Page lib/tasks/sample_data.rake">
 
-<p>require &#39;play_match&#39;</p>
+<p>require &#39;match_player&#39;</p>
 
 <p># Tasks to manage tennis sample data namespace :db do</p>
 
@@ -90,8 +90,8 @@
 <p># Create and clear tennis sample data, including # players, doubles teams,
 and matches class SampleData</p>
 
-<pre class="ruby"><span class="ruby-constant">ONE_TO_ZERO</span> = <span class="ruby-constant">PlayMatch</span><span class="ruby-operator">::</span><span class="ruby-constant">FIRST_OPPONENT_WIN</span>
-<span class="ruby-constant">ZERO_TO_ONE</span> = <span class="ruby-constant">PlayMatch</span><span class="ruby-operator">::</span><span class="ruby-constant">SECOND_OPPONENT_WIN</span>
+<pre class="ruby"><span class="ruby-constant">ONE_TO_ZERO</span> = <span class="ruby-constant">MatchPlayer</span><span class="ruby-operator">::</span><span class="ruby-constant">FIRST_OPPONENT_WIN</span>
+<span class="ruby-constant">ZERO_TO_ONE</span> = <span class="ruby-constant">MatchPlayer</span><span class="ruby-operator">::</span><span class="ruby-constant">SECOND_OPPONENT_WIN</span>
 <span class="ruby-constant">TWO_TO_TWO</span> = <span class="ruby-constant">ONE_TO_ZERO</span> <span class="ruby-operator">+</span> <span class="ruby-constant">ZERO_TO_ONE</span> <span class="ruby-operator">+</span> <span class="ruby-constant">ONE_TO_ZERO</span> <span class="ruby-operator">+</span> <span class="ruby-constant">ZERO_TO_ONE</span>
 <span class="ruby-constant">SIX_TO_SIX</span> = <span class="ruby-constant">TWO_TO_TWO</span> <span class="ruby-operator">*</span> <span class="ruby-value">3</span>
 <span class="ruby-constant">SEVEN_TO_SIX</span> = <span class="ruby-constant">SIX_TO_SIX</span> <span class="ruby-operator">+</span> <span class="ruby-constant">ONE_TO_ZERO</span>
@@ -209,7 +209,7 @@ and matches class SampleData</p>
   <span class="ruby-identifier">add_opponents</span>(<span class="ruby-identifier">m</span>, <span class="ruby-identifier">match_data</span>)
   <span class="ruby-identifier">m</span>.<span class="ruby-identifier">save!</span>
   <span class="ruby-identifier">scores</span> = <span class="ruby-identifier">match_data</span>[:<span class="ruby-identifier">scores</span>]
-  <span class="ruby-constant">PlayMatch</span>.<span class="ruby-identifier">play_match</span>(<span class="ruby-identifier">m</span>, <span class="ruby-identifier">scores</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">scores</span>
+  <span class="ruby-constant">MatchPlayer</span>.<span class="ruby-identifier">play</span>(<span class="ruby-identifier">m</span>, <span class="ruby-identifier">scores</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">scores</span>
 <span class="ruby-keyword">end</span>
 
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_opponents</span>(<span class="ruby-identifier">match</span>, <span class="ruby-identifier">match_data</span>)
