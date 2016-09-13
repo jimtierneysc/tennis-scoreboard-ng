@@ -1,22 +1,22 @@
 # Class to help "play" a match.  This class is used to generate seed data and test data.
 #
-class PlayMatch
+class MatchPlayer
 
   # Class method to play a match.
-  # Calls PlayMatch.play
+  # Calls #play
   # * *Args*    :
   #   - +match+ -> Match
   #   - +scores+ -> Array
   #     - Array of characters within an array of sets
-  def self.play_match(match, scores)
-    PlayMatch.new(match).play(scores)
+  def self.play(match, scores)
+    MatchPlayer.new(match).play(scores)
   end
 
   # Convert an array of numeric scores into an array of
   # character scores.
   # This method is convenient for creating scores when the
   # exact order of wins and losses is not important.
-  # Pass the result of this method to play_match
+  # Pass the result of this method to #play or ::play
   #
   # * *Args*    :
   #   - +scores+ -> Array

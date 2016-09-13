@@ -1,4 +1,4 @@
-require 'play_match'
+require 'match_player'
 # Create matches in progress
 FactoryGirl.define do
   factory :play_singles_match, class: Match, parent: :singles_match do
@@ -30,17 +30,17 @@ end
 
 def after_build(subject, factory)
   if factory.start_play
-    PlayMatch.new(subject).start_play
+    MatchPlayer.new(subject).start_play
   end
   if factory.start_first_game
-    PlayMatch.new(subject).start_first_game
+    MatchPlayer.new(subject).start_first_game
   end
   if factory.scores.count > 0
-    scores = PlayMatch.convert_scores(factory.scores)
-    PlayMatch.play_match(subject, scores)
+    scores = MatchPlayer.convert_scores(factory.scores)
+    MatchPlayer.play(subject, scores)
   end
   if factory.start_set_game
-    PlayMatch.new(subject).start_set_game
+    MatchPlayer.new(subject).start_set_game
   end
 end
 
