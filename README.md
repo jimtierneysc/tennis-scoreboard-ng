@@ -38,7 +38,81 @@ Rails API application by making HTTP requests.
 * Browse
     * `horoku open`  or
     * visit `http://your-app-name.heroku.com`
-  
+    
+### Run on Elastic Beanstalk
+
+1. Open the [Elastic Beanstalk Console](https://console.aws.amazon.com/elasticbeanstalk/)
+    * Choose "Create New Application" link.  Proceed through the configuration pages:
+        * Application Information Page
+            * Fill in Application name. Enter "tennis" for example.
+            * Click "Next"
+        * New Environment Page
+            * Click "Create web server" button
+        * Environment Type Page
+            * Predefined configuration: "Ruby"
+            * Click "Change platform version"
+            * Select "2.2 (Puma) on 64bit..."
+            * Click "Next"
+        * Application Version Page
+            * Source: "Sample application"
+            * Click "Next"
+        * Environment Information Page
+            * Click "Next" 
+        * Additional Resources Page
+            * Check "Create an RDS DB Instance..."
+            * Click "Next"
+        * Configuration Details Page
+            * Instance Type: "t2.micro"   
+                * (Minimum requirement. Default type "t1.micro" results in out of memory errors during deploy)
+            * Click "Next"
+        * Environment Tags Page
+            * Click "Next"
+        * RDS Configuration Page
+            * DB engine: "postgres"
+            * Username: make up a user name
+            * Passowrd: make up a password
+            * Click "Next"
+        * Permissions Page
+            * Click "Next"
+        * Review Page
+            * Look over settings.  Be sure that "Ruby 2.2 (puma)", "postgres", and "t2.micro" are selected. 
+            * Click "Launch"
+        * Elastic Beanstalk should start creating your environment. It takes a while to 
+        finish.
+    * After the environment has been created, you can open the Sample Application in a browser by clicking on the 
+    environment URL.  The URL is displayed next to the environment name.
+2. Install [Elastic Beanstalk CLI](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html) on your desktop
+3. [Configure the EB CLI](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html)
+     * `cd tennis-score-board-ng`
+     * `eb init`
+         * When prompted, choose the application that was just created
+         * When prompted, add SSH.  You will use SSH to run rake tasks
+4. Deploy tennis-score-board-ng
+     * `eb deploy` (This will take a while--perhaps 5 minutes)
+     * If there is an error, the logs might provide a clue
+        * `eb logs`
+5. Run it
+     * `eb open` (or refresh the Sample Application page)
+     * The tennis home page should show automatically, instead of the Elastic Beanstalk
+     Sample Application
+     * The response from the relative paths api/players, api/matches, and api/teams, should 
+     be an empty JSON array ([]).
+6. Add application data
+     * `eb ssh`
+     * `cd /var/app/current`
+     * Add a user
+         * `rake db:seed username=someuser password=somepassword`
+     * Add sample data
+        * `rake db:sample_data`
+* Customizing deployment tasks and settings
+    * The deployment tasks and settings are specified in
+    tennis-score-board-ng/.ebextensions/01setup.config
+    * Tasks
+        * Build the AngularJS project
+        * Customize nginx routes
+        * Restart nginx
+    * To change the tasks or settings, modify the .config file or add another .config file
+
 ### Run Locally
 
 * Package setup
@@ -97,6 +171,7 @@ the db:seed command.  Login is only required to edit or keep score.  Login is no
 
 ### Todo
 
-- [ ] Readme: Provide instructions for running on AWS 
+- [x] Readme: Provide instructions for running on AWS 
 - [ ] Feature: Show when a game is won by service break
 - [ ] Feature: Automatically update clients when the score is changed
+- [ ] Testing: Travis integration
