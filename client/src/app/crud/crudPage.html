@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-xs-12 col-md-10 col-lg-8">
     <div ng-if="loading.loading || loading.failed">
+      {{vm.loading}}
       <fe-loading-messages
         loading="loading"
       ></fe-loading-messages>
@@ -16,7 +17,7 @@
       <div ng-if="entityList.entitys.length == 0 && !newEntity.showing">
         <fe-empty-list-message
           logged-in="vm.loggedIn"
-          kind="entityList.kind"
+          kind="{{entityList.kind}}"
         ></fe-empty-list-message>
       </div>
 
