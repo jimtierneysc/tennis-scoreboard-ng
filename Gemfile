@@ -11,7 +11,7 @@ gem 'spring', :group => :development
 gem 'pg'
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+# gem 'bcrypt', '~> 3.1.7'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
@@ -42,3 +42,4 @@ end
 gem "devise"
 # gem 'devise_token_auth'
 # gem 'omniauth'
+gem 'puma'

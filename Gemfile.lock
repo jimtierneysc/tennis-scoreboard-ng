@@ -80,6 +80,7 @@ GEM
     orm_adapter (0.5.0)
     pg (0.18.4)
     pkg-config (1.1.7)
+    puma (3.4.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -158,12 +159,12 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (= 0.9.3)
   annotate
-  bcrypt (~> 3.1.7)
   byebug
   devise
   factory_girl_rails
   ffaker
   pg
+  puma
   rails (= 4.2.6)
   rails-api
   rake (= 11.2.2)
