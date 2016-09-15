@@ -69,6 +69,8 @@ Rails API application by making HTTP requests.
             * Click "Next"
         * RDS Configuration Page
             * DB engine: "postgres"
+            * Instance class: db.t2.micro
+                * db.t2.micro is part of free tier
             * Username: make up a user name
             * Passowrd: make up a password
             * Click "Next"
