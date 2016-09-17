@@ -95,7 +95,7 @@ Rails API application by making HTTP requests.
      * The tennis home page should show automatically, instead of the Elastic Beanstalk
      Sample Application
      * The responses from the relative paths api/players, api/matches, and api/teams, should 
-     be an empty JSON arrays.
+     be empty JSON arrays.
 6. Add application data
      * `eb ssh`
      * `cd /var/app/current`
@@ -171,4 +171,4 @@ the db:seed command.  Login is only required to edit or keep score.  Login is no
 - [x] Readme: Provide instructions for running on AWS 
 - [ ] Feature: Show when a game is won by service break
 - [ ] Feature: Automatically update clients when the score is changed
-- [ ] Testing: Travis integration
+- [ ] Build: Travis integration
