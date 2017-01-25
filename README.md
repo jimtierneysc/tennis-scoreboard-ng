@@ -62,17 +62,15 @@ Rails API application by making HTTP requests.
             * Check "Create an RDS DB Instance..."
             * Click "Next"
         * Configuration Details Page
-            * Instance Type: "t2.micro"   
-                * (Minimum requirement. Default type "t1.micro" results in out of memory errors during deploy)
+            * Instance Type: "t2.micro" (t2.micro seems to be the minimum requirement. The default type, "t1.micro", results in out of memory errors during deploy)
             * Click "Next"
         * Environment Tags Page
             * Click "Next"
         * RDS Configuration Page
             * DB engine: "postgres"
-            * Instance class: db.t2.micro
-                * db.t2.micro is part of free tier
+            * Instance class: db.t2.micro (db.t2.micro is the minimum requirement.  Other instance classes are more expensive)
             * Username: make up a user name
-            * Passowrd: make up a password
+            * Password: make up a password
             * Click "Next"
         * Permissions Page
             * Click "Next"
@@ -82,7 +80,7 @@ Rails API application by making HTTP requests.
         * Elastic Beanstalk should start creating your environment. It takes a while to 
         finish.
     * After the environment has been created, you can open the Sample Application in a browser by clicking on the 
-    environment URL.  The URL is displayed next to the environment name.
+    environment URL.  The URL is displayed next to the environment name in the Elastic Beanstalk Console.
 2. Install [Elastic Beanstalk CLI](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html) on your desktop
 3. [Configure the EB CLI](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html)
      * `cd tennis-score-board-ng`
@@ -91,14 +89,13 @@ Rails API application by making HTTP requests.
          * When prompted, add SSH.  You will use SSH to run rake tasks
 4. Deploy tennis-score-board-ng
      * `eb deploy` (This will take a while--perhaps 5 minutes)
-     * If there is an error, the logs might provide a clue
-        * `eb logs`
+     * If there is an error, the logs might provide a clue: `eb logs`
 5. Run it
      * `eb open` (or refresh the Sample Application page)
      * The tennis home page should show automatically, instead of the Elastic Beanstalk
      Sample Application
-     * The response from the relative paths api/players, api/matches, and api/teams, should 
-     be an empty JSON array ([]).
+     * The responses from the relative paths api/players, api/matches, and api/teams, should 
+     be empty JSON arrays.
 6. Add application data
      * `eb ssh`
      * `cd /var/app/current`
@@ -107,12 +104,10 @@ Rails API application by making HTTP requests.
      * Add sample data
         * `rake db:sample_data`
 * Customizing deployment tasks and settings
-    * The deployment tasks and settings are specified in
-    tennis-score-board-ng/.ebextensions/01setup.config
-    * Tasks
-        * Build the AngularJS project
-        * Customize nginx routes
-        * Restart nginx
+    * The deployment tasks and settings are specified in [01setup.config](https://github.com/jimtierneysc/tennis-scoreboard-ng/blob/master/.ebextensions/01setup.config)
+        * Builds the AngularJS project
+        * Customizes nginx routes
+        * Restarts nginx
     * To change the tasks or settings, modify the .config file or add another .config file
 
 ### Run Locally
@@ -176,4 +171,4 @@ the db:seed command.  Login is only required to edit or keep score.  Login is no
 - [x] Readme: Provide instructions for running on AWS 
 - [ ] Feature: Show when a game is won by service break
 - [ ] Feature: Automatically update clients when the score is changed
-- [ ] Testing: Travis integration
+- [ ] Build: Travis integration
